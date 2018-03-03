@@ -182,23 +182,15 @@
 				</c:if> --%>
 				<div class="nav-collapse">
 					<ul id="menu" class="nav" style="*white-space:nowrap;float:none;">
-						<c:set var="firstMenu" value="true"/>
-						<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
-							<c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}">
-								<li class="menu ${not empty firstMenu && firstMenu ? ' active' : ''}">
-									<c:if test="${empty menu.href}">
-										<a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}"><span>${menu.name}</span></a>
-									</c:if>
-									<c:if test="${not empty menu.href}">
-										<a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame"><span>${menu.name}</span></a>
-									</c:if>
-								</li>
-								<c:if test="${firstMenu}">
-									<c:set var="firstMenuId" value="${menu.id}"/>
-								</c:if>
-								<c:set var="firstMenu" value="false"/>
-							</c:if>
-						</c:forEach><%--
+						<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus"><c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}">
+						<li class="menu ${not empty firstMenu && firstMenu ? ' active' : ''}">
+                        <c:if test="${empty menu.href}">
+                            <a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}"><span>${menu.name}</span></a>
+                        </c:if><c:if test="${not empty menu.href}">
+                            <a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame"><span>${menu.name}</span></a>
+                        </c:if>
+                        </li>
+                    </c:if></c:forEach><%--
 						<shiro:hasPermission name="cms:site:select">
 						<li class="dropdown">
 							<a class="dropdown-toggle" data-toggle="dropdown" href="#">${fnc:getSite(fnc:getCurrentSiteId()).name}<b class="caret"></b></a>
@@ -213,7 +205,7 @@
 	    </div>
 	    <div class="container-fluid">
 			<div id="content" class="row-fluid">
-				<div id="left"><%-- 
+				<div id="left"><%--
 					<iframe id="menuFrame" name="menuFrame" src="" style="overflow:visible;" scrolling="yes" frameborder="no" width="100%" height="650"></iframe> --%>
 				</div>
 				<div id="openClose" class="close">&nbsp;</div>
