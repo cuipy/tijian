@@ -21,6 +21,8 @@ CREATE TABLE gen_scheme
 	sub_module_name varchar2(30),
 	function_name nvarchar2(500),
 	function_name_simple nvarchar2(100),
+	can_xls_export  char(1) DEFAULT '0' NOT NULL,
+	can_xls_import  char(1) DEFAULT '0' NOT NULL,
 	function_author nvarchar2(100),
 	gen_table_id varchar2(200),
 	create_by varchar2(64),
@@ -124,6 +126,8 @@ COMMENT ON COLUMN gen_scheme.module_name IS '生成模块名';
 COMMENT ON COLUMN gen_scheme.sub_module_name IS '生成子模块名';
 COMMENT ON COLUMN gen_scheme.function_name IS '生成功能名';
 COMMENT ON COLUMN gen_scheme.function_name_simple IS '生成功能名（简写）';
+COMMENT ON COLUMN gen_scheme.can_xls_export IS '是否支持Excel导出';
+COMMENT ON COLUMN gen_scheme.can_xls_import IS '是否支持Excle导入';
 COMMENT ON COLUMN gen_scheme.function_author IS '生成功能作者';
 COMMENT ON COLUMN gen_scheme.gen_table_id IS '生成表编号';
 COMMENT ON COLUMN gen_scheme.create_by IS '创建者';

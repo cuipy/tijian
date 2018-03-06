@@ -22,6 +22,8 @@ CREATE TABLE gen_scheme
 	sub_module_name varchar(30),
 	function_name varchar(500),
 	function_name_simple varchar(100),
+	can_xls_export  char(1) DEFAULT '0' NOT NULL,
+	can_xls_import  char(1) DEFAULT '0' NOT NULL,
 	function_author varchar(100),
 	gen_table_id varchar(200),
 	create_by varchar(64),

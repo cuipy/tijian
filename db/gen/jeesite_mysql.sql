@@ -23,6 +23,8 @@ CREATE TABLE gen_scheme
 	function_name varchar(500) COMMENT '生成功能名',
 	function_name_simple varchar(100) COMMENT '生成功能名（简写）',
 	function_author varchar(100) COMMENT '生成功能作者',
+	can_xls_export char(1)  DEFAULT '0' NOT NULL  comment '是否支持Excel导出',
+	can_xls_import char(1)  DEFAULT '0' NOT NULL  comment '是否支持Excel导入',
 	gen_table_id varchar(200) COMMENT '生成表编号',
 	create_by varchar(64) COMMENT '创建者',
 	create_date datetime COMMENT '创建时间',
