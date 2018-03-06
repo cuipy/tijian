@@ -22,6 +22,7 @@ public class GenScheme extends DataEntity<GenScheme> {
 	private String subModuleName;		// 生成子模块名
 	private String functionName;		// 生成功能名
 	private String functionNameSimple;		// 生成功能名（简写）
+	private String canXlsExport;            //  是否支持导出，主要是excel导出
 	private String functionAuthor;		// 生成功能作者
 	private GenTable genTable;		// 业务表名
 	
@@ -125,7 +126,14 @@ public class GenScheme extends DataEntity<GenScheme> {
 	public void setReplaceFile(Boolean replaceFile) {
 		this.replaceFile = replaceFile;
 	}
-	
+
+	public String getCanXlsExport() {
+		return canXlsExport;
+	}
+
+	public void setCanXlsExport(String canXlsExport) {
+		this.canXlsExport = canXlsExport;
+	}
 }
 
 

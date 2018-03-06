@@ -87,6 +87,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+            <label class="control-label">是否Excel导出:</label>
+            <div class="controls">
+                <form:radiobuttons path="canXlsExport" items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                <span class="help-inline">是否支持Excel导出</span>
+            </div>
+        </div>
+		<div class="control-group">
 			<label class="control-label">生成功能作者:</label>
 			<div class="controls">
 				<form:input path="functionAuthor" htmlEscape="false" maxlength="500" class="required input-xlarge"/>
