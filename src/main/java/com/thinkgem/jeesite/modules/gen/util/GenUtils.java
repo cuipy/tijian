@@ -255,7 +255,6 @@ public class GenUtils {
 	/**
 	 * 根据分类获取模板列表
 	 * @param config
-	 * @param genScheme
 	 * @param isChildTable 是否是子表
 	 * @return
 	 */
@@ -292,7 +291,6 @@ public class GenUtils {
 	/**
 	 * 获取数据模型
 	 * @param genScheme
-	 * @param genTable
 	 * @return
 	 */
 	public static Map<String, Object> getDataModel(GenScheme genScheme){
@@ -307,6 +305,10 @@ public class GenUtils {
 		
 		model.put("functionName", genScheme.getFunctionName());
 		model.put("functionNameSimple", genScheme.getFunctionNameSimple());
+
+		model.put("canXlsExport",genScheme.getCanXlsExport());
+		model.put("canXlsImport",genScheme.getCanXlsImport());
+
 		model.put("functionAuthor", StringUtils.isNotBlank(genScheme.getFunctionAuthor())?genScheme.getFunctionAuthor():UserUtils.getUser().getName());
 		model.put("functionVersion", DateUtils.getDate());
 		
@@ -328,7 +330,7 @@ public class GenUtils {
 	 * 生成到文件
 	 * @param tpl
 	 * @param model
-	 * @param replaceFile
+	 * @param isReplaceFile
 	 * @return
 	 */
 	public static String generateToFile(GenTemplate tpl, Map<String, Object> model, boolean isReplaceFile){

@@ -86,6 +86,92 @@ public class ${ClassName}Controller extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/${viewPrefix}/?repage";
 	}
 
+	<#if canXlsExport == "1">
+	@RequiresPermissions("${permissionPrefix}:view")
+	@RequestMapping(value = "export",method=RequestMethod.POST)
+	public String exportXls(${ClassName} ${className},HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "${functionNameSimple}数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            Page<${ClassName}> page = systemService.findUser(new Page<${ClassName}>(request, response, -1), ${className});
+    		new ExportExcel("${className}数据", ${ClassName}.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出${functionNameSimple}失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + Global.getAdminPath() + "/${viewPrefix}/list?repage";
+	}
+	</#if>
+
+
+	<#if canXlsImport =="1">
+	/**
+	 * 导入${functionNameSimple}数据
+	 * @param file
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("${permissionPrefix}:edit")
+    @RequestMapping(value = "import", method=RequestMethod.POST)
+    public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
+		if(Global.isDemoMode()){
+			addMessage(redirectAttributes, "演示模式，不允许操作！");
+			return "redirect:" + Global.getAdminPath() + "/${viewPrefix}/list?repage";
+		}
+		try {
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(file, 1, 0);
+			List<${ClassName}> list = ei.getDataList(${ClassName}.class);
+			for (${ClassName} ${className} : list){
+				try{
+					BeanValidators.validateWithException(validator, ${className});
+					${className}Service.save(${className});
+					successNum++;
+
+				}catch(ConstraintViolationException ex){
+					failureMsg.append("<br/>${functionNameSimple} 导入失败：");
+					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+					for (String message : messageList){
+						failureMsg.append(message+"; ");
+						failureNum++;
+					}
+				}catch (Exception ex) {
+					failureMsg.append("<br/>${functionNameSimple} 导入失败："+ex.getMessage());
+				}
+			}
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条${functionNameSimple}，导入信息如下：");
+			}
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条${functionNameSimple}"+failureMsg);
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入${functionNameSimple}失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + Global.getAdminPath() + "/${viewPrefix}/list?repage";
+    }
+
+	/**
+	 * 下载导入${functionNameSimple}数据模板
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("${viewPrefix}:view")
+    @RequestMapping(value = "import/template")
+    public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "${functionNameSimple}数据导入模板.xlsx";
+    		List<${ClassName}> list = Lists.newArrayList();
+    		new ExportExcel("${functionNameSimple}数据", ${ClassName}.class, 2).setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + Global.getAdminPath() + "/${viewPrefix}/list?repage";
+    }
+	</#if>
+
+
 }]]>
 	</content>
 </template>
