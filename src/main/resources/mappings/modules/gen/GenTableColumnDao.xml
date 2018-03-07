@@ -59,7 +59,8 @@
 			comments, 
 			jdbc_type, 
 			java_type, 
-			java_field, 
+			java_field,
+			is_invent,
 			is_pk, 
 			is_null, 
 			is_insert, 
@@ -83,7 +84,8 @@
 			#{comments}, 
 			#{jdbcType}, 
 			#{javaType}, 
-			#{javaField}, 
+			#{javaField},
+			#{isInvent},
 			#{isPk}, 
 			#{isNull}, 
 			#{isInsert}, 
@@ -104,11 +106,13 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE gen_table_column SET 
+		UPDATE gen_table_column SET
+			name = #{name},
 			comments = #{comments}, 
 			jdbc_type = #{jdbcType}, 
 			java_type = #{javaType}, 
-			java_field = #{javaField}, 
+			java_field = #{javaField},
+			is_invent=#{isInvent},
 			is_pk = #{isPk}, 
 			is_null = #{isNull}, 
 			is_insert = #{isInsert}, 

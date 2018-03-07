@@ -64,7 +64,7 @@ public class GenTableService extends BaseService {
 	
 	/**
 	 * 验证表名是否可用，如果已存在，则返回false
-	 * @param genTable
+	 * @param tableName
 	 * @return
 	 */
 	public boolean checkTableName(String tableName){
@@ -104,7 +104,7 @@ public class GenTableService extends BaseService {
 				for (GenTableColumn column : columnList){
 					boolean b = false;
 					for (GenTableColumn e : genTable.getColumnList()){
-						if (e.getName().equals(column.getName())){
+						if (e.getName()!=null&&e.getName().equals(column.getName())){
 							b = true;
 						}
 					}
@@ -116,6 +116,11 @@ public class GenTableService extends BaseService {
 				// 删除已删除的列
 				for (GenTableColumn e : genTable.getColumnList()){
 					boolean b = false;
+
+					// 虚字段则不删除
+					if(e.getIsInvent().equals("1")){
+						continue;
+					}
 					for (GenTableColumn column : columnList){
 						if (column.getName().equals(e.getName())){
 							b = true;
@@ -149,6 +154,12 @@ public class GenTableService extends BaseService {
 		// 保存列
 		for (GenTableColumn column : genTable.getColumnList()){
 			column.setGenTable(genTable);
+
+			// 如果是虚字段，则与java字段相同
+			if("1".equals(column.getIsInvent())){
+				column.setName(column.getJavaField());
+				column.setJdbcType(column.getJavaType());
+			}
 			if (StringUtils.isBlank(column.getId())){
 				column.preInsert();
 				genTableColumnDao.insert(column);

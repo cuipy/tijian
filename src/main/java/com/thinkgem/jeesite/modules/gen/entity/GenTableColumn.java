@@ -25,6 +25,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	private String jdbcType;	// JDBC类型
 	private String javaType;	// JAVA类型
 	private String javaField;	// JAVA字段名
+    private String isInvent="0";   // 是否虚字段，虚字段即在当前数据表中不存在的字段
 	private String isPk;		// 是否主键（1：主键）
 	private String isNull;		// 是否可为空（1：可为空；0：不为空）
 	private String isInsert;	// 是否为插入字段（1：插入字段）
@@ -177,7 +178,17 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		this.sort = sort;
 	}
 
-	/**
+    public String getIsInvent() {
+        return isInvent;
+    }
+
+    public void setIsInvent(String isInvent) {
+        this.isInvent = isInvent;
+    }
+
+
+
+    /**
 	 * 获取列名和说明
 	 * @return
 	 */
@@ -225,7 +236,51 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	public String getJavaFieldId(){
 		return StringUtils.substringBefore(getJavaField(), "|");
 	}
-	
+
+    /**
+     * 获取虚字段的获取字段的代码
+     * @return
+     */
+    public String getInventGetCode(){
+        if(!"1".equals(getIsInvent())){
+            return "";
+        }
+
+        String[] arrJavaField=javaField.split("\\.");
+        String res="";
+        for(String part:arrJavaField){
+            if(StringUtils.isBlank(part)){
+                continue;
+            }
+            res+="get"+part.substring(0,1).toUpperCase()+part.substring(1)+"().";
+        }
+        if(res.length()>0){
+            res=res.substring(0,res.length()-1);
+        }
+        return res;
+    }
+
+    /**
+     * 虚字段的属性名
+     * @return
+     */
+    public String getInventFieldName(){
+        if(!"1".equals(getIsInvent())){
+            return "";
+        }
+
+        String[] arrJavaField=javaField.split("\\.");
+        String res="";
+        for(String part:arrJavaField){
+            if(StringUtils.isBlank(part)){
+                continue;
+            }
+            res+=part.substring(0,1).toUpperCase()+part.substring(1);
+        }
+
+        return res;
+    }
+
 	/**
 	 * 获取Java字段，如果是对象，则获取对象.附加属性2
 	 * @return

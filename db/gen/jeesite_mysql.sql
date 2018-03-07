@@ -63,6 +63,7 @@ CREATE TABLE gen_table_column
 	jdbc_type varchar(100) COMMENT '列的数据类型的字节长度',
 	java_type varchar(500) COMMENT 'JAVA类型',
 	java_field varchar(200) COMMENT 'JAVA字段名',
+	is_invent char(1) default '0' not null COMMENT '是否虚字段',
 	is_pk char(1) COMMENT '是否主键',
 	is_null char(1) COMMENT '是否可为空',
 	is_insert char(1) COMMENT '是否为插入字段',

@@ -41,7 +41,8 @@ public class GenTableController extends BaseController {
 	@ModelAttribute
 	public GenTable get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
-			return genTableService.get(id);
+			GenTable gtbl=genTableService.get(id);
+			return gtbl;
 		}else{
 			return new GenTable();
 		}
