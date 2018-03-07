@@ -12,20 +12,14 @@
 	<sql id="${className}Columns">
 		<#assign columnField>
 			<#list table.columnList as c>
+			<#if c.isInvent != "1">
 		a.${c.name} AS "${c.javaFieldId}",
+			</#if>
 			</#list>
 			<#list table.columnList as c>
-				<#if c.showType?? && c.showType == "userselect">
+				<#if c.isFk == "1">
 					<#list c.javaFieldAttrs as a>
-		u${c_index + 1}.${a[1]} AS "${c.simpleJavaField}.${a[0]}",
-					</#list>
-				<#elseif c.showType?? && c.showType == "officeselect">
-					<#list c.javaFieldAttrs as a>
-		o${c_index + 1}.${a[1]} AS "${c.simpleJavaField}.${a[0]}",
-					</#list>
-				<#elseif c.showType?? && c.showType == "areaselect">
-					<#list c.javaFieldAttrs as a>
-		a${c_index + 1}.${a[1]} AS "${c.simpleJavaField}.${a[0]}",
+		${c.fkTable}${c_index + 1}.${a[1]} AS "${c.simpleJavaField}.${a[0]}",
 					</#list>
 				</#if>
 				<#-- 父表关联字段 -->
@@ -47,12 +41,8 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		</#if>
 		<#-- 关联系统表 -->
 		<#list table.columnList as c>
-			<#if c.showType?? && c.showType == "userselect">
-		LEFT JOIN sys_user u${c_index + 1} ON u${c_index + 1}.id = a.${c.name}
-			<#elseif c.showType?? && c.showType == "officeselect">
-		LEFT JOIN sys_office o${c_index + 1} ON o${c_index + 1}.id = a.${c.name}
-			<#elseif c.showType?? && c.showType == "areaselect">
-		LEFT JOIN sys_area a${c_index + 1} ON a${c_index + 1}.id = a.${c.name}
+			<#if c.isFk == "1">
+		LEFT JOIN ${c.fkTable}${c_index + 1} ON ${c.fkTable}${c_index + 1}.id = a.${c.name}
 			</#if>
 		</#list>
 	</sql>
@@ -151,7 +141,7 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		INSERT INTO ${table.name}(
 		<#assign insertField>
 			<#list table.columnList as c>
-				<#if c.isInsert?? && c.isInsert == "1">
+				<#if c.isInsert?? && c.isInsert == "1" && c.isInvent??  && c.isInvent !="1">
 			${c.name},
 				</#if>
 			</#list>
@@ -160,7 +150,7 @@ ${insertField?substring(0, insertField?last_index_of(","))}
 		) VALUES (
 		<#assign insertJavaField>
 			<#list table.columnList as c>
-				<#if c.isInsert?? && c.isInsert == "1">
+				<#if c.isInsert?? && c.isInsert == "1" && c.isInvent??  && c.isInvent !="1">
 			${"#"}{${c.javaFieldId}},
 				</#if>
 			</#list>
@@ -173,7 +163,7 @@ ${insertJavaField?substring(0, insertJavaField?last_index_of(","))}
 		UPDATE ${table.name} SET 	
 			<#assign updateField>		
 				<#list table.columnList as c>
-					<#if c.isEdit?? && c.isEdit == "1">
+					<#if c.isEdit?? && c.isEdit == "1" && c.isInvent??  && c.isInvent !="1">
 			${c.name} = ${"#"}{${c.javaFieldId}},
 					</#if>
 				</#list>

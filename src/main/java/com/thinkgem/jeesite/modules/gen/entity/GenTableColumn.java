@@ -282,6 +282,28 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
     }
 
 	/**
+	 * 是否是外键字段
+	 * @return
+	 */
+	public String getIsFk(){
+    	if(showType!=null&&showType.startsWith("fk_")){
+    		return "1";
+		}
+		return "0";
+	}
+
+	/**
+	 * 对应的外键表名称
+	 * @return
+	 */
+	public String getFkTable(){
+		if(showType!=null&&showType.startsWith("fk_")){
+			return showType.substring(3);
+		}
+		return "";
+	}
+
+	/**
 	 * 获取Java字段，如果是对象，则获取对象.附加属性2
 	 * @return
 	 */
