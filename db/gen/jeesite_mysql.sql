@@ -73,6 +73,7 @@ CREATE TABLE gen_table_column
 	query_type varchar(200) COMMENT '查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）',
 	show_type varchar(200) COMMENT '字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）',
 	dict_type varchar(200) COMMENT '字典类型',
+	tree_url  varchar(200) comment '外键加载TreeUrl',
 	settings varchar(2000) COMMENT '其它设置（扩展字段JSON）',
 	sort decimal COMMENT '排序（升序）',
 	create_by varchar(64) COMMENT '创建者',

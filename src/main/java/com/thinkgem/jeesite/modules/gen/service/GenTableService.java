@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.gen.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.gen.entity.GenConfig;
+import com.thinkgem.jeesite.modules.gen.entity.ShowTypeDict;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -151,6 +153,10 @@ public class GenTableService extends BaseService {
 			genTable.preUpdate();
 			genTableDao.update(genTable);
 		}
+
+		GenConfig config = GenUtils.getConfig();
+
+
 		// 保存列
 		for (GenTableColumn column : genTable.getColumnList()){
 			column.setGenTable(genTable);
@@ -159,6 +165,13 @@ public class GenTableService extends BaseService {
 			if("1".equals(column.getIsInvent())){
 				column.setName(column.getJavaField());
 				column.setJdbcType(column.getJavaType());
+			}
+			// 如果是外键，则设置treeUrl
+			if("1".equals(column.getIsFk())){
+				ShowTypeDict dict = config.findShowTypeByValue(column.getShowType());
+				if(dict!=null){
+					column.setTreeUrl(dict.getTreeUrl());
+				}
 			}
 			if (StringUtils.isBlank(column.getId())){
 				column.preInsert();

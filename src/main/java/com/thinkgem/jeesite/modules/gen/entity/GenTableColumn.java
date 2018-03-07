@@ -35,6 +35,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	private String queryType;	// 查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）
 	private String showType;	// 字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）
 	private String dictType;	// 字典类型
+	private String treeUrl;		// TreeUrl地址
 	private Integer sort;		// 排序（升序）
 
 	public GenTableColumn() {
@@ -186,9 +187,15 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
         this.isInvent = isInvent;
     }
 
+	public String getTreeUrl() {
+		return treeUrl;
+	}
 
+	public void setTreeUrl(String treeUrl) {
+		this.treeUrl = treeUrl;
+	}
 
-    /**
+	/**
 	 * 获取列名和说明
 	 * @return
 	 */

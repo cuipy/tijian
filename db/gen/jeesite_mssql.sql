@@ -72,6 +72,7 @@ CREATE TABLE gen_table_column
 	query_type varchar(200),
 	show_type varchar(200),
 	dict_type varchar(200),
+	tree_url  varchar(200),
 	settings varchar(2000),
 	sort decimal,
 	create_by varchar(64),

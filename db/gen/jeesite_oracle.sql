@@ -71,6 +71,7 @@ CREATE TABLE gen_table_column
 	query_type varchar2(200),
 	show_type varchar2(200),
 	dict_type varchar2(200),
+	tree_url  varchar2(200),
 	settings nvarchar2(2000),
 	sort number,
 	create_by varchar2(64),

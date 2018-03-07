@@ -25,7 +25,7 @@ public class GenConfig implements Serializable {
 	private List<GenCategory> categoryList;	// 代码模板分类
 	private List<Dict> javaTypeList;		// Java类型
 	private List<Dict> queryTypeList;		// 查询类型
-	private List<Dict> showTypeList;		// 显示类型
+	private List<ShowTypeDict> showTypeList;		// 显示类型
 
 	public GenConfig() {
 		super();
@@ -85,12 +85,21 @@ public class GenConfig implements Serializable {
 
 	@XmlElementWrapper(name = "showType")
 	@XmlElement(name = "dict")
-	public List<Dict> getShowTypeList() {
+	public List<ShowTypeDict> getShowTypeList() {
 		return showTypeList;
 	}
 
-	public void setShowTypeList(List<Dict> showTypeList) {
+	public void setShowTypeList(List<ShowTypeDict> showTypeList) {
 		this.showTypeList = showTypeList;
+	}
+
+	public ShowTypeDict findShowTypeByValue(String value){
+		for(ShowTypeDict d:getShowTypeList()){
+			if(d.getValue().equals(value)){
+				return d;
+			}
+		}
+		return null;
 	}
 	
 }
