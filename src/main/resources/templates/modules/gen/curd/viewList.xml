@@ -14,7 +14,7 @@
 		$(document).ready(function() {
 			<#if canXlsExport == "1">
 			$("#btnExport").click(function(){
-				top.$.jBox.confirm("确认要导出用户数据吗？","系统提示",function(v,h,f){
+				top.$.jBox.confirm("确认要导出${functionNameSimple}数据吗？","系统提示",function(v,h,f){
 					if(v=="ok"){
 						$("#searchForm").attr("action","${r"${ctx}"}/${urlPrefix}/export");
 						$("#searchForm").submit();

@@ -276,6 +276,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 			list.add("org.hibernate.validator.constraints.Length(min=0, max="+getDataLength()
 					+", message=\""+getComments()+"长度必须介于 0 和 "+getDataLength()+" 之间\")");
 		}
+		list.add("com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField(title=\""+getComments()+"\")");
 		return list;
 	}
 	
