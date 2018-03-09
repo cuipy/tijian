@@ -3,8 +3,15 @@
  */
 package com.thinkgem.jeesite.common.persistence;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import com.thinkgem.jeesite.common.annotation.Unique;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -122,6 +129,52 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 
 	public void setDelFlag(String delFlag) {
 		this.delFlag = delFlag;
+	}
+
+	/**
+	 * 获取所有的唯一字段
+	 * @return
+	 */
+	public List<String> getUniqueFields(){
+		List<String> fields= Lists.newArrayList();
+
+		Set<String> sets= Sets.newHashSet();
+
+		Field[] fs = getClass().getDeclaredFields();
+		for(Field f:fs){
+			Unique an = f.getAnnotation(Unique.class);
+			if(an==null){
+				continue;
+			}
+
+			String fieldName=f.getName();
+			fieldName=com.thinkgem.jeesite.common.utils.StringUtils.lowerCaseFirst(fieldName);
+
+			sets.add(fieldName);
+		}
+
+
+		Method[] ms = getClass().getDeclaredMethods();
+		for(Method m:ms){
+			Unique an = m.getAnnotation(Unique.class);
+			if(an==null){
+				continue;
+			}
+
+			String methodName=m.getName();
+			String fieldName=null;
+			if(methodName.startsWith("get")){
+				fieldName=methodName.substring(3);
+			}else{
+				continue;
+			}
+
+			fieldName=com.thinkgem.jeesite.common.utils.StringUtils.lowerCaseFirst(fieldName);
+
+			sets.add(fieldName);
+		}
+		fields.addAll(sets);
+		return fields;
 	}
 
 }

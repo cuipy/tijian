@@ -372,6 +372,22 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
         return sb.toString();
     }
+
+    public static String lowerCaseFirst(String s){
+    	if(StringUtils.isEmpty(s)){
+    		return null;
+		}
+
+		return s.substring(0,1).toLowerCase()+s.substring(1);
+	}
+
+	public static String upCaseFirst(String s){
+		if(StringUtils.isEmpty(s)){
+			return null;
+		}
+
+		return s.substring(0,1).toUpperCase()+s.substring(1);
+	}
  
     /**
      * 转换为JS获取对象值，生成三目运算返回结果

@@ -20,6 +20,13 @@ import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleN
  */
 @MyBatisDao
 public interface ${ClassName}Dao extends CrudDao<${ClassName}> {
+
+<#list table.columnList as c>
+	<#if c.isUnique == "1">
+	${ClassName} getBy${c.simpleJavaField?cap_first}(${ClassName} ${className});
+
+	</#if>
+</#list>
 	
 }]]>
 	</content>

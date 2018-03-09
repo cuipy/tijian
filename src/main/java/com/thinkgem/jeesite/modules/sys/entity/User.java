@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.thinkgem.jeesite.common.annotation.Unique;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
@@ -145,6 +146,7 @@ public class User extends DataEntity<User> {
 	
 	@Length(min=1, max=100, message="工号长度必须介于 1 和 100 之间")
 	@ExcelField(title="工号", align=2, sort=45)
+	@Unique
 	public String getNo() {
 		return no;
 	}

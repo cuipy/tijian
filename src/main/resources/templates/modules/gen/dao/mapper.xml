@@ -54,6 +54,19 @@ ${columnField?substring(0, columnField?last_index_of(","))}
 		<include refid="${className}Joins"/>
 		WHERE a.id = ${"#"}{id}
 	</select>
+
+	<#list table.columnList as c>
+	<#if c.isUnique == "1" && c.isInvent != "1">
+	<select id="getBy${c.simpleJavaField?cap_first}" resultType="${ClassName}">
+		SELECT
+			<include refid="${className}Columns"/>
+		FROM ${table.name} a
+		<include refid="${className}Joins"/>
+		WHERE a.${c.simpleJavaField} = ${"#"}{${c.simpleJavaField}}
+	</select>
+
+	</#if>
+    </#list>
 	
 	<select id="findList" resultType="${ClassName}">
 		SELECT 

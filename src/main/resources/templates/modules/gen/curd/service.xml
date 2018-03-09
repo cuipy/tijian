@@ -42,6 +42,38 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 	
 	@Transactional(readOnly = false)
 	public void save(${ClassName} ${className}) {
+
+	<#list table.columnList as c>
+	<#if c.isFk == "1">
+		// 如果外键对象的id没有值，则从外键对象的唯一值读取id值
+		if(${className}.get${c.simpleJavaField?cap_first}()!=null&&StringUtils.isEmpty(${className}.${c.simpleJavaField?cap_first}().getId())){
+			List<String> uniqFields=${className}.get${c.simpleJavaField?cap_first}().getUniqueFields();
+
+			for(String fieldName:uniqFields){
+				String methodName="get"+StringUtils.upCaseFirst(fieldName);
+                ${c.simpleJavaType} ${c.simpleJavaField}1=null;
+
+                try {
+                    Method method = ${c.simpleJavaField}Dao.getClass().getMethod(methodName, ${c.simpleJavaType}.class);
+                    ${c.simpleJavaField}1= (${c.simpleJavaType}) method.invoke(${c.simpleJavaField}Dao,${className}.get${c.simpleJavaField?cap_first}());
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+		        if(${c.simpleJavaField}1!=null){
+		            ${c.className}.get${c.simpleJavaField?cap_first}().setId(${c.simpleJavaField}1.getId());
+		            break;
+                }
+            }
+		}
+
+	</#if>
+	</#list>
+
 		super.save(${className});
 	}
 	

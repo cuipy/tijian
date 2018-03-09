@@ -319,6 +319,7 @@ public class ImportExcel {
 						}else if (valType == Date.class){
 							val = DateUtil.getJavaDate((Double)val);
 						}else{
+							// 如果是自定义类型的。。。
 							if (ef.fieldType() != Class.class){
 								val = ef.fieldType().getMethod("getValue", String.class).invoke(null, val.toString());
 							}else{

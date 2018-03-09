@@ -86,6 +86,9 @@ public class ${ClassName} extends DataEntity<${ClassName}> {
 	public ${c.simpleJavaType} get${c.inventFieldName?cap_first}() {
 		return ${c.inventGetCode};
 	}
+	public void set${c.inventFieldName?cap_first}(${c.simpleJavaType} _val) {
+		${c.inventSetCode}
+	}
 			<#-- 其它字段 -->
 			<#else>
 	public ${c.simpleJavaType} get${c.simpleJavaField?cap_first}() {

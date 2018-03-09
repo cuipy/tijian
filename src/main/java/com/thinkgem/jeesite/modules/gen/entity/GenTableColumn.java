@@ -27,6 +27,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	private String javaField;	// JAVA字段名
     private String isInvent="0";   // 是否虚字段，虚字段即在当前数据表中不存在的字段
 	private String isPk;		// 是否主键（1：主键）
+	private String isUnique="0";	// 是否唯一键 (1，唯一键；0：不是唯一键）
 	private String isNull;		// 是否可为空（1：可为空；0：不为空）
 	private String isInsert;	// 是否为插入字段（1：插入字段）
 	private String isEdit;		// 是否编辑字段（1：编辑字段）
@@ -195,6 +196,14 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		this.treeUrl = treeUrl;
 	}
 
+	public String getIsUnique() {
+		return isUnique;
+	}
+
+	public void setIsUnique(String isUnique) {
+		this.isUnique = isUnique;
+	}
+
 	/**
 	 * 获取列名和说明
 	 * @return
@@ -229,7 +238,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	}
 	
 	/**
-	 * 获取简写Java字段
+	 * 获取简写Java字段,例如 javaField == auth.id   返回auth
 	 * @return
 	 */
 	public String getSimpleJavaField(){
@@ -266,6 +275,34 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
         }
         return res;
     }
+
+    public String getInventSetCode(){
+		if(!"1".equals(getIsInvent())){
+			return "";
+		}
+
+		String[] arrJavaField=javaField.split("\\.");
+		String fieldName=arrJavaField[0];
+		String upFirstFieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+		String res="if(null == get"+upFirstFieldName+"()){ return; }";
+		for(int i=0;i<arrJavaField.length-1;i++){
+			String part=arrJavaField[i];
+			if(StringUtils.isBlank(part)){
+				continue;
+			}
+
+			fieldName=arrJavaField[0];
+			upFirstFieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+
+			res+="get"+upFirstFieldName+"().";
+		}
+
+		fieldName=arrJavaField[arrJavaField.length-1];
+		upFirstFieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+		res+="set"+upFirstFieldName+"(_val);";
+
+		return res;
+	}
 
     /**
      * 虚字段的属性名
@@ -360,7 +397,13 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 			list.add("org.hibernate.validator.constraints.Length(min=0, max="+getDataLength()
 					+", message=\""+getComments()+"长度必须介于 0 和 "+getDataLength()+" 之间\")");
 		}
-		list.add("com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField(title=\""+getComments()+"\")");
+
+		if("1".equals(isUnique)){
+			list.add("com.thinkgem.jeesite.common.annotation.Unique");
+		}
+
+		list.add("com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField" +
+				"(value=\""+getJavaFieldId()+"\",title=\""+getComments()+"\",type=0,sort="+getSort()+")");
 		return list;
 	}
 	

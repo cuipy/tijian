@@ -132,19 +132,19 @@ public class GenUtils {
 			if (StringUtils.startsWithIgnoreCase(column.getName(), "user_id")){
 				column.setJavaType(User.class.getName());
 				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
-				column.setShowType("userselect");
+				column.setShowType("fk_sys_user");
 			}
 			// 部门
 			else if (StringUtils.startsWithIgnoreCase(column.getName(), "office_id")){
 				column.setJavaType(Office.class.getName());
 				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
-				column.setShowType("officeselect");
+				column.setShowType("fk_sys_office");
 			}
 			// 区域
 			else if (StringUtils.startsWithIgnoreCase(column.getName(), "area_id")){
 				column.setJavaType(Area.class.getName());
 				column.setJavaField(column.getJavaField().replaceAll("Id", ".id|name"));
-				column.setShowType("areaselect");
+				column.setShowType("fk_sys_area");
 			}
 			// 创建者、更新者
 			else if (StringUtils.startsWithIgnoreCase(column.getName(), "create_by")

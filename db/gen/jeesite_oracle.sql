@@ -63,6 +63,8 @@ CREATE TABLE gen_table_column
 	java_type varchar2(500),
 	java_field varchar2(200),
 	is_pk char(1),
+	is_invent char(1),
+	is_unique char(1),
 	is_null char(1),
 	is_insert char(1),
 	is_edit char(1),
