@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.ExaminationCategoryDao">
+    
+	<sql id="examinationCategoryColumns">
+		a.id AS "id",
+		a.code AS "code",
+		a.name AS "name",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.reference_flag AS "referenceFlag",
+		a.owner AS "owner"
+	</sql>
+	
+	<sql id="examinationCategoryJoins">
+	</sql>
+    
+	<select id="get" resultType="ExaminationCategory">
+		SELECT 
+			<include refid="examinationCategoryColumns"/>
+		FROM bj_examination_category a
+		<include refid="examinationCategoryJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ExaminationCategory">
+		SELECT 
+			<include refid="examinationCategoryColumns"/>
+		FROM bj_examination_category a
+		<include refid="examinationCategoryJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="owner != null and owner != ''">
+				AND a.owner = #{owner}
+			</if>
+			<if test="referenceFlag != null and referenceFlag != ''">
+				AND a.reference_flag = #{referenceFlag}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ExaminationCategory">
+		SELECT 
+			<include refid="examinationCategoryColumns"/>
+		FROM bj_examination_category a
+		<include refid="examinationCategoryJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bj_examination_category(
+			id,
+			code,
+			name,
+			del_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			reference_flag,
+			owner
+		) VALUES (
+			#{id},
+			#{code},
+			#{name},
+			#{delFlag},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{referenceFlag},
+			#{owner}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bj_examination_category SET 	
+			code = #{code},
+			name = #{name},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			reference_flag = #{referenceFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bj_examination_category SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
