@@ -22,22 +22,36 @@
         function addList(){
 		    var jobjs = $.find('input[name=examinationCategoryId]:checked');
 		    if (jobjs.length<1){
-                showTip('请选择需要拉取的类别','warning');
+                showTip('请选择需要拉取的类别','error');
 		        return;
 			}
 
-		    if(confirmx('确认要拉取选中的类别吗？')){
-
-			}
+			var examinationCategoryIds = '';
+		    $.each(jobjs,function (index,jobj) {
+				if(index>0){
+                    examinationCategoryIds += ',';
+				}
+                examinationCategoryIds += $(jobj).val();
+            });
+            confirmx('确认要拉取选中的类别吗？',function () {
+                loading("正在保存……");
+                $.post('${ctx}/wshbj/examinationCategory/saveByPull',{examinationCategoryIds:examinationCategoryIds},function (data) {
+                    if(data.state==1){
+                        location.href = '${ctx}/wshbj/examinationCategory/list';
+                    }else{
+                        showTip(data.msg,'error');
+                    }
+                },'json');
+            });
 		}
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li ><a href="${ctx}/wshbj/examinationCategory/">检查类别列表</a></li>
+		<li ><a href="${ctx}/wshbj/examinationCategory/list">检查类别列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationCategory:edit">
 			<li><a href="${ctx}/wshbj/examinationCategory/form">检查类别添加</a></li>
-			<li class="active"><a href="${ctx}/wshbj/examinationCategory/list4Add">快速添加</a></li>
+			<li class="active"><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li>
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationCategory" action="${ctx}/wshbj/examinationCategory/list4Add" method="post" class="breadcrumb form-search">

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -71,11 +72,10 @@ public class ExaminationCategoryController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationCategory:edit")
-	@RequestMapping(value = "saveByPull")
+	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
 	@ResponseBody
 	public RequestResult saveByPull(HttpServletRequest request, String examinationCategoryIds) {
-
-		return null;
+		return examinationCategoryService.saveByPull(UserUtils.getUser(),examinationCategoryIds);
 	}
 
 	@RequiresPermissions("wshbj:examinationCategory:view")

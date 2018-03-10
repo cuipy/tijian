@@ -21,7 +21,7 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationCategory/">检查类别列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationCategory:edit">
 			<li><a href="${ctx}/wshbj/examinationCategory/form">检查类别添加</a></li>
-			<li><a href="${ctx}/wshbj/examinationCategory/list4Add">快速添加</a></li>
+			<li><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li>
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationCategory" action="${ctx}/wshbj/examinationCategory/" method="post" class="breadcrumb form-search">
