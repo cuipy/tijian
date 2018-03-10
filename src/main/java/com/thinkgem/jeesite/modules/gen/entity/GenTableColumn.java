@@ -414,10 +414,41 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	public List<String> getSimpleAnnotationList(){
 		List<String> list = Lists.newArrayList();
 		for (String ann : getAnnotationList()){
-			list.add(StringUtils.substringAfterLast(ann, "."));
+            String fullClass=StringUtils.substringBeforeLast(ann, "(");
+            String simpleClass=StringUtils.substringAfterLast(fullClass,".");
+            String param="("+StringUtils.substringAfterLast(ann,"(");
+
+            String annStr=simpleClass;
+            if(param.length()>1){
+                annStr+=param;
+            }
+			list.add(annStr);
 		}
 		return list;
 	}
+
+	public String getJavaDaoType(){
+	    if(StringUtils.isEmpty(javaType)){
+	        return null;
+        }
+
+        if(!javaType.startsWith("com.thinkgem.jeesite")){
+	        return null;
+        }
+
+        String dao=javaType.replace("entity","dao");
+	    dao+="Dao";
+
+        try {
+            if(Class.forName(dao)!=null){
+                return dao;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 	
 	/**
 	 * 是否是基类字段
