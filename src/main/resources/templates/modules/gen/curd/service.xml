@@ -100,6 +100,41 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 	public void delete(${ClassName} ${className}) {
 		super.delete(${className});
 	}
+
+	protected ${ClassName} refreshBean(${ClassName} ${className}) {
+
+	<#list table.columnList as c>
+	<#if c.isFk == "1" &&  c.isNotBaseField>
+		// 如果外键对象的id没有值，则从外键对象的唯一值读取id值
+		if(${className}.get${c.simpleJavaField?cap_first}()!=null&&StringUtils.isEmpty(${className}.get${c.simpleJavaField?cap_first}().getId())){
+			List<String> uniqFields=${className}.get${c.simpleJavaField?cap_first}().getUniqueFields();
+
+			for(String fieldName:uniqFields){
+				String methodName="get"+StringUtils.upCaseFirst(fieldName);
+                ${c.simpleJavaType} ${c.simpleJavaField}1=null;
+
+                try {
+                    Method method = ${c.simpleJavaType?uncap_first}Dao.getClass().getMethod(methodName, ${c.simpleJavaType}.class);
+                    ${c.simpleJavaField}1= (${c.simpleJavaType}) method.invoke(${c.simpleJavaType?uncap_first}Dao,${className}.get${c.simpleJavaField?cap_first}());
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+		        if(${c.simpleJavaField}1!=null){
+		            ${className}.get${c.simpleJavaField?cap_first}().setId(${c.simpleJavaField}1.getId());
+		            break;
+                }
+            }
+		}
+
+	</#if>
+	</#list>
+		return ${className};
+	}
 	
 }]]>
 	</content>
