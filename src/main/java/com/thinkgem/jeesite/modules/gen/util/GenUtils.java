@@ -308,6 +308,7 @@ public class GenUtils {
 
 		model.put("canXlsExport",genScheme.getCanXlsExport());
 		model.put("canXlsImport",genScheme.getCanXlsImport());
+		model.put("formPrint",genScheme.getFormPrint());
 
 		model.put("functionAuthor", StringUtils.isNotBlank(genScheme.getFunctionAuthor())?genScheme.getFunctionAuthor():UserUtils.getUser().getName());
 		model.put("functionVersion", DateUtils.getDate());
