@@ -94,6 +94,13 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label">是否打印表单:</label>
+            <div class="controls">
+                <form:radiobuttons path="formPrint" items="${fns:getDictList('yes_no')}" style="margin-left:10px;" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                <span class="help-inline">是否支持表单打印！</span>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label">是否Excel导入:</label>
             <div class="controls">
                 <form:radiobuttons path="canXlsImport" items="${fns:getDictList('yes_no')}" style="margin-left:10px;" itemLabel="label" itemValue="value" htmlEscape="false"/>
@@ -131,7 +138,7 @@
 		<div class="form-actions">
 			<shiro:hasPermission name="gen:genScheme:edit">
 				<input id="btnSubmit" class="btn btn-primary" type="submit" value="保存方案" onclick="$('#flag').val('0');"/>&nbsp;
-				<input id="btnSubmit" class="btn btn-danger" type="submit" value="保存并生成代码" onclick="$('#flag').val('1');"/>&nbsp;
+				<input id="btnSubmit" class="btn btn-info" type="submit" value="保存并生成代码" onclick="$('#flag').val('1');"/>&nbsp;
 			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>

@@ -24,6 +24,7 @@ CREATE TABLE gen_scheme
 	function_name_simple varchar(100),
 	can_xls_export  char(1) DEFAULT '0' NOT NULL,
 	can_xls_import  char(1) DEFAULT '0' NOT NULL,
+  form_print  char(1) DEFAULT '1' NOT NULL,
 	function_author varchar(100),
 	gen_table_id varchar(200),
 	create_by varchar(64),
