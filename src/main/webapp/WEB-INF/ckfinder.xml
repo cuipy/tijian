@@ -1,7 +1,7 @@
 <config>
 	<enabled>true</enabled>
-	<baseDir>e:/tt/</baseDir>
-	<baseURL>/userfile2/</baseURL>
+	<baseDir></baseDir>
+	<baseURL></baseURL>
 	<licenseKey></licenseKey>
 	<licenseName></licenseName>
 	<imgWidth>1024</imgWidth>
