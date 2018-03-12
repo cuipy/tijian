@@ -34,6 +34,12 @@
 		<include refid="specimenJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="owner != null and owner != ''">
+				AND a.owner = #{owner}
+			</if>
+			<if test="referenceFlag != null and referenceFlag != ''">
+				AND a.reference_flag = #{referenceFlag}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>

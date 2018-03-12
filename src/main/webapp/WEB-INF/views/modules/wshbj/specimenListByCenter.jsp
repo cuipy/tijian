@@ -18,13 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/specimen/list">检查标本类型列表</a></li>
-		<shiro:hasPermission name="wshbj:specimen:edit">
-			<li><a href="${ctx}/wshbj/specimen/form">检查标本类型添加</a></li>
-			<li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li>
-		</shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/specimen/listByCenter">检查标本类型列表</a></li>
+		<shiro:hasPermission name="wshbj:specimen:editByCenter"><li><a href="${ctx}/wshbj/specimen/formByCenter">检查标本类型添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/list" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/listByCenter" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -43,13 +40,13 @@
 				<th>名称</th>
 				<th>更新时间</th>
 				<th>备注</th>
-				<shiro:hasPermission name="wshbj:specimen:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:specimen:editByCenter"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="specimen">
 			<tr>
-				<td><a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">
+				<td><a href="${ctx}/wshbj/specimen/formByCenter?id=${specimen.id}">
 					${specimen.code}
 				</a></td>
 				<td>
@@ -61,9 +58,9 @@
 				<td>
 					${specimen.remarks}
 				</td>
-				<shiro:hasPermission name="wshbj:specimen:edit"><td>
-    				<a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">修改</a>
-					<a href="${ctx}/wshbj/specimen/delete?id=${specimen.id}" onclick="return confirmx('确认要删除该检查标本类型吗？', this.href)">删除</a>
+				<shiro:hasPermission name="wshbj:specimen:editByCenter"><td>
+    				<a href="${ctx}/wshbj/specimen/formByCenter?id=${specimen.id}">修改</a>
+					<a href="${ctx}/wshbj/specimen/deleteByCenter?id=${specimen.id}" onclick="return confirmx('确认要删除该检查标本类型吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

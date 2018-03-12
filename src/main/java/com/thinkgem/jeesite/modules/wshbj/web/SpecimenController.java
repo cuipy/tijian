@@ -6,13 +6,14 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -49,9 +50,27 @@ public class SpecimenController extends BaseController {
 	@RequiresPermissions("wshbj:specimen:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
+		specimen.setOwner(UserUtils.getUser().getCompany().getId());
 		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen); 
 		model.addAttribute("page", page);
 		return "modules/wshbj/specimenList";
+	}
+
+	@RequiresPermissions("wshbj:specimen:edit")
+	@RequestMapping(value = {"list4Pull", ""})
+	public String list4Pull(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
+		specimen.setOwner(null);
+		specimen.setReferenceFlag("1");
+		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
+		model.addAttribute("page", page);
+		return "modules/wshbj/specimenList4Pull";
+	}
+
+	@RequiresPermissions("wshbj:specimen:edit")
+	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
+	@ResponseBody
+	public RequestResult saveByPull(HttpServletRequest request, String especimenIds) {
+		return specimenService.saveByPull(UserUtils.getUser(),especimenIds);
 	}
 
 	@RequiresPermissions("wshbj:specimen:view")
@@ -67,9 +86,11 @@ public class SpecimenController extends BaseController {
 		if (!beanValidator(model, specimen)){
 			return form(specimen, model);
 		}
+		specimen.setOwner(UserUtils.getUser().getCompany().getId());
+		specimen.setReferenceFlag("0");
 		specimenService.save(specimen);
 		addMessage(redirectAttributes, "保存检查标本类型成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/?repage";
+		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/list?repage";
 	}
 	
 	@RequiresPermissions("wshbj:specimen:edit")
@@ -77,7 +98,45 @@ public class SpecimenController extends BaseController {
 	public String delete(Specimen specimen, RedirectAttributes redirectAttributes) {
 		specimenService.delete(specimen);
 		addMessage(redirectAttributes, "删除检查标本类型成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/?repage";
+		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/list?repage";
 	}
 
+
+	@RequiresPermissions("wshbj:specimen:viewByCenter")
+	@RequestMapping(value = {"listByCenter", ""})
+	public String listByCenter(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
+		specimen.setOwner(null);
+		specimen.setReferenceFlag("1");
+		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
+		model.addAttribute("page", page);
+		return "modules/wshbj/specimenListByCenter";
+	}
+
+	@RequiresPermissions("wshbj:specimen:viewByCenter")
+	@RequestMapping(value = "formByCenter")
+	public String formByCenter(Specimen specimen, Model model) {
+		model.addAttribute("specimen", specimen);
+		return "modules/wshbj/specimenFormByCenter";
+	}
+
+	@RequiresPermissions("wshbj:specimen:editByCenter")
+	@RequestMapping(value = "saveByCenter")
+	public String saveByCenter(Specimen specimen, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, specimen)){
+			return form(specimen, model);
+		}
+		specimen.setOwner(null);
+		specimen.setReferenceFlag("1");
+		specimenService.save(specimen);
+		addMessage(redirectAttributes, "保存检查标本类型成功");
+		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
+	}
+
+	@RequiresPermissions("wshbj:specimen:editByCenter")
+	@RequestMapping(value = "deleteByCenter")
+	public String deleteByCenter(Specimen specimen, RedirectAttributes redirectAttributes) {
+		specimenService.delete(specimen);
+		addMessage(redirectAttributes, "删除检查标本类型成功");
+		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
+	}
 }

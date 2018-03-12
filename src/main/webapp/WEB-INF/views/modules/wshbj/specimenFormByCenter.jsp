@@ -27,11 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/specimen/list">检查标本类型列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">检查标本类型<shiro:hasPermission name="wshbj:specimen:edit">${not empty specimen.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:specimen:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li>
+		<li><a href="${ctx}/wshbj/specimen/listByCenter">检查标本类型列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/specimen/formByCenter?id=${specimen.id}">检查标本类型<shiro:hasPermission name="wshbj:specimen:edit">${not empty specimen.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:specimen:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -55,7 +54,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:specimen:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:specimen:editByCenter"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

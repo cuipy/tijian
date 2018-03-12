@@ -5,6 +5,10 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemType;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +46,39 @@ public class SpecimenService extends CrudService<SpecimenDao, Specimen> {
 	@Transactional(readOnly = false)
 	public void delete(Specimen specimen) {
 		super.delete(specimen);
+	}
+
+	@Transactional(readOnly = false)
+	public RequestResult saveByPull(User createBy, String specimenIds) {
+		if (createBy==null){
+			return RequestResult.generateFailResult("权限不足");
+		}
+
+		if (StringUtils.isBlank(specimenIds)){
+			return RequestResult.generateFailResult("类型数据错误");
+		}
+
+		//TODO 数据来源
+
+		String[] specimenIdsArray = specimenIds.split(",");
+		Specimen specimen = null,newSpecimen = null;
+		for (String specimenId:specimenIdsArray) {
+			specimen = get(specimenId);
+			if (specimen==null){
+				continue;
+			}
+			newSpecimen = new Specimen();
+			newSpecimen.setDelFlag("0");
+			newSpecimen.setCode(specimen.getCode());
+			newSpecimen.setName(specimen.getName());
+			newSpecimen.setRemarks(specimen.getRemarks());
+			newSpecimen.setReferenceFlag("0");
+			newSpecimen.setOwner(createBy.getCompany().getId());
+
+			super.save(newSpecimen);
+		}
+
+		return RequestResult.generateSuccessResult("保存成功");
 	}
 	
 }
