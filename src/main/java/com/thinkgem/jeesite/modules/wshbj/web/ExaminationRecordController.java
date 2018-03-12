@@ -6,6 +6,13 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
+import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
+import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
+import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
+import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
+import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +29,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationRecordService;
 
+import java.util.List;
+
 /**
  * 体检记录Controller
  * @author zhxl
@@ -33,6 +42,13 @@ public class ExaminationRecordController extends BaseController {
 
 	@Autowired
 	private ExaminationRecordService examinationRecordService;
+
+	@Autowired
+	private OrganService organService;
+	@Autowired
+	private IndustryService industryService;
+	@Autowired
+	private JobPostService jobPostService;
 	
 	@ModelAttribute
 	public ExaminationRecord get(@RequestParam(required=false) String id) {
@@ -58,6 +74,27 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ExaminationRecord examinationRecord, Model model) {
 		model.addAttribute("examinationRecord", examinationRecord);
+
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+
+		Industry industry = new Industry();
+		industry.setOwner(UserUtils.getUser().getCompany().getId());
+		industry.setDelFlag("0");
+		industry.setReferenceFlag("0");
+		List<Industry> industryList = industryService.findList(industry);
+		model.addAttribute("industryList", industryList);
+
+		JobPost jobPost = new JobPost();
+		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
+		jobPost.setDelFlag("0");
+		jobPost.setReferenceFlag("0");
+		List<JobPost> postList = jobPostService.findList(jobPost);
+		model.addAttribute("postList", postList);
 		return "modules/wshbj/examinationRecordForm";
 	}
 

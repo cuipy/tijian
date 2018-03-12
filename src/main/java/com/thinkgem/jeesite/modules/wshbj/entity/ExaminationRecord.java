@@ -47,7 +47,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.user = user;
 	}
 	
-	@Length(min=1, max=50, message="编号长度必须介于 1 和 50 之间")
+	@Length(min=0, max=50, message="编号长度必须介于 1 和 50 之间")
 	public String getCode() {
 		return code;
 	}
@@ -83,7 +83,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.sex = sex;
 	}
 	
-	@Length(min=1, max=64, message="行业长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="行业长度必须介于 1 和 64 之间")
 	public String getIndustryId() {
 		return industryId;
 	}
@@ -92,7 +92,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.industryId = industryId;
 	}
 	
-	@Length(min=1, max=64, message="岗位长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="岗位长度必须介于 1 和 64 之间")
 	public String getPostId() {
 		return postId;
 	}
@@ -110,7 +110,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.birthday = birthday;
 	}
 	
-	@Length(min=1, max=64, message="单位长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="单位长度必须介于 1 和 64 之间")
 	public String getOrganId() {
 		return organId;
 	}

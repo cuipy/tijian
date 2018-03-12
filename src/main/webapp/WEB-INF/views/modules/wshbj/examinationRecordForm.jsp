@@ -42,13 +42,6 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">编号：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
 			<label class="control-label">姓名：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
@@ -63,6 +56,15 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">出生日期：</label>
+			<div class="controls">
+				<input id="birthday" name="birthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					   value="<fmt:formatDate value="${birthday}" pattern="yyyy-MM-dd"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">性别：</label>
 			<div class="controls">
 				<form:input path="sex" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
@@ -70,43 +72,36 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">单位：</label>
+			<div class="controls">
+				<form:select path="organId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">行业：</label>
 			<div class="controls">
-				<form:input path="industryId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:select path="industryId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">岗位：</label>
 			<div class="controls">
-				<form:input path="postId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">出生日期：</label>
-			<div class="controls">
-				<form:input path="birthday" htmlEscape="false" maxlength="10" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">单位：</label>
-			<div class="controls">
-				<form:input path="organId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">所属体检中心：</label>
-			<div class="controls">
-				<form:input path="owner" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:select path="postId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -116,9 +111,9 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">套餐价格：</label>
+			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">
