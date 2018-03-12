@@ -27,11 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/industry/list">行业管理列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/industry/form?id=${industry.id}">行业管理<shiro:hasPermission name="wshbj:industry:edit">${not empty industry.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:industry:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/industry/list4Pull">快速添加</a></li>
+		<li><a href="${ctx}/wshbj/industry/listByCenter">行业管理列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/industry/formByCenter?id=${industry.id}">行业管理<shiro:hasPermission name="wshbj:industry:editByCenter">${not empty industry.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:industry:editByCenter">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="industry" action="${ctx}/wshbj/industry/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="industry" action="${ctx}/wshbj/industry/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -55,7 +54,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:industry:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:industry:editByCenter"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
 /**
  * 行业基础数据管理DAO接口
  * @author zhxl
- * @version 2018-03-06
+ * @version 2018-03-11
  */
 @MyBatisDao
 public interface IndustryDao extends CrudDao<Industry> {
