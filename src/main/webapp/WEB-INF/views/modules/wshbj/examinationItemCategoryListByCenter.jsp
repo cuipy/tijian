@@ -18,13 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/list">检查项目分类列表</a></li>
-		<shiro:hasPermission name="wshbj:examinationItemCategory:edit">
-			<li><a href="${ctx}/wshbj/examinationItemCategory/form">检查项目分类添加</a></li>
-			<li><a href="${ctx}/wshbj/examinationItemCategory/list4Pull">快速添加</a></li>
-		</shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/listByCenter">检查项目分类列表</a></li>
+		<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter"><li><a href="${ctx}/wshbj/examinationItemCategory/formByCenter">检查项目分类添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationItemCategory" action="${ctx}/wshbj/examinationItemCategory/list" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationItemCategory" action="${ctx}/wshbj/examinationItemCategory/listByCenter" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -64,9 +61,9 @@
 				<td>
 					${examinationItemCategory.remarks}
 				</td>
-				<shiro:hasPermission name="wshbj:examinationItemCategory:edit"><td>
-    				<a href="${ctx}/wshbj/examinationItemCategory/form?id=${examinationItemCategory.id}">修改</a>
-					<a href="${ctx}/wshbj/examinationItemCategory/delete?id=${examinationItemCategory.id}" onclick="return confirmx('确认要删除该检查项目分类吗？', this.href)">删除</a>
+				<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter"><td>
+    				<a href="${ctx}/wshbj/examinationItemCategory/formByCenter?id=${examinationItemCategory.id}">修改</a>
+					<a href="${ctx}/wshbj/examinationItemCategory/deleteByCenter?id=${examinationItemCategory.id}" onclick="return confirmx('确认要删除该检查项目分类吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
