@@ -111,6 +111,8 @@ public class ExaminationCategoryController extends BaseController {
 	@RequiresPermissions("wshbj:examinationCategory:viewByCenter")
 	@RequestMapping(value = {"listByCenter", ""})
 	public String listByCenter(ExaminationCategory examinationCategory, HttpServletRequest request, HttpServletResponse response, Model model) {
+		examinationCategory.setOwner(null);
+		examinationCategory.setReferenceFlag("1");
 		Page<ExaminationCategory> page = examinationCategoryService.findPage(new Page<ExaminationCategory>(request, response), examinationCategory);
 		model.addAttribute("page", page);
 		return "modules/wshbj/examinationCategoryListByCenter";
