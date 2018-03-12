@@ -27,11 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationDept/">检查部门列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/examinationDept/form?id=${examinationDept.id}">检查部门<shiro:hasPermission name="wshbj:examinationDept:edit">${not empty examinationDept.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationDept:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/examinationDept/list4Pull">快速添加</a></li>
+		<li><a href="${ctx}/wshbj/examinationDept/listByCenter">检查部门列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationDept/formByCenter?id=${examinationDept.id}">检查部门<shiro:hasPermission name="wshbj:examinationDept:editByCenter">${not empty examinationDept.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationDept:editByCenter">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="examinationDept" action="${ctx}/wshbj/examinationDept/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="examinationDept" action="${ctx}/wshbj/examinationDept/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -47,8 +46,9 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
+		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationDept:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationDept:editByCenter"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

@@ -18,13 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationDept/">检查部门列表</a></li>
-		<shiro:hasPermission name="wshbj:examinationDept:edit">
-			<li><a href="${ctx}/wshbj/examinationDept/form">检查部门添加</a></li>
-			<li><a href="${ctx}/wshbj/examinationDept/list4Pull">快速添加</a></li>
-		</shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/examinationDept/listByCenter">检查部门列表</a></li>
+		<shiro:hasPermission name="wshbj:examinationDept:editByCenter"><li><a href="${ctx}/wshbj/examinationDept/formByCenter">检查部门添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationDept" action="${ctx}/wshbj/examinationDept/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationDept" action="${ctx}/wshbj/examinationDept/listByCenter" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -42,13 +39,13 @@
 				<th>名称</th>
 				<th>更新时间</th>
 				<th>备注</th>
-				<shiro:hasPermission name="wshbj:examinationDept:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:examinationDept:editByCenter"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationDept">
 			<tr>
-				<td><a href="${ctx}/wshbj/examinationDept/form?id=${examinationDept.id}">
+				<td><a href="${ctx}/wshbj/examinationDept/formByCenter?id=${examinationDept.id}">
 					${examinationDept.name}
 				</a></td>
 				<td>
@@ -57,9 +54,9 @@
 				<td>
 					${examinationDept.remarks}
 				</td>
-				<shiro:hasPermission name="wshbj:examinationDept:edit"><td>
-    				<a href="${ctx}/wshbj/examinationDept/form?id=${examinationDept.id}">修改</a>
-					<a href="${ctx}/wshbj/examinationDept/delete?id=${examinationDept.id}" onclick="return confirmx('确认要删除该检查部门吗？', this.href)">删除</a>
+				<shiro:hasPermission name="wshbj:examinationDept:editByCenter"><td>
+    				<a href="${ctx}/wshbj/examinationDept/formByCenter?id=${examinationDept.id}">修改</a>
+					<a href="${ctx}/wshbj/examinationDept/deleteByCenter?id=${examinationDept.id}" onclick="return confirmx('确认要删除该检查部门吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
