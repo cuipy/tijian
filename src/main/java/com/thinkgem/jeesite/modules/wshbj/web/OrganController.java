@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
 /**
  * 体检单位Controller
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 @Controller
 @RequestMapping(value = "${adminPath}/wshbj/organ")
@@ -49,6 +50,7 @@ public class OrganController extends BaseController {
 	@RequiresPermissions("wshbj:organ:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Organ organ, HttpServletRequest request, HttpServletResponse response, Model model) {
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
 		Page<Organ> page = organService.findPage(new Page<Organ>(request, response), organ); 
 		model.addAttribute("page", page);
 		return "modules/wshbj/organList";
@@ -67,6 +69,8 @@ public class OrganController extends BaseController {
 		if (!beanValidator(model, organ)){
 			return form(organ, model);
 		}
+		organ.setReferenceFlag("0");
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
 		organService.save(organ);
 		addMessage(redirectAttributes, "保存体检单位成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/organ/?repage";

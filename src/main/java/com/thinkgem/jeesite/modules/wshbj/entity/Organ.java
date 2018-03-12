@@ -10,12 +10,14 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 体检单位Entity
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 public class Organ extends DataEntity<Organ> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 名称
+	private String referenceFlag;		// 参考标识：0-否，1-是
+	private String owner;		// 所属体检中心
 	
 	public Organ() {
 		super();
@@ -32,6 +34,24 @@ public class Organ extends DataEntity<Organ> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	@Length(min=0, max=1, message="参考标识：0-否，1-是长度必须介于 0 和 1 之间")
+	public String getReferenceFlag() {
+		return referenceFlag;
+	}
+
+	public void setReferenceFlag(String referenceFlag) {
+		this.referenceFlag = referenceFlag;
+	}
+	
+	@Length(min=0, max=64, message="所属体检中心长度必须介于 0 和 64 之间")
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 }

@@ -6,6 +6,11 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.*;
+import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
+import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
+import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +24,9 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationUser;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationUserService;
+
+import java.util.List;
 
 /**
  * 体检用户Controller
@@ -33,6 +39,12 @@ public class ExaminationUserController extends BaseController {
 
 	@Autowired
 	private ExaminationUserService examinationUserService;
+	@Autowired
+	private OrganService organService;
+	@Autowired
+	private IndustryService industryService;
+	@Autowired
+	private JobPostService jobPostService;
 	
 	@ModelAttribute
 	public ExaminationUser get(@RequestParam(required=false) String id) {
@@ -49,8 +61,17 @@ public class ExaminationUserController extends BaseController {
 	@RequiresPermissions("wshbj:examinationUser:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ExaminationUser examinationUser, HttpServletRequest request, HttpServletResponse response, Model model) {
+		examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
 		Page<ExaminationUser> page = examinationUserService.findPage(new Page<ExaminationUser>(request, response), examinationUser); 
 		model.addAttribute("page", page);
+
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+
 		return "modules/wshbj/examinationUserList";
 	}
 
@@ -58,6 +79,28 @@ public class ExaminationUserController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ExaminationUser examinationUser, Model model) {
 		model.addAttribute("examinationUser", examinationUser);
+
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+
+		Industry industry = new Industry();
+		industry.setOwner(UserUtils.getUser().getCompany().getId());
+		industry.setDelFlag("0");
+		industry.setReferenceFlag("0");
+		List<Industry> industryList = industryService.findList(industry);
+		model.addAttribute("industryList", industryList);
+
+		JobPost jobPost = new JobPost();
+		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
+		jobPost.setDelFlag("0");
+		jobPost.setReferenceFlag("0");
+		List<JobPost> postList = jobPostService.findList(jobPost);
+		model.addAttribute("postList", postList);
+
 		return "modules/wshbj/examinationUserForm";
 	}
 
@@ -67,6 +110,7 @@ public class ExaminationUserController extends BaseController {
 		if (!beanValidator(model, examinationUser)){
 			return form(examinationUser, model);
 		}
+		examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationUserService.save(examinationUser);
 		addMessage(redirectAttributes, "保存体检用户成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationUser/?repage";

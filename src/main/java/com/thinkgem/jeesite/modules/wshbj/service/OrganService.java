@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.OrganDao;
 /**
  * 体检单位Service
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 @Service
 @Transactional(readOnly = true)

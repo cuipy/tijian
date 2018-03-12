@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
 /**
  * 体检单位DAO接口
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 @MyBatisDao
 public interface OrganDao extends CrudDao<Organ> {

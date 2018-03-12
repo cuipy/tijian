@@ -32,14 +32,7 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">编号：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">姓名：</label>
 			<div class="controls">
@@ -55,51 +48,63 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">性别：</label>
+			<label class="control-label">出生日期：</label>
 			<div class="controls">
-				<form:input path="sex" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<input id="birthday" name="birthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+					   value="<fmt:formatDate value="${user.birthday}" pattern="yyyy-MM-dd"/>"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">性别：</label>
+			<div class="controls">
+				<form:select path="sex" cssStyle="width: 100px">
+					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+
+		<div class="control-group">
 			<label class="control-label">行业：</label>
 			<div class="controls">
-				<form:input path="industryId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:select path="industryId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">体检单位：</label>
+			<div class="controls">
+				<form:select path="organId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">岗位：</label>
 			<div class="controls">
-				<form:input path="postId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:select path="postId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">出生日期：</label>
-			<div class="controls">
-				<form:input path="birthday" htmlEscape="false" maxlength="10" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">单位：</label>
-			<div class="controls">
-				<sys:treeselect id="organId" name="organId" value="${examinationUser.organId}" labelName="" labelValue="${examinationUser.}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="required" allowClear="true" notAllowSelectParent="true"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+
+
 		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">所属体检中心：</label>
-			<div class="controls">
-				<form:input path="owner" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

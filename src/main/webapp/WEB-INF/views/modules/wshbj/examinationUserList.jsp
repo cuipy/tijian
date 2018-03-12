@@ -25,18 +25,19 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>编号：</label>
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>联系电话：</label>
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
 			</li>
-			<li><label>单位：</label>
-				<sys:treeselect id="organId" name="organId" value="${examinationUser.organId}" labelName="" labelValue="${examinationUser.}"
-					title="部门" url="/sys/office/treeData?type=2" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
+			<li><label>体检单位：</label>
+				<form:select path="organId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -46,22 +47,17 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>编号</th>
 				<th>姓名</th>
 				<th>联系电话</th>
 				<th>性别</th>
-				<th>单位</th>
-				<th>更新时间</th>
+				<th width="260">单位</th>
 				<th>备注</th>
-				<shiro:hasPermission name="wshbj:examinationUser:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:examinationUser:edit"><th width="120">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationUser">
 			<tr>
-				<td><a href="${ctx}/wshbj/examinationUser/form?id=${examinationUser.id}">
-					${examinationUser.code}
-				</a></td>
 				<td>
 					${examinationUser.name}
 				</td>
@@ -69,13 +65,10 @@
 					${examinationUser.phoneNumber}
 				</td>
 				<td>
-					${examinationUser.sex}
+							${fns:getDictLabel(examinationUser.sex,'sex','')}
 				</td>
 				<td>
-					${examinationUser.}
-				</td>
-				<td>
-					<fmt:formatDate value="${examinationUser.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${examinationUser.organId}
 				</td>
 				<td>
 					${examinationUser.remarks}

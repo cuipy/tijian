@@ -37,7 +37,6 @@
 		<thead>
 			<tr>
 				<th>名称</th>
-				<th>更新时间</th>
 				<th>备注</th>
 				<shiro:hasPermission name="wshbj:organ:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -48,9 +47,6 @@
 				<td><a href="${ctx}/wshbj/organ/form?id=${organ.id}">
 					${organ.name}
 				</a></td>
-				<td>
-					<fmt:formatDate value="${organ.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
 				<td>
 					${organ.remarks}
 				</td>
