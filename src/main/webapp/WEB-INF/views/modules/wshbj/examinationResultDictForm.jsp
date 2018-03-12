@@ -43,9 +43,11 @@
 		<div class="control-group">
 			<label class="control-label">检查项目：</label>
 			<div class="controls">
-				<form:select path="itemId" class="input-xlarge required">
-					<form:option value="" label="请选择"/>
-					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				<form:select path="itemId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${examinationItemList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>

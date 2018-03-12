@@ -6,6 +6,10 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemCategory;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationResultDict;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationResultDictService;
 
+import java.util.List;
+
 /**
  * 体检结果字典Controller
  * @author zhxl
@@ -33,6 +39,8 @@ public class ExaminationResultDictController extends BaseController {
 
 	@Autowired
 	private ExaminationResultDictService examinationResultDictService;
+	@Autowired
+	private ExaminationItemService examinationItemService;
 	
 	@ModelAttribute
 	public ExaminationResultDict get(@RequestParam(required=false) String id) {
@@ -58,6 +66,14 @@ public class ExaminationResultDictController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ExaminationResultDict examinationResultDict, Model model) {
 		model.addAttribute("examinationResultDict", examinationResultDict);
+
+		ExaminationItem examinationItem = new ExaminationItem();
+		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationItem.setDelFlag("0");
+		examinationItem.setReferenceFlag("0");
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("examinationItemList", examinationItemList);
+
 		return "modules/wshbj/examinationResultDictForm";
 	}
 

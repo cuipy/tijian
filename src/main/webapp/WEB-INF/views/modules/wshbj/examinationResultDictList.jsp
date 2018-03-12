@@ -37,7 +37,7 @@
 		<thead>
 			<tr>
 				<th>名称</th>
-				<th>更新时间</th>
+				<th>体检项目</th>
 				<th>具体描述</th>
 				<shiro:hasPermission name="wshbj:examinationResultDict:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -49,7 +49,7 @@
 					${examinationResultDict.name}
 				</a></td>
 				<td>
-					<fmt:formatDate value="${examinationResultDict.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+						${examinationResultDict.itemId}
 				</td>
 				<td>
 					${examinationResultDict.remarks}
