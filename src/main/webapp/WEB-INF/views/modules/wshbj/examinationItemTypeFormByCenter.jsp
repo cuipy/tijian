@@ -27,11 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationItemType/list">检查项目类型列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/examinationItemType/form?id=${examinationItemType.id}">检查项目类型<shiro:hasPermission name="wshbj:examinationItemType:edit">${not empty examinationItemType.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItemType:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/examinationItemType/list4Pull">快速添加</a></li>
+		<li><a href="${ctx}/wshbj/examinationItemType/listByCenter">检查项目类型列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationItemType/formByCenter?id=${examinationItemType.id}">检查项目类型<shiro:hasPermission name="wshbj:examinationItemType:edit">${not empty examinationItemType.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItemType:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="examinationItemType" action="${ctx}/wshbj/examinationItemType/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="examinationItemType" action="${ctx}/wshbj/examinationItemType/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -54,28 +53,7 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">检查项目分类：</label>
-			<div class="controls">
-				<form:select path="itemCategoryId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${itemCategoryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">检查部门：</label>
-			<div class="controls">
-				<form:select path="examinationDeptId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${deptList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
+
 		<div class="control-group">
 			<label class="control-label">提示信息：</label>
 			<div class="controls">
@@ -83,7 +61,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationItemType:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationItemType:editByCenter"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
