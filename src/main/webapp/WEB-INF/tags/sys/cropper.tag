@@ -39,6 +39,7 @@
 $(function(){
 
     var ${inputName}CamState=0;
+    var ${inputName}Track=null;
 
     init${inputName}Cropper();
 
@@ -62,28 +63,35 @@ $(function(){
     $("#content${inputName} #btn${inputName}Cam").on('click',function(){
         $('#content${inputName} #tailoringImg').cropper("clear");
 
+        var video=$("#content${inputName} #tailoringVideo")[0];
+
         if(${inputName}CamState==1){
 
             // 设置为非拍照状态
             dealCamState();
+
+            if(${inputName}Track!=null){
+                ${inputName}Track.stop();
+                ${inputName}Track=null;
+            }
+
             return;
         }
 
-
-        var video=$("#content${inputName} #tailoringVideo")[0];
         var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
 
          //  支持浏览器  谷歌,火狐,360,欧朋
          navigator.mediaDevices.getUserMedia(videoObj)
          .then(function(stream){
-                video.srcObject=stream;
-                video.onloadedmetadata = function(e) {
-                    video.play();
+            ${inputName}Track=stream.getTracks()[0];
+            video.srcObject=stream;
+            video.onloadedmetadata = function(e) {
+                video.play();
 
-                    // 设置拍照状态
-                    dealCamState();
-                };
-             })
+                // 设置拍照状态
+                dealCamState();
+            };
+         })
          .catch(function(err){
             if(err.message=="Permission denied"){
                 $.jBox.alert("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
