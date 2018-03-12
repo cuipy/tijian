@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,10 +25,12 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationPackage;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationPackageService;
 
+import java.util.List;
+
 /**
  * 体检套餐Controller
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 @Controller
 @RequestMapping(value = "${adminPath}/wshbj/examinationPackage")
@@ -33,6 +38,8 @@ public class ExaminationPackageController extends BaseController {
 
 	@Autowired
 	private ExaminationPackageService examinationPackageService;
+    @Autowired
+    private ExaminationItemService examinationItemService;
 	
 	@ModelAttribute
 	public ExaminationPackage get(@RequestParam(required=false) String id) {
@@ -58,6 +65,13 @@ public class ExaminationPackageController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(ExaminationPackage examinationPackage, Model model) {
 		model.addAttribute("examinationPackage", examinationPackage);
+
+        ExaminationItem examinationItem = new ExaminationItem();
+        examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
+        examinationItem.setDelFlag("0");
+        examinationItem.setReferenceFlag("0");
+        List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+        model.addAttribute("examinationItemList", examinationItemList);
 		return "modules/wshbj/examinationPackageForm";
 	}
 

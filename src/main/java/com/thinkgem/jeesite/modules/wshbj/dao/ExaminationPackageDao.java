@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationPackage;
 /**
  * 体检套餐DAO接口
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 @MyBatisDao
 public interface ExaminationPackageDao extends CrudDao<ExaminationPackage> {

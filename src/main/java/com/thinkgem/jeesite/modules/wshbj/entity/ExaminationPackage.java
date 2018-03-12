@@ -4,13 +4,15 @@
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import org.hibernate.validator.constraints.Length;
+import java.util.List;
+import com.google.common.collect.Lists;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 体检套餐Entity
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 	
@@ -20,6 +22,7 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 	private String categoryId;		// 检查类别
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
+	private List<PackageItem> packageItemList = Lists.newArrayList();		// 子表列表
 	
 	public ExaminationPackage() {
 		super();
@@ -74,4 +77,11 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 		this.owner = owner;
 	}
 	
+	public List<PackageItem> getPackageItemList() {
+		return packageItemList;
+	}
+
+	public void setPackageItemList(List<PackageItem> packageItemList) {
+		this.packageItemList = packageItemList;
+	}
 }
