@@ -1,5 +1,7 @@
+
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>体检记录管理</title>
@@ -22,7 +24,76 @@
 					}
 				}
 			});
-		});
+
+
+
+        });
+
+        var canvas = $('#canvas'),
+            context = canvas.getContext('2d'),
+            video = $('video'),
+            snap = $('#snap'),
+            close = $('#close'),
+            upload = $('#upload'),
+            uploaded = $('#uploaded'),
+            mediaStreamTrack;
+
+        // 获取媒体方法（新方法）
+        // 使用新方法打开摄像头
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            alert('3333');
+            navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            }).then(function(stream) {
+                console.log(stream);
+
+                mediaStreamTrack = typeof stream.stop === 'function' ? stream : stream.getTracks()[1];
+
+                video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+                video.play();
+            }).catch(function(err) {
+                console.log(err);
+            })
+        }
+        // 使用旧方法打开摄像头
+        else if (navigator.getMedia) {
+            navigator.getMedia({
+                video: true
+            }, function(stream) {
+                mediaStreamTrack = stream.getTracks()[0];
+
+                video.src = (window.URL || window.webkitURL).createObjectURL(stream);
+                video.play();
+            }, function(err) {
+                console.log(err);
+            });
+        }
+
+        // 截取图像
+        snap.addEventListener('click', function() {
+            context.drawImage(video, 0, 0, 200, 150);
+        }, false);
+
+        // 关闭摄像头
+        close.addEventListener('click', function() {
+            mediaStreamTrack && mediaStreamTrack.stop();
+        }, false);
+
+        // 上传截取的图像
+        upload.addEventListener('click', function() {
+            jQuery.post('/uploadSnap.php', {
+                snapData: canvas.toDataURL('image/png')
+            }).done(function(rs) {
+                rs = JSON.parse(rs);
+
+                console.log(rs);
+
+                uploaded.src = rs.path;
+            }).fail(function(err) {
+                console.log(err);
+            });
+        }, false);
 	</script>
 </head>
 <body>
@@ -32,43 +103,60 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">体检用户：</label>
-			<div class="controls">
-				<sys:treeselect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="required" allowClear="true" notAllowSelectParent="true"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+		<sys:message content="${message}"/>
+		<div style="float:left; width:100%;">
+			<div style="float:left; width:60%;">
+				<div class="control-group">
+					<label class="control-label">体检用户：</label>
+					<div class="controls">
+						<sys:treeselect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
+							title="用户" url="/sys/office/treeData?type=3" cssClass="required" allowClear="true" notAllowSelectParent="true"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">姓名：</label>
+					<div class="controls">
+						<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">联系电话：</label>
+					<div class="controls">
+						<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">出生日期：</label>
+					<div class="controls">
+						<input id="birthday" name="birthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
+							   value="<fmt:formatDate value="${birthday}" pattern="yyyy-MM-dd"/>"
+							   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">性别：</label>
+					<div class="controls">
+						<form:input path="sex" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+						<span class="help-inline"><font color="red">*</font> </span>
+					</div>
+				</div>
 			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">姓名：</label>
-			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">联系电话：</label>
-			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">出生日期：</label>
-			<div class="controls">
-				<input id="birthday" name="birthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					   value="<fmt:formatDate value="${birthday}" pattern="yyyy-MM-dd"/>"
-					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">性别：</label>
-			<div class="controls">
-				<form:input path="sex" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+			<div style="float:left; width:40%;position: relative;">
+				<div style="position: absolute;margin:auto; top: 0;left: 0;right: 0;bottom: 0;vertical-align:middle;">
+					<video width="200" height="150"></video>
+					<canvas id="canvas" width="200" height="150"></canvas>
+					<p>
+						<button type="button" id="snap">截取图像</button>
+						<button type="button" id="close">关闭摄像头</button>
+						<button type="button" id="upload">上传图像</button>
+					</p>
+
+					<img id="uploaded" width="200" height="150" />
+				</div>
 			</div>
 		</div>
 		<div class="control-group">
