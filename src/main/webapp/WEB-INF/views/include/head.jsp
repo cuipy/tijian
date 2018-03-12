@@ -16,6 +16,11 @@
 <script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
 <script src="${ctxStatic}/jquery-plugin/jQuery.print.js" type="text/javascript"></script>
 <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+
+<link href="${ctxStatic}/jquery-plugin/cropper.min.css" rel="stylesheet" />
+<link href="${ctxStatic}/jquery-plugin/ImgCropping.css" rel="stylesheet" />
+<script src="${ctxStatic}/jquery-plugin/cropper.min.js" type="text/javascript"></script>
+
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>

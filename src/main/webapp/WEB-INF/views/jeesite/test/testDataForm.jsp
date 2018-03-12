@@ -28,6 +28,9 @@
             });
 		});
 	</script>
+
+
+
 </head>
 <body>
 	<ul class="nav nav-tabs">
@@ -37,6 +40,18 @@
 	<form:form id="inputForm" modelAttribute="testData" action="${ctx}/test/testData/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
+		<div class="control-group">
+		    <div>
+            <label class="control-label">用户头像：</label>
+                <div class="controls">
+
+<sys:cropper mainImgWidth="360" imgName="头像" inputName="head1"/>
+
+
+                 </div>
+
+            </div>
+        </div>
 		<div class="control-group">
 			<label class="control-label">归属用户：</label>
 			<div class="controls">
