@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/wshbj/specimen/listByCenter">检查标本类型列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/specimen/formByCenter?id=${specimen.id}">检查标本类型<shiro:hasPermission name="wshbj:specimen:edit">${not empty specimen.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:specimen:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active"><a href="${ctx}/wshbj/specimen/formByCenter?id=${specimen.id}">检查标本类型<shiro:hasPermission name="wshbj:specimen:editByCenter">${not empty specimen.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:specimen:editByCenter">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

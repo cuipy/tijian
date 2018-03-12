@@ -55,7 +55,7 @@ public class SpecimenService extends CrudService<SpecimenDao, Specimen> {
 		}
 
 		if (StringUtils.isBlank(specimenIds)){
-			return RequestResult.generateFailResult("类型数据错误");
+			return RequestResult.generateFailResult("标本数据错误");
 		}
 
 		//TODO 数据来源
