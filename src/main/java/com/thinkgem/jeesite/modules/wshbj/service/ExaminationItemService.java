@@ -5,6 +5,10 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +46,43 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	@Transactional(readOnly = false)
 	public void delete(ExaminationItem examinationItem) {
 		super.delete(examinationItem);
+	}
+
+	@Transactional(readOnly = false)
+	public RequestResult saveByPull(User createBy, String examinationItemIds) {
+		if (createBy==null){
+			return RequestResult.generateFailResult("权限不足");
+		}
+
+		if (StringUtils.isBlank(examinationItemIds)){
+			return RequestResult.generateFailResult("检查项目数据错误");
+		}
+
+		//TODO 数据来源
+
+		String[] examinationItemIdsArray = examinationItemIds.split(",");
+		ExaminationItem examinationItem = null,newExaminationItem = null;
+		for (String examinationItemId:examinationItemIdsArray) {
+			examinationItem = get(examinationItemId);
+			if (examinationItem==null){
+				continue;
+			}
+			newExaminationItem = new ExaminationItem();
+			newExaminationItem.setDelFlag("0");
+			newExaminationItem.setCode(examinationItem.getCode());
+			newExaminationItem.setName(examinationItem.getName());
+			newExaminationItem.setRemarks(examinationItem.getRemarks());
+			newExaminationItem.setReferenceFlag("0");
+			newExaminationItem.setOwner(createBy.getCompany().getId());
+			newExaminationItem.setUnit(examinationItem.getUnit());
+			newExaminationItem.setPrice(examinationItem.getPrice());
+			newExaminationItem.setRangeMin(examinationItem.getRangeMin());
+			newExaminationItem.setRangeMax(examinationItem.getRangeMax());
+
+			super.save(newExaminationItem);
+		}
+
+		return RequestResult.generateSuccessResult("保存成功");
 	}
 	
 }

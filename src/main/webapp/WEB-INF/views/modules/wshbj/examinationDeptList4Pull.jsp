@@ -87,9 +87,7 @@
 				<td>
 					<input type="checkbox" value="${examinationDept.id}" name="examinationDeptId" />
 				</td>
-				<td><a href="${ctx}/wshbj/examinationDept/form?id=${examinationDept.id}">
-					${examinationDept.name}
-				</a></td>
+				<td>${examinationDept.name}</td>
 				<td>
 					<fmt:formatDate value="${examinationDept.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>

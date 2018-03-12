@@ -43,14 +43,19 @@
 		<div class="control-group">
 			<label class="control-label">检查项目：</label>
 			<div class="controls">
-				<form:input path="itemId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:select path="itemId" class="input-xlarge required">
+					<form:option value="" label="请选择"/>
+					<form:options items="${fns:getDictList('')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">是否默认：0-否，1-是：</label>
+			<label class="control-label">是否默认：</label>
 			<div class="controls">
-				<form:input path="defaultFlag" htmlEscape="false" maxlength="1" class="input-xlarge required"/>
+				<form:select path="defaultFlag" class="input-xlarge required">
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

@@ -18,13 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationItem/list">检查项目列表</a></li>
-		<shiro:hasPermission name="wshbj:examinationItem:edit">
-			<li><a href="${ctx}/wshbj/examinationItem/form">检查项目添加</a></li>
-			<li><a href="${ctx}/wshbj/examinationItem/list4Pull">快速添加</a></li>
-		</shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/examinationItem/listByCenter">检查项目列表</a></li>
+		<shiro:hasPermission name="wshbj:examinationItem:editByCenter"><li><a href="${ctx}/wshbj/examinationItem/formByCenter">检查项目添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/list" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/listByCenter" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -43,19 +40,18 @@
 		<thead>
 			<tr>
 				<th>编号</th>
-				<th width="120">名称</th>
+				<th>名称</th>
 				<th>单位</th>
 				<th>价格</th>
-				<th>参考范围最大值</th>
-				<th>参考范围最小值</th>
-				<th>备注</th>
-				<shiro:hasPermission name="wshbj:examinationItem:edit"><th>操作</th></shiro:hasPermission>
+				<th>最小值</th>
+				<th>最大值</th>
+				<shiro:hasPermission name="wshbj:examinationItem:editByCenter"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationItem">
 			<tr>
-				<td><a href="${ctx}/wshbj/examinationItem/form?id=${examinationItem.id}">
+				<td><a href="${ctx}/wshbj/examinationItem/formByCenter?id=${examinationItem.id}">
 					${examinationItem.code}
 				</a></td>
 				<td>
@@ -68,17 +64,14 @@
 					${examinationItem.price}
 				</td>
 				<td>
-					${examinationItem.rangeMax}
-				</td>
-				<td>
 					${examinationItem.rangeMin}
 				</td>
 				<td>
-						${examinationItem.remarks}
+						${examinationItem.rangeMax}
 				</td>
-				<shiro:hasPermission name="wshbj:examinationItem:edit"><td>
-    				<a href="${ctx}/wshbj/examinationItem/form?id=${examinationItem.id}">修改</a>
-					<a href="${ctx}/wshbj/examinationItem/delete?id=${examinationItem.id}" onclick="return confirmx('确认要删除该检查项目吗？', this.href)">删除</a>
+				<shiro:hasPermission name="wshbj:examinationItem:editByCenter"><td>
+    				<a href="${ctx}/wshbj/examinationItem/formByCenter?id=${examinationItem.id}">修改</a>
+					<a href="${ctx}/wshbj/examinationItem/deleteByCenter?id=${examinationItem.id}" onclick="return confirmx('确认要删除该检查项目吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

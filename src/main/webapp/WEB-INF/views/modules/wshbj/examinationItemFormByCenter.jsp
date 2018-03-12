@@ -27,11 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationItem/list">检查项目列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/examinationItem/form?id=${examinationItem.id}">检查项目<shiro:hasPermission name="wshbj:examinationItem:edit">${not empty examinationItem.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItem:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/examinationItem/list4Pull">快速添加</a></li>
+		<li><a href="${ctx}/wshbj/examinationItem/listByCenter">检查项目列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationItem/formByCenter?id=${examinationItem.id}">检查项目<shiro:hasPermission name="wshbj:examinationItem:editByCenter">${not empty examinationItem.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItem:editByCenter">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -48,17 +47,7 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">检查项目类型：</label>
-			<div class="controls">
-				<form:select path="typeId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${examinationItemTypeList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
+
 		<div class="control-group">
 			<label class="control-label">单位：</label>
 			<div class="controls">
@@ -73,26 +62,15 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">参考范围最大值：</label>
-			<div class="controls">
-				<form:input path="rangeMax" htmlEscape="false" maxlength="45" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
 			<label class="control-label">参考范围最小值：</label>
 			<div class="controls">
 				<form:input path="rangeMin" htmlEscape="false" maxlength="45" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">所需标本：</label>
+			<label class="control-label">参考范围最大值：</label>
 			<div class="controls">
-				<form:select path="specimenId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${specimenList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
+				<form:input path="rangeMax" htmlEscape="false" maxlength="45" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -102,7 +80,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationItem:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationItem:editByCenter"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

@@ -70,7 +70,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 		this.owner = owner;
 	}
 	
-	@Length(min=1, max=64, message="检查项目类型长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="检查项目类型长度必须介于 1 和 64 之间")
 	public String getTypeId() {
 		return typeId;
 	}

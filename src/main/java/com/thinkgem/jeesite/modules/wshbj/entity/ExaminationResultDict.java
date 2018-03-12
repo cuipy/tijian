@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 体检结果字典Entity
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 public class ExaminationResultDict extends DataEntity<ExaminationResultDict> {
 	

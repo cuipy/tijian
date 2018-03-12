@@ -89,9 +89,7 @@
 				<td>
 					<input type="checkbox" value="${industry.id}" name="industryId" />
 				</td>
-				<td><a href="${ctx}/wshbj/industry/form?id=${industry.id}">
-					${industry.code}
-				</a></td>
+				<td>${industry.code}</td>
 				<td>
 					${industry.name}
 				</td>

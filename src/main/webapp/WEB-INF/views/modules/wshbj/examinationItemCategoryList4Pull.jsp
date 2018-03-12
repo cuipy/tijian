@@ -90,9 +90,7 @@
 				<td>
 					<input type="checkbox" value="${examinationItemCategory.id}" name="examinationItemCategoryId" />
 				</td>
-				<td><a href="${ctx}/wshbj/examinationItemCategory/form?id=${examinationItemCategory.id}">
-					${examinationItemCategory.code}
-				</a></td>
+				<td>${examinationItemCategory.code}</td>
 				<td>
 					${examinationItemCategory.name}
 				</td>

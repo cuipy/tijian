@@ -79,7 +79,6 @@
 				<th>名称</th>
 				<th>更新时间</th>
 				<th>备注</th>
-				<shiro:hasPermission name="wshbj:specimen:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -88,9 +87,7 @@
 				<td>
 					<input type="checkbox" value="${specimen.id}" name="specimenId" />
 				</td>
-				<td><a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">
-					${specimen.code}
-				</a></td>
+				<td>${specimen.code}</td>
 				<td>
 					${specimen.name}
 				</td>
@@ -100,10 +97,6 @@
 				<td>
 					${specimen.remarks}
 				</td>
-				<shiro:hasPermission name="wshbj:specimen:edit"><td>
-    				<a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">修改</a>
-					<a href="${ctx}/wshbj/specimen/delete?id=${specimen.id}" onclick="return confirmx('确认要删除该检查标本类型吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

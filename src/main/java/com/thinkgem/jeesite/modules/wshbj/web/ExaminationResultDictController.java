@@ -25,7 +25,7 @@ import com.thinkgem.jeesite.modules.wshbj.service.ExaminationResultDictService;
 /**
  * 体检结果字典Controller
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-12
  */
 @Controller
 @RequestMapping(value = "${adminPath}/wshbj/examinationResultDict")
