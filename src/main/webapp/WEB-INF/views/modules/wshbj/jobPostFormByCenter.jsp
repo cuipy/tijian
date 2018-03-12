@@ -27,11 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/jobPost/list">工作岗位管理列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/jobPost/form?id=${jobPost.id}">工作岗位管理<shiro:hasPermission name="wshbj:jobPost:edit">${not empty jobPost.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:jobPost:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/jobPost/list4Pull">快速添加</a></li>
+		<li><a href="${ctx}/wshbj/jobPost/listByCenter">工作岗位管理列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/jobPost/formByCenter?id=${jobPost.id}">工作岗位管理<shiro:hasPermission name="wshbj:jobPost:editByCenter">${not empty jobPost.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:jobPost:editByCenter">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -55,7 +54,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:jobPost:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:jobPost:editByCenter"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

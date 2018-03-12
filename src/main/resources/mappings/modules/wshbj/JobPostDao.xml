@@ -11,7 +11,9 @@
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
-		a.remarks AS "remarks"
+		a.remarks AS "remarks",
+		a.reference_flag AS "referenceFlag",
+		a.owner AS "owner"
 	</sql>
 	
 	<sql id="jobPostJoins">
@@ -32,6 +34,12 @@
 		<include refid="jobPostJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="owner != null and owner != ''">
+				AND a.owner = #{owner}
+			</if>
+			<if test="referenceFlag != null and referenceFlag != ''">
+				AND a.reference_flag = #{referenceFlag}
+			</if>
 			<if test="code != null and code != ''">
 				AND a.code LIKE 
 					<if test="dbName == 'oracle'">'%'||#{code}||'%'</if>
@@ -83,7 +91,9 @@
 			create_date,
 			update_by,
 			update_date,
-			remarks
+			remarks,
+			reference_flag,
+			owner
 		) VALUES (
 			#{id},
 			#{code},
@@ -93,7 +103,9 @@
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
-			#{remarks}
+			#{remarks},
+			#{referenceFlag},
+			#{owner}
 		)
 	</insert>
 	
@@ -103,7 +115,9 @@
 			name = #{name},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks}
+			remarks = #{remarks},
+			reference_flag = #{referenceFlag},
+			owner = #{owner}
 		WHERE id = #{id}
 	</update>
 	

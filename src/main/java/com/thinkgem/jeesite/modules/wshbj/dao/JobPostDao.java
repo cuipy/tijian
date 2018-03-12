@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
 /**
  * 工作岗位DAO接口
  * @author zhxl
- * @version 2018-03-06
+ * @version 2018-03-11
  */
 @MyBatisDao
 public interface JobPostDao extends CrudDao<JobPost> {

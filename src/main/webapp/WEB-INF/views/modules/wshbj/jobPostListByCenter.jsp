@@ -18,13 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/jobPost/list">工作岗位管理列表</a></li>
-		<shiro:hasPermission name="wshbj:jobPost:edit">
-			<li><a href="${ctx}/wshbj/jobPost/form">工作岗位管理添加</a></li>
-			<li><a href="${ctx}/wshbj/jobPost/list4Pull">快速添加</a></li>
-		</shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/jobPost/listByCenter">工作岗位管理列表</a></li>
+		<shiro:hasPermission name="wshbj:jobPost:editByCenter"><li><a href="${ctx}/wshbj/jobPost/formByCenter">工作岗位管理添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/list" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/listByCenter" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -45,13 +42,13 @@
 				<th>编号</th>
 				<th>名称</th>
 				<th>备注</th>
-				<shiro:hasPermission name="wshbj:jobPost:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:jobPost:editByCenter"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="jobPost">
 			<tr>
-				<td><a href="${ctx}/wshbj/jobPost/form?id=${jobPost.id}">
+				<td><a href="${ctx}/wshbj/jobPost/formByCenter?id=${jobPost.id}">
 					${jobPost.code}
 				</a></td>
 				<td>
@@ -60,9 +57,9 @@
 				<td>
 					${jobPost.remarks}
 				</td>
-				<shiro:hasPermission name="wshbj:jobPost:edit"><td>
-    				<a href="${ctx}/wshbj/jobPost/form?id=${jobPost.id}">修改</a>
-					<a href="${ctx}/wshbj/jobPost/delete?id=${jobPost.id}" onclick="return confirmx('确认要删除该工作岗位管理吗？', this.href)">删除</a>
+				<shiro:hasPermission name="wshbj:jobPost:editByCenter"><td>
+    				<a href="${ctx}/wshbj/jobPost/formByCenter?id=${jobPost.id}">修改</a>
+					<a href="${ctx}/wshbj/jobPost/deleteByCenter?id=${jobPost.id}" onclick="return confirmx('确认要删除该工作岗位管理吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
