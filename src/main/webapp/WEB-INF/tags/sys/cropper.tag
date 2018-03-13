@@ -30,9 +30,10 @@
             本地选择${imgName}
         </label>
         <label id="btn${inputName}Cam" class="btn btn-warning">开启摄像头</label>
-        <label id="btn${inputName}OK" class="btn btn-info">保存图片</label>
+        <label id="btn${inputName}OK" class="btn btn-info disabled">保存图片</label>
     </div>
-    <img name="${inputName}" id="img${inputName}" style="width:100px;height:100px;display:none">
+    <img name="img${inputName}" id="img${inputName}" style="width:100px;height:100px;display:none">
+    <input type="hidden" name="${inputName}" id="up${inputName}"/>
 
 </div>
 <script>
@@ -183,14 +184,18 @@ $(function(){
     function uploadImg(){
         var base64=$("#content${inputName} #img${inputName}").attr("src");
         if(!base64){
-            $.jBox.alert("没有获得头像图片数据，无法上传");
+            $.jBox.alert("没有获得${imgName}图片数据，无法上传");
             return;
         }
 
         var url="${ctx}/upfile/upbase64";
         var d1={base64:base64};
         $.post(url,d1,function(d1r){
-
+            console.log(d1r);
+            if(d1r.code=='0'){
+                $("#up${inputName}").val(d1r.data.saveUrl);
+                $.jBox.messager('${imgName}上传成功');
+            }
         });
 
     }
