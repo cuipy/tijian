@@ -33,18 +33,23 @@
 					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
-			<li><label>体检用户：</label>
-				<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-					title="用户" url="/wshbj/organ/treeData" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
-			</li>
-			<li><label>编号：</label>
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
-			</li>
+
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
+			<li><label>身份证号：</label>
+				<form:input path="idNumber" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
 			<li><label>联系电话：</label>
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
+			</li>
+			<li><label>状态：</label>
+				<form:select path="status" cssStyle="width: 100px">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${fns:getDictList('examination_record_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li><label>体检套餐：</label>
 				<form:select path="packageId" class="input-medium">
@@ -62,23 +67,19 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>编号</th>
 				<th>姓名</th>
 				<th>联系电话</th>
 				<th>性别</th>
 				<th>单位</th>
-				<th>更新时间</th>
 				<th>体检套餐</th>
 				<th>套餐价格</th>
+				<th>状态</th>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationRecord">
 			<tr>
-				<td><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">
-					${examinationRecord.code}
-				</a></td>
 				<td>
 					${examinationRecord.name}
 				</td>
@@ -99,6 +100,9 @@
 				</td>
 				<td>
 					${examinationRecord.packagePrice}
+				</td>
+				<td>
+						${fns:getDictLabel(examinationRecord.stauts,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
     				<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>

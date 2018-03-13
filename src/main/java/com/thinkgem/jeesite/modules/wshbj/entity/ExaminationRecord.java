@@ -30,6 +30,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String owner;		// 所属体检中心
 	private String packageId;		// 体检套餐
 	private String packagePrice;		// 套餐价格
+	private String status;			//体检状态，对应examination_record_status字典
 	
 	public ExaminationRecord() {
 		super();
@@ -154,5 +155,12 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setPackagePrice(String packagePrice) {
 		this.packagePrice = packagePrice;
 	}
-	
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 }
