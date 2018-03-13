@@ -44,7 +44,7 @@
 		    <div>
             <label class="control-label">用户头像：</label>
                 <div class="controls">
-                    <sys:cropper mainImgWidth="360" imgName="头像" path="head1" value="${testData.head1}"/>
+                    <sys:cropper mainImgWidth="360" imgName="头像" path="head1"/>
                  </div>
 
             </div>

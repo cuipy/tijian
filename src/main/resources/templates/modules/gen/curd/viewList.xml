@@ -113,7 +113,7 @@
 				<#list table.columnList as c>
 					<#if c.isList?? && c.isList == "1" && c.isFk != "1">
 				<td>
-				<#if firstListField><a href="${r"${ctx}"}/${urlPrefix}/form?id=${"${"+className+".id}"}"></#if>
+				<#if firstListField><a href="${r"${ctx}"}/${urlPrefix}/view?id=${"${"+className+".id}"}"></#if>
 				<#if c.simpleJavaType == "Date">
 					<fmt:formatDate value="${"$"}{${className}.${c.javaFieldId}}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				<#elseif c.showType == "cropper">

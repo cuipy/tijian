@@ -25,7 +25,7 @@ CREATE TABLE gen_scheme
 	function_author varchar(100) COMMENT '生成功能作者',
 	can_xls_export char(1)  DEFAULT '0' NOT NULL  comment '是否支持Excel导出',
 	can_xls_import char(1)  DEFAULT '0' NOT NULL  comment '是否支持Excel导入',
-  form_print  char(1)  DEFAULT '1' NOT NULL  comment '是否支持表单打印',
+    form_print  char(1)  DEFAULT '1' NOT NULL  comment '是否支持表单打印',
 	gen_table_id varchar(200) COMMENT '生成表编号',
 	create_by varchar(64) COMMENT '创建者',
 	create_date datetime COMMENT '创建时间',

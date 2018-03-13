@@ -173,15 +173,14 @@ ${insertJavaField?substring(0, insertJavaField?last_index_of(","))}
 	</insert>
 	
 	<update id="update">
-		UPDATE ${table.name} SET 	
-			<#assign updateField>		
-				<#list table.columnList as c>
-					<#if c.isEdit?? && c.isEdit == "1" && c.isInvent??  && c.isInvent !="1">
-			${c.name} = ${"#"}{${c.javaFieldId}},
-					</#if>
-				</#list>
-			</#assign>
-${updateField?substring(0, updateField?last_index_of(","))}
+		UPDATE ${table.name}
+			<set>
+			<#list table.columnList as c>
+				<#if c.isEdit?? && c.isEdit == "1" && c.isInvent??  && c.isInvent !="1">
+				<if test="${c.javaFieldId} !=null and ${c.javaFieldId} != '' ">${c.name} = ${"#"}{${c.javaFieldId}},</if>
+				</#if>
+			</#list>
+			</set>
 		WHERE id = ${"#"}{id}
 	</update>
 	

@@ -71,6 +71,13 @@ public class ${ClassName}Controller extends BaseController {
 	}
 
 	@RequiresPermissions("${permissionPrefix}:view")
+	@RequestMapping(value = "view")
+	public String view(${ClassName} ${className}, Model model) {
+		model.addAttribute("${className}", ${className});
+		return "${lastPackageName}/${viewPrefix}Page";
+	}
+
+	@RequiresPermissions("${permissionPrefix}:view")
 	@RequestMapping(value = "form")
 	public String form(${ClassName} ${className}, Model model) {
 		model.addAttribute("${className}", ${className});
