@@ -68,6 +68,7 @@
 		<dict value="input" label="单行文本"/>
 		<dict value="textarea" label="多行文本"/>
 		<dict value="ckeditor" label="CkEditor富文本"/>
+		<dict value="cropper" label="Cropper头像"/>
 		<dict value="select" label="下拉选项"/>
 		<dict value="radiobox" label="单选按钮"/>
 		<dict value="checkbox" label="复选框"/>

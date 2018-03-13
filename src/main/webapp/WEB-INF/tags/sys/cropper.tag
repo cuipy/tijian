@@ -1,7 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <%@ attribute name="imgName" type="java.lang.String" required="true" description="图片名称"%>
-<%@ attribute name="inputName" type="java.lang.String" required="true" description="上传图片的input控件name值"%>
+<%@ attribute name="path" type="java.lang.String" required="true" description="上传图片的input控件name值"%>
 <%@ attribute name="mainImgWidth" type="java.lang.String" required="true" description="主图片的宽度"%>
 <%@ attribute name="mainImgHeight" type="java.lang.String" required="false" description="主图片的高度"%>
 <c:if test="${mainImgHeight == null }">
@@ -10,7 +10,7 @@
 <c:if test="${mainImgWidth == null }">
     <c:set var="mainImgWidth" value="${mainImgHeight}"/>
 </c:if>
-<div class="tailoring-content" id="content${inputName}">
+<div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
         <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
             <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}">
@@ -25,27 +25,27 @@
         <div style="clear:both"/>
     </div>
     <div class="tailoring-content-one">
-        <label id="btn${inputName}Choose" title="上传${imgName}" for="chooseImg" class="btn btn-warning">
+        <label id="btn${path}Choose" title="上传${imgName}" for="chooseImg" class="btn btn-warning">
             <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden">
             本地选择${imgName}
         </label>
-        <label id="btn${inputName}Cam" class="btn btn-warning">开启摄像头</label>
-        <label id="btn${inputName}OK" class="btn btn-info disabled">保存图片</label>
+        <label id="btn${path}Cam" class="btn btn-warning">开启摄像头</label>
+        <label id="btn${path}OK" class="btn btn-info disabled">保存图片</label>
     </div>
-    <img name="img${inputName}" id="img${inputName}" style="width:100px;height:100px;display:none">
-    <input type="hidden" name="${inputName}" id="up${inputName}"/>
+    <img name="img${path}" id="img${path}" style="width:100px;height:100px;display:none">
+    <input type="hidden" name="${path}" id="up${path}"/>
 
 </div>
 <script>
 
 $(function(){
 
-    var ${inputName}CamState=0;
-    var ${inputName}Track=null;
+    var ${path}CamState=0;
+    var ${path}Track=null;
 
-    init${inputName}Cropper();
+    init${path}Cropper();
 
-    $("#content${inputName} #chooseImg").on("change",function(evt) {
+    $("#content${path} #chooseImg").on("change",function(evt) {
         if (!evt.target.files || !evt.target.files[0]){
             return;
         }
@@ -53,28 +53,28 @@ $(function(){
         reader.onload = function (evt2) {
             var replaceSrc = evt2.target.result;
             //更换cropper的图片
-            $('#content${inputName} #tailoringImg').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+            $('#content${path} #tailoringImg').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
         }
         reader.readAsDataURL(evt.target.files[0]);
     });
 
-    $("#content${inputName} #btn${inputName}ReCrop").on('click',function(){
-        $('#content${inputName} #tailoringImg').cropper("setDragMode","crop");
+    $("#content${path} #btn${path}ReCrop").on('click',function(){
+        $('#content${path} #tailoringImg').cropper("setDragMode","crop");
     });
 
-    $("#content${inputName} #btn${inputName}Cam").on('click',function(){
-        $('#content${inputName} #tailoringImg').cropper("clear");
+    $("#content${path} #btn${path}Cam").on('click',function(){
+        $('#content${path} #tailoringImg').cropper("clear");
 
-        var video=$("#content${inputName} #tailoringVideo")[0];
+        var video=$("#content${path} #tailoringVideo")[0];
 
-        if(${inputName}CamState==1){
+        if(${path}CamState==1){
 
             // 设置为非拍照状态
             dealCamState();
 
-            if(${inputName}Track!=null){
-                ${inputName}Track.stop();
-                ${inputName}Track=null;
+            if(${path}Track!=null){
+                ${path}Track.stop();
+                ${path}Track=null;
             }
 
             return;
@@ -85,7 +85,7 @@ $(function(){
          //  支持浏览器  谷歌,火狐,360,欧朋
          navigator.mediaDevices.getUserMedia(videoObj)
          .then(function(stream){
-            ${inputName}Track=stream.getTracks()[0];
+            ${path}Track=stream.getTracks()[0];
             video.srcObject=stream;
             video.onloadedmetadata = function(e) {
                 video.play();
@@ -105,56 +105,56 @@ $(function(){
 
     });
 
-    $("#content${inputName} #btn${inputName}OK").on('click',function(){
+    $("#content${path} #btn${path}OK").on('click',function(){
         cutImg();
         uploadImg();
 
-        $('#content${inputName} #tailoringImg').cropper("clear");
+        $('#content${path} #tailoringImg').cropper("clear");
     });
 
     function dealCamState(){
 
-        if(${inputName}CamState==0){
-            $("#content${inputName} #chooseImg").attr("disabled","disabled");
-            $("#content${inputName}  #btn${inputName}Choose").addClass("disabled");
-            $("#content${inputName}  #btn${inputName}OK").addClass("disabled");
+        if(${path}CamState==0){
+            $("#content${path} #chooseImg").attr("disabled","disabled");
+            $("#content${path}  #btn${path}Choose").addClass("disabled");
+            $("#content${path}  #btn${path}OK").addClass("disabled");
 
-            $("#content${inputName} #tailoringImg").hide();
-            $("#content${inputName} .cropper-container").hide();
+            $("#content${path} #tailoringImg").hide();
+            $("#content${path} .cropper-container").hide();
 
-            $("#content${inputName} #tailoringVideo").show();
+            $("#content${path} #tailoringVideo").show();
 
-            $("#content${inputName} #btn${inputName}Cam").removeClass("btn-warning");
-            $("#content${inputName} #btn${inputName}Cam").addClass("btn-danger");
-            $("#content${inputName} #btn${inputName}Cam").text(" 拍   照 ");
+            $("#content${path} #btn${path}Cam").removeClass("btn-warning");
+            $("#content${path} #btn${path}Cam").addClass("btn-danger");
+            $("#content${path} #btn${path}Cam").text(" 拍   照 ");
 
-            ${inputName}CamState=1;
-        }else if(${inputName}CamState==1){
-            $("#content${inputName} #chooseImg").removeAttr("disabled");
-            $("#content${inputName}  #btn${inputName}Choose").removeClass("disabled");
-            $("#content${inputName}  #btn${inputName}OK").removeClass("disabled");
+            ${path}CamState=1;
+        }else if(${path}CamState==1){
+            $("#content${path} #chooseImg").removeAttr("disabled");
+            $("#content${path}  #btn${path}Choose").removeClass("disabled");
+            $("#content${path}  #btn${path}OK").removeClass("disabled");
 
-            $("#content${inputName} #tailoringImg").show();
-            $("#content${inputName} .cropper-container").show();
-            $("#content${inputName} #tailoringVideo").hide();
+            $("#content${path} #tailoringImg").show();
+            $("#content${path} .cropper-container").show();
+            $("#content${path} #tailoringVideo").hide();
 
-            $("#content${inputName} #btn${inputName}Cam").addClass("btn-warning");
-            $("#content${inputName} #btn${inputName}Cam").removeClass("btn-danger");
-            $("#content${inputName} #btn${inputName}Cam").text("开启摄像头");
+            $("#content${path} #btn${path}Cam").addClass("btn-warning");
+            $("#content${path} #btn${path}Cam").removeClass("btn-danger");
+            $("#content${path} #btn${path}Cam").text("开启摄像头");
 
             // 取照片
             camPhoto();
 
-            ${inputName}CamState=0;
+            ${path}CamState=0;
         }
     }
 
 
     //cropper图片裁剪
-    function init${inputName}Cropper(){
-        $('#content${inputName} #tailoringImg').cropper({
+    function init${path}Cropper(){
+        $('#content${path} #tailoringImg').cropper({
             aspectRatio: 1/1,//默认比例
-            preview: '#content${inputName} .previewImg',//预览视图
+            preview: '#content${path} .previewImg',//预览视图
             guides: false,  //裁剪框的虚线(九宫格)
             autoCropArea: 0.9,  //0-1之间的数值，定义自动剪裁区域的大小，默认0.8
             movable: true, //是否允许移动剪裁框
@@ -170,19 +170,19 @@ $(function(){
             }
         });
 
-        $('#content${inputName} #tailoringImg').cropper("setDragMode","move");
+        $('#content${path} #tailoringImg').cropper("setDragMode","move");
     };
 
     // 执行切图
     function cutImg(){
 
-        var cas=$('#content${inputName} #tailoringImg').cropper("getCroppedCanvas");
+        var cas=$('#content${path} #tailoringImg').cropper("getCroppedCanvas");
         var base64url = cas.toDataURL('image/png');
-        $("#content${inputName} #img${inputName}").attr("src",base64url);
+        $("#content${path} #img${path}").attr("src",base64url);
     }
 
     function uploadImg(){
-        var base64=$("#content${inputName} #img${inputName}").attr("src");
+        var base64=$("#content${path} #img${path}").attr("src");
         if(!base64){
             $.jBox.alert("没有获得${imgName}图片数据，无法上传");
             return;
@@ -193,7 +193,7 @@ $(function(){
         $.post(url,d1,function(d1r){
             console.log(d1r);
             if(d1r.code=='0'){
-                $("#up${inputName}").val(d1r.data.saveUrl);
+                $("#up${path}").val(d1r.data.saveUrl);
                 $.jBox.messager('${imgName}上传成功');
             }
         });
@@ -203,7 +203,7 @@ $(function(){
     function camPhoto(){
         var canvas = document.createElement('canvas');
         var canvasContext = canvas.getContext('2d');
-        var video=$("#content${inputName} #tailoringVideo")[0];
+        var video=$("#content${path} #tailoringVideo")[0];
 
         canvas.width=video.width;
         canvas.height=video.height;
@@ -211,7 +211,7 @@ $(function(){
         canvasContext.drawImage(video,0,0,video.width,video.height);
         var base64url = canvas.toDataURL('image/png');
 
-        $('#content${inputName} #tailoringImg').cropper("replace",base64url,false);
+        $('#content${path} #tailoringImg').cropper("replace",base64url,false);
 
     }
 
