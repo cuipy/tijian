@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationCategoryService;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,8 @@ public class ExaminationPackageController extends BaseController {
 	private ExaminationPackageService examinationPackageService;
     @Autowired
     private ExaminationItemService examinationItemService;
+	@Autowired
+	private ExaminationCategoryService examinationCategoryService;
 	
 	@ModelAttribute
 	public ExaminationPackage get(@RequestParam(required=false) String id) {
@@ -72,6 +76,14 @@ public class ExaminationPackageController extends BaseController {
         examinationItem.setReferenceFlag("0");
         List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
         model.addAttribute("examinationItemList", examinationItemList);
+
+
+		ExaminationCategory examinationCategory = new ExaminationCategory();
+		examinationCategory.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationCategory.setDelFlag("0");
+		examinationCategory.setReferenceFlag("0");
+		List<ExaminationCategory> examinationCategoryList = examinationCategoryService.findList(examinationCategory);
+		model.addAttribute("examinationCategoryList", examinationCategoryList);
 		return "modules/wshbj/examinationPackageForm";
 	}
 

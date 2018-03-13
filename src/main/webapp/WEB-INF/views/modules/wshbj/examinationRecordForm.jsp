@@ -94,6 +94,10 @@
                 console.log(err);
             });
         }, false);
+
+        function userTreeselectCallBack(v, h, f) {
+			alert(v);
+        }
 	</script>
 </head>
 <body>
@@ -109,60 +113,62 @@
 				<div class="control-group">
 					<label class="control-label">体检用户：</label>
 					<div class="controls">
-						<sys:treeselect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-							title="用户" url="/sys/office/treeData?type=3" cssClass="required" allowClear="true" notAllowSelectParent="true"/>
+						<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
+											   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="请选择用户"
+											   cssClass="input-xlarge required" allowClear="true" notAllowSelectParent="true"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label">姓名：</label>
+					<label class="control-label">身份证号：</label>
 					<div class="controls">
-						<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+						<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-xlarge required"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label">联系电话：</label>
 					<div class="controls">
-						<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
+						<form:input path="phoneNumber" htmlEscape="false" maxlength="45" autocomplete="true" class="input-xlarge required"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label">出生日期：</label>
 					<div class="controls">
-						<input id="birthday" name="birthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-							   value="<fmt:formatDate value="${birthday}" pattern="yyyy-MM-dd"/>"
-							   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+						<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
+									onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
 				<div class="control-group">
 					<label class="control-label">性别：</label>
 					<div class="controls">
-						<form:input path="sex" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+						<form:select path="sex" cssStyle="width: 100px">
+							<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+						</form:select>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
 			</div>
 			<div style="float:left; width:40%;position: relative;">
 				<div style="position: absolute;margin:auto; top: 0;left: 0;right: 0;bottom: 0;vertical-align:middle;">
-					<video width="200" height="150"></video>
-					<canvas id="canvas" width="200" height="150"></canvas>
+					<video width="200" height="230"></video>
+					<canvas id="canvas" width="200" height="230"></canvas>
 					<p>
 						<button type="button" id="snap">截取图像</button>
 						<button type="button" id="close">关闭摄像头</button>
 						<button type="button" id="upload">上传图像</button>
 					</p>
-
-					<img id="uploaded" width="200" height="150" />
 				</div>
 			</div>
 		</div>
-		<div class="control-group">
+		<div style="float:left; width:100%;">
+		<div class="control-group" >
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<form:select path="organId" class="input-medium">
+				<form:select path="organId" class="input-xlarge">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -173,7 +179,7 @@
 		<div class="control-group">
 			<label class="control-label">行业：</label>
 			<div class="controls">
-				<form:select path="industryId" class="input-medium">
+				<form:select path="industryId" class="input-xlarge">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -184,7 +190,7 @@
 		<div class="control-group">
 			<label class="control-label">岗位：</label>
 			<div class="controls">
-				<form:select path="postId" class="input-medium">
+				<form:select path="postId" class="input-xlarge">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -195,7 +201,12 @@
 		<div class="control-group">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-				<form:input path="packageId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:select path="packageId" class="input-xlarge">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -207,6 +218,7 @@
 		<div class="form-actions">
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		</div>
 		</div>
 	</form:form>
 </body>

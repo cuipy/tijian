@@ -5,6 +5,7 @@
 	<sql id="examinationRecordColumns">
 		a.id AS "id",
 		a.user_id AS "user.id",
+		a.id_number AS "idNumber",
 		a.code AS "code",
 		a.name AS "name",
 		a.phone_number AS "phoneNumber",
@@ -46,6 +47,9 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="user != null and user.id != null and user.id != ''">
 				AND a.user_id = #{user.id}
+			</if>
+			<if test="idNumber != null and idNumber != ''">
+				AND a.id_number LIKE concat('%',#{idNumber},'%')
 			</if>
 			<if test="code != null and code != ''">
 				AND a.code = #{code}
@@ -95,6 +99,7 @@
 		INSERT INTO bj_examination_record(
 			id,
 			user_id,
+			id_number,
 			code,
 			name,
 			phone_number,
@@ -115,6 +120,7 @@
 		) VALUES (
 			#{id},
 			#{user.id},
+			#{idNumber},
 			#{code},
 			#{name},
 			#{phoneNumber},
@@ -138,6 +144,7 @@
 	<update id="update">
 		UPDATE bj_examination_record SET 	
 			user_id = #{user.id},
+			id_number = #{idNumber},
 			code = #{code},
 			name = #{name},
 			phone_number = #{phoneNumber},

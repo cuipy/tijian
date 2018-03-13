@@ -80,7 +80,12 @@
 		<div class="control-group">
 			<label class="control-label">检查类别：</label>
 			<div class="controls">
-				<form:input path="categoryId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:select path="categoryId" class="input-xlarge">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${examinationCategoryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

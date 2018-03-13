@@ -18,6 +18,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	private static final long serialVersionUID = 1L;
 	private User user;		// 体检用户
+	private String idNumber;		// 身份证号
 	private String code;		// 编号
 	private String name;		// 姓名
 	private String phoneNumber;		// 联系电话
@@ -46,7 +47,15 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	@Length(min=1, max=20, message="身份证号长度必须介于 1 和 20 之间")
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
 	@Length(min=0, max=50, message="编号长度必须介于 1 和 50 之间")
 	public String getCode() {
 		return code;

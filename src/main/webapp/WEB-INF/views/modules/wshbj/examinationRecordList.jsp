@@ -25,9 +25,17 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>体检单位：</label>
+				<form:select path="organId"  name="user.organId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</li>
 			<li><label>体检用户：</label>
-				<sys:treeselect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-					title="用户" url="/sys/office/treeData?type=3" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
+				<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
+					title="用户" url="/wshbj/organ/treeData" cssClass="input-small" allowClear="true" notAllowSelectParent="true"/>
 			</li>
 			<li><label>编号：</label>
 				<form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
@@ -39,7 +47,12 @@
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
 			</li>
 			<li><label>体检套餐：</label>
-				<form:input path="packageId" htmlEscape="false" maxlength="64" class="input-medium"/>
+				<form:select path="packageId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>

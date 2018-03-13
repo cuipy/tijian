@@ -28,6 +28,9 @@
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
+			<li><label>身份证号：</label>
+				<form:input path="idNumber" htmlEscape="false" maxlength="50" class="input-medium"/>
+			</li>
 			<li><label>联系电话：</label>
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
 			</li>
@@ -47,6 +50,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>身份证号</th>
 				<th>姓名</th>
 				<th>联系电话</th>
 				<th>性别</th>
@@ -58,6 +62,15 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationUser">
 			<tr>
+				<td>
+					<shiro:hasPermission name="wshbj:examinationUser:edit">
+						<a href="${ctx}/wshbj/examinationUser/form?id=${examinationUser.id}">
+						</shiro:hasPermission>
+						${examinationUser.idNumber}
+							<shiro:hasPermission name="wshbj:examinationUser:edit">
+						</a>
+								</shiro:hasPermission>
+				</td>
 				<td>
 					${examinationUser.name}
 				</td>

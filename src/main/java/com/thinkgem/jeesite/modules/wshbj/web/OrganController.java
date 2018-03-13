@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -22,6 +26,9 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
 import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 体检单位Controller
@@ -84,4 +91,33 @@ public class OrganController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/wshbj/organ/?repage";
 	}
 
+
+	@RequiresPermissions("wshbj:organ:view")
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData() {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		Office company = UserUtils.getUser().getCompany();
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("id", company.getId());
+		map.put("name", company.getName());
+		map.put("isParent", true);
+		mapList.add(map);
+
+		Organ organ = new Organ();
+		organ.setOwner(company.getId());
+		organ.setDelFlag("0");
+		List<Organ> list = organService.findList(organ);
+		for(Organ o:list){
+			map = Maps.newHashMap();
+			map.put("id", o.getId());
+			map.put("pId", company.getId());
+			map.put("pIds",company.getId());
+			map.put("name", o.getName());
+			map.put("isParent", true);
+			mapList.add(map);
+		}
+
+		return mapList;
+	}
 }

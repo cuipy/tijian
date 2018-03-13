@@ -7,6 +7,7 @@
 		a.code AS "code",
 		a.name AS "name",
 		a.phone_number AS "phoneNumber",
+		a.id_number AS "idNumber",
 		a.sex AS "sex",
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
@@ -40,6 +41,9 @@
 		<include refid="examinationUserJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="idNumber != null and idNumber != ''">
+				AND a.id_number LIKE concat('%',#{idNumber},'%')
+			</if>
 			<if test="code != null and code != ''">
 				AND a.code = #{code}
 			</if>
@@ -91,6 +95,7 @@
 			name,
 			phone_number,
 			sex,
+			id_number,
 			industry_id,
 			post_id,
 			birthday,
@@ -108,6 +113,7 @@
 			#{name},
 			#{phoneNumber},
 			#{sex},
+			#{idNumber},
 			#{industryId},
 			#{postId},
 			#{birthday},
@@ -128,6 +134,7 @@
 			name = #{name},
 			phone_number = #{phoneNumber},
 			sex = #{sex},
+			id_number = #{idNumber},
 			industry_id = #{industryId},
 			post_id = #{postId},
 			birthday = #{birthday},

@@ -18,6 +18,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private String code;		// 编号
 	private String name;		// 姓名
 	private String phoneNumber;		// 联系电话
+	private String idNumber;		// 身份证号
 	private String sex;		// 性别
 	private String industryId;		// 行业
 	private String postId;		// 岗位
@@ -59,7 +60,16 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
-	
+
+	@Length(min=1, max=20, message="身份证号长度必须介于 1 和 20 之间")
+	public String getIdNumber() {
+		return idNumber;
+	}
+
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+
 	@Length(min=1, max=64, message="性别长度必须介于 1 和 64 之间")
 	public String getSex() {
 		return sex;

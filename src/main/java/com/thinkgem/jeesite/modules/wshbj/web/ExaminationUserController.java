@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
@@ -18,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -27,6 +30,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationUserService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 体检用户Controller
@@ -124,4 +128,41 @@ public class ExaminationUserController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationUser/?repage";
 	}
 
+
+	/**
+	 * 树结构选择标签（euserTreeSelect.tag）
+	 */
+	@RequiresPermissions("wshbj:examinationUser:view")
+	@RequestMapping(value = "treeSelect")
+	public String treeSelect(HttpServletRequest request, Model model) {
+		model.addAttribute("url", request.getParameter("url")); 	// 树结构数据URL
+		model.addAttribute("extId", request.getParameter("extId")); // 排除的编号ID
+		model.addAttribute("checked", request.getParameter("checked")); // 是否可复选
+		model.addAttribute("selectIds", request.getParameter("selectIds")); // 指定默认选中的ID
+		model.addAttribute("isAll", request.getParameter("isAll")); 	// 是否读取全部数据，不进行权限过滤
+		model.addAttribute("module", request.getParameter("module"));	// 过滤栏目模型（仅针对CMS的Category树）
+		return "modules/wshbj/examinationUserTreeSelect";
+	}
+
+
+	@RequiresPermissions("wshbj:examinationUser:view")
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData(@RequestParam(required=true) String organId, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		ExaminationUser examinationUser = new ExaminationUser();
+		examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationUser.setOrganId(organId);
+
+		List<ExaminationUser> list = examinationUserService.findList(examinationUser);
+		for (int i=0; i<list.size(); i++){
+			ExaminationUser e = list.get(i);
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id", e.getId());
+			map.put("pId", organId);
+			map.put("name", StringUtils.replace(e.getName(), " ", ""));
+			mapList.add(map);
+		}
+		return mapList;
+	}
 }

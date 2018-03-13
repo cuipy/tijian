@@ -41,6 +41,13 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">身份证号：</label>
+			<div class="controls">
+				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">联系电话：</label>
 			<div class="controls">
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
@@ -50,9 +57,8 @@
 		<div class="control-group">
 			<label class="control-label">出生日期：</label>
 			<div class="controls">
-				<input id="birthday" name="birthday" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate"
-					   value="<fmt:formatDate value="${user.birthday}" pattern="yyyy-MM-dd"/>"
-					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+				<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
+							onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

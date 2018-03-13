@@ -22,7 +22,7 @@ import com.thinkgem.jeesite.common.web.BaseController;
 public class TagController extends BaseController {
 	
 	/**
-	 * 树结构选择标签（treeselect.tag）
+	 * 树结构选择标签（euserTreeSelect.tag）
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "treeselect")

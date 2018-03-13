@@ -7,12 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
-import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
-import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
-import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
-import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
-import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
+import com.thinkgem.jeesite.modules.wshbj.entity.*;
+import com.thinkgem.jeesite.modules.wshbj.service.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +22,6 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
-import com.thinkgem.jeesite.modules.wshbj.service.ExaminationRecordService;
 
 import java.util.List;
 
@@ -49,6 +43,9 @@ public class ExaminationRecordController extends BaseController {
 	private IndustryService industryService;
 	@Autowired
 	private JobPostService jobPostService;
+
+	@Autowired
+	private ExaminationPackageService examinationPackageService;
 	
 	@ModelAttribute
 	public ExaminationRecord get(@RequestParam(required=false) String id) {
@@ -67,6 +64,20 @@ public class ExaminationRecordController extends BaseController {
 	public String list(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ExaminationRecord> page = examinationRecordService.findPage(new Page<ExaminationRecord>(request, response), examinationRecord); 
 		model.addAttribute("page", page);
+
+		ExaminationPackage examinationPackage = new ExaminationPackage();
+		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationPackage.setDelFlag("0");
+		examinationPackage.setReferenceFlag("0");
+		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
+		model.addAttribute("packageList", packageList);
+
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
 		return "modules/wshbj/examinationRecordList";
 	}
 
@@ -95,6 +106,13 @@ public class ExaminationRecordController extends BaseController {
 		jobPost.setReferenceFlag("0");
 		List<JobPost> postList = jobPostService.findList(jobPost);
 		model.addAttribute("postList", postList);
+
+		ExaminationPackage examinationPackage = new ExaminationPackage();
+		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationPackage.setDelFlag("0");
+		examinationPackage.setReferenceFlag("0");
+		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
+		model.addAttribute("packageList", packageList);
 		return "modules/wshbj/examinationRecordForm";
 	}
 
