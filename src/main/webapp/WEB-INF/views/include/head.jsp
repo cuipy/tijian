@@ -21,6 +21,9 @@
 <link href="${ctxStatic}/jquery-plugin/ImgCropping.css" rel="stylesheet" />
 <script src="${ctxStatic}/jquery-plugin/cropper.min.js" type="text/javascript"></script>
 
+<link href="${ctxStatic}/webuploader/webuploader.css" rel="stylesheet" />
+<script src="${ctxStatic}/webuploader/webuploader.min.js" type="text/javascript"></script>
+
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>

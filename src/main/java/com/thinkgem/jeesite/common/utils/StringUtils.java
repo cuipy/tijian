@@ -4,8 +4,10 @@
 package com.thinkgem.jeesite.common.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -406,5 +408,50 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     	result.append(val.substring(1));
     	return result.toString();
     }
+
+	/**
+	 * 得到随机字符串
+	 * @param dt
+	 * @param format
+	 * @param randLen
+	 * @return
+	 */
+	public static String rand(java.util.Date dt,String format,Integer randLen){
+    	String res=formatDate(dt,format);
+    	res+=rand(randLen);
+    	return res;
+	}
+
+	public static String rand(Integer len){
+		//定义一个字符串（a-z，0-9）即36位；
+		String str="abcdefghijklmnopqrstuvwxyz1234567890";
+		//由Random生成随机数
+		Random random=new Random();
+		StringBuffer sb=new StringBuffer();
+		//长度为几就循环几次
+		for(int i=0; i<len; ++i){
+			//产生0-35的数字
+			int number=random.nextInt(36);
+			//将产生的数字通过length次承载到sb中
+			sb.append(str.charAt(number));
+		}
+		//将承载的字符转换成字符串
+		return sb.toString();
+	}
+
+	public static String formatDate(java.util.Date dt,String format){
+		if(dt==null){
+			dt=new java.util.Date();
+		}
+
+		if(StringUtils.isEmpty(format)){
+			format="yyyyMMdd";
+		}
+
+		SimpleDateFormat sdf=new SimpleDateFormat(format);
+		return sdf.format(dt);
+	}
+
+
     
 }

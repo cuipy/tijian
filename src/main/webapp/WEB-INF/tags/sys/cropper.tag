@@ -30,9 +30,10 @@
             本地选择${imgName}
         </label>
         <label id="btn${inputName}Cam" class="btn btn-warning">开启摄像头</label>
-        <label id="btn${inputName}OK" class="btn btn-info">确 定</label>
+        <label id="btn${inputName}OK" class="btn btn-info">保存图片</label>
     </div>
-    <input type="hidden" name="${inputName}" id="hid${inputName}" style="width:100px;height:100px">
+    <img name="${inputName}" id="img${inputName}" style="width:100px;height:100px;display:none">
+
 </div>
 <script>
 
@@ -105,6 +106,8 @@ $(function(){
 
     $("#content${inputName} #btn${inputName}OK").on('click',function(){
         cutImg();
+        uploadImg();
+
         $('#content${inputName} #tailoringImg').cropper("clear");
     });
 
@@ -122,7 +125,7 @@ $(function(){
 
             $("#content${inputName} #btn${inputName}Cam").removeClass("btn-warning");
             $("#content${inputName} #btn${inputName}Cam").addClass("btn-danger");
-            $("#content${inputName} #btn${inputName}Cam").text(" 拍  照 ");
+            $("#content${inputName} #btn${inputName}Cam").text(" 拍   照 ");
 
             ${inputName}CamState=1;
         }else if(${inputName}CamState==1){
@@ -174,7 +177,22 @@ $(function(){
 
         var cas=$('#content${inputName} #tailoringImg').cropper("getCroppedCanvas");
         var base64url = cas.toDataURL('image/png');
-        $("#content${inputName} #hid${inputName}").val(base64url);
+        $("#content${inputName} #img${inputName}").attr("src",base64url);
+    }
+
+    function uploadImg(){
+        var base64=$("#content${inputName} #img${inputName}").attr("src");
+        if(!base64){
+            $.jBox.alert("没有获得头像图片数据，无法上传");
+            return;
+        }
+
+        var url="${ctx}/upfile/upbase64";
+        var d1={base64:base64};
+        $.post(url,d1,function(d1r){
+
+        });
+
     }
 
     function camPhoto(){
