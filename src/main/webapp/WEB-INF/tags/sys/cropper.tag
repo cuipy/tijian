@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <%@ attribute name="imgName" type="java.lang.String" required="true" description="图片名称"%>
 <%@ attribute name="path" type="java.lang.String" required="true" description="上传图片的input控件name值"%>
+<%@ attribute name="value" type="java.lang.String" required="false" description="图片的路径地址"%>
 <%@ attribute name="mainImgWidth" type="java.lang.String" required="true" description="主图片的宽度"%>
 <%@ attribute name="mainImgHeight" type="java.lang.String" required="false" description="主图片的高度"%>
 <c:if test="${mainImgHeight == null }">
@@ -13,7 +14,7 @@
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
         <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
-            <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}">
+            <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}"/>
             <video id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
         </div>
         <div class="preview-box-parcel" style="width:${mainImgWidth/2}px;height:${mainImgHeight}px">
@@ -39,15 +40,17 @@
 <script>
 
 $(function(){
-
+    var ${path}Inited=0;
     var ${path}CamState=0;
     var ${path}Track=null;
-
-    init${path}Cropper();
 
     $("#content${path} #chooseImg").on("change",function(evt) {
         if (!evt.target.files || !evt.target.files[0]){
             return;
+        }
+        if(!${path}Inited){
+            ${path}Inited=1;
+            init${path}Cropper();
         }
         var reader = new FileReader();
         reader.onload = function (evt2) {
@@ -63,6 +66,10 @@ $(function(){
     });
 
     $("#content${path} #btn${path}Cam").on('click',function(){
+        if(!${path}Inited){
+            ${path}Inited=1;
+            init${path}Cropper();
+        }
         $('#content${path} #tailoringImg').cropper("clear");
 
         var video=$("#content${path} #tailoringVideo")[0];
@@ -170,7 +177,6 @@ $(function(){
             }
         });
 
-        $('#content${path} #tailoringImg').cropper("setDragMode","move");
     };
 
     // 执行切图
