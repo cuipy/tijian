@@ -152,7 +152,7 @@ $(function(){
     });
 
     $("#content${path} #btn${path}Cancel").on('click',function(){
-        dealCamState(1);
+
 
         // 保存按钮禁用
         $("#content${path} #btn${path}OK").addClass("disabled");
@@ -169,6 +169,8 @@ $(function(){
             }
             ${path}CamState=0;
         }
+
+        dealCamState(1);
 
     });
 
