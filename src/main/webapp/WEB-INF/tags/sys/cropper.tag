@@ -11,6 +11,91 @@
 <c:if test="${mainImgWidth == null }">
     <c:set var="mainImgWidth" value="${mainImgHeight}"/>
 </c:if>
+
+<style type="text/css">
+
+#CamBox {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	left: 50%;
+	top: 30%;
+	position: fixed;
+	-moz-box-shadow: 5px 5px 10px 0 #3b3b3f;
+	box-shadow: 5px 5px 10px 0 #3b3b3f;
+	z-index: 1250;
+	display: none;
+	background: url(${ctxStatic}/shearphoto/shearphoto_common/images/cam_bg.jpg) #d5d5d5;
+}
+
+#CamBox #CamFlash {
+	width: 100%;
+	margin: 0 auto;
+	background: #fff;
+}
+
+#CamBox #timing {
+	color: #F60;
+	display: none;
+	font-size: 36px;
+	font-weight: 700;
+	height: 200px;
+	left: 50%;
+	line-height: 200px;
+	position: absolute;
+	text-align: center;
+	top: 50%;
+	width: 200px;
+	margin: -100px 0 0 -100px;
+}
+
+#CamBox .cambar {
+	height: 50px;
+	padding-top: 10px;
+	margin: 0px;
+	text-align:center;
+}
+
+#CamBox .cambar a {
+	background: url(${ctxStatic}/shearphoto/shearphoto_common/images/btn5.jpg) no-repeat;
+	display:inline-block;
+	height: 31px;
+	line-height: 31px;
+	text-align: center;
+	width: 79px
+}
+
+#CamBox .lens {
+	background: url(${ctxStatic}/shearphoto/shearphoto_common/images/cam.png) no-repeat 50%;
+	height: 50px;
+	width: 100%;
+	margin:0px;
+}
+
+#CamBox .cambar #camClose,
+#CamBox .cambar #setCam {
+	color: #333;
+}
+
+#CamBox .cambar #setCam {
+	margin-right: 30px;
+}
+
+#CamBox .cambar #camClose:hover,
+#CamBox .cambar #setCam:hover {
+	background-position: 0 -31px;
+}
+
+#CamBox .cambar #CamOk {
+	background-position: -79px 0;
+	color: #fff;
+	margin-right: 30px;
+}
+
+#CamBox .cambar #CamOk:hover {
+	background-position: -79px -31px;
+}
+</style>
+
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
         <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
@@ -99,15 +184,15 @@ $(function(){
 
         //  支持浏览器  谷歌,火狐,360,欧朋
 
-        if(navigator.mediaDevices.getUserMedia){
+        if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
             navigator.mediaDevices.getUserMedia(videoObj)
             .then(getUserMediaThen)
             .catch(getUserMediaCatch);
-        }else if(navigator.mediaDevices.webkitGetUserMedia){
+        }else if(navigator.mediaDevices&&navigator.mediaDevices.webkitGetUserMedia){
             navigator.mediaDevices.webkitGetUserMedia(videoObj)
             .then(getUserMediaThen)
             .catch(getUserMediaCatch);
-        }else if(navigator.mediaDevices.mozGetUserMedia){
+        }else if(navigator.mediaDevices&&navigator.mediaDevices.mozGetUserMedia){
             navigator.mediaDevices.mozGetUserMedia(videoObj)
             .then(getUserMediaThen)
             .catch(getUserMediaCatch);
@@ -316,9 +401,6 @@ $(function(){
         canvas.height=${mainImgHeight};
 
         var pos=0;
-
-        webcam.width=${mainImgWidth};
-        webcam.height=${mainImgHeight};
 
         var img = new Image();
         img.onload = function() {

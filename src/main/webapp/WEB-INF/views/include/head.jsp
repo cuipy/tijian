@@ -21,8 +21,6 @@
 <link href="${ctxStatic}/jquery-plugin/ImgCropping.css" rel="stylesheet" />
 <script src="${ctxStatic}/jquery-plugin/cropper.min.js" type="text/javascript"></script>
 
-<link href="${ctxStatic}/shearphoto/shearphoto_common/css/ShearPhoto.css" rel="stylesheet" type="text/css" media="all">
-
 <script type="text/javascript" src="${ctxStatic}/jquery-webcam/jquery.webcam.min.js"></script>
 
 <link href="${ctxStatic}/webuploader/webuploader.css" rel="stylesheet" />
