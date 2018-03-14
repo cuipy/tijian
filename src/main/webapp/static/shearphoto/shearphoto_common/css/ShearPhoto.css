@@ -705,20 +705,17 @@ li {
 	-moz-border-radius: 10px;
 	border-radius: 10px;
 	left: 50%;
-	position: absolute;
+	top: 30%;
+	position: fixed;
 	-moz-box-shadow: 5px 5px 10px 0 #3b3b3f;
 	box-shadow: 5px 5px 10px 0 #3b3b3f;
-	width: 550px;
-	z-index: 250;
+	z-index: 1250;
 	display: none;
-	top: 50%;
-	margin: -285px 0 0 -276px;
 	background: url(../images/cam_bg.jpg) #d5d5d5;
 }
 
 #CamBox #CamFlash {
-	height: 450px;
-	width: 450px;
+	width: 100%;
 	margin: 0 auto;
 	background: #fff;
 }
@@ -740,14 +737,14 @@ li {
 
 #CamBox .cambar {
 	height: 50px;
-	padding-top: 20px;
-	width: 300px;
+	padding-top: 10px;
 	margin: 0 auto;
+	text-align:center;
 }
 
 #CamBox .cambar a {
 	background: url(../images/btn5.jpg) no-repeat;
-	float: left;
+	display:inline-block;
 	height: 31px;
 	line-height: 31px;
 	text-align: center;

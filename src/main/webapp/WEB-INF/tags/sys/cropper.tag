@@ -34,6 +34,19 @@
         <label id="btn${path}Cancel" class="btn btn-info">取消操作</label>
         <label id="btn${path}OK" class="btn btn-info disabled">保存图片</label>
     </div>
+
+    <div id="CamBox">
+        <p class="lens"></p>
+        <div id="CamFlash"></div>
+        <p class="cambar">
+            <a href="javascript:;" id="CamOk">拍照</a>
+            <a href="javascript:;" id="setCam">设置</a>
+            <a href="javascript:;" id="camClose">关闭</a>
+            <span style="clear:both;"></span>
+        </p>
+        <div id="timing"></div>
+    </div>
+
     <img name="img${path}" id="img${path}" style="width:100px;height:100px;display:none">
     <input type="hidden" name="${path}" id="up${path}"/>
 
@@ -85,6 +98,7 @@ $(function(){
         var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
 
         //  支持浏览器  谷歌,火狐,360,欧朋
+
         if(navigator.mediaDevices.getUserMedia){
             navigator.mediaDevices.getUserMedia(videoObj)
             .then(getUserMediaThen)
@@ -110,7 +124,7 @@ $(function(){
           .then(getUserMediaThen)
           .catch(getUserMediaCatch);
         }else{
-            $.jBox.alert("您的浏览器版本过低，不支持WebRTC调用摄像头拍照。");
+           doWebcam();
         }
 
 
@@ -251,7 +265,6 @@ $(function(){
         var url="${ctx}/upfile/upbase64";
         var d1={base64:base64};
         $.post(url,d1,function(d1r){
-            console.log(d1r);
             if(d1r.code=='0'){
                 $("#up${path}").val(d1r.data.saveUrl);
                 $.jBox.messager('${imgName}上传成功');
@@ -282,6 +295,114 @@ $(function(){
 
         $('#content${path} #tailoringImg').cropper("replace",base64url,false);
 
+    }
+
+    function doWebcam(){
+        dealCamState(0);
+
+        var CamFlash = document.getElementById("CamFlash");
+        var timing = document.getElementById("timing");
+        var CamOk = document.getElementById("CamOk");
+        var CamBox = document.getElementById("CamBox");
+        var camerasImage = document.getElementById("camerasImage");
+        var camClose = document.getElementById("camClose");
+        var setCam = document.getElementById("setCam");
+
+        var canvas=document.createElement("canvas");
+        var ctx=canvas.getContext("2d");
+        canvas.width=${mainImgWidth};
+        canvas.height=${mainImgHeight};
+
+        var pos=0;
+
+        webcam.width=${mainImgWidth};
+        webcam.height=${mainImgHeight};
+
+        var img = new Image();
+        img.onload = function() {
+            ctx.drawImage(img, ${mainImgWidth}, ${mainImgHeight});
+        }
+        var image = ctx.getImageData(0, 0, ${mainImgWidth}, ${mainImgHeight});
+
+
+        camClose.onclick = function() { //拍照点关闭后
+            CamBox.style.display = "none";
+            $("#CamFlash").empty();
+
+            dealCamState(1);
+        };
+
+        CamOk.onclick=function(){
+            webcam.capture();
+            dealCamState(1);
+        }
+        CamBox.style.display = "block";
+        CamBox.style.width = "${mainImgWidth}px";
+        CamBox.style.height = "${mainImgHeight+100}px";
+        CamBox.style.margin = "-${mainImgWidth/2}px 0 0 -${mainImgHeight/2}px";
+
+        CamFlash.style.height="${mainImgHeight}px";
+
+        $("#CamFlash").webcam({
+            width: ${mainImgWidth},
+            height: ${mainImgHeight},
+            mode: "callback",
+            swffile: "${ctxStatic}/jquery-webcam/jscam_canvas_only.swf", // canvas only doesn't implement a jpeg encoder, so the file is much smaller
+
+            onTick: function(remain) {
+
+                if (0 == remain) {
+                    console.log("Cheese!");
+                } else {
+                    console.log(remain + " seconds remaining...");
+                }
+            },
+
+            onSave: function(data) {
+
+                var col = data.split(";");
+                var img1=image;
+
+                for(var i = 0; i < ${mainImgWidth}; i++) {
+                    var tmp = parseInt(col[i]);
+                    img1.data[pos + 0] = (tmp >> 16) & 0xff;
+                    img1.data[pos + 1] = (tmp >> 8) & 0xff;
+                    img1.data[pos + 2] = tmp & 0xff;
+                    img1.data[pos + 3] = 0xff;
+                    pos += 4;
+                }
+
+                if(pos >= 4 * ${mainImgWidth} * 240) {
+
+                    var x=(${mainImgWidth}-320)/2;
+                    var y=(${mainImgHeight}-240)/2;
+                    ctx.putImageData(img1, x,y,0,0,320,240);
+
+                    // 取得图片的base64码
+                    var base64 = canvas.toDataURL("image/png");
+
+                    // 将图片base64码设置给img
+                    init${path}Cropper();
+                    $('#content${path} #tailoringImg').cropper("replace",base64,false);
+
+                    pos = 0;
+                    camClose.onclick();
+
+                }
+            },
+
+            onCapture: function (d) {
+                webcam.save();
+            },
+
+            debug: function (type, string) {
+                // Write debug information to console.log() or a div, ...
+            },
+
+            onLoad: function () {
+                console.log(webcam.height);
+            }
+        });
     }
 
 
