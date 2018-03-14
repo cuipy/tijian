@@ -31,6 +31,7 @@
             本地选择${imgName}
         </label>
         <label id="btn${path}Cam" class="btn btn-warning">开启摄像头</label>
+        <label id="btn${path}Cancel" class="btn btn-info">取消操作</label>
         <label id="btn${path}OK" class="btn btn-info disabled">保存图片</label>
     </div>
     <img name="img${path}" id="img${path}" style="width:100px;height:100px;display:none">
@@ -41,6 +42,7 @@
 
 $(function(){
     var ${path}Inited=0;
+    var ${path}CropperState=0;
     var ${path}CamState=0;
     var ${path}Track=null;
 
@@ -48,10 +50,9 @@ $(function(){
         if (!evt.target.files || !evt.target.files[0]){
             return;
         }
-        if(!${path}Inited){
-            ${path}Inited=1;
-            init${path}Cropper();
-        }
+        init${path}Cropper();
+        ${path}CropperState=1;
+
         var reader = new FileReader();
         reader.onload = function (evt2) {
             var replaceSrc = evt2.target.result;
@@ -61,23 +62,17 @@ $(function(){
         reader.readAsDataURL(evt.target.files[0]);
     });
 
-    $("#content${path} #btn${path}ReCrop").on('click',function(){
-        $('#content${path} #tailoringImg').cropper("setDragMode","crop");
-    });
-
     $("#content${path} #btn${path}Cam").on('click',function(){
-        if(!${path}Inited){
-            ${path}Inited=1;
-            init${path}Cropper();
-        }
-        $('#content${path} #tailoringImg').cropper("clear");
 
         var video=$("#content${path} #tailoringVideo")[0];
 
         if(${path}CamState==1){
 
             // 设置为非拍照状态
-            dealCamState();
+            dealCamState(1);
+
+            // 取照片
+            camPhoto();
 
             if(${path}Track!=null){
                 ${path}Track.stop();
@@ -89,39 +84,94 @@ $(function(){
 
         var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
 
-         //  支持浏览器  谷歌,火狐,360,欧朋
-         navigator.mediaDevices.getUserMedia(videoObj)
-         .then(function(stream){
-            ${path}Track=stream.getTracks()[0];
-            video.srcObject=stream;
-            video.onloadedmetadata = function(e) {
-                video.play();
+        //  支持浏览器  谷歌,火狐,360,欧朋
+        if(navigator.mediaDevices.getUserMedia){
+            navigator.mediaDevices.getUserMedia(videoObj)
+            .then(getUserMediaThen)
+            .catch(getUserMediaCatch);
+        }else if(navigator.mediaDevices.webkitGetUserMedia){
+            navigator.mediaDevices.webkitGetUserMedia(videoObj)
+            .then(getUserMediaThen)
+            .catch(getUserMediaCatch);
+        }else if(navigator.mediaDevices.mozGetUserMedia){
+            navigator.mediaDevices.mozGetUserMedia(videoObj)
+            .then(getUserMediaThen)
+            .catch(getUserMediaCatch);
+        }else if(navigator.getUserMedia){
+          navigator.getUserMedia(videoObj)
+          .then(getUserMediaThen)
+          .catch(getUserMediaCatch);
+        }else if(navigator.webkitGetUserMedia){
+          navigator.webkitGetUserMedia(videoObj)
+          .then(getUserMediaThen)
+          .catch(getUserMediaCatch);
+        }else if(navigator.mozGetUserMedia){
+          navigator.mozGetUserMedia(videoObj)
+          .then(getUserMediaThen)
+          .catch(getUserMediaCatch);
+        }else{
+            $.jBox.alert("您的浏览器版本过低，不支持WebRTC调用摄像头拍照。");
+        }
 
-                // 设置拍照状态
-                dealCamState();
-            };
-         })
-         .catch(function(err){
-            if(err.message=="Permission denied"){
-                $.jBox.alert("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
-                return;
+
+         function getUserMediaThen(stream){
+             ${path}Track=stream.getTracks()[0];
+             video.srcObject=stream;
+             video.onloadedmetadata = function(e) {
+                 video.play();
+
+                 // 设置拍照状态
+                 dealCamState(0);
+             };
+          }
+
+          function getUserMediaCatch(err){
+              dealCamState(1);
+              if(err.message=="Permission denied"){
+                  $.jBox.alert("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
+                  return;
+              }
+
+              $.jBox.alert("访问webRTC出现异常：name["+err.name+"] - "+err.message);
+           }
+
+    });
+
+    $("#content${path} #btn${path}Cancel").on('click',function(){
+        dealCamState(1);
+
+        // 保存按钮禁用
+        $("#content${path} #btn${path}OK").addClass("disabled");
+        if(${path}CropperState){
+            $('#content${path} #tailoringImg').cropper("clear");
+            ${path}CropperState=0;
+
+        }
+
+        if(${path}CamState){
+            if(${path}Track!=null){
+                ${path}Track.stop();
+                ${path}Track=null;
             }
-
-            $.jBox.alert("访问webRTC出现异常："+err.message);
-         });
+            ${path}CamState=0;
+        }
 
     });
 
     $("#content${path} #btn${path}OK").on('click',function(){
+        // 保存按钮禁用
+        $("#content${path} #btn${path}OK").addClass("disabled");
+        ${path}CropperState=0;
+
         cutImg();
         uploadImg();
 
         $('#content${path} #tailoringImg').cropper("clear");
     });
 
-    function dealCamState(){
+    function dealCamState(st){
 
-        if(${path}CamState==0){
+        if(st==0){
             $("#content${path} #chooseImg").attr("disabled","disabled");
             $("#content${path}  #btn${path}Choose").addClass("disabled");
             $("#content${path}  #btn${path}OK").addClass("disabled");
@@ -136,7 +186,7 @@ $(function(){
             $("#content${path} #btn${path}Cam").text(" 拍   照 ");
 
             ${path}CamState=1;
-        }else if(${path}CamState==1){
+        }else if(st==1){
             $("#content${path} #chooseImg").removeAttr("disabled");
             $("#content${path}  #btn${path}Choose").removeClass("disabled");
             $("#content${path}  #btn${path}OK").removeClass("disabled");
@@ -149,9 +199,6 @@ $(function(){
             $("#content${path} #btn${path}Cam").removeClass("btn-danger");
             $("#content${path} #btn${path}Cam").text("开启摄像头");
 
-            // 取照片
-            camPhoto();
-
             ${path}CamState=0;
         }
     }
@@ -159,6 +206,11 @@ $(function(){
 
     //cropper图片裁剪
     function init${path}Cropper(){
+        if(!${path}Inited){
+            ${path}Inited=1;
+        }else{
+            return;
+        }
         $('#content${path} #tailoringImg').cropper({
             aspectRatio: 1/1,//默认比例
             preview: '#content${path} .previewImg',//预览视图
@@ -185,6 +237,8 @@ $(function(){
         var cas=$('#content${path} #tailoringImg').cropper("getCroppedCanvas");
         var base64url = cas.toDataURL('image/png');
         $("#content${path} #img${path}").attr("src",base64url);
+
+        ${path}CropperState=0;
     }
 
     function uploadImg(){
@@ -201,12 +255,21 @@ $(function(){
             if(d1r.code=='0'){
                 $("#up${path}").val(d1r.data.saveUrl);
                 $.jBox.messager('${imgName}上传成功');
+            }else{
+                // 提交失败
+                $.jBox.messager('${imgName}上传失败:'+d1r.code+" - "+d1r.msg);
+                $("#content${path} #btn${path}OK").removeClass("disabled");
             }
         });
 
     }
 
     function camPhoto(){
+
+        init${path}Cropper();
+
+        ${path}CropperState=1;
+
         var canvas = document.createElement('canvas');
         var canvasContext = canvas.getContext('2d');
         var video=$("#content${path} #tailoringVideo")[0];
