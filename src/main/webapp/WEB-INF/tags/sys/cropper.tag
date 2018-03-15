@@ -11,9 +11,9 @@
 <c:if test="${mainImgWidth == null }">
     <c:set var="mainImgWidth" value="${mainImgHeight}"/>
 </c:if>
-
+<c:if test="${cropperInited == null}">
+<c:set var="cropperInited" value="1" scope="request"/>
 <style type="text/css">
-
 #CamBox {
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -24,7 +24,7 @@
 	box-shadow: 5px 5px 10px 0 #3b3b3f;
 	z-index: 1250;
 	display: none;
-	background: url(${ctxStatic}/shearphoto/shearphoto_common/images/cam_bg.jpg) #d5d5d5;
+	background: url(${ctxStatic}/jquery-webcam/images/cam_bg.jpg) #d5d5d5;
 }
 
 #CamBox #CamFlash {
@@ -56,7 +56,7 @@
 }
 
 #CamBox .cambar a {
-	background: url(${ctxStatic}/shearphoto/shearphoto_common/images/btn5.jpg) no-repeat;
+	background: url(${ctxStatic}/jquery-webcam/images/btn5.jpg) no-repeat;
 	display:inline-block;
 	height: 31px;
 	line-height: 31px;
@@ -65,7 +65,7 @@
 }
 
 #CamBox .lens {
-	background: url(${ctxStatic}/shearphoto/shearphoto_common/images/cam.png) no-repeat 50%;
+	background: url(${ctxStatic}/jquery-webcam/images/cam.png) no-repeat 50%;
 	height: 50px;
 	width: 100%;
 	margin:0px;
@@ -95,6 +95,7 @@
 	background-position: -79px -31px;
 }
 </style>
+</c:if>
 
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
@@ -183,7 +184,6 @@ $(function(){
         var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
 
         //  支持浏览器  谷歌,火狐,360,欧朋
-
         if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
             navigator.mediaDevices.getUserMedia(videoObj)
             .then(getUserMediaThen)
@@ -313,7 +313,7 @@ $(function(){
             return;
         }
         $('#content${path} #tailoringImg').cropper({
-            aspectRatio: 1/1,//默认比例
+            aspectRatio: ${mainImgWidth}/${mainImgHeight},//默认比例
             preview: '#content${path} .previewImg',//预览视图
             guides: false,  //裁剪框的虚线(九宫格)
             autoCropArea: 0.9,  //0-1之间的数值，定义自动剪裁区域的大小，默认0.8
