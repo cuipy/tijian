@@ -196,4 +196,14 @@ public class Global {
 		return projectPath;
 	}
 
+	public static String getProjectRealPath(){
+		try {
+			String dir = ServletContextFactory.getServletContext().getRealPath("/");
+			return dir;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }
