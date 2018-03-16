@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.gen.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -24,7 +25,7 @@ public class GenConfig implements Serializable {
 	private List<GenCategory> categoryList;	// 代码模板分类
 	private List<Dict> javaTypeList;		// Java类型
 	private List<Dict> queryTypeList;		// 查询类型
-	private List<Dict> showTypeList;		// 显示类型
+	private List<ShowTypeDict> showTypeList;		// 显示类型
 
 	public GenConfig() {
 		super();
@@ -46,6 +47,28 @@ public class GenConfig implements Serializable {
 		return javaTypeList;
 	}
 
+	/**
+	 * 读取原生的java类
+	 * @return
+	 */
+	public List<Dict> getNativeJavaTypeList(){
+		List<Dict> lst=getJavaTypeList();
+		List<Dict> lst2=new ArrayList();
+
+		for(Dict d:lst){
+			String val=d.getValue();
+			if(val.equals("This")||val.equals("Custom")){
+				continue;
+			}
+			if(val.startsWith("com.thinkgem.jeesite")){
+				continue;
+			}
+			lst2.add(d);
+		}
+
+		return lst2;
+	}
+
 	public void setJavaTypeList(List<Dict> javaTypeList) {
 		this.javaTypeList = javaTypeList;
 	}
@@ -62,12 +85,21 @@ public class GenConfig implements Serializable {
 
 	@XmlElementWrapper(name = "showType")
 	@XmlElement(name = "dict")
-	public List<Dict> getShowTypeList() {
+	public List<ShowTypeDict> getShowTypeList() {
 		return showTypeList;
 	}
 
-	public void setShowTypeList(List<Dict> showTypeList) {
+	public void setShowTypeList(List<ShowTypeDict> showTypeList) {
 		this.showTypeList = showTypeList;
+	}
+
+	public ShowTypeDict findShowTypeByValue(String value){
+		for(ShowTypeDict d:getShowTypeList()){
+			if(d.getValue().equals(value)){
+				return d;
+			}
+		}
+		return null;
 	}
 	
 }

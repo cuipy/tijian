@@ -6,6 +6,7 @@
 			<template>curd/controller.xml</template>
 			<template>curd/service.xml</template>
 			<template>category-ref:dao</template>
+			<template>curd/viewPage.xml</template>
 			<template>curd/viewForm.xml</template>
 			<template>curd/viewList.xml</template>
 		</category>
@@ -30,6 +31,7 @@
 			<template>treetable/dao.xml</template>
 			<template>treetable/entity.xml</template>
 			<template>treetable/mapper.xml</template>
+			<template>treetable/viewPage.xml</template>
 			<template>treetable/viewForm.xml</template>
 			<template>treetable/viewList.xml</template>
 		</category>
@@ -66,14 +68,17 @@
 	<!-- 字段显示类型 -->
 	<showType>
 		<dict value="input" label="单行文本"/>
+		<dict value="inputpwd" label="单行密码文本"/>
 		<dict value="textarea" label="多行文本"/>
+		<dict value="ckeditor" label="CkEditor富文本"/>
+		<dict value="cropper" label="Cropper头像"/>
 		<dict value="select" label="下拉选项"/>
 		<dict value="radiobox" label="单选按钮"/>
 		<dict value="checkbox" label="复选框"/>
 		<dict value="dateselect" label="日期选择"/>
-		<dict value="userselect" label="人员选择"/>
-		<dict value="officeselect" label="部门选择"/>
-		<dict value="areaselect" label="区域选择"/>
+		<dict value="fk_sys_user" label="人员选择" treeUrl="/sys/office/treeData?type=3"/>
+		<dict value="fk_sys_office" label="部门选择" treeUrl="/sys/office/treeData?type=2"/>
+		<dict value="fk_sys_area" label="区域选择" treeUrl="/sys/area/treeData"/>
 		<dict value="treeselect" label="树选择控件"/>
 		<dict value="fileselect" label="文件上传选择"/>
 	</showType>

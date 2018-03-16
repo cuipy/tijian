@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<%@ taglib prefix="wshbjfns" uri="/WEB-INF/tlds/wshbjfns.tld" %>
 <html>
 <head>
 	<title>体检用户管理</title>
@@ -50,8 +51,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>身份证号</th>
 				<th>姓名</th>
+				<th width="180">身份证号</th>
 				<th>联系电话</th>
 				<th>性别</th>
 				<th width="260">单位</th>
@@ -66,13 +67,13 @@
 					<shiro:hasPermission name="wshbj:examinationUser:edit">
 						<a href="${ctx}/wshbj/examinationUser/form?id=${examinationUser.id}">
 						</shiro:hasPermission>
-						${examinationUser.idNumber}
+						${examinationUser.name}
 							<shiro:hasPermission name="wshbj:examinationUser:edit">
 						</a>
 								</shiro:hasPermission>
 				</td>
 				<td>
-					${examinationUser.name}
+					${examinationUser.idNumber}
 				</td>
 				<td>
 					${examinationUser.phoneNumber}
@@ -81,7 +82,7 @@
 							${fns:getDictLabel(examinationUser.sex,'sex','')}
 				</td>
 				<td>
-					${examinationUser.organId}
+							${wshbjfns:getEntityName('Organ',examinationUser.organId,'')}
 				</td>
 				<td>
 					${examinationUser.remarks}

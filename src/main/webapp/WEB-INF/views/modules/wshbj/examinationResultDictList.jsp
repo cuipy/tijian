@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<%@ taglib prefix="wshbjfns" uri="/WEB-INF/tlds/wshbjfns.tld" %>
 <html>
 <head>
 	<title>体检结果字典管理</title>
@@ -49,7 +50,7 @@
 					${examinationResultDict.name}
 				</a></td>
 				<td>
-						${examinationResultDict.itemId}
+						${wshbjfns:getEntityName('ExaminationItem',examinationResultDict.itemId,'')}
 				</td>
 				<td>
 					${examinationResultDict.remarks}

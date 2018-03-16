@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,19 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 
 	public ExaminationUser get(String id) {
 		return super.get(id);
+	}
+
+	/**
+	 * 根据身份证与体检中心查询体检用户
+	 * @param idNumber
+	 * @param owner
+	 * @return
+	 */
+	public ExaminationUser getByIdNumberAndOwner(String idNumber,String owner){
+		if (StringUtils.isBlank(idNumber) || StringUtils.isBlank(owner)){
+			return null;
+		}
+		return this.dao.getByIdNumberAndOwner(idNumber,owner);
 	}
 	
 	public List<ExaminationUser> findList(ExaminationUser examinationUser) {

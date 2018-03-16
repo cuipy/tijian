@@ -38,7 +38,7 @@
 			<tr>
 				<th>名称</th>
 				<th>备注</th>
-				<shiro:hasPermission name="wshbj:organ:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:organ:edit"><th width="120">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>

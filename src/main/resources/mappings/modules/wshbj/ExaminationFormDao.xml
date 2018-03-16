@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.ExaminationFormDao">
+    
+	<sql id="examinationFormColumns">
+		a.id AS "id",
+		a.code AS "code",
+		a.name AS "name",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.reference_flag AS "referenceFlag",
+		a.owner AS "owner",
+		a.template_path AS "templatePath"
+	</sql>
+	
+	<sql id="examinationFormJoins">
+	</sql>
+    
+	<select id="get" resultType="ExaminationForm">
+		SELECT 
+			<include refid="examinationFormColumns"/>
+		FROM bj_examination_form a
+		<include refid="examinationFormJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="ExaminationForm">
+		SELECT 
+			<include refid="examinationFormColumns"/>
+		FROM bj_examination_form a
+		<include refid="examinationFormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ExaminationForm">
+		SELECT 
+			<include refid="examinationFormColumns"/>
+		FROM bj_examination_form a
+		<include refid="examinationFormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bj_examination_form(
+			id,
+			code,
+			name,
+			del_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			reference_flag,
+			owner,
+			template_path
+		) VALUES (
+			#{id},
+			#{code},
+			#{name},
+			#{delFlag},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{referenceFlag},
+			#{owner},
+			#{templatePath}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bj_examination_form
+			<set>
+				<if test="code !=null and code != '' ">code = #{code},</if>
+				<if test="name !=null and name != '' ">name = #{name},</if>
+				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
+				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
+				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
+				<if test="referenceFlag !=null and referenceFlag != '' ">reference_flag = #{referenceFlag},</if>
+				<if test="owner !=null and owner != '' ">owner = #{owner},</if>
+				<if test="templatePath !=null and templatePath != '' ">template_path = #{templatePath},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bj_examination_form SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -25,7 +25,9 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	private String jdbcType;	// JDBC类型
 	private String javaType;	// JAVA类型
 	private String javaField;	// JAVA字段名
+    private String isInvent="0";   // 是否虚字段，虚字段即在当前数据表中不存在的字段
 	private String isPk;		// 是否主键（1：主键）
+	private String isUnique="0";	// 是否唯一键 (1，唯一键；0：不是唯一键）
 	private String isNull;		// 是否可为空（1：可为空；0：不为空）
 	private String isInsert;	// 是否为插入字段（1：插入字段）
 	private String isEdit;		// 是否编辑字段（1：编辑字段）
@@ -34,6 +36,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	private String queryType;	// 查询方式（等于、不等于、大于、小于、范围、左LIKE、右LIKE、左右LIKE）
 	private String showType;	// 字段生成方案（文本框、文本域、下拉框、复选框、单选框、字典选择、人员选择、部门选择、区域选择）
 	private String dictType;	// 字典类型
+	private String treeUrl;		// TreeUrl地址
 	private Integer sort;		// 排序（升序）
 
 	public GenTableColumn() {
@@ -177,6 +180,30 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 		this.sort = sort;
 	}
 
+    public String getIsInvent() {
+        return isInvent;
+    }
+
+    public void setIsInvent(String isInvent) {
+        this.isInvent = isInvent;
+    }
+
+	public String getTreeUrl() {
+		return treeUrl;
+	}
+
+	public void setTreeUrl(String treeUrl) {
+		this.treeUrl = treeUrl;
+	}
+
+	public String getIsUnique() {
+		return isUnique;
+	}
+
+	public void setIsUnique(String isUnique) {
+		this.isUnique = isUnique;
+	}
+
 	/**
 	 * 获取列名和说明
 	 * @return
@@ -211,7 +238,7 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	}
 	
 	/**
-	 * 获取简写Java字段
+	 * 获取简写Java字段,例如 javaField == auth.id   返回auth
 	 * @return
 	 */
 	public String getSimpleJavaField(){
@@ -225,7 +252,101 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	public String getJavaFieldId(){
 		return StringUtils.substringBefore(getJavaField(), "|");
 	}
-	
+
+    /**
+     * 获取虚字段的获取字段的代码
+     * @return
+     */
+    public String getInventGetCode(){
+        if(!"1".equals(getIsInvent())){
+            return "";
+        }
+
+        String[] arrJavaField=javaField.split("\\.");
+        String res="";
+        for(String part:arrJavaField){
+            if(StringUtils.isBlank(part)){
+                continue;
+            }
+            res+="get"+part.substring(0,1).toUpperCase()+part.substring(1)+"().";
+        }
+        if(res.length()>0){
+            res=res.substring(0,res.length()-1);
+        }
+        return res;
+    }
+
+    public String getInventSetCode(){
+		if(!"1".equals(getIsInvent())){
+			return "";
+		}
+
+		String[] arrJavaField=javaField.split("\\.");
+		String fieldName=arrJavaField[0];
+		String upFirstFieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+		String res="if(null == get"+upFirstFieldName+"()){ return; }";
+		for(int i=0;i<arrJavaField.length-1;i++){
+			String part=arrJavaField[i];
+			if(StringUtils.isBlank(part)){
+				continue;
+			}
+
+			fieldName=arrJavaField[0];
+			upFirstFieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+
+			res+="get"+upFirstFieldName+"().";
+		}
+
+		fieldName=arrJavaField[arrJavaField.length-1];
+		upFirstFieldName=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+		res+="set"+upFirstFieldName+"(_val);";
+
+		return res;
+	}
+
+    /**
+     * 虚字段的属性名
+     * @return
+     */
+    public String getInventFieldName(){
+        if(!"1".equals(getIsInvent())){
+            return "";
+        }
+
+        String[] arrJavaField=javaField.split("\\.");
+        String res="";
+        for(String part:arrJavaField){
+            if(StringUtils.isBlank(part)){
+                continue;
+            }
+            res+=part.substring(0,1).toUpperCase()+part.substring(1);
+        }
+
+        return res;
+    }
+
+	/**
+	 * 是否是外键字段
+	 * @return
+	 */
+	public String getIsFk(){
+    	if(showType!=null&&showType.startsWith("fk_")){
+    		return "1";
+		}
+		return "0";
+	}
+
+	/**
+	 * 对应的外键表名称
+	 * @return
+	 */
+	public String getFkTable(){
+		if(showType!=null&&showType.startsWith("fk_")){
+			return showType.substring(3);
+		}
+		return "";
+	}
+
 	/**
 	 * 获取Java字段，如果是对象，则获取对象.附加属性2
 	 * @return
@@ -276,6 +397,13 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 			list.add("org.hibernate.validator.constraints.Length(min=0, max="+getDataLength()
 					+", message=\""+getComments()+"长度必须介于 0 和 "+getDataLength()+" 之间\")");
 		}
+
+		if("1".equals(isUnique)){
+			list.add("com.thinkgem.jeesite.common.annotation.Unique");
+		}
+
+		list.add("com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField" +
+				"(value=\""+getJavaFieldId()+"\",title=\""+getComments()+"\",type=0,sort="+getSort()+")");
 		return list;
 	}
 	
@@ -286,10 +414,41 @@ public class GenTableColumn extends DataEntity<GenTableColumn> {
 	public List<String> getSimpleAnnotationList(){
 		List<String> list = Lists.newArrayList();
 		for (String ann : getAnnotationList()){
-			list.add(StringUtils.substringAfterLast(ann, "."));
+            String fullClass=StringUtils.substringBeforeLast(ann, "(");
+            String simpleClass=StringUtils.substringAfterLast(fullClass,".");
+            String param="("+StringUtils.substringAfterLast(ann,"(");
+
+            String annStr=simpleClass;
+            if(param.length()>1){
+                annStr+=param;
+            }
+			list.add(annStr);
 		}
 		return list;
 	}
+
+	public String getJavaDaoType(){
+	    if(StringUtils.isEmpty(javaType)){
+	        return null;
+        }
+
+        if(!javaType.startsWith("com.thinkgem.jeesite")){
+	        return null;
+        }
+
+        String dao=javaType.replace("entity","dao");
+	    dao+="Dao";
+
+        try {
+            if(Class.forName(dao)!=null){
+                return dao;
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 	
 	/**
 	 * 是否是基类字段

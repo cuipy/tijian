@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
@@ -164,5 +165,16 @@ public class ExaminationUserController extends BaseController {
 			mapList.add(map);
 		}
 		return mapList;
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "getById")
+	public ExaminationUser getById(@RequestParam(required=true) String id, HttpServletResponse response) {
+	    if (org.apache.commons.lang3.StringUtils.isBlank(id)){
+	        return null;
+        }
+		ExaminationUser examinationUser = examinationUserService.get(id);
+		return examinationUser;
 	}
 }

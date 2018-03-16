@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
@@ -122,8 +124,16 @@ public class ExaminationRecordController extends BaseController {
 		if (!beanValidator(model, examinationRecord)){
 			return form(examinationRecord, model);
 		}
-		examinationRecordService.save(examinationRecord);
-		addMessage(redirectAttributes, "保存体检记录成功");
+		examinationRecord.setName(examinationRecord.getUser().getName());
+		examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
+		if (StringUtils.isBlank(examinationRecord.getStatus())){
+			examinationRecord.setStatus("1");
+		}
+
+
+		ResponseResult result = examinationRecordService.saveRecord(examinationRecord);
+		List<String> resultMessages = (List<String>) result.getData();
+		addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
 	}
 	

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<%@ taglib prefix="wshbjfns" uri="/WEB-INF/tlds/wshbjfns.tld" %>
 <html>
 <head>
 	<title>体检记录管理</title>
@@ -67,14 +68,15 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>姓名</th>
-				<th>联系电话</th>
-				<th>性别</th>
+				<th width="100">姓名</th>
+				<th width="180">身份证号</th>
+				<th width="100">联系电话</th>
+				<th width="60">性别</th>
 				<th>单位</th>
 				<th>体检套餐</th>
-				<th>套餐价格</th>
-				<th>状态</th>
-				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th>操作</th></shiro:hasPermission>
+				<th width="120">填报时间</th>
+				<th width="60">状态</th>
+				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="120">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -84,25 +86,26 @@
 					${examinationRecord.name}
 				</td>
 				<td>
+						${examinationRecord.idNumber}
+				</td>
+				<td>
 					${examinationRecord.phoneNumber}
 				</td>
 				<td>
-					${examinationRecord.sex}
+							${fns:getDictLabel(examinationRecord.sex,'sex','')}
 				</td>
 				<td>
-					${examinationRecord.organId}
+
+							${wshbjfns:getEntityName('Organ',examinationRecord.organId,'')}
 				</td>
 				<td>
-					<fmt:formatDate value="${examinationRecord.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+							${wshbjfns:getEntityName('ExaminationPackage',examinationRecord.packageId,'')}
 				</td>
 				<td>
-					${examinationRecord.packageId}
+					<fmt:formatDate value="${examinationRecord.updateDate}" pattern="yyyy-MM-dd HH:mm"/>
 				</td>
 				<td>
-					${examinationRecord.packagePrice}
-				</td>
-				<td>
-						${fns:getDictLabel(examinationRecord.stauts,'examination_record_status','')}
+						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
     				<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>

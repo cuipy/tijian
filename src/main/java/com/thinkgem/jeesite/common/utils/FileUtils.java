@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
+import sun.misc.BASE64Decoder;
 
 /**
  * 文件操作工具类
@@ -390,9 +391,13 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
 	}
 
+	public static boolean existDirctory(String dirName){
+		File f=new File(dirName);
+		return f.exists();
+	}
+
 	/**
 	 * 写入文件
-	 * @param file 要写入的文件
 	 */
 	public static void writeToFile(String fileName, String content, boolean append) {
 		try {
@@ -405,7 +410,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
 	/**
 	 * 写入文件
-	 * @param file 要写入的文件
 	 */
 	public static void writeToFile(String fileName, String content, String encoding, boolean append) {
 		try {
@@ -586,7 +590,6 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
 	/**
 	 * 获取待压缩文件在ZIP文件中entry的名字，即相对于跟目录的相对路径名
-	 * @param dirPat 目录名
 	 * @param file entry文件名
 	 * @return
 	 */
@@ -964,5 +967,44 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 			return null;
 		}
 		return fileName.substring(0, fileName.lastIndexOf("."));
+	}
+
+	public static boolean saveBase64(String base64,String savePath,String saveFileName){
+
+		if(StringUtils.isEmpty(base64)){
+			return false;
+		}
+
+		if(base64.startsWith("data:image")){
+			base64=StringUtils.substringAfter(base64,",");
+		}
+
+		BASE64Decoder decoder = new BASE64Decoder();
+		try
+		{
+			//Base64解码
+			byte[] b = decoder.decodeBuffer(base64);
+			for(int i=0;i<b.length;++i)
+			{
+				if(b[i]<0)
+				{//调整异常数据
+					b[i]+=256;
+				}
+			}
+
+			FileUtils.createDirectory(savePath);
+			String imgFilePath = FileUtils.path(savePath+saveFileName);
+
+			OutputStream out = new FileOutputStream(imgFilePath);
+			out.write(b);
+			out.flush();
+			out.close();
+			return true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 }

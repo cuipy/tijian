@@ -33,6 +33,17 @@
 		<include refid="examinationUserJoins"/>
 		WHERE a.id = #{id}
 	</select>
+
+	<select id="getByIdNumberAndOwner" resultType="ExaminationUser">
+		SELECT
+		<include refid="examinationUserColumns"/>
+		FROM bj_examination_user a
+		<include refid="examinationUserJoins"/>
+		WHERE a.del_flag = '0'
+			AND a.id_number = #{idNumber}
+			AND a.owner = #{owner}
+		limit 0,1
+	</select>
 	
 	<select id="findList" resultType="ExaminationUser">
 		SELECT 

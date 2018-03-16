@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.dao;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationUser;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * 体检用户DAO接口
@@ -14,5 +15,6 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationUser;
  */
 @MyBatisDao
 public interface ExaminationUserDao extends CrudDao<ExaminationUser> {
-	
+
+    ExaminationUser getByIdNumberAndOwner(@Param("idNumber")String idNumber,@Param("owner")String owner);
 }

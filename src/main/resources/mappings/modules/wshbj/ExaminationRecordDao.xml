@@ -28,7 +28,7 @@
 	</sql>
 	
 	<sql id="examinationRecordJoins">
-		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+		LEFT JOIN bj_examination_user u2 ON u2.id = a.user_id
 	</sql>
     
 	<select id="get" resultType="ExaminationRecord">
@@ -57,6 +57,9 @@
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
+			</if>
+			<if test="organId != null and organId != ''">
+				AND a.organId = #{organId}
 			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 

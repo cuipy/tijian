@@ -10,14 +10,25 @@
 package ${packageName}.${moduleName}.service<#if subModuleName != "">.${subModuleName}</#if>;
 
 import java.util.List;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import ${packageName}.${moduleName}.entity<#if subModuleName != "">.${subModuleName}</#if>.${ClassName};
 import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName}</#if>.${ClassName}Dao;
+<#list table.columnList as c>
+<#if c.isFk == "1" &&  c.isNotBaseField>
+import ${c.javaType};
+<#if c.javaDaoType??>
+import ${c.javaDaoType};
+</#if>
+</#if>
+</#list>
 
 /**
  * ${functionName}Service
@@ -27,6 +38,14 @@ import ${packageName}.${moduleName}.dao<#if subModuleName != "">.${subModuleName
 @Service
 @Transactional(readOnly = true)
 public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassName}> {
+
+    <#list table.columnList as c>
+	<#if c.isFk == "1" &&  c.isNotBaseField>
+	@Autowired
+	private ${c.simpleJavaType?cap_first}Dao ${c.simpleJavaType?uncap_first}Dao;
+
+	</#if>
+	</#list>
 
 	public ${ClassName} get(String id) {
 		return super.get(id);
@@ -42,12 +61,79 @@ public class ${ClassName}Service extends CrudService<${ClassName}Dao, ${ClassNam
 	
 	@Transactional(readOnly = false)
 	public void save(${ClassName} ${className}) {
+
+	<#list table.columnList as c>
+	<#if c.isFk == "1" &&  c.isNotBaseField>
+		// 如果外键对象的id没有值，则从外键对象的唯一值读取id值
+		if(${className}.get${c.simpleJavaField?cap_first}()!=null&&StringUtils.isEmpty(${className}.get${c.simpleJavaField?cap_first}().getId())){
+			List<String> uniqFields=${className}.get${c.simpleJavaField?cap_first}().getUniqueFields();
+
+			for(String fieldName:uniqFields){
+				String methodName="get"+StringUtils.upCaseFirst(fieldName);
+                ${c.simpleJavaType} ${c.simpleJavaField}1=null;
+
+                try {
+                    Method method = ${c.simpleJavaType?uncap_first}Dao.getClass().getMethod(methodName, ${c.simpleJavaType}.class);
+                    ${c.simpleJavaField}1= (${c.simpleJavaType}) method.invoke(${c.simpleJavaType?uncap_first}Dao,${className}.get${c.simpleJavaField?cap_first}());
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+		        if(${c.simpleJavaField}1!=null){
+		            ${className}.get${c.simpleJavaField?cap_first}().setId(${c.simpleJavaField}1.getId());
+		            break;
+                }
+            }
+		}
+
+	</#if>
+	</#list>
+
 		super.save(${className});
 	}
 	
 	@Transactional(readOnly = false)
 	public void delete(${ClassName} ${className}) {
 		super.delete(${className});
+	}
+
+	protected ${ClassName} refreshBean(${ClassName} ${className}) {
+
+	<#list table.columnList as c>
+	<#if c.isFk == "1" &&  c.isNotBaseField>
+		// 如果外键对象的id没有值，则从外键对象的唯一值读取id值
+		if(${className}.get${c.simpleJavaField?cap_first}()!=null&&StringUtils.isEmpty(${className}.get${c.simpleJavaField?cap_first}().getId())){
+			List<String> uniqFields=${className}.get${c.simpleJavaField?cap_first}().getUniqueFields();
+
+			for(String fieldName:uniqFields){
+				String methodName="get"+StringUtils.upCaseFirst(fieldName);
+                ${c.simpleJavaType} ${c.simpleJavaField}1=null;
+
+                try {
+                    Method method = ${c.simpleJavaType?uncap_first}Dao.getClass().getMethod(methodName, ${c.simpleJavaType}.class);
+                    ${c.simpleJavaField}1= (${c.simpleJavaType}) method.invoke(${c.simpleJavaType?uncap_first}Dao,${className}.get${c.simpleJavaField?cap_first}());
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                }
+
+		        if(${c.simpleJavaField}1!=null){
+		            ${className}.get${c.simpleJavaField?cap_first}().setId(${c.simpleJavaField}1.getId());
+		            break;
+                }
+            }
+		}
+
+	</#if>
+	</#list>
+		return ${className};
 	}
 	
 }]]>

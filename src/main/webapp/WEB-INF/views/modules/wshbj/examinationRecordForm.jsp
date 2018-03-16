@@ -95,9 +95,33 @@
             });
         }, false);
 
+        //选择用户返回
         function userTreeselectCallBack(v, h, f) {
-			alert(v);
+			if('ok'==v){
+				var euserId = $('#userId').val();
+				var url = '${ctx}/wshbj/examinationUser/getById';
+				$.post(url,{id:euserId},function (data) {
+					if(data){
+					    $('#idNumber').val(data.idNumber);
+                        $('#phoneNumber').val(data.phoneNumber);
+                        $('#birthday').val(data.birthday);
+                        $('#sex').val(data.sex);
+
+                        $("#organId").attr("value", data.organId);
+                        $("#organId").trigger('change');
+
+                        $("#industryId").attr("value", data.industryId);
+                        $("#industryId").trigger('change');
+
+                        $("#postId").attr("value", data.postId);
+                        $("#postId").trigger('change');
+					}
+                },'json');
+			}else if('clear'==v){
+
+			}
         }
+
 	</script>
 </head>
 <body>
@@ -108,13 +132,35 @@
 	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
+		<c:if test="${not empty examinationRecord.id}">
+			<div class="control-group">
+				<label class="control-label">状态：</label>
+				<div class="controls">
+					<form:select path="status" cssStyle="width: 100px">
+						<form:option value="">
+							请选择
+						</form:option>
+						<form:options items="${fns:getDictList('examination_record_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					</form:select>
+				</div>
+			</div>
+		</c:if>
+		<div class="control-group">
+			<div>
+				<label class="control-label">用户头像：</label>
+				<div class="controls">
+					<sys:cropper mainImgWidth="360" imgName="头像" path="head1"/>
+				</div>
+
+			</div>
+		</div>
 		<div style="float:left; width:100%;">
 			<div style="float:left; width:60%;">
 				<div class="control-group">
 					<label class="control-label">体检用户：</label>
 					<div class="controls">
 						<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-											   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="请选择用户"
+											   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="必填信息"
 											   cssClass="input-xlarge required" allowClear="true" notAllowSelectParent="true"/>
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
@@ -154,13 +200,7 @@
 			</div>
 			<div style="float:left; width:40%;position: relative;">
 				<div style="position: absolute;margin:auto; top: 0;left: 0;right: 0;bottom: 0;vertical-align:middle;">
-					<video width="200" height="230"></video>
-					<canvas id="canvas" width="200" height="230"></canvas>
-					<p>
-						<button type="button" id="snap">截取图像</button>
-						<button type="button" id="close">关闭摄像头</button>
-						<button type="button" id="upload">上传图像</button>
-					</p>
+
 				</div>
 			</div>
 		</div>
@@ -168,7 +208,7 @@
 		<div class="control-group" >
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<form:select path="organId" class="input-xlarge">
+				<form:select  path="organId"  class="input-xlarge">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -179,7 +219,7 @@
 		<div class="control-group">
 			<label class="control-label">行业：</label>
 			<div class="controls">
-				<form:select path="industryId" class="input-xlarge">
+				<form:select path="industryId"  class="input-xlarge">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -216,7 +256,9 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationRecord:edit">
+				<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
+			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		</div>

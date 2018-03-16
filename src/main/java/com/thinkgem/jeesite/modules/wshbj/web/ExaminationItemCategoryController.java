@@ -92,7 +92,7 @@ public class ExaminationItemCategoryController extends BaseController {
 		examinationItemCategory.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationItemCategoryService.save(examinationItemCategory);
 		addMessage(redirectAttributes, "保存检查项目分类成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/?repage";
+		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/list?repage";
 	}
 	
 	@RequiresPermissions("wshbj:examinationItemCategory:edit")
@@ -100,7 +100,7 @@ public class ExaminationItemCategoryController extends BaseController {
 	public String delete(ExaminationItemCategory examinationItemCategory, RedirectAttributes redirectAttributes) {
 		examinationItemCategoryService.delete(examinationItemCategory);
 		addMessage(redirectAttributes, "删除检查项目分类成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/?repage";
+		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/list?repage";
 	}
 
 

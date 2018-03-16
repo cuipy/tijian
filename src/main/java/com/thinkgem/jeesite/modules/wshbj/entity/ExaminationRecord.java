@@ -17,7 +17,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	private static final long serialVersionUID = 1L;
-	private User user;		// 体检用户
+	private ExaminationUser user;		// 体检用户
 	private String idNumber;		// 身份证号
 	private String code;		// 编号
 	private String name;		// 姓名
@@ -41,11 +41,11 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	@NotNull(message="体检用户不能为空")
-	public User getUser() {
+	public ExaminationUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(ExaminationUser user) {
 		this.user = user;
 	}
 
