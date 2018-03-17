@@ -5,7 +5,7 @@ package com.thinkgem.jeesite.modules.wshbj.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
 
 /**
  * 体检记录DAO接口
@@ -13,7 +13,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
  * @version 2018-03-17
  */
 @MyBatisDao
-public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
+public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem> {
 
 	
 }

@@ -5,20 +5,22 @@ package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import org.hibernate.validator.constraints.Length;
+import java.util.List;
+import com.google.common.collect.Lists;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
  * 体检记录Entity
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-17
  */
 public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	private static final long serialVersionUID = 1L;
-	private ExaminationUser user;		// 体检用户
-	private String idNumber;		// 身份证号
+	private User user;		// 体检用户
 	private String code;		// 编号
 	private String name;		// 姓名
 	private String phoneNumber;		// 联系电话
@@ -30,7 +32,9 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String owner;		// 所属体检中心
 	private String packageId;		// 体检套餐
 	private String packagePrice;		// 套餐价格
-	private String status;			//体检状态，对应examination_record_status字典
+	private String idNumber;		// 身份证号
+	private String status;		// 体检状态，对应examination_record_status字典
+	private List<ExaminationRecordItem> examinationRecordItemList = Lists.newArrayList();		// 子表列表
 	
 	public ExaminationRecord() {
 		super();
@@ -41,23 +45,17 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	@NotNull(message="体检用户不能为空")
-	public ExaminationUser getUser() {
+	@ExcelField(value="user.id",title="体检用户",type=0,sort=20)
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(ExaminationUser user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
-
-	@Length(min=1, max=20, message="身份证号长度必须介于 1 和 20 之间")
-	public String getIdNumber() {
-		return idNumber;
-	}
-
-	public void setIdNumber(String idNumber) {
-		this.idNumber = idNumber;
-	}
-	@Length(min=0, max=50, message="编号长度必须介于 1 和 50 之间")
+	
+	@Length(min=1, max=50, message="编号长度必须介于 1 和 50 之间")
+	@ExcelField(value="code",title="编号",type=0,sort=30)
 	public String getCode() {
 		return code;
 	}
@@ -67,6 +65,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=50, message="姓名长度必须介于 1 和 50 之间")
+	@ExcelField(value="name",title="姓名",type=0,sort=40)
 	public String getName() {
 		return name;
 	}
@@ -76,6 +75,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=45, message="联系电话长度必须介于 1 和 45 之间")
+	@ExcelField(value="phoneNumber",title="联系电话",type=0,sort=50)
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -85,6 +85,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="性别长度必须介于 1 和 64 之间")
+	@ExcelField(value="sex",title="性别",type=0,sort=60)
 	public String getSex() {
 		return sex;
 	}
@@ -93,7 +94,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.sex = sex;
 	}
 	
-	@Length(min=0, max=64, message="行业长度必须介于 1 和 64 之间")
+	@Length(min=1, max=64, message="行业长度必须介于 1 和 64 之间")
+	@ExcelField(value="industryId",title="行业",type=0,sort=70)
 	public String getIndustryId() {
 		return industryId;
 	}
@@ -102,7 +104,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.industryId = industryId;
 	}
 	
-	@Length(min=0, max=64, message="岗位长度必须介于 1 和 64 之间")
+	@Length(min=1, max=64, message="岗位长度必须介于 1 和 64 之间")
+	@ExcelField(value="postId",title="岗位",type=0,sort=80)
 	public String getPostId() {
 		return postId;
 	}
@@ -112,6 +115,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=10, message="出生日期长度必须介于 1 和 10 之间")
+	@ExcelField(value="birthday",title="出生日期",type=0,sort=90)
 	public String getBirthday() {
 		return birthday;
 	}
@@ -120,7 +124,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.birthday = birthday;
 	}
 	
-	@Length(min=0, max=64, message="单位长度必须介于 1 和 64 之间")
+	@Length(min=1, max=64, message="单位长度必须介于 1 和 64 之间")
+	@ExcelField(value="organId",title="单位",type=0,sort=100)
 	public String getOrganId() {
 		return organId;
 	}
@@ -130,6 +135,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=0, max=64, message="所属体检中心长度必须介于 0 和 64 之间")
+	@ExcelField(value="owner",title="所属体检中心",type=0,sort=170)
 	public String getOwner() {
 		return owner;
 	}
@@ -139,6 +145,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=0, max=64, message="体检套餐长度必须介于 0 和 64 之间")
+	@ExcelField(value="packageId",title="体检套餐",type=0,sort=180)
 	public String getPackageId() {
 		return packageId;
 	}
@@ -148,6 +155,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=0, max=64, message="套餐价格长度必须介于 0 和 64 之间")
+	@ExcelField(value="packagePrice",title="套餐价格",type=0,sort=190)
 	public String getPackagePrice() {
 		return packagePrice;
 	}
@@ -155,12 +163,32 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setPackagePrice(String packagePrice) {
 		this.packagePrice = packagePrice;
 	}
+	
+	@Length(min=0, max=20, message="身份证号长度必须介于 0 和 20 之间")
+	@ExcelField(value="idNumber",title="身份证号",type=0,sort=200)
+	public String getIdNumber() {
+		return idNumber;
+	}
 
+	public void setIdNumber(String idNumber) {
+		this.idNumber = idNumber;
+	}
+	
+	@Length(min=0, max=64, message="体检状态，对应examination_record_status字典长度必须介于 0 和 64 之间")
+	@ExcelField(value="status",title="体检状态，对应examination_record_status字典",type=0,sort=210)
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public List<ExaminationRecordItem> getExaminationRecordItemList() {
+		return examinationRecordItemList;
+	}
+
+	public void setExaminationRecordItemList(List<ExaminationRecordItem> examinationRecordItemList) {
+		this.examinationRecordItemList = examinationRecordItemList;
 	}
 }

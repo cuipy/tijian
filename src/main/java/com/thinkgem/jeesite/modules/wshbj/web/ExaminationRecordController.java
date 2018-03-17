@@ -5,9 +5,9 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
@@ -18,19 +18,26 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import org.springframework.web.multipart.MultipartFile;
+import java.util.List;
+import javax.validation.ConstraintViolationException;
+import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 
-import java.util.List;
-
 /**
  * 体检记录Controller
  * @author zhxl
- * @version 2018-03-07
+ * @version 2018-03-17
  */
 @Controller
 @RequestMapping(value = "${adminPath}/wshbj/examinationRecord")
@@ -84,6 +91,13 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = "view")
+	public String view(ExaminationRecord examinationRecord, Model model) {
+		model.addAttribute("examinationRecord", examinationRecord);
+		return "modules/wshbj/examinationRecordPage";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationRecord examinationRecord, Model model) {
 		model.addAttribute("examinationRecord", examinationRecord);
@@ -115,6 +129,7 @@ public class ExaminationRecordController extends BaseController {
 		examinationPackage.setReferenceFlag("0");
 		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
 		model.addAttribute("packageList", packageList);
+
 		return "modules/wshbj/examinationRecordForm";
 	}
 
@@ -144,5 +159,22 @@ public class ExaminationRecordController extends BaseController {
 		addMessage(redirectAttributes, "删除体检记录成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
 	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = "export",method=RequestMethod.POST)
+	public String exportFile(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "体检记录数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            List<ExaminationRecord> list = examinationRecordService.findList(examinationRecord);
+    		new ExportExcel("examinationRecord数据", ExaminationRecord.class).setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出体检记录失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + Global.getAdminPath() + "/wshbj/examinationRecord/list?repage";
+	}
+
+
+
 
 }

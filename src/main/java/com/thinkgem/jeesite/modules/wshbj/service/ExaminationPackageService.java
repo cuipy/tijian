@@ -31,7 +31,10 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 	
 	public ExaminationPackage get(String id) {
 		ExaminationPackage examinationPackage = super.get(id);
-		examinationPackage.setPackageItemList(packageItemDao.findList(new PackageItem(examinationPackage)));
+		if (examinationPackage!=null){
+			examinationPackage.setPackageItemList(packageItemDao.findList(new PackageItem(examinationPackage)));
+		}
+
 		return examinationPackage;
 	}
 	

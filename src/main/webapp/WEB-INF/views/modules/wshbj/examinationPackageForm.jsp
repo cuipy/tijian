@@ -124,13 +124,15 @@
 									<option value="">请选择</option>
 									<c:forEach items="${examinationItemList}" var="examinationItem">
 										<option value="${examinationItem.id}">${examinationItem.name}</option>
+										<option value="${examinationItem.id}">${examinationItem.name}</option>
+										<option value="${examinationItem.id}">${examinationItem.name}</option>
 									</c:forEach>
 								</select>
 							</td>
 							<td>
 								<input id="packageItemList{{idx}}_remarks" name="packageItemList[{{idx}}].remarks" type="text" value="{{row.remarks}}" maxlength="255" class="input-xxlarge "/>
 							</td>
-							<shiro:hasPermission name="wshbj:examinationPackage:edit"><td class="text-center" width="10">
+							<shiro:hasPermission name="wshbj:examinationPackage:edit"><td class="text-center" width="20">
 								{{#delBtn}}<span class="close" onclick="delRow(this, '#packageItemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
 							</td></shiro:hasPermission>
 						</tr>//-->

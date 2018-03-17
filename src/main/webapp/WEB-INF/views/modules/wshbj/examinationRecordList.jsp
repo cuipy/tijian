@@ -7,7 +7,15 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			$("#btnExport").click(function(){
+				top.$.jBox.confirm("确认要导出体检记录数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#searchForm").attr("action","${ctx}/wshbj/examinationRecord/export");
+						$("#searchForm").submit();
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -61,6 +69,7 @@
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -83,23 +92,23 @@
 		<c:forEach items="${page.list}" var="examinationRecord">
 			<tr>
 				<td>
-					${examinationRecord.name}
+						${examinationRecord.name}
 				</td>
 				<td>
 						${examinationRecord.idNumber}
 				</td>
 				<td>
-					${examinationRecord.phoneNumber}
+						${examinationRecord.phoneNumber}
 				</td>
 				<td>
-							${fns:getDictLabel(examinationRecord.sex,'sex','')}
+						${fns:getDictLabel(examinationRecord.sex,'sex','')}
 				</td>
 				<td>
 
-							${wshbjfns:getEntityName('Organ',examinationRecord.organId,'')}
+						${wshbjfns:getEntityName('Organ',examinationRecord.organId,'')}
 				</td>
 				<td>
-							${wshbjfns:getEntityName('ExaminationPackage',examinationRecord.packageId,'')}
+						${wshbjfns:getEntityName('ExaminationPackage',examinationRecord.packageId,'')}
 				</td>
 				<td>
 					<fmt:formatDate value="${examinationRecord.updateDate}" pattern="yyyy-MM-dd HH:mm"/>
@@ -108,7 +117,7 @@
 						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
-    				<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>
+					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>
 					<a href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
