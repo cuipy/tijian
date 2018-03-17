@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.test1.dao.Test1Dao">
+    
+	<sql id="test1Columns">
+		a.id AS "id",
+		a.head_img AS "headImg",
+		a.title AS "title",
+		a.user_pwd AS "userPwd",
+		a.content AS "content",
+		a.auth_id AS "auth.id",
+		a.danwei AS "danwei",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		auth.name AS "auth.name",
+		auth.no AS "auth.no",
+		createBy.name AS "createBy.name"
+	</sql>
+	
+	<sql id="test1Joins">
+		LEFT JOIN sys_user auth ON auth.id = a.auth_id
+		LEFT JOIN sys_user createBy ON createBy.id = a.create_by
+	</sql>
+    
+	<select id="get" resultType="Test1">
+		SELECT 
+			<include refid="test1Columns"/>
+		FROM test1 a
+		<include refid="test1Joins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="Test1">
+		SELECT 
+			<include refid="test1Columns"/>
+		FROM test1 a
+		<include refid="test1Joins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="auth != null and auth.id != null and auth.id != ''">
+				AND a.auth_id = #{auth.id}
+			</if>
+			<if test="auth != null and auth.name != null and auth.name != ''">
+				AND auth.name LIKE
+					<if test="dbName == 'oracle'">'%'||#{auth.name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{auth.name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{auth.name},'%')</if>
+			</if>
+			<if test="auth != null and auth.no != null and auth.no != ''">
+				AND auth.no LIKE
+					<if test="dbName == 'oracle'">'%'||#{auth.no}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{auth.no}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{auth.no},'%')</if>
+			</if>
+			<if test="danwei != null and danwei != ''">
+				AND a.danwei LIKE
+					<if test="dbName == 'oracle'">'%'||#{danwei}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{danwei}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{danwei},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Test1">
+		SELECT 
+			<include refid="test1Columns"/>
+		FROM test1 a
+		<include refid="test1Joins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO test1(
+			id,
+			head_img,
+			title,
+			user_pwd,
+			content,
+			auth_id,
+			danwei,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{headImg},
+			#{title},
+			#{userPwd},
+			#{content},
+			#{auth.id},
+			#{danwei},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE test1
+			<set>
+				<if test="headImg !=null and headImg != '' ">head_img = #{headImg},</if>
+				<if test="title !=null and title != '' ">title = #{title},</if>
+				<if test="userPwd !=null and userPwd != '' ">user_pwd = #{userPwd},</if>
+				<if test="content !=null and content != '' ">content = #{content},</if>
+				<if test="auth.id !=null and auth.id != '' ">auth_id = #{auth.id},</if>
+				<if test="danwei !=null and danwei != '' ">danwei = #{danwei},</if>
+				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
+				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
+				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE test1 SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
