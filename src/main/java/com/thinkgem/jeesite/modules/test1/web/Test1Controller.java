@@ -77,15 +77,14 @@ public class Test1Controller extends BaseController {
 	}
 
 	@RequiresPermissions("test1:test1:view")
-	@RequestMapping(value = {"lr1", ""})
-	public String lr1(HttpServletResponse resp,Model m) {
+	@RequestMapping(value = {"lr1"})
+	public String lr1(String format,HttpServletResponse resp,Model m) {
 
-		m.addAttribute("format","html");
+		m.addAttribute("format",format);
 		m.addAttribute("url","/WEB-INF/jasper/lr1.jasper");
 
 		return "jr";
 	}
-
 	
 	@RequiresPermissions("test1:test1:view")
 	@RequestMapping(value = {"list", ""})
