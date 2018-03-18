@@ -16,6 +16,7 @@
 
 package com.thinkgem.jeesite.common.jasperreports;
 
+import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 
 /**
@@ -30,7 +31,6 @@ import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
  * @author Juergen Hoeller
  * @since 1.1.3
  */
-@SuppressWarnings({"deprecation", "rawtypes"})
 public class CuiJasperReportsDocxView extends CuiAbstractJasperReportsSingleFormatView {
 
 	public CuiJasperReportsDocxView() {
@@ -38,7 +38,7 @@ public class CuiJasperReportsDocxView extends CuiAbstractJasperReportsSingleForm
 	}
 
 	@Override
-	protected net.sf.jasperreports.engine.JRExporter createExporter() {
+	protected JRExporter createExporter() {
 		return new JRDocxExporter();
 	}
 

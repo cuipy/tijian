@@ -16,8 +16,8 @@
 
 package com.thinkgem.jeesite.common.jasperreports;
 
+import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
-import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsSingleFormatView;
 
 /**
  * Implementation of {@code AbstractJasperReportsSingleFormatView}
@@ -39,7 +39,7 @@ public class CuiJasperReportsPdfView extends CuiAbstractJasperReportsSingleForma
 	}
 
 	@Override
-	protected net.sf.jasperreports.engine.JRExporter createExporter() {
+	protected JRExporter createExporter() {
 		return new JRPdfExporter();
 	}
 

@@ -5,9 +5,6 @@ import com.thinkgem.jeesite.common.web.Servlets;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
-import net.sf.jasperreports.export.Exporter;
-import net.sf.jasperreports.view.save.JRHtmlSaveContributor;
-import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsSingleFormatView;
 
 public class CuiJasperReportsHtmlView extends CuiAbstractJasperReportsSingleFormatView {
 
@@ -15,6 +12,7 @@ public class CuiJasperReportsHtmlView extends CuiAbstractJasperReportsSingleForm
         this.setContentType("text/html");
     }
 
+    @Override
     protected JRExporter createExporter() {
         JRExporter exporter=new HtmlExporter();
 

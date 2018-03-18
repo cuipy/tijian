@@ -16,6 +16,7 @@
 
 package com.thinkgem.jeesite.common.jasperreports;
 
+import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsSingleFormatView;
 
@@ -31,7 +32,6 @@ import org.springframework.web.servlet.view.jasperreports.AbstractJasperReportsS
  * @author Juergen Hoeller
  * @since 1.1.3
  */
-@SuppressWarnings({"deprecation", "rawtypes"})
 public class CuiJasperReportsCsvView extends CuiAbstractJasperReportsSingleFormatView {
 
 	public CuiJasperReportsCsvView() {
@@ -39,7 +39,7 @@ public class CuiJasperReportsCsvView extends CuiAbstractJasperReportsSingleForma
 	}
 
 	@Override
-	protected net.sf.jasperreports.engine.JRExporter createExporter() {
+	protected JRExporter createExporter() {
 		return new JRCsvExporter();
 	}
 
