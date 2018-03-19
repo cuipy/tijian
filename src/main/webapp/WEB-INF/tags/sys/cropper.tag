@@ -5,6 +5,7 @@
 <%@ attribute name="value" type="java.lang.String" required="false" description="图片的路径地址"%>
 <%@ attribute name="mainImgWidth" type="java.lang.String" required="true" description="主图片的宽度"%>
 <%@ attribute name="mainImgHeight" type="java.lang.String" required="false" description="主图片的高度"%>
+<%@ attribute name="showPreview" type="java.lang.Boolean" required="false" description="是否显示预览图"%>
 <c:if test="${mainImgHeight == null }">
     <c:set var="mainImgHeight" value="${mainImgWidth}"/>
 </c:if>
@@ -103,12 +104,14 @@
             <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}"/>
             <video id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
         </div>
+        <c:if test="${showPreview}">
         <div class="preview-box-parcel" style="width:${mainImgWidth/2}px;height:${mainImgHeight}px">
             <div style="padding:5px;width:100%;height:50%">
                 <div class="square previewImg" style="width:100%;height:100%"></div></div>
             <div style="padding:5px;width:100%;height:50%">
                 <div class="circular previewImg" style="width:100%;height:100%"></div></div>
         </div>
+        </c:if>
         <div style="clear:both"/>
     </div>
     <div class="tailoring-content-one">
@@ -126,7 +129,6 @@
         <div id="CamFlash"></div>
         <p class="cambar">
             <a href="javascript:;" id="CamOk">拍照</a>
-            <a href="javascript:;" id="setCam">设置</a>
             <a href="javascript:;" id="camClose">关闭</a>
             <span style="clear:both;"></span>
         </p>
