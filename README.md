@@ -164,4 +164,4 @@ Hibernate性能上定不是问题。但对于大多数情况下，真正掌握Hi
 如果你仍然喜欢Hibernate，请点击[下载JeeSite Hibernate版本](https://github.com/thinkgem/jeesite/tree/master_hibernate)。
 
 ## 崔鹏宇优化
-[2018年3月优化功能](https://github.com/cuipengyu/jeesite/doc/2018年3月优化.md)
+* 2018年3月增加功能说明 [文档](https://github.com/cuipengyu/jeesite/doc/2018年3月优化.md)
