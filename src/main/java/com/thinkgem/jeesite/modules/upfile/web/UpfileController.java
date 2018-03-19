@@ -58,7 +58,7 @@ public class UpfileController extends BaseController{
 
 		Principal principal = UserUtils.getPrincipal();
 
-		String relaPath="/"+principal.getId()+"/images/"+StringUtils.formatDate(new java.util.Date(),"/yyyy/MM/dd/");
+		String relaPath="/"+principal.getId()+"/images/"+DateUtils.formatDate(new java.util.Date(),"/yyyy/MM/dd/");
 		String savePath=FileUtils.path(Global.getUserfilesBaseDir()+ Global.USERFILES_BASE_URL +relaPath);
 		String relaUrlPath= Servlets.getRequest().getContextPath() + Global.USERFILES_BASE_URL+relaPath;
 
