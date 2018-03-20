@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.test1.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -19,6 +20,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class Test1 extends DataEntity<Test1> {
 	
 	private static final long serialVersionUID = 1L;
+	private String testNo;		// 测编号
 	private String headImg;		// 头像
 	private String title;		// 标题
 	private String userPwd;		// 文档密码
@@ -32,6 +34,17 @@ public class Test1 extends DataEntity<Test1> {
 
 	public Test1(String id){
 		super(id);
+	}
+
+	@ExpressSequence(express="T1{yyyyMM}[8]")
+	@Length(min=0, max=64, message="测编号必须介于 0 和 128 之间")
+	@ExcelField(value="testNo",title="测编号",type=0,sort=8)
+	public String getTestNo() {
+		return testNo;
+	}
+
+	public void setTestNo(String testNo) {
+		this.testNo = testNo;
 	}
 
 	@Length(min=0, max=128, message="头像长度必须介于 0 和 128 之间")

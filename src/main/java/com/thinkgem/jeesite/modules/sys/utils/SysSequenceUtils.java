@@ -3,19 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.utils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.thinkgem.jeesite.common.mapper.JsonMapper;
-import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.sys.dao.DictDao;
-import com.thinkgem.jeesite.modules.sys.entity.Dict;
-
-import java.sql.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 序列表操作类
@@ -52,7 +41,13 @@ public class SysSequenceUtils {
 			String strRight = StringUtils.right(res, rightLen);
 
 			String strMiddle="";
-			strMiddle = DateUtils.formatDate(new java.util.Date(), strExp);
+			java.util.Date dt=new java.util.Date();
+
+			try {
+				strMiddle = DateUtils.formatDate(dt, strExp);
+			}catch(Exception e){
+				e.printStackTrace();
+			}
 
 			res=strLeft+strMiddle+strRight;
 		}
@@ -72,7 +67,6 @@ public class SysSequenceUtils {
 		}
 
 		if(!template.matches(".*\\[\\d+\\].*")){
-			System.out.println("aksjd撒打发");
 			return template;
 		}
 
@@ -95,7 +89,7 @@ public class SysSequenceUtils {
 
 	public static void main(String ... argis){
 
-		System.out.println(toSequence("2e[8]ss",33));
+		System.out.println(toTemplate("2e{yyy-MM-dd}[8]ss"));
 
 	}
 

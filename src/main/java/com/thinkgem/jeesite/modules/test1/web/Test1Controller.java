@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.utils.*;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.Servlets;
+import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRHtmlExporterContext;
@@ -63,6 +64,9 @@ public class Test1Controller extends BaseController {
 
 	@Autowired
 	private Test1Service test1Service;
+
+	@Autowired
+	private SysSequenceService sysSequenceService;
 	
 	@ModelAttribute
 	public Test1 get(@RequestParam(required=false) String id) {
@@ -89,7 +93,8 @@ public class Test1Controller extends BaseController {
 	@RequiresPermissions("test1:test1:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Test1 test1, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Test1> page = test1Service.findPage(new Page<Test1>(request, response), test1); 
+
+		Page<Test1> page = test1Service.findPage(new Page<Test1>(request, response), test1);
 		model.addAttribute("page", page);
 		return "modules/test1/test1List";
 	}
