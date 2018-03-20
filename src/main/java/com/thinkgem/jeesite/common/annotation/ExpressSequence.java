@@ -12,6 +12,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)  
 public @interface ExpressSequence {
 
+    /**
+     * 语法格式  XXX{日期格式}[长度]
+     *   XXX 任意字符串
+     *   {日期格式}  支持SimpleDateFormat支持的日期格式
+     *   [长度]  顺序号，生成指定长度的序列号
+     * @return
+     */
 	String express();
 	
 }
