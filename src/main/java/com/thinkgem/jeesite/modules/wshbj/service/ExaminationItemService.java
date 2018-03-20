@@ -6,9 +6,11 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 import java.util.List;
 
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +27,9 @@ import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
 @Service
 @Transactional(readOnly = true)
 public class ExaminationItemService extends CrudService<ExaminationItemDao, ExaminationItem> {
+
+	@Autowired
+	private GenSeqNumberService genSeqNumberService;
 
 	public ExaminationItem get(String id) {
 		return super.get(id);
@@ -59,7 +64,7 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 		}
 
 		//TODO 数据来源
-
+		String keyCode = UserUtils.getUser().getCompany().getCode()+"ITEM_";
 		String[] examinationItemIdsArray = examinationItemIds.split(",");
 		ExaminationItem examinationItem = null,newExaminationItem = null;
 		for (String examinationItemId:examinationItemIdsArray) {
@@ -78,6 +83,8 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 			newExaminationItem.setPrice(examinationItem.getPrice());
 			newExaminationItem.setRangeMin(examinationItem.getRangeMin());
 			newExaminationItem.setRangeMax(examinationItem.getRangeMax());
+
+			newExaminationItem.setPermission(keyCode+genSeqNumberService.genSeqNumber1(keyCode,1));
 
 			super.save(newExaminationItem);
 		}

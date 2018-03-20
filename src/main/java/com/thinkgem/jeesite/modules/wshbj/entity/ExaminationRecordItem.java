@@ -20,7 +20,6 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private static final long serialVersionUID = 1L;
 	private String recordId;		// 检查记录 父类
 	private String itemId;		// 检查项目
-	private User user;		// 体检用户
 	private String resultDictId;		// 体检结果
 	
 	public ExaminationRecordItem() {
@@ -51,16 +50,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
-	
-	@NotNull(message="体检用户不能为空")
-	@ExcelField(value="user.id",title="体检用户",type=0,sort=40)
-	public User getUser() {
-		return user;
-	}
 
-	public void setUser(User user) {
-		this.user = user;
-	}
 	
 	@Length(min=1, max=64, message="体检结果长度必须介于 1 和 64 之间")
 	@ExcelField(value="resultDictId",title="体检结果",type=0,sort=50)

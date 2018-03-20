@@ -177,4 +177,15 @@ public class ExaminationUserController extends BaseController {
 		ExaminationUser examinationUser = examinationUserService.get(id);
 		return examinationUser;
 	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "getByIdNumber")
+	public ExaminationUser getByIdNumber(@RequestParam(required=true) String idNumber, HttpServletResponse response) {
+		if (org.apache.commons.lang3.StringUtils.isBlank(idNumber)){
+			return null;
+		}
+		ExaminationUser examinationUser = examinationUserService.getByIdNumberAndOwner(idNumber,UserUtils.getUser().getCompany().getId());
+		return examinationUser;
+	}
 }

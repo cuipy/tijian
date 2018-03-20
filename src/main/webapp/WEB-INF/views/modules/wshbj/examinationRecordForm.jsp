@@ -22,7 +22,40 @@
 					}
 				}
 			});
-		});
+            $("input[name='itemType']:radio").change(function() {
+                if($(this).val()=='1'){
+                    $('#packageIdDiv').show();
+                    $('#itemsDiv').hide();
+				}else {
+                    $('#packageIdDiv').hide();
+                    $('#itemsDiv').show();
+				}
+            });
+            <c:choose>
+				<c:when test="${not empty examinationRecord.id}">
+					 $("input[name='itemType'][value=${examinationRecord.itemType}]").attr("checked",true);
+				</c:when>
+				<c:otherwise>
+					$("input[name='itemType'][value='1']").attr("checked",true);
+				</c:otherwise>
+            </c:choose>
+
+
+
+            $('#idNumber').bind('keypress',function(event){
+                if(event.keyCode == 13) {
+                    var idNumber = $('#idNumber').val();
+                    var url = '${ctx}/wshbj/examinationUser/getByIdNumber';
+                    $.post(url,{idNumber:idNumber},function (data) {
+                        if(data){
+                            setUserPro(data);
+                        }
+                    });
+                    //防止form提交
+                    return false;
+                }
+            });
+        });
 		function addRow(list, idx, tpl, row){
 			$(list).append(Mustache.render(tpl, {
 				idx: idx, delBtn: true, row: row
@@ -63,48 +96,50 @@
                 var url = '${ctx}/wshbj/examinationUser/getById';
                 $.post(url,{id:euserId},function (data) {
                     if(data){
-                        $('#idNumber').val(data.idNumber);
-                        $('#phoneNumber').val(data.phoneNumber);
-                        $('#birthday').val(data.birthday);
-                        $('#sex').val(data.sex);
-
-                        $("#organId").attr("value", data.organId);
-                        $("#organId").trigger('change');
-
-                        $("#industryId").attr("value", data.industryId);
-                        $("#industryId").trigger('change');
-
-                        $("#postId").attr("value", data.postId);
-                        $("#postId").trigger('change');
+                        setUserPro(data);
                     }
                 },'json');
             }else if('clear'==v){
 
             }
         }
+
+        function setUserPro(data) {
+            $('#userName').val(data.name);
+            $('#userId').val(data.id);
+            $('#idNumber').val(data.idNumber);
+            $('#phoneNumber').val(data.phoneNumber);
+            $('#birthday').val(data.birthday);
+
+            $("#sex").attr("value", data.sex);
+            $("#sex").trigger('change');
+
+            $("#organId").attr("value", data.organId);
+            $("#organId").trigger('change');
+
+            $("#industryId").attr("value", data.industryId);
+            $("#industryId").trigger('change');
+
+            $("#postId").attr("value", data.postId);
+            $("#postId").trigger('change');
+        }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">体检记录<shiro:hasPermission name="wshbj:examinationRecord:edit">${not empty examinationRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationRecord:edit">查看</shiro:lacksPermission></a></li>
+        <li><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<c:if test="${not empty examinationRecord.id}">
-			<div class="control-group">
-				<label class="control-label">状态：</label>
-				<div class="controls">
-					<form:select path="status" cssStyle="width: 100px">
-						<form:option value="">
-							请选择
-						</form:option>
-						<form:options items="${fns:getDictList('examination_record_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-					</form:select>
-				</div>
+		<div class="control-group">
+			<label class="control-label">编号：</label>
+			<div class="controls">
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
-		</c:if>
+		</div>
 		<div class="control-group">
 			<label class="control-label">体检用户：</label>
 			<div class="controls">
@@ -175,22 +210,13 @@
 		<div class="control-group">
 			<label class="control-label">出生日期：</label>
 			<div class="controls">
-				<form:input path="birthday" htmlEscape="false" maxlength="10" class="input-xlarge required"/>
+				<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
+							onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label">体检套餐：</label>
-			<div class="controls">
-				<form:select path="packageId" class="input-xlarge">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
+
 		<div class="control-group">
 			<label class="control-label">价格：</label>
 			<div class="controls">
@@ -204,16 +230,30 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">检查记录项目：</label>
+			<label class="control-label">体检项目方式：</label>
+			<div class="controls">
+				<input type="radio" id="itemType1" name="itemType" value="1" /><label for="itemType1">体检套餐</label>
+				<input type="radio" id="itemType2" name="itemType" value="2" /><label for="itemType2">自由选择</label>
+			</div>
+		</div>
+		<div class="control-group" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
+			<label class="control-label">体检套餐：</label>
+			<div class="controls">
+				<form:select path="packageId" class="input-xlarge">
+					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+		<div class="control-group" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
+			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
 				<table id="contentTable" class="table table-striped table-bordered table-condensed">
 					<thead>
 						<tr>
 							<th class="hide"></th>
 							<th>检查项目</th>
-							<th>体检用户</th>
 							<th>体检结果</th>
-							<th>备注</th>
+							<th>结果备注</th>
 							<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
 						</tr>
 					</thead>
@@ -230,15 +270,18 @@
 							<input id="examinationRecordItemList{{idx}}_delFlag" name="examinationRecordItemList[{{idx}}].delFlag" type="hidden" value="0"/>
 						</td>
 						<td>
-							<input id="examinationRecordItemList{{idx}}_itemId" name="examinationRecordItemList[{{idx}}].itemId" type="text" value="{{row.itemId}}" maxlength="64" class="input-small required"/>
+							<select id="examinationRecordItemList{{idx}}_itemId" name="examinationRecordItemList[{{idx}}].itemId" data-value="{{row.itemId}}" class="input-small required">
+									<option value="">请选择</option>
+									<c:forEach items="${examinationItemList}" var="examinationItem">
+										<option value="${examinationItem.id}">${examinationItem.name}</option>
+									</c:forEach>
+								</select>
 						</td>
 						<td>
+							<input id="examinationRecordItemList{{idx}}_resultDictId" name="examinationRecordItemList[{{idx}}].resultDictId" type="text" value="{{row.resultDictId}}" maxlength="64" class="input-small"/>
 						</td>
 						<td>
-							<input id="examinationRecordItemList{{idx}}_resultDictId" name="examinationRecordItemList[{{idx}}].resultDictId" type="text" value="{{row.resultDictId}}" maxlength="64" class="input-small required"/>
-						</td>
-						<td>
-							<textarea id="examinationRecordItemList{{idx}}_remarks" name="examinationRecordItemList[{{idx}}].remarks" rows="4" maxlength="255" class="input-small ">{{row.remarks}}</textarea>
+							<input id="examinationRecordItemList{{idx}}_remarks" name="examinationRecordItemList[{{idx}}].remarks" type="text"  class="input-xxlarge ">{{row.remarks}}</textarea>
 						</td>
 						<shiro:hasPermission name="wshbj:examinationRecord:edit"><td class="text-center" width="10">
 							{{#delBtn}}<span class="close" onclick="delRow(this, '#examinationRecordItemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
@@ -258,7 +301,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

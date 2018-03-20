@@ -5,16 +5,16 @@ package com.thinkgem.jeesite.modules.wshbj.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
+import com.thinkgem.jeesite.modules.wshbj.entity.GenSeqNumber;
 import org.apache.ibatis.annotations.Param;
 
 /**
- * 体检记录DAO接口
+ * 序列号生成DAO接口
  * @author zhxl
- * @version 2018-03-17
+ * @version 2018-03-19
  */
 @MyBatisDao
-public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
+public interface GenSeqNumberDao extends CrudDao<GenSeqNumber> {
 
-	public String genCode(@Param("keyCode")String keyCode);
+	public String genSeqNumber1(@Param("keyCode")String keyCode,@Param("increment")int increment);
 }

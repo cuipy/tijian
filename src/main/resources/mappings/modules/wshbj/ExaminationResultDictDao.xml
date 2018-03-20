@@ -33,6 +33,9 @@
 		<include refid="examinationResultDictJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="itemId != null and itemId != ''">
+				AND a.item_id = #{itemId}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>

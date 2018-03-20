@@ -24,6 +24,7 @@
 		a.package_price AS "packagePrice",
 		a.id_number AS "idNumber",
 		a.status AS "status",
+		a.item_type AS "itemType",
 		u2.name AS "user.name"
 	</sql>
 	
@@ -125,7 +126,8 @@
 			package_id,
 			package_price,
 			id_number,
-			status
+			status,
+			item_type
 		) VALUES (
 			#{id},
 			#{user.id},
@@ -147,7 +149,8 @@
 			#{packageId},
 			#{packagePrice},
 			#{idNumber},
-			#{status}
+			#{status},
+			#{itemType}
 		)
 	</insert>
 	
@@ -171,6 +174,7 @@
 				<if test="packagePrice !=null and packagePrice != '' ">package_price = #{packagePrice},</if>
 				<if test="idNumber !=null and idNumber != '' ">id_number = #{idNumber},</if>
 				<if test="status !=null and status != '' ">status = #{status},</if>
+				<if test="itemType !=null and itemType != '' ">item_type = #{itemType},</if>
 			</set>
 		WHERE id = #{id}
 	</update>
@@ -180,5 +184,9 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+
+	<select id="genCode" resultType="String">
+		select concat(#{keyCode},lpad(gen_seq_number(#{keyCode},1),8,'0'))
+	</select>
 	
 </mapper>

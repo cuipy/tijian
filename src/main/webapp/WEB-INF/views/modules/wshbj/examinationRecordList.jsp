@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -85,7 +85,7 @@
 				<th>体检套餐</th>
 				<th width="120">填报时间</th>
 				<th width="60">状态</th>
-				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="120">操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="150">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -118,6 +118,7 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>
+					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">填报结果</a>
 					<a href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>

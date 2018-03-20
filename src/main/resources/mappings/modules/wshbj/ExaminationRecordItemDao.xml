@@ -6,20 +6,17 @@
 		a.id AS "id",
 		a.record_id AS "recordId",
 		a.item_id AS "itemId",
-		a.user_id AS "user.id",
 		a.result_dict_id AS "resultDictId",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
-		a.remarks AS "remarks",
-		user.name AS "user.name"
+		a.remarks AS "remarks"
 	</sql>
 	
 	<sql id="examinationRecordItemJoins">
 		LEFT JOIN bj_examination_record b ON b.id = a.record_id
-		LEFT JOIN sys_user user ON user.id = a.user_id
 	</sql>
     
 	<select id="get" resultType="ExaminationRecordItem">
@@ -75,7 +72,6 @@
 			id,
 			record_id,
 			item_id,
-			user_id,
 			result_dict_id,
 			del_flag,
 			create_by,
@@ -87,7 +83,6 @@
 			#{id},
 			#{recordId},
 			#{itemId},
-			#{user.id},
 			#{resultDictId},
 			#{delFlag},
 			#{createBy.id},
@@ -103,7 +98,6 @@
 			<set>
 				<if test="recordId !=null and recordId != '' ">record_id = #{recordId},</if>
 				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
-				<if test="user.id !=null and user.id != '' ">user_id = #{user.id},</if>
 				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
 				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
 				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>

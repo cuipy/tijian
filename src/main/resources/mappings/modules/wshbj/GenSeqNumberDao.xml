@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.GenSeqNumberDao">
+    
+	<sql id="genSeqNumberColumns">
+		a.noid AS "noid",
+		a.key_code AS "keyCode",
+		a.curr_val AS "currVal"
+	</sql>
+	
+	<sql id="genSeqNumberJoins">
+	</sql>
+    
+	<select id="get" resultType="GenSeqNumber">
+		SELECT 
+			<include refid="genSeqNumberColumns"/>
+		FROM gen_seq_number a
+		<include refid="genSeqNumberJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="GenSeqNumber">
+		SELECT 
+			<include refid="genSeqNumberColumns"/>
+		FROM gen_seq_number a
+		<include refid="genSeqNumberJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="GenSeqNumber">
+		SELECT 
+			<include refid="genSeqNumberColumns"/>
+		FROM gen_seq_number a
+		<include refid="genSeqNumberJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO gen_seq_number(
+			noid,
+			key_code,
+			curr_val
+		) VALUES (
+			#{noid},
+			#{keyCode},
+			#{currVal}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE gen_seq_number
+			<set>
+				<if test="noid !=null and noid != '' ">noid = #{noid},</if>
+				<if test="keyCode !=null and keyCode != '' ">key_code = #{keyCode},</if>
+				<if test="currVal !=null and currVal != '' ">curr_val = #{currVal},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM gen_seq_number
+		WHERE id = #{id}
+	</update>
+
+
+	<select id="genSeqNumber1" resultType="java.lang.String">
+		select gen_seq_number(#{keyCode},#{increment})
+	</select>
+
+	<select id="genSeqNumber2" resultType="String">
+		select lpad(gen_seq_number(#{keyCode},#{addCount}),#{length},#{char})
+	</select>
+</mapper>

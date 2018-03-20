@@ -74,13 +74,14 @@
 		<div class="control-group">
 			<label class="control-label">价格：</label>
 			<div class="controls">
-				<form:input path="price" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<form:input path="price" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">检查类别：</label>
 			<div class="controls">
-				<form:select path="categoryId" class="input-xlarge">
+				<form:select path="categoryId" class="input-xlarge required" dataMsgRequired="必填信息">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -123,8 +124,6 @@
 								<select id="packageItemList{{idx}}_itemId" name="packageItemList[{{idx}}].itemId" data-value="{{row.itemId}}" class="input-small required">
 									<option value="">请选择</option>
 									<c:forEach items="${examinationItemList}" var="examinationItem">
-										<option value="${examinationItem.id}">${examinationItem.name}</option>
-										<option value="${examinationItem.id}">${examinationItem.name}</option>
 										<option value="${examinationItem.id}">${examinationItem.name}</option>
 									</c:forEach>
 								</select>

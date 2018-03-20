@@ -34,6 +34,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String packagePrice;		// 套餐价格
 	private String idNumber;		// 身份证号
 	private String status;		// 体检状态，对应examination_record_status字典
+	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
+
 	private List<ExaminationRecordItem> examinationRecordItemList = Lists.newArrayList();		// 子表列表
 	
 	public ExaminationRecord() {
@@ -190,5 +192,14 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	public void setExaminationRecordItemList(List<ExaminationRecordItem> examinationRecordItemList) {
 		this.examinationRecordItemList = examinationRecordItemList;
+	}
+
+	@Length(min=0, max=64, message="体检项目方式长度必须介于 0 和 64 之间")
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 }

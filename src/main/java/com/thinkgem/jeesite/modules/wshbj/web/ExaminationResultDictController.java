@@ -59,6 +59,14 @@ public class ExaminationResultDictController extends BaseController {
 	public String list(ExaminationResultDict examinationResultDict, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ExaminationResultDict> page = examinationResultDictService.findPage(new Page<ExaminationResultDict>(request, response), examinationResultDict); 
 		model.addAttribute("page", page);
+
+		ExaminationItem examinationItem = new ExaminationItem();
+		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationItem.setDelFlag("0");
+		examinationItem.setReferenceFlag("0");
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("examinationItemList", examinationItemList);
+
 		return "modules/wshbj/examinationResultDictList";
 	}
 

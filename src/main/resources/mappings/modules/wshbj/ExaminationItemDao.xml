@@ -19,7 +19,8 @@
 		a.price AS "price",
 		a.range_max AS "rangeMax",
 		a.range_min AS "rangeMin",
-		a.specimen_id AS "specimenId"
+		a.specimen_id AS "specimenId",
+		a.permission AS "permission"
 	</sql>
 	
 	<sql id="examinationItemJoins">
@@ -102,7 +103,8 @@
 			price,
 			range_max,
 			range_min,
-			specimen_id
+			specimen_id,
+			permission
 		) VALUES (
 			#{id},
 			#{code},
@@ -120,7 +122,8 @@
 			#{price},
 			#{rangeMax},
 			#{rangeMin},
-			#{specimenId}
+			#{specimenId},
+			#{permission}
 		)
 	</insert>
 	

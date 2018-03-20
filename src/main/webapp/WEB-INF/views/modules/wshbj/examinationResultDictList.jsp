@@ -26,6 +26,14 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>体检项目：</label>
+				<form:select path="itemId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${examinationItemList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</li>
 			<li><label>名称：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
@@ -39,8 +47,9 @@
 			<tr>
 				<th>名称</th>
 				<th>体检项目</th>
+				<th width="80">是否默认</th>
 				<th>具体描述</th>
-				<shiro:hasPermission name="wshbj:examinationResultDict:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:examinationResultDict:edit"><th width="120">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -51,6 +60,9 @@
 				</a></td>
 				<td>
 						${wshbjfns:getEntityName('ExaminationItem',examinationResultDict.itemId,'')}
+				</td>
+				<td>
+						${fns:getDictLabel(examinationResultDict.defaultFlag,'yes_no','')}
 				</td>
 				<td>
 					${examinationResultDict.remarks}

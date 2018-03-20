@@ -52,6 +52,8 @@ public class ExaminationRecordController extends BaseController {
 	private IndustryService industryService;
 	@Autowired
 	private JobPostService jobPostService;
+	@Autowired
+	private ExaminationItemService examinationItemService;
 
 	@Autowired
 	private ExaminationPackageService examinationPackageService;
@@ -100,6 +102,9 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationRecord examinationRecord, Model model) {
+		if (StringUtils.isBlank(examinationRecord.getCode())){
+			examinationRecord.setCode(examinationRecordService.genCode());
+		}
 		model.addAttribute("examinationRecord", examinationRecord);
 
 		Organ organ = new Organ();
@@ -129,6 +134,13 @@ public class ExaminationRecordController extends BaseController {
 		examinationPackage.setReferenceFlag("0");
 		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
 		model.addAttribute("packageList", packageList);
+
+		ExaminationItem examinationItem = new ExaminationItem();
+		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationItem.setDelFlag("0");
+		examinationItem.setReferenceFlag("0");
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("examinationItemList", examinationItemList);
 
 		return "modules/wshbj/examinationRecordForm";
 	}

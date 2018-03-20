@@ -10,6 +10,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemTypeService;
+import com.thinkgem.jeesite.modules.wshbj.service.GenSeqNumberService;
 import com.thinkgem.jeesite.modules.wshbj.service.SpecimenService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class ExaminationItemController extends BaseController {
 	@Autowired
 	private SpecimenService specimenService;
 	@Autowired
+	private GenSeqNumberService genSeqNumberService;
 	
 	@ModelAttribute
 	public ExaminationItem get(@RequestParam(required=false) String id) {
@@ -108,6 +110,8 @@ public class ExaminationItemController extends BaseController {
 		if (!beanValidator(model, examinationItem)){
 			return form(examinationItem, model);
 		}
+		//项目编号
+		examinationItem.setPermission(genSeqNumberService.genSeqNumber1(UserUtils.getUser().getCompany().getCode()+"ITEM_",1));
 		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationItem.setReferenceFlag("0");
 		examinationItemService.save(examinationItem);

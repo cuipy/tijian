@@ -25,6 +25,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String rangeMax;		// 参考范围最大值
 	private String rangeMin;		// 参考范围最小值
 	private String specimenId;		// 所需标本
+	private String permission;
 	
 	public ExaminationItem() {
 		super();
@@ -123,5 +124,13 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	public void setSpecimenId(String specimenId) {
 		this.specimenId = specimenId;
 	}
-	
+
+	@Length(min=0, max=200)
+	public String getPermission() {
+		return permission;
+	}
+
+	public void setPermission(String permission) {
+		this.permission = permission;
+	}
 }
