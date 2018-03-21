@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.sys.dao.LogDao;
 import com.thinkgem.jeesite.modules.sys.dao.SysSequenceDao;
 import com.thinkgem.jeesite.modules.sys.entity.Log;
+import com.thinkgem.jeesite.modules.sys.entity.SequenceDefine;
 import com.thinkgem.jeesite.modules.sys.entity.SysSequence;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * 日志Service
@@ -25,6 +27,7 @@ import java.lang.reflect.Method;
  * @version 2014-05-16
  */
 @Service
+@Transactional(readOnly = true)
 public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence> {
 
 
@@ -93,6 +96,7 @@ public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence>
 		return null;
 
 	}
+
 
 
 

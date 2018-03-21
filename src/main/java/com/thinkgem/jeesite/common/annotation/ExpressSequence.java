@@ -20,5 +20,11 @@ public @interface ExpressSequence {
      * @return
      */
 	String express();
+
+    /**
+     * 序列编号的描述
+     * @return
+     */
+	String describe();
 	
 }

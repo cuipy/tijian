@@ -8,8 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.alibaba.fastjson.JSONArray;
 import com.ckfinder.connector.utils.PathUtils;
 import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.annotation.SequenceBean;
 import com.thinkgem.jeesite.common.utils.*;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.Servlets;
@@ -93,6 +95,9 @@ public class Test1Controller extends BaseController {
 	@RequiresPermissions("test1:test1:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Test1 test1, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        List<Class> lst = ReflectionUtils.listClassByAnnotations("com.thinkgem.jeesite.modules.test1", SequenceBean.class);
+        System.out.println(JSONArray.toJSONString(lst));
 
 		Page<Test1> page = test1Service.findPage(new Page<Test1>(request, response), test1);
 		model.addAttribute("page", page);

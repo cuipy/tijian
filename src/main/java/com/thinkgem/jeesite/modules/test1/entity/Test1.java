@@ -4,6 +4,8 @@
 package com.thinkgem.jeesite.modules.test1.entity;
 
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.annotation.SequenceBean;
+import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -17,6 +19,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @author 崔鹏宇
  * @version 2018-03-13
  */
+@SequenceBean
 public class Test1 extends DataEntity<Test1> {
 	
 	private static final long serialVersionUID = 1L;
@@ -36,7 +39,7 @@ public class Test1 extends DataEntity<Test1> {
 		super(id);
 	}
 
-	@ExpressSequence(express="T1{yyyyMM}[8]")
+	@ExpressSequence(express="T1{yyyyMM}[8]",describe = "测试编号")
 	@Length(min=0, max=64, message="测编号必须介于 0 和 128 之间")
 	@ExcelField(value="testNo",title="测编号",type=0,sort=8)
 	public String getTestNo() {

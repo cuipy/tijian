@@ -6,14 +6,18 @@ package com.thinkgem.jeesite.modules.sys.entity;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
- * 区域Entity
- * @author ThinkGem
- * @version 2013-05-15
+ * 系统编号对象实体
+ * @author cuipengyu
+ * @version 2018-03-20
  */
 public class SysSequence extends DataEntity<SysSequence> {
 
 	private static final long serialVersionUID = 1L;
 
+
+	/**
+	 * 序列编号表达式
+	 */
 	private String express;
 
 	private String seqTemp;
