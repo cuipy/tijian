@@ -87,11 +87,6 @@ public class SysSequenceUtils {
 
 	}
 
-	public static void main(String ... argis){
-
-		System.out.println(toTemplate("2e{yyy-MM-dd}[8]ss"));
-
-	}
 
 	
 }

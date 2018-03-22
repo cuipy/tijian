@@ -115,22 +115,5 @@ public class ReflectionUtils {
 
     }
 
-    public static void main(String...args){
 
-        List<Class> lst = ReflectionUtils.listClassByAnnotations("com.thinkgem.jeesite.modules",SequenceBean.class);
-        System.out.println(JSONArray.toJSONString(lst));
-
-//        Class clz = null;
-//        try {
-//            clz = Class.forName("com.thinkgem.jeesite.modules.act.rest.servlet.FilterServletOutputStream",false,null);
-//
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-
-
-        //System.out.println(clz);
-
-
-    }
 }

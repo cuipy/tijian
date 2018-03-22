@@ -28,6 +28,11 @@
 		SELECT <include refid="sequenceDefineColumns"/> FROM sequence_define a
 		<include refid="sequenceDefineJoins"/> WHERE a.id = #{id}
 	</select>
+
+	<select id="findAllList" resultType="SequenceDefine">
+		SELECT <include refid="sequenceDefineColumns"/> FROM sequence_define a
+		<include refid="sequenceDefineJoins"/>
+	</select>
 	
 	<select id="getByClassMethod" resultType="SequenceDefine">
 		SELECT <include refid="sequenceDefineColumns"/> FROM sequence_define a
