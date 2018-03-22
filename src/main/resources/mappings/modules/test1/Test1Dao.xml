@@ -4,6 +4,7 @@
     
 	<sql id="test1Columns">
 		a.id AS "id",
+		a.test_no as "testNo",
 		a.head_img AS "headImg",
 		a.title AS "title",
 		a.user_pwd AS "userPwd",
@@ -101,6 +102,7 @@
 	<insert id="insert">
 		INSERT INTO test1(
 			id,
+			test_no,
 			head_img,
 			title,
 			user_pwd,
@@ -115,6 +117,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{testNo},
 			#{headImg},
 			#{title},
 			#{userPwd},
@@ -133,6 +136,7 @@
 	<update id="update">
 		UPDATE test1
 			<set>
+				<if test="testNo !=null and testNo != '' ">test_no = #{testNo},</if>
 				<if test="headImg !=null and headImg != '' ">head_img = #{headImg},</if>
 				<if test="title !=null and title != '' ">title = #{title},</if>
 				<if test="userPwd !=null and userPwd != '' ">user_pwd = #{userPwd},</if>
