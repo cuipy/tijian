@@ -58,8 +58,12 @@
 		<div class="control-group">
 			<label class="control-label">内容：</label>
 			<div class="controls">
-				<form:textarea id="content" path="content" htmlEscape="false" rows="4" maxlength="20000" class="input-xxlarge required"/>
-				<sys:ckeditor replace="content" uploadPath="/test1/test1" />
+
+				<script type="text/plain" name="content" id="ueContent">${fns:unescapeHtml(test1.content)}</script>
+				<script type="text/javascript">
+                    var ueContent = UE.getEditor('ueContent');
+                </script>
+
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
