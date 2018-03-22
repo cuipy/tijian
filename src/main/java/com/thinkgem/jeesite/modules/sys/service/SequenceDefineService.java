@@ -120,5 +120,18 @@ public class SequenceDefineService extends CrudService<SequenceDefineDao, Sequen
 		return null;
 	}
 
-	
+	public SequenceDefine getByClassMethod(Class clz,String methodName){
+
+		if(clz==null){
+			return null;
+		}
+
+		String className=clz.getName();
+		SequenceDefine sd=new SequenceDefine();
+		sd.setClassName(className);
+		sd.setMethodName(methodName);
+
+		return getByClassMethod(sd);
+
+	}
 }

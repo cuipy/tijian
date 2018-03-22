@@ -34,6 +34,9 @@ public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence>
 	@Autowired
 	private SysSequenceDao sysSequenceDao;
 
+	@Autowired
+	private SequenceDefineService sequenceDefineService;
+
 	/**
 	 * 根据Bean类和字段名生成新的序列号
 	 * @param clz
@@ -43,57 +46,55 @@ public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence>
 	@Transactional(readOnly = false)
 	public String nextSequence(Class clz,String fieldName){
 
-		String strMethodName="get"+ StringUtils.upCaseFirst(fieldName);
-
-		try {
-			Method m = clz.getMethod(strMethodName);
-			if(m==null){
-				return null;
-			}
-
-			ExpressSequence ann = m.getAnnotation(ExpressSequence.class);
-			if(ann==null){
-				return null;
-			}
-
-			// 获得序列生成的表达式
-			String express=ann.express();
-			if(StringUtils.isEmpty(express)){
-				return null;
-			}
-
-			// 根据express 生成 temp字符串
-			String temp=SysSequenceUtils.toTemplate(express);
-			SysSequence sysSequence=new SysSequence();
-			sysSequence.setExpress(express);
-			sysSequence.setSeqTemp(temp);
-
-			// 根据template字符串从数据表 sys_sequence 中读取记录
-			SysSequence rowSysSequnence=sysSequenceDao.getBySeqTemp(sysSequence);
-			if(rowSysSequnence==null){
-				sysSequence.preInsert();
-				sysSequence.setSeqVal(1);
-				sysSequenceDao.insert(sysSequence);
-			}else{
-				sysSequence=rowSysSequnence;
-			}
-
-			sysSequence.preUpdate();
-			sysSequence.setSeqVal(sysSequence.getSeqVal()+1);
-			Integer rowCount=sysSequenceDao.update(sysSequence);
-
-			Integer seqVal=sysSequence.getSeqVal();
-
-			// 生成序列号字符串
-			String seq=SysSequenceUtils.toSequence(temp,seqVal);
-
-			return seq;
-
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+		if(StringUtils.isEmpty(fieldName)){
+			return null;
 		}
 
-		return null;
+		String strMethodName=fieldName;
+
+		if(!fieldName.startsWith("get")){
+			strMethodName="get"+ StringUtils.upCaseFirst(fieldName);
+		}
+
+		SequenceDefine sd = sequenceDefineService.getByClassMethod(clz, strMethodName);
+
+		// 获得序列生成的表达式
+		String express=sd.getAnnExpress();
+		if(StringUtils.isNotEmpty(sd.getCustomExpress())){
+			express=sd.getCustomExpress();
+		}
+
+		if(StringUtils.isEmpty(express)){
+			return null;
+		}
+
+		// 根据express 生成 temp字符串
+		String temp=SysSequenceUtils.toTemplate(express);
+		SysSequence sysSequence=new SysSequence();
+		sysSequence.setExpress(express);
+		sysSequence.setSeqTemp(temp);
+
+		// 根据template字符串从数据表 sys_sequence 中读取记录
+		SysSequence rowSysSequnence=sysSequenceDao.getBySeqTemp(sysSequence);
+		if(rowSysSequnence==null){
+			sysSequence.preInsert();
+			sysSequence.setSeqVal(1);
+			sysSequenceDao.insert(sysSequence);
+		}else{
+			sysSequence=rowSysSequnence;
+		}
+
+		sysSequence.preUpdate();
+		sysSequence.setSeqVal(sysSequence.getSeqVal()+1);
+		Integer rowCount=sysSequenceDao.update(sysSequence);
+
+		Integer seqVal=sysSequence.getSeqVal();
+
+		// 生成序列号字符串
+		String seq=SysSequenceUtils.toSequence(temp,seqVal);
+
+		return seq;
+
 
 	}
 

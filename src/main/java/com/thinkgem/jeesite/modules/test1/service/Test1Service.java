@@ -7,6 +7,7 @@ import java.util.List;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
+import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class Test1Service extends CrudService<Test1Dao, Test1> {
 	@Autowired
 	private UserDao userDao;
 
+	@Autowired
+	private SysSequenceService sysSequenceService;
 
 	public Test1 get(String id) {
 		return super.get(id);
@@ -72,6 +75,13 @@ public class Test1Service extends CrudService<Test1Dao, Test1> {
             }
 		}
 
+		// 如果是保存或编号为空，则生成编号
+		if(test1.getIsNewRecord()||StringUtils.isEmpty(test1.getTestNo())){
+
+			// 刷新获取新的顺序编号
+			String newTestNo= sysSequenceService.nextSequence(Test1.class,"testNo");
+			test1.setTestNo(newTestNo);
+		}
 
 		super.save(test1);
 	}
