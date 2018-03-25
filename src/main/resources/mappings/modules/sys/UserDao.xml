@@ -82,7 +82,7 @@
 		a.del_flag,
     	c.name AS "company.name",
 		c.code AS "company.code",
-    	c.parent_id AS "company.parent.id",
+		c.parent_id AS "company.parent.id",
     	c.parent_ids AS "company.parentIds",
     	ca.id AS "company.area.id",
     	ca.name AS "company.area.name",
@@ -197,7 +197,7 @@
 	</select>
 	
 	<!-- 根据OfficeId获取用户（树查询用户时用） -->
-	<select id="findUserByOfficeId" resultType="User" useCache="true">
+	<select id="findByOfficeId" resultType="User" useCache="true">
 		SELECT
 			a.id, a.name, a.login_name
 		FROM sys_user a

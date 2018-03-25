@@ -3,12 +3,15 @@
  */
 package com.thinkgem.jeesite.common.utils;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -204,6 +207,30 @@ public class Reflections {
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * 获得类中方法上带ann注解的方法类别
+	 * @param clz
+	 * @param ann
+	 * @return
+	 */
+	public static List<Method> getMethodsByAnnonation(Class clz,Class ann){
+		if(clz==null||ann==null){
+			return null;
+		}
+
+		List<Method> ms=new ArrayList();
+		// 列出所有的方法
+		Method[] tmpMethods = clz.getDeclaredMethods();
+		for(Method tmpm:tmpMethods){
+			Annotation a = tmpm.getAnnotation(ann);
+			if(a!=null){
+				ms.add(tmpm);
+				continue;
+			}
+		}
+		return ms;
 	}
 
 	/**

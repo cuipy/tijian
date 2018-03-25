@@ -17,4 +17,6 @@ import org.apache.ibatis.annotations.Param;
 public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
 	public String genCode(@Param("keyCode")String keyCode);
+
+	public ExaminationRecord getByCode(String code);
 }

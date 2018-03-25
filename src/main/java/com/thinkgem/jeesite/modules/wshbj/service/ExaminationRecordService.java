@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationUser;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +42,25 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     private ExaminationRecordItemDao examinationRecordItemDao;
     @Autowired
     private ExaminationUserService examinationUserService;
+    @Autowired
+    private ExaminationItemService examinationItemService;
 
     public ExaminationRecord get(String id) {
         ExaminationRecord examinationRecord = super.get(id);
         if (examinationRecord != null) {
             ExaminationRecordItem recordItem = new ExaminationRecordItem();
             recordItem.setRecordId(id);
+            examinationRecord.setExaminationRecordItemList(examinationRecordItemDao.findList(recordItem));
+        }
+
+        return examinationRecord;
+    }
+
+    public ExaminationRecord getByCode(String code) {
+        ExaminationRecord examinationRecord = this.dao.getByCode(code);
+        if (examinationRecord != null) {
+            ExaminationRecordItem recordItem = new ExaminationRecordItem();
+            recordItem.setRecordId(examinationRecord.getId());
             examinationRecord.setExaminationRecordItemList(examinationRecordItemDao.findList(recordItem));
         }
 
@@ -147,28 +161,51 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
             examinationUserService.save(examinationUser);
         }
-
+        //未体检
         examinationRecord.setStatus("1");
         super.save(examinationRecord);
 
-        //保存检查项目
-        for (ExaminationRecordItem examinationRecordItem : examinationRecord.getExaminationRecordItemList()) {
-            if (examinationRecordItem.getId() == null) {
-                continue;
+        /**
+         * 保存检查项目
+         */
+        //若选择了套餐，则以套餐为准
+        if (StringUtils.isNotBlank(examinationRecord.getPackageId())){
+            //清除原有体检项目
+            ExaminationRecordItem recordItem = new ExaminationRecordItem();
+            recordItem.setRecordId(examinationRecord.getId());
+            examinationRecordItemDao.delete(recordItem);
+
+            //保存现有体检项目
+            List<ExaminationItem> itemList = examinationItemService.findListByPackage(examinationRecord.getPackageId());
+            for (ExaminationItem examinationItem:itemList ) {
+                recordItem = new ExaminationRecordItem();
+                recordItem.setRecordId(examinationRecord.getId());
+                recordItem.setItemId(examinationItem.getId());
+                recordItem.preInsert();
+                examinationRecordItemDao.insert(recordItem);
             }
-            if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(examinationRecordItem.getDelFlag())) {
-                if (StringUtils.isBlank(examinationRecordItem.getId())) {
-                    examinationRecordItem.setRecordId(examinationRecord.getId());
-                    examinationRecordItem.preInsert();
-                    examinationRecordItemDao.insert(examinationRecordItem);
-                } else {
-                    examinationRecordItem.preUpdate();
-                    examinationRecordItemDao.update(examinationRecordItem);
+        }else{
+            //自由选择体检项目
+            for (ExaminationRecordItem examinationRecordItem : examinationRecord.getExaminationRecordItemList()) {
+                if (examinationRecordItem.getId() == null) {
+                    continue;
                 }
-            } else {
-                examinationRecordItemDao.delete(examinationRecordItem);
+                if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(examinationRecordItem.getDelFlag())) {
+                    if (StringUtils.isBlank(examinationRecordItem.getId())) {
+                        examinationRecordItem.setRecordId(examinationRecord.getId());
+                        examinationRecordItem.preInsert();
+                        examinationRecordItemDao.insert(examinationRecordItem);
+                    } else {
+                        examinationRecordItem.preUpdate();
+                        examinationRecordItemDao.update(examinationRecordItem);
+                    }
+                } else {
+                    examinationRecordItemDao.delete(examinationRecordItem);
+                }
             }
         }
+
+
         resultMessages.remove(0);
         resultMessages.add("保存成功");
         return ResponseResult.generateSuccessResult("保存成功", resultMessages);

@@ -3,8 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
@@ -18,6 +21,9 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 检查项目Service
@@ -42,9 +48,30 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	public Page<ExaminationItem> findPage(Page<ExaminationItem> page, ExaminationItem examinationItem) {
 		return super.findPage(page, examinationItem);
 	}
+
+	public List<ExaminationItem> findListByPackage(String packageId) {
+		if (StringUtils.isBlank(packageId)){
+			return new ArrayList<ExaminationItem>();
+		}
+		return this.dao.findListByPackage(packageId);
+	}
 	
 	@Transactional(readOnly = false)
 	public void save(ExaminationItem examinationItem) {
+		String permission = null;
+		if (com.thinkgem.jeesite.common.utils.StringUtils.isBlank(examinationItem.getPermission())){
+			permission = genSeqNumberService.genSeqNumber1(UserUtils.getUser().getCompany().getCode()+"ITEM_",1);
+			examinationItem.setPermission(permission);
+			examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
+			examinationItem.setReferenceFlag("0");
+		}
+		super.save(examinationItem);
+
+		//创建或修改项目菜单
+	}
+
+	@Transactional(readOnly = false)
+	public void saveByCenter(ExaminationItem examinationItem) {
 		super.save(examinationItem);
 	}
 	
@@ -83,6 +110,7 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 			newExaminationItem.setPrice(examinationItem.getPrice());
 			newExaminationItem.setRangeMin(examinationItem.getRangeMin());
 			newExaminationItem.setRangeMax(examinationItem.getRangeMax());
+			newExaminationItem.setNeedSamples(examinationItem.getNeedSamples());
 
 			newExaminationItem.setPermission(keyCode+genSeqNumberService.genSeqNumber1(keyCode,1));
 
@@ -91,5 +119,30 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 
 		return RequestResult.generateSuccessResult("保存成功");
 	}
-	
+
+
+	@Transactional(readOnly = false)
+	public ResponseResult saveAssigning(String roleId, String[] itemIds) {
+		if (StringUtils.isBlank(roleId)){
+			return ResponseResult.generateFailResult("缺少角色信息");
+		}
+
+		if (itemIds==null || itemIds.length==0){
+			return ResponseResult.generateFailResult("缺少项目信息");
+		}
+
+		//删除原有角色项目
+		this.dao.deleteRoleItem(roleId);
+
+		this.dao.insertRoleItem(roleId, Arrays.asList(itemIds));
+
+		return ResponseResult.generateSuccessResult("保存成功");
+	}
+
+	public List<ExaminationItem> findAuthorisedList(String roleId) {
+		if (StringUtils.isBlank(roleId)){
+			return new ArrayList<ExaminationItem>();
+		}
+		return this.dao.findAuthorisedList(roleId);
+	}
 }

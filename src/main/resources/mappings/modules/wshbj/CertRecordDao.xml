@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.CertRecordDao">
+    
+	<sql id="certRecordColumns">
+		a.id AS "id",
+		a.code AS "code",
+		a.examination_code AS "examinationCode",
+		a.user_id AS "userId",
+		a.id_number AS "idNumber",
+		a.user_name AS "userName",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.owner AS "owner"
+	</sql>
+	
+	<sql id="certRecordJoins">
+		LEFT JOIN sys_user userId ON userId.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="CertRecord">
+		SELECT 
+			<include refid="certRecordColumns"/>
+		FROM bj_cert_record a
+		<include refid="certRecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="CertRecord">
+		SELECT 
+			<include refid="certRecordColumns"/>
+		FROM bj_cert_record a
+		<include refid="certRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="examinationCode != null and examinationCode != ''">
+				AND a.examination_code = #{examinationCode}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND a.user_id = #{userId}
+			</if>
+			<if test="idNumber != null and idNumber != ''">
+				AND a.id_number = #{idNumber}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND a.user_name = #{userName}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CertRecord">
+		SELECT 
+			<include refid="certRecordColumns"/>
+		FROM bj_cert_record a
+		<include refid="certRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bj_cert_record(
+			id,
+			code,
+			examination_code,
+			user_id,
+			id_number,
+			user_name,
+			del_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			owner
+		) VALUES (
+			#{id},
+			#{code},
+			#{examinationCode},
+			#{userId},
+			#{idNumber},
+			#{userName},
+			#{delFlag},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{owner}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bj_cert_record
+			<set>
+				<if test="code !=null and code != '' ">code = #{code},</if>
+				<if test="examinationCode !=null and examinationCode != '' ">examination_code = #{examinationCode},</if>
+				<if test="userId !=null and userId != '' ">user_id = #{userId},</if>
+				<if test="idNumber !=null and idNumber != '' ">id_number = #{idNumber},</if>
+				<if test="userName !=null and userName != '' ">user_name = #{userName},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bj_cert_record SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

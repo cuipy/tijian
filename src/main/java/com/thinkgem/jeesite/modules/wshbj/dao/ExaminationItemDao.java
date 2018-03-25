@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.wshbj.dao;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 检查项目DAO接口
@@ -14,5 +17,12 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
  */
 @MyBatisDao
 public interface ExaminationItemDao extends CrudDao<ExaminationItem> {
-	
+
+    public List<ExaminationItem> findListByPackage(String packageId);
+
+    public List<ExaminationItem> findAuthorisedList(String roleId);
+
+    public int insertRoleItem(@Param("roleId")String roleId,@Param("itemIdList")List<String> itemIdList);
+
+    public int deleteRoleItem(String roleId);
 }

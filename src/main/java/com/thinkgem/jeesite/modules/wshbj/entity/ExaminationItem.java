@@ -26,6 +26,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String rangeMin;		// 参考范围最小值
 	private String specimenId;		// 所需标本
 	private String permission;
+	private String needSamples;		//是否需要样本：0-否，1-是
 	
 	public ExaminationItem() {
 		super();
@@ -132,5 +133,17 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 
 	public void setPermission(String permission) {
 		this.permission = permission;
+	}
+
+	public static long getSerialVersionUID() {
+		return serialVersionUID;
+	}
+
+	public String getNeedSamples() {
+		return needSamples;
+	}
+
+	public void setNeedSamples(String needSamples) {
+		this.needSamples = needSamples;
 	}
 }

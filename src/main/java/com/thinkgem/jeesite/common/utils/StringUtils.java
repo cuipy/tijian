@@ -61,7 +61,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	
     /**
      * 转换为字节数组
-     * @param str
+     * @param bytes
      * @return
      */
     public static String toString(byte[] bytes){
@@ -417,7 +417,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	 * @return
 	 */
 	public static String rand(java.util.Date dt,String format,Integer randLen){
-    	String res=formatDate(dt,format);
+    	String res=DateUtils.formatDate(dt,format);
     	res+=rand(randLen);
     	return res;
 	}
@@ -439,18 +439,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return sb.toString();
 	}
 
-	public static String formatDate(java.util.Date dt,String format){
-		if(dt==null){
-			dt=new java.util.Date();
-		}
-
-		if(StringUtils.isEmpty(format)){
-			format="yyyyMMdd";
-		}
-
-		SimpleDateFormat sdf=new SimpleDateFormat(format);
-		return sdf.format(dt);
-	}
 
 
     

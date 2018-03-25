@@ -12,7 +12,8 @@
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
-		a.remarks AS "remarks"
+		a.remarks AS "remarks",
+		a.examination_times AS "examinationTimes"
 	</sql>
 	
 	<sql id="examinationRecordItemJoins">
@@ -78,7 +79,8 @@
 			create_date,
 			update_by,
 			update_date,
-			remarks
+			remarks,
+			examination_times
 		) VALUES (
 			#{id},
 			#{recordId},
@@ -89,7 +91,8 @@
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
-			#{remarks}
+			#{remarks},
+			#{examinationTimes}
 		)
 	</insert>
 	

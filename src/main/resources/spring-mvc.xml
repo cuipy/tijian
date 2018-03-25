@@ -70,6 +70,7 @@
 	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="${web.view.prefix}"/>
 		<property name="suffix" value="${web.view.suffix}"/>
+		<property name="order"  value="100"/>
 	</bean>
 	
 	<!-- 对静态资源文件的访问， 将无法mapping到Controller的path交给default servlet handler处理 -->
@@ -118,5 +119,10 @@
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
 		<property name="maxUploadSize" value="${web.maxUploadSize}" />  
 	</bean>
-	
+
+    <bean id="jrview" class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="order" value="1"/>
+        <property name="location" value="/WEB-INF/reports.xml"/>
+    </bean>
+
 </beans>

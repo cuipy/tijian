@@ -26,6 +26,10 @@
 <link href="${ctxStatic}/webuploader/webuploader.css" rel="stylesheet" />
 <script src="${ctxStatic}/webuploader/webuploader.min.js" type="text/javascript"></script>
 
+<link href="${ctxStatic}/ueditor/themes/default/css/ueditor.css" rel="stylesheet" />
+<script src="${ctxStatic}/ueditor/ueditor.config.js" type="text/javascript"></script>
+<script src="${ctxStatic}/ueditor/ueditor.all.js" type="text/javascript"></script>
+
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>

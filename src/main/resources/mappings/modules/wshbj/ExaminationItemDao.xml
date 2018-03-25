@@ -20,7 +20,8 @@
 		a.range_max AS "rangeMax",
 		a.range_min AS "rangeMin",
 		a.specimen_id AS "specimenId",
-		a.permission AS "permission"
+		a.permission AS "permission",
+		a.need_samples AS "needSamples"
 	</sql>
 	
 	<sql id="examinationItemJoins">
@@ -49,6 +50,9 @@
 			</if>
 			<if test="referenceFlag != null and referenceFlag != ''">
 				AND a.reference_flag = #{referenceFlag}
+			</if>
+			<if test="needSamples != null and needSamples != ''">
+				AND a.need_samples = #{needSamples}
 			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
@@ -84,6 +88,30 @@
 			</otherwise>
 		</choose>
 	</select>
+
+
+	<select id="findListByPackage" resultType="ExaminationItem">
+		SELECT
+		<include refid="examinationItemColumns"/>
+		FROM bj_examination_item a,bj_package_item pi
+		<include refid="examinationItemJoins"/>
+		<where>
+			pi.package_id = #{packageId}
+			AND a.id = pi.item_id
+			AND pi.del_flag = '0'
+		</where>
+	</select>
+
+	<select id="findAuthorisedList" resultType="ExaminationItem">
+		SELECT
+		<include refid="examinationItemColumns"/>
+		FROM bj_examination_item a,bj_role_item ri
+		<include refid="examinationItemJoins"/>
+		<where>
+			ri.role_id = #{roleId}
+			AND a.id = ri.item_id
+		</where>
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO bj_examination_item(
@@ -104,7 +132,8 @@
 			range_max,
 			range_min,
 			specimen_id,
-			permission
+			permission,
+			need_samples
 		) VALUES (
 			#{id},
 			#{code},
@@ -123,7 +152,8 @@
 			#{rangeMax},
 			#{rangeMin},
 			#{specimenId},
-			#{permission}
+			#{permission},
+			#{needSamples}
 		)
 	</insert>
 	
@@ -141,7 +171,8 @@
 			price = #{price},
 			range_max = #{rangeMax},
 			range_min = #{rangeMin},
-			specimen_id = #{specimenId}
+			specimen_id = #{specimenId},
+			need_samples = #{needSamples}
 		WHERE id = #{id}
 	</update>
 	
@@ -150,5 +181,16 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
+	<insert id="insertRoleItem">
+		INSERT INTO bj_role_item(role_id, item_id)
+		<foreach collection="itemIdList" item="itemId" separator=" union all ">
+			SELECT #{roleId}, #{itemId}
+		</foreach>
+	</insert>
+
+	<update id="deleteRoleItem">
+		DELETE FROM bj_role_item
+		WHERE role_id = #{roleId}
+	</update>
 </mapper>

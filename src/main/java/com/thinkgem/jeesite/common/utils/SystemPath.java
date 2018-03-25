@@ -22,11 +22,8 @@ public class SystemPath {
 	}
 
 	public static String getClassPath() {
-		String path = Thread.currentThread().getContextClassLoader()
-				.getResource("").toString();
-		String temp = path.replaceFirst("file:/", "");
-		String separator = System.getProperty("file.separator");
-		String resultPath = temp.replaceAll("/", separator + separator);
+		String resultPath = Thread.currentThread().getContextClassLoader()
+				.getResource("").getPath();
 		return resultPath;
 	}
 
@@ -38,10 +35,4 @@ public class SystemPath {
 		return System.getProperty("file.separator");
 	}
 
-	public static void main(String[] args) {
-		System.out.println(getSysPath());
-		System.out.println(System.getProperty("java.io.tmpdir"));
-		System.out.println(getSeparator());
-		System.out.println(getClassPath());
-	}
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
@@ -15,10 +16,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -187,6 +185,42 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 
+	@RequiresPermissions("wshbj:examinationRecord:collectSamples")
+	@RequestMapping(value = "collectSamples")
+	public String collectSamples(HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+		Office company = UserUtils.getUser().getCompany();
+		ExaminationItem examinationItem = new ExaminationItem();
+		examinationItem.setOwner(company.getId());
+		examinationItem.setNeedSamples("1");
+
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("itemList", examinationItemList);
+		return "modules/wshbj/collectSamples";
+	}
 
 
+	@RequiresPermissions("wshbj:examinationRecord:inputSamplesResult")
+	@RequestMapping(value = "inputSamplesResult")
+	public String inputSamplesResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+
+		return "modules/wshbj/inputSamplesResult";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:inputResult")
+	@RequestMapping(value = "inputResult")
+	public String inputResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+
+		return "modules/wshbj/inputResult";
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "getByCode")
+	public ExaminationRecord getByCode(@RequestParam(required=true) String code, HttpServletResponse response) {
+		if (org.apache.commons.lang3.StringUtils.isBlank(code)){
+			return null;
+		}
+		ExaminationRecord examinationRecord = examinationRecordService.getByCode(code);
+		return examinationRecord;
+	}
 }

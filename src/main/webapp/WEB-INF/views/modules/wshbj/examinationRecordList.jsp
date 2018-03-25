@@ -77,6 +77,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th width="100">编号</th>
 				<th width="100">姓名</th>
 				<th width="180">身份证号</th>
 				<th width="100">联系电话</th>
@@ -91,6 +92,9 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationRecord">
 			<tr>
+				<td>
+						${examinationRecord.code}
+				</td>
 				<td>
 						${examinationRecord.name}
 				</td>

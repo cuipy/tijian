@@ -21,6 +21,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String recordId;		// 检查记录 父类
 	private String itemId;		// 检查项目
 	private String resultDictId;		// 体检结果
+	private int examinationTimes = 1;
 	
 	public ExaminationRecordItem() {
 		super();
@@ -61,5 +62,12 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	public void setResultDictId(String resultDictId) {
 		this.resultDictId = resultDictId;
 	}
-	
+
+	public int getExaminationTimes() {
+		return examinationTimes;
+	}
+
+	public void setExaminationTimes(int examinationTimes) {
+		this.examinationTimes = examinationTimes;
+	}
 }

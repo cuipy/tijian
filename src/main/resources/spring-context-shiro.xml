@@ -16,6 +16,7 @@
 			<value>
 				/static/** = anon
 				/userfiles/** = anon
+				/ueditor/upload = user
 				${adminPath}/cas = cas
 				${adminPath}/login = authc
 				${adminPath}/logout = logout
@@ -47,11 +48,17 @@
 	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">  
 		<property name="failureUrl" value="${adminPath}/login"/>
 	</bean>
-	
+
 	<!-- 定义Shiro安全管理配置 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="systemAuthorizingRealm" />
+		<!--<property name="realm" ref="systemAuthorizingRealm" />-->
 		<property name="sessionManager" ref="sessionManager" />
+		<property name="realms">
+			<list>
+				<ref bean="systemAuthorizingRealm"/>
+				<ref bean="examinationItemAuthorizingRealm"/>
+			</list>
+		</property>
 		<property name="cacheManager" ref="shiroCacheManager" />
 	</bean>
 	

@@ -40,6 +40,13 @@
 		WHERE a.id = #{id}
 	</select>
 
+	<select id="getByCode" resultType="ExaminationRecord">
+		SELECT
+		<include refid="examinationRecordColumns"/>
+		FROM bj_examination_record a
+		<include refid="examinationRecordJoins"/>
+		WHERE a.code = #{code}
+	</select>
 	
 	<select id="findList" resultType="ExaminationRecord">
 		SELECT 
