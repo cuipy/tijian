@@ -1,4 +1,4 @@
-package com.thinkgem.jeesite.modules.cms.ueditor;
+package com.baidu.ueditor;
 
 import com.baidu.ueditor.define.ActionMap;
 import com.baidu.ueditor.define.AppInfo;
@@ -11,7 +11,7 @@ import com.baidu.ueditor.upload.Uploader;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-public class CuiActionEnter {
+public class ActionEnter {
 	
 	private HttpServletRequest request = null;
 	
@@ -19,19 +19,16 @@ public class CuiActionEnter {
 	private String contextPath = null;
 	
 	private String actionType = null;
-
-	private String jsonConfigPath = null;
 	
-	private CuiConfigManager configManager = null;
+	private ConfigManager configManager = null;
 
-	public CuiActionEnter ( HttpServletRequest request, String rootPath ,String jsonConfigPath) {
+	public ActionEnter ( HttpServletRequest request, String rootPath ) {
 		
 		this.request = request;
 		this.rootPath = rootPath;
-		this.jsonConfigPath = jsonConfigPath;
 		this.actionType = request.getParameter( "action" );
 		this.contextPath = request.getContextPath();
-		this.configManager = CuiConfigManager.getInstance( jsonConfigPath);
+		this.configManager = ConfigManager.getInstance( this.rootPath, this.contextPath, request.getRequestURI() );
 		
 	}
 	

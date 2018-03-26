@@ -1,8 +1,8 @@
-package com.thinkgem.jeesite.modules.cms.ueditor;
+package com.baidu.ueditor;
 
-import com.baidu.ueditor.define.ActionMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import com.baidu.ueditor.define.ActionMap;
 
 import java.io.*;
 import java.util.HashMap;
@@ -13,9 +13,11 @@ import java.util.Map;
  * @author hancong03@baidu.com
  *
  */
-public final class CuiConfigManager {
+public final class ConfigManager {
 
+	private final String rootPath;
 	private final String originalPath;
+	private final String contextPath;
 	private static final String configFileName = "config.json";
 	private String parentPath = null;
 	private JSONObject jsonConfig = null;
@@ -27,10 +29,14 @@ public final class CuiConfigManager {
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-	private CuiConfigManager ( String jsonConfigPath ) throws FileNotFoundException, IOException {
+	private ConfigManager ( String rootPath, String contextPath, String uri ) throws FileNotFoundException, IOException {
 		
+		rootPath = rootPath.replace( "\\", "/" );
+		
+		this.rootPath = rootPath;
+		this.contextPath = contextPath;
 
-		this.originalPath = jsonConfigPath;
+		this.originalPath = this.rootPath + uri.replace(contextPath, "");
 		
 		this.initEnv();
 		
@@ -38,13 +44,15 @@ public final class CuiConfigManager {
 	
 	/**
 	 * 配置管理器构造工厂
-	 * @param jsonConfigPath 配置文件路径
+	 * @param rootPath 服务器根路径
+	 * @param contextPath 服务器所在项目路径
+	 * @param uri 当前访问的uri
 	 * @return 配置管理器实例或者null
 	 */
-	public static CuiConfigManager getInstance (String jsonConfigPath ) {
+	public static ConfigManager getInstance (String rootPath, String contextPath, String uri ) {
 		
 		try {
-			return new CuiConfigManager(jsonConfigPath);
+			return new ConfigManager(rootPath, contextPath, uri);
 		} catch ( Exception e ) {
 			return null;
 		}
@@ -93,7 +101,7 @@ public final class CuiConfigManager {
 				break;
 				
 			case ActionMap.UPLOAD_SCRAWL:
-				conf.put( "filename", CuiConfigManager.SCRAWL_FILE_NAME );
+				conf.put( "filename", ConfigManager.SCRAWL_FILE_NAME );
 				conf.put( "maxSize", this.jsonConfig.getLong( "scrawlMaxSize" ) );
 				conf.put( "fieldName", this.jsonConfig.getString( "scrawlFieldName" ) );
 				conf.put( "isBase64", "true" );
@@ -101,7 +109,7 @@ public final class CuiConfigManager {
 				break;
 				
 			case ActionMap.CATCH_IMAGE:
-				conf.put( "filename", CuiConfigManager.REMOTE_FILE_NAME );
+				conf.put( "filename", ConfigManager.REMOTE_FILE_NAME );
 				conf.put( "filter", this.getArray( "catcherLocalDomain" ) );
 				conf.put( "maxSize", this.jsonConfig.getLong( "catcherMaxSize" ) );
 				conf.put( "allowFiles", this.getArray( "catcherAllowFiles" ) );
@@ -124,6 +132,7 @@ public final class CuiConfigManager {
 		}
 		
 		conf.put( "savePath", savePath );
+		conf.put( "rootPath", this.rootPath );
 		conf.put( "physicsPath", this.jsonConfig.getString("physicsPath"));
 		
 		return conf;
@@ -137,7 +146,7 @@ public final class CuiConfigManager {
 		if ( !file.isAbsolute() ) {
 			file = new File( file.getAbsolutePath() );
 		}
-		
+
 		this.parentPath = file.getParent();
 		
 		String configContent = this.readFile( this.getConfigPath() );
@@ -152,7 +161,7 @@ public final class CuiConfigManager {
 	}
 	
 	private String getConfigPath () {
-		return this.parentPath + File.separator + CuiConfigManager.configFileName;
+		return this.parentPath + File.separator + ConfigManager.configFileName;
 	}
 
 	private String[] getArray ( String key ) {
