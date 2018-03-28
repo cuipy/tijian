@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.ExaminationResultDao">
+    
+	<sql id="examinationResultColumns">
+		a.id AS "id",
+		a.examination_code AS "examinationCode",
+		a.sample_code AS "sampleCode",
+		a.item_name AS "itemName",
+		a.item_id AS "itemId",
+		a.user_id AS "userId",
+		a.result_dict_id AS "resultDictId",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.owner AS "owner"
+	</sql>
+	
+	<sql id="examinationResultJoins">
+		LEFT JOIN sys_user userId ON userId.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="ExaminationResult">
+		SELECT 
+			<include refid="examinationResultColumns"/>
+		FROM bj_examination_result a
+		<include refid="examinationResultJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="ExaminationResult">
+		SELECT 
+			<include refid="examinationResultColumns"/>
+		FROM bj_examination_result a
+		<include refid="examinationResultJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="examinationCode != null and examinationCode != ''">
+				AND a.examination_code = #{examinationCode}
+			</if>
+			<if test="sampleCode != null and sampleCode != ''">
+				AND a.sample_code = #{sampleCode}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ExaminationResult">
+		SELECT 
+			<include refid="examinationResultColumns"/>
+		FROM bj_examination_result a
+		<include refid="examinationResultJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bj_examination_result(
+			id,
+			examination_code,
+			sample_code,
+			item_name,
+			item_id,
+			user_id,
+			result_dict_id,
+			del_flag,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			owner
+		) VALUES (
+			#{id},
+			#{examinationCode},
+			#{sampleCode},
+			#{itemName},
+			#{itemId},
+			#{userId},
+			#{resultDictId},
+			#{delFlag},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{owner}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bj_examination_result
+			<set>
+				<if test="examinationCode !=null and examinationCode != '' ">examination_code = #{examinationCode},</if>
+				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
+				<if test="itemName !=null and itemName != '' ">item_name = #{itemName},</if>
+				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
+				<if test="userId !=null and userId != '' ">user_id = #{userId},</if>
+				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
+				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
+				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
+				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
+				<if test="owner !=null and owner != '' ">owner = #{owner},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bj_examination_result SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

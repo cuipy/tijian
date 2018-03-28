@@ -42,13 +42,20 @@
 
 
 
-            $('#idNumber').bind('keypress',function(event){
+            $('#examinationCode').bind('keypress',function(event){
                 if(event.keyCode == 13) {
-                    var idNumber = $('#idNumber').val();
-                    var url = '${ctx}/wshbj/examinationUser/getByIdNumber';
-                    $.post(url,{idNumber:idNumber},function (data) {
+                    var examinationCode = $('#examinationCode').val();
+                    var url = '${ctx}/wshbj/examinationRecord/getByCode';
+                    $.post(url,{code:examinationCode},function (data) {
                         if(data){
-                            setUserPro(data);
+                            $('#userName').val(data.name);
+                            $('#sex').val(data.sex);
+                            $('#organ').val(data.organId);
+
+                            for (var i=0; i<data.examinationRecordItemList.length; i++){
+                                addRow('#examinationRecordItemList', examinationRecordItemRowIdx, examinationRecordItemTpl, data.examinationRecordItemList[i]);
+                                examinationRecordItemRowIdx = examinationRecordItemRowIdx + 1;
+                            }
                         }
                     });
                     //防止form提交
@@ -143,7 +150,6 @@
 			<label class="control-label">采集项目：</label>
 			<div class="controls">
 				<select id="roleId" class="input-xlarge required">
-					<option value="">请选择</option>
 					<c:forEach items="${itemList}" var="item">
 						<shiro:hasPermission name="${item.permission}">
 							<option value="${item.id}">${item.name}</option>
@@ -170,14 +176,14 @@
 		<div class="control-group">
 			<label class="control-label">姓名：</label>
 			<div class="controls">
-				<input id="userName" name="userName" class="input-xlarge required"/>
+				<input id="userName" name="userName" readonly class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">性别：</label>
 			<div class="controls">
-				<input id="sex" name="sex" class="input-xlarge required"/>
+				<input id="sex" name="sex" readonly class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -185,7 +191,7 @@
 		<div class="control-group">
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<input id="organ" name="organ" class="input-xlarge required"/>
+				<input id="organ" name="organ" readonly class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
