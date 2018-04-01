@@ -27,9 +27,43 @@
 		a.item_type AS "itemType",
 		u2.name AS "user.name"
 	</sql>
+
+	<sql id="examinationRecord4MapColumns">
+		a.id AS "id",
+		a.user_id AS "userId",
+		a.code AS "code",
+		a.name AS "name",
+		a.phone_number AS "phoneNumber",
+		a.sex AS "sex",
+		a.industry_id AS "industryId",
+		a.post_id AS "postId",
+		a.birthday AS "birthday",
+		a.organ_id AS "organId",
+		a.del_flag AS "delFlag",
+		a.create_by AS "createById",
+		a.create_date AS "createDate",
+		a.update_by AS "updateById",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.owner AS "owner",
+		a.package_id AS "packageId",
+		a.package_price AS "packagePrice",
+		a.id_number AS "idNumber",
+		a.status AS "status",
+		a.item_type AS "itemType",
+		u2.name AS "userName",
+		o2.name AS "organName",
+		d3.label AS "sexLabel"
+	</sql>
 	
 	<sql id="examinationRecordJoins">
 		LEFT JOIN bj_examination_user u2 ON u2.id = a.user_id
+	</sql>
+
+	<sql id="examinationRecord4MapJoins">
+		LEFT JOIN bj_examination_user u2 ON u2.id = a.user_id
+		LEFT JOIN bj_organ o2 ON o2.id = a.organ_id
+		LEFT JOIN sys_dict d3 ON d3.value = a.sex and d3.type='sex' and d3.del_flag='0'
 	</sql>
     
 	<select id="get" resultType="ExaminationRecord">
@@ -45,6 +79,15 @@
 		<include refid="examinationRecordColumns"/>
 		FROM bj_examination_record a
 		<include refid="examinationRecordJoins"/>
+		WHERE a.code = #{code}
+	</select>
+
+
+	<select id="getMapByCode" resultType="java.util.Map">
+		SELECT
+		<include refid="examinationRecord4MapColumns"/>
+		FROM bj_examination_record a
+		<include refid="examinationRecord4MapJoins"/>
 		WHERE a.code = #{code}
 	</select>
 	

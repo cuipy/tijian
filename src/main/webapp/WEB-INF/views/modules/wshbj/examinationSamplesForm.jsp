@@ -26,17 +26,14 @@
             $('#examinationCode').bind('keypress',function(event){
                 if(event.keyCode == 13) {
                     var examinationCode = $('#examinationCode').val();
-                    var url = '${ctx}/wshbj/examinationRecord/getByCode';
+                    var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
                     $.post(url,{code:examinationCode},function (data) {
                         if(data){
-                            $('#userName').val(data.name);
-                            $('#sex').val(data.sex);
-                            $('#organ').val(data.organId);
+                            $('#userId').val(data.userId);
+                            $('#userName').val(data.userName);
+                            $('#sex').val(data.sexLabel);
+                            $('#organ').val(data.organName);
 
-                            for (var i=0; i<data.examinationRecordItemList.length; i++){
-                                addRow('#examinationRecordItemList', examinationRecordItemRowIdx, examinationRecordItemTpl, data.examinationRecordItemList[i]);
-                                examinationRecordItemRowIdx = examinationRecordItemRowIdx + 1;
-                            }
                         }
                     });
                     //防止form提交
@@ -48,8 +45,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationSamples/form?id=${examinationSamples.id}">体检样本<shiro:hasPermission name="wshbj:examinationSamples:edit">${not empty examinationSamples.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -63,7 +60,8 @@
 		<div class="control-group">
 			<label class="control-label">样本编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -76,7 +74,7 @@
 		<div class="control-group">
 			<label class="control-label">采集项目：</label>
 			<div class="controls">
-				<select id="roleId" class="input-xlarge required">
+				<select id="itemId" name="itemId" class="input-xlarge required">
 					<c:forEach items="${itemList}" var="item">
 						<shiro:hasPermission name="${item.permission}">
 							<option value="${item.id}">${item.name}</option>
@@ -89,7 +87,8 @@
 		<div class="control-group">
 			<label class="control-label">体检用户：</label>
 			<div class="controls">
-				<form:input path="userId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:hidden path="userId"/>
+				<input id="userName" name="userName" readonly class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -105,13 +104,6 @@
 			<label class="control-label">单位：</label>
 			<div class="controls">
 				<input id="organ" name="organ" readonly class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">采样人：</label>
-			<div class="controls">
-				<input id="sysUser" name="sysUser" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

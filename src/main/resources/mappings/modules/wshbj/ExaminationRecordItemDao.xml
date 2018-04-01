@@ -6,6 +6,9 @@
 		a.id AS "id",
 		a.record_id AS "recordId",
 		a.item_id AS "itemId",
+		a.item_name AS "itemName",
+		a.need_samples AS "needSamples",
+		a.sample_code AS "sampleCode",
 		a.result_dict_id AS "resultDictId",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
@@ -13,7 +16,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.examination_times AS "examinationTimes"
+		a.examination_flag AS "examinationFlag"
 	</sql>
 	
 	<sql id="examinationRecordItemJoins">
@@ -39,13 +42,19 @@
 			<if test="recordId != null and recordId != ''">
 				AND a.record_id = #{recordId}
 			</if>
+			<if test="needSamples != null and needSamples != ''">
+				AND a.need_samples = #{needSamples}
+			</if>
+			<if test="examinationFlag != null and examinationFlag != ''">
+				AND a.examination_flag = #{examinationFlag}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.create_date ASC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -73,6 +82,9 @@
 			id,
 			record_id,
 			item_id,
+			item_name,
+			need_samples,
+			sample_code,
 			result_dict_id,
 			del_flag,
 			create_by,
@@ -80,11 +92,14 @@
 			update_by,
 			update_date,
 			remarks,
-			examination_times
+			examination_flag
 		) VALUES (
 			#{id},
 			#{recordId},
 			#{itemId},
+			#{itemName},
+			#{needSamples},
+			#{sampleCode},
 			#{resultDictId},
 			#{delFlag},
 			#{createBy.id},
@@ -92,7 +107,7 @@
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{examinationTimes}
+			#{examinationFlag}
 		)
 	</insert>
 	
@@ -120,6 +135,15 @@
 				WHERE record_id = #{recordId}
 			</otherwise>
 		</choose>
+	</update>
+
+
+	<update id="saveRecordResult">
+		UPDATE bj_examination_record_item SET
+		result_dict_id = #{resultDictId},
+		<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
+		remarks = #{remarks}
+		WHERE id = #{recordItemId}
 	</update>
 	
 </mapper>

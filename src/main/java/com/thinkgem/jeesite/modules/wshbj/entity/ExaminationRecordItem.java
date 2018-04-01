@@ -20,8 +20,11 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private static final long serialVersionUID = 1L;
 	private String recordId;		// 检查记录 父类
 	private String itemId;		// 检查项目
+	private String itemName;		// 项目
+	private String needSamples;		//是否需要样本：0-否，1-是
+	private String sampleCode;		// 样本编号
 	private String resultDictId;		// 体检结果
-	private int examinationTimes = 1;
+	private String examinationFlag;		// 1-初检，2-复检
 	
 	public ExaminationRecordItem() {
 		super();
@@ -63,11 +66,35 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		this.resultDictId = resultDictId;
 	}
 
-	public int getExaminationTimes() {
-		return examinationTimes;
+	public String getExaminationFlag() {
+		return examinationFlag;
 	}
 
-	public void setExaminationTimes(int examinationTimes) {
-		this.examinationTimes = examinationTimes;
+	public void setExaminationFlag(String examinationFlag) {
+		this.examinationFlag = examinationFlag;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getNeedSamples() {
+		return needSamples;
+	}
+
+	public void setNeedSamples(String needSamples) {
+		this.needSamples = needSamples;
+	}
+
+	public String getSampleCode() {
+		return sampleCode;
+	}
+
+	public void setSampleCode(String sampleCode) {
+		this.sampleCode = sampleCode;
 	}
 }

@@ -99,9 +99,10 @@ public class ExaminationSamplesController extends BaseController {
 		if (!beanValidator(model, examinationSamples)){
 			return form(examinationSamples, model);
 		}
+		examinationSamples.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationSamplesService.save(examinationSamples);
 		addMessage(redirectAttributes, "保存体检样本成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationSamples/?repage";
+		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationSamples/form";
 	}
 	
 	@RequiresPermissions("wshbj:examinationSamples:edit")

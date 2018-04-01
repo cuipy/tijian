@@ -123,6 +123,10 @@
             $("#postId").attr("value", data.postId);
             $("#postId").trigger('change');
         }
+
+        function test() {
+
+        }
 	</script>
 </head>
 <body>
@@ -136,7 +140,7 @@
 		<div class="control-group">
 			<label class="control-label">编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" readonly="true" class="input-xlarge required"/>
+				<form:input path="code" htmlEscape="false" maxlength="45" ondblclick="test();" readonly="true" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

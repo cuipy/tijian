@@ -12,6 +12,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Map;
 import javax.validation.ConstraintViolationException;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 
@@ -206,12 +208,30 @@ public class ExaminationRecordController extends BaseController {
 		return "modules/wshbj/inputSamplesResult";
 	}
 
+	/**
+	 * 录入体检结果
+	 * @param examinationRecord
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
 	@RequiresPermissions("wshbj:examinationRecord:inputResult")
 	@RequestMapping(value = "inputResult")
 	public String inputResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 
 		return "modules/wshbj/inputResult";
 	}
+
+
+	@RequiresPermissions("wshbj:examinationRecord:inputResult")
+	@RequestMapping(value = "saveResult")
+	@ResponseBody
+	public ResponseResult saveResult(String recordId,@RequestParam(value="recordItemIds[]")String[] recordItemIds,@RequestParam(value="resultDictIds[]")String[] resultDictIds,@RequestParam(value="remarksArray[]")String[] remarksArray) {
+		ResponseResult responseResult = examinationRecordService.saveResult(recordId,recordItemIds,resultDictIds,remarksArray);
+		return responseResult;
+	}
+
 
 
 	@ResponseBody
@@ -222,5 +242,23 @@ public class ExaminationRecordController extends BaseController {
 		}
 		ExaminationRecord examinationRecord = examinationRecordService.getByCode(code);
 		return examinationRecord;
+	}
+
+    @ResponseBody
+    @RequestMapping(value = "getMapByCode")
+    public Map getMapByCode(@RequestParam(required=true) String code, HttpServletResponse response) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(code)){
+            return new HashedMap();
+        }
+        return examinationRecordService.getMapByCode(code);
+    }
+
+	@ResponseBody
+	@RequestMapping(value = "getMapByCode4Result")
+	public Map getMapByCode4Result(@RequestParam(required=true) String code,@RequestParam()String examinationFlag, HttpServletResponse response) {
+		if (org.apache.commons.lang3.StringUtils.isBlank(code)){
+			return new HashedMap();
+		}
+		return examinationRecordService.getMapByCode4Result(code,examinationFlag);
 	}
 }

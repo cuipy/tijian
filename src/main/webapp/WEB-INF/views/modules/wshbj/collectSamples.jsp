@@ -45,11 +45,11 @@
             $('#examinationCode').bind('keypress',function(event){
                 if(event.keyCode == 13) {
                     var examinationCode = $('#examinationCode').val();
-                    var url = '${ctx}/wshbj/examinationRecord/getByCode';
+                    var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
                     $.post(url,{code:examinationCode},function (data) {
                         if(data){
                             $('#userName').val(data.name);
-                            $('#sex').val(data.sex);
+                            $('#sex').val(data.sexLabel);
                             $('#organ').val(data.organId);
 
                             for (var i=0; i<data.examinationRecordItemList.length; i++){

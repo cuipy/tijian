@@ -44,59 +44,108 @@
 
             $('#examinationCode').bind('keypress',function(event){
                 if(event.keyCode == 13) {
-                    var examinationCode = $('#examinationCode').val();
-                    var url = '${ctx}/wshbj/examinationRecord/getByCode';
-                    $.post(url,{code:examinationCode},function (data) {
-                        if(data){
-                            $('#userName').val(data.name);
-                            $('#sex').val(data.sex);
-                            $('#organ').val(data.organId);
-
-                            for (var i=0; i<data.examinationRecordItemList.length; i++){
-                                addRow('#examinationRecordItemList', examinationRecordItemRowIdx, examinationRecordItemTpl, data.examinationRecordItemList[i]);
-                                examinationRecordItemRowIdx = examinationRecordItemRowIdx + 1;
-                            }
-                        }
-                    });
+                    loadRecord();
                     //防止form提交
                     return false;
                 }
             });
         });
+
+		function loadRecord() {
+            var examinationCode = $('#examinationCode').val();
+            if(examinationCode==''){
+                return;
+			}
+            var examinationFlag = $("input[name='examinationFlag']:checked").val();
+            var url = '${ctx}/wshbj/examinationRecord/getMapByCode4Result';
+            $.post(url,{code:examinationCode,examinationFlag:examinationFlag},function (data) {
+                if(data){
+                    $('#recordId').val(data.id);
+                    $('#userName').val(data.name);
+                    $('#sex').val(data.sexLabel);
+                    $('#organ').val(data.organName);
+                    $('#examinationRecordItemList').empty();
+                    examinationRecordItemRowIdx = 0;
+                    if(data.examinationRecordItemList){
+                        for (var i=0; i<data.examinationRecordItemList.length; i++){
+                            addRow('#examinationRecordItemList', examinationRecordItemRowIdx, examinationRecordItemTpl, data.examinationRecordItemList[i]);
+                            examinationRecordItemRowIdx = examinationRecordItemRowIdx + 1;
+                        }
+					}
+
+                }
+            });
+        }
+
 		function addRow(list, idx, tpl, row){
 			$(list).append(Mustache.render(tpl, {
 				idx: idx, delBtn: false, row: row
 			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
+			var dicSelect = $('#examinationRecordItem'+idx).find("select")[0];
+			var dictList = row.dictList;
+			$.each(dictList,function (index,dict) {
+			    var selected = dict.defaultFlag == '1';
+				$(dicSelect).append('<option value="'+dict.id+'" selected="'+selected+'">'+dict.name+'</option>');
+
+                //$('#examinationRecordItem'+idx+'_remarks').val(dict.remarks);
+            });
+			if(row.examinationFlag=='1'){
+                $('#examinationRecordItem'+idx+'_examinationFlag').text('初检');
+			}else if(row.examinationFlag=='2'){
+                $('#examinationRecordItem'+idx+'_examinationFlag').text('复检');
+            }
 		}
 
+		function submitForm() {
+			if(examinationRecordItemRowIdx==0){
+                showTip('缺少体检项目','error');
+			    return;
+			}
 
+			var recordItemIds = [],resultDictIds = [],remarksArray = [];
+			for (var i=0;i<examinationRecordItemRowIdx;i++){
+                recordItemIds.push($('#examinationRecordItem'+i+'_recordItemId').val());
+                resultDictIds.push($('#examinationRecordItem'+i+'_resultId').val());
+                remarksArray.push($('#examinationRecordItem'+i+'_remarks').val());
+			}
+			var url = '${ctx}/wshbj/examinationRecord/saveResult';
+			var params = {
+			    recordId:$('#recordId').val(),
+                recordItemIds:recordItemIds,
+                resultDictIds:resultDictIds,
+                remarksArray:remarksArray
+			}
+			$.post(url,params,function (data) {
+				if(data.code=='0'){
+                    showTip('保存成功','success');
+				}else{
+                    showTip(data.msg,'error');
+				}
+            });
+        }
 
 
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationRecord/inputResult">体检结果</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecord/inputResult">体检结果录入</a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
+	<form:form id="inputForm"   class="form-horizontal">
+		<input type="hidden" id="recordId"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">编号：</label>
 			<div class="controls">
 				<input id="examinationCode" name="examinationCode" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label"></label>
+			<div class="controls">
+				<input type="radio" id="examinationFlag1" name="examinationFlag" value="1" CHECKED onchange="loadRecord();"/><label for="examinationFlag1">初检</label>
+				<input type="radio" id="examinationFlag2" name="examinationFlag" value="2" onchange="loadRecord();"/><label for="examinationFlag2">复检</label>
 			</div>
 		</div>
 		<div class="control-group">
@@ -127,8 +176,8 @@
 				<table id="contentTable" class="table table-striped table-bordered table-condensed">
 					<thead>
 					<tr>
-						<th class="hide"></th>
-						<th width="200">检查项目</th>
+						<th width="150">检查项目</th>
+						<th width="100">初检/复检</th>
 						<th width="100">结果</th>
 						<th>结果备注</th>
 					</tr>
@@ -137,36 +186,26 @@
 					</tbody>
 				</table>
 				<script type="text/template" id="examinationRecordItemTpl">//<!--
-					<tr id="examinationRecordItemList{{idx}}">
-						<td class="hide">
-							<input id="examinationRecordItemList{{idx}}_id" name="examinationRecordItemList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-							<input id="examinationRecordItemList{{idx}}_delFlag" name="examinationRecordItemList[{{idx}}].delFlag" type="hidden" value="0"/>
+					<tr id="examinationRecordItem{{idx}}">
+						<td>
+							<input id="examinationRecordItem{{idx}}_recordItemId" name="examinationRecordItem[{{idx}}]_recordItemId" type="hidden" value="{{row.recordItemId}}"/>
+							<input id="examinationRecordItem{{idx}}_itemName" name="examinationRecordItem[{{idx}}]_itemName" type="text" value="{{row.itemName}}"/>
 						</td>
 						<td>
-							<input id="examinationRecordItemList{{idx}}_itemId" name="examinationRecordItemList[{{idx}}]._itemId" type="hidden" value="{{row._itemId}}"/>
-							<input id="examinationRecordItemList{{idx}}_itemName" name="examinationRecordItemList[{{idx}}]._itemName" type="text" value="{{row.itemId}}"/>
-
+							<span id="examinationRecordItem{{idx}}_examinationFlag"></span>
 						</td>
 						<td>
-							<select id="examinationRecordItemList{{idx}}_itemId" name="examinationRecordItemList[{{idx}}].itemId" data-value="{{row.itemId}}" class="input-small required">
-									<option value="">请选择</option>
-								</select>
+							<select id="examinationRecordItem{{idx}}_resultId" name="examinationRecordItem[{{idx}}]_resultId"  class="input-small required">
+							</select>
 						</td>
 						<td>
-							<input id="examinationRecordItemList{{idx}}_remarks" name="examinationRecordItemList[{{idx}}].remarks" type="text"  class="input-xxlarge ">{{row.remarks}}</textarea>
+							<input id="examinationRecordItem{{idx}}_remarks" name="examinationRecordItem[{{idx}}]_remarks" type="text"  class="input-xlarge ">{{row.remarks}}</textarea>
 						</td>
 
 					</tr>//-->
 				</script>
 				<script type="text/javascript">
                     var examinationRecordItemRowIdx = 0, examinationRecordItemTpl = $("#examinationRecordItemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                    $(document).ready(function() {
-                        var data = ${fns:toJson(examinationRecord.examinationRecordItemList)};
-                        for (var i=0; i<data.length; i++){
-                            addRow('#examinationRecordItemList', examinationRecordItemRowIdx, examinationRecordItemTpl, data[i]);
-                            examinationRecordItemRowIdx = examinationRecordItemRowIdx + 1;
-                        }
-                    });
 				</script>
 			</div>
 		</div>
@@ -175,7 +214,7 @@
 
 
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" onclick="submitForm();" value="保 存" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

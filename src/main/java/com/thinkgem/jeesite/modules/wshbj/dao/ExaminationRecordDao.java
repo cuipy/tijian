@@ -8,6 +8,8 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Map;
+
 /**
  * 体检记录DAO接口
  * @author zhxl
@@ -19,4 +21,6 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 	public String genCode(@Param("keyCode")String keyCode);
 
 	public ExaminationRecord getByCode(String code);
+
+	public Map getMapByCode(String code);
 }
