@@ -1,3 +1,7 @@
+## 修改说明
+*  调整form样式，默认宽度为50% ，如果某行宽度为100% ，则设置 class 为 control-group-100
+
+
 ## 关注 JeeSite 4.0 请移步: <https://gitee.com/thinkgem/jeesite4>
 
 # JeeSite 企业信息化快速开发平台
