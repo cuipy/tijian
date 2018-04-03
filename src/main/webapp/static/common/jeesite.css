@@ -4,6 +4,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 html,body {scrollbar-face-color:#ffffff;scrollbar-highlight-color:#ffffff;scrollbar-darkshadow-color:#ffffff;padding:0;}
+div{box-sizing:border-box; }
 img {max-width:auto;} h1 {font-size:30px;} h1, h2, h3, h4, h5, h6 {margin:0;} a {outline: none;} a:active {star:expression(this.onFocus=this.blur());}
 body,label,input,button,select,textarea,.uneditable-input,.navbar-search .search-query {font-family:Helvetica, Georgia, Arial, sans-serif, 宋体;font-size:13px;_font-size:12px;}
 .input-append .add-on,.input-prepend .add-on,.input-append .btn,.input-prepend .btn,.input-append .btn-group > .dropdown-toggle,.input-prepend .btn-group > .dropdown-toggle {vertical-align: middle;}
@@ -55,14 +56,16 @@ input.btn:hover {*color:#333333}
 .form-search .ul-form li.btns{padding-left:10px;}
 .form-search .ul-form li.btns .btn{margin-right:5px;}
 
-.form-horizontal {margin:0 10px;} .form-horizontal .control-group {margin-bottom:8px;}
+.form-horizontal {margin:0 10px;}
+ .form-horizontal .control-group {margin-bottom:8px;float:left;width:50%;}
+ .form-horizontal .control-group-100 {margin-bottom:8px;float:left;width:100%;}
 .form-horizontal .control-label {padding-top:3px;} .form-horizontal .controls {text-align:left;overflow-x:auto;overflow-y:hidden;}
 .form-horizontal .controls label.error {background-position:0 2px;}
 
 .form-horizontal .table-form{width:100%;border-color:#dddddd;}
 .form-horizontal .table-form, .form-horizontal .table-form td{border:1px solid #ddd;background-color:#fdfdfd;padding:4px;} 
 .form-horizontal .table-form td.tit{background:#fafafa;text-align:center;padding-right:8px;white-space:nowrap;}
-.form-horizontal .form-actions{margin-bottom:0;}
+.form-horizontal .form-actions{margin-bottom:0;float:left;width:100%;box-sizing:border-box;}
 
 .form-horizontal fieldset .row-fluid {margin-bottom:10px;}
 
