@@ -318,6 +318,10 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             }
         }
 
+        if (recordItem!=null){
+            refreshStatus(recordItem.getRecordId());
+        }
+
         ResponseResult responseResult = ResponseResult.generateSuccessResult("保存成功");
         return responseResult;
     }
@@ -359,5 +363,11 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         }
 
         return mapList;
+    }
+
+
+    @Transactional(readOnly = false)
+    public void refreshStatus(String recordId){
+
     }
 }

@@ -81,6 +81,8 @@
                             addRow('#recordList', recordRowIdx, recordTpl, sample);
                             recordRowIdx = recordRowIdx + 1;
                         })
+
+                        $('#recordList').find('[name=itemIdRadio]:radio')[0].click();
                     }
                 }
             });

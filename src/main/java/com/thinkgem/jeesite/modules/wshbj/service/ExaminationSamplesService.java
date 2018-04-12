@@ -39,6 +39,9 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 	@Autowired
 	private ExaminationResultDictService examinationResultDictService;
 
+	@Autowired
+	private ExaminationRecordService examinationRecordService;
+
 	public ExaminationSamples get(String id) {
 		return super.get(id);
 	}
@@ -149,6 +152,7 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
             return ResponseResult.generateFailResult("样本数据错误");
         }
 
+        List<String> recordIdList = new ArrayList<String>();
         ExaminationSamples examinationSamples = null;
         ExaminationResultDict resultDict = null;
         ExaminationRecordItem recordItem = null;
@@ -167,13 +171,25 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
                 continue;
             }
 
-            //样本中检验结果
+            if(!recordIdList.contains(recordItem.getRecordId())){
+            	recordIdList.add(recordItem.getRecordId());
+			}
+
+					//样本中检验结果
             this.dao.updateResult(sampleId,resultDict.getId(),resultDict.getFlag(),resultRemarksArray[i]);
 
             //体检记录中检验结果
             recordItemDao.saveRecordResult(recordItem.getId(),examinationSamples.getCode(),resultDict.getId(),resultDict.getName(),resultDict.getFlag(),resultRemarksArray[i]);
 
         }
+
+        //更新体检记录状态
+		if (!recordIdList.isEmpty()){
+			for (String recordId:recordIdList) {
+				examinationRecordService.refreshStatus(recordId);
+			}
+		}
+
 
         return ResponseResult.generateSuccessResult("样本结果录入成功");
     }

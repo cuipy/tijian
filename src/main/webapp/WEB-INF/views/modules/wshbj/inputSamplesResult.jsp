@@ -200,7 +200,7 @@
 			<table id="contentTable1" class="table table-striped table-bordered table-condensed" style="height: 50px">
 				<thead>
 					<tr>
-						<th width="5%"><input type="checkbox" id="checkedAll"></th>
+						<th width="5%"><input type="checkbox" checked id="checkedAll"></th>
 						<th width="15%">体检编号</th>
 						<th width="10%">用户</th>
 						<th width="15%">样本编号</th>
@@ -215,7 +215,7 @@
 			</table>
 			<script type="text/template" id="samplesTpl">//<!--
 				<tr id="samplesList{{idx}}">
-					<td><input type="checkbox" id="{{row.id}}" name="samplesCheckbox" value="{{row.id}}" idx="{{row.idx}}"></td>
+					<td><input type="checkbox" id="{{row.id}}" name="samplesCheckbox" checked value="{{row.id}}" idx="{{row.idx}}"></td>
 					<td >
 						<span  type="text" maxlength="64" class="input-small" >{{row.examinationCode}}</span>
 					</td>

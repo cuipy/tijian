@@ -156,7 +156,7 @@ public class ExaminationRecordController extends BaseController {
 		examinationRecord.setName(examinationRecord.getUser().getName());
 		examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		if (StringUtils.isBlank(examinationRecord.getStatus())){
-			examinationRecord.setStatus("1");
+			examinationRecord.setStatus("0"); //未体检
 		}
 
 
