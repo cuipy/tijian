@@ -5,88 +5,14 @@
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+
 		$(document).ready(function() {
-			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
-				}
-			});
-            $("input[name='itemType']:radio").change(function() {
-                if($(this).val()=='1'){
-                    $('#packageIdDiv').show();
-                    $('#itemsDiv').hide();
-				}else {
-                    $('#packageIdDiv').hide();
-                    $('#itemsDiv').show();
-				}
-            });
-            <c:choose>
-				<c:when test="${not empty examinationRecord.id}">
-					 $("input[name='itemType'][value=${examinationRecord.itemType}]").attr("checked",true);
-				</c:when>
-				<c:otherwise>
-					$("input[name='itemType'][value='1']").attr("checked",true);
-				</c:otherwise>
-            </c:choose>
-
-
-
-            $('#idNumber').bind('keypress',function(event){
-                if(event.keyCode == 13) {
-                    var idNumber = $('#idNumber').val();
-                    var url = '${ctx}/wshbj/examinationUser/getByIdNumber';
-                    $.post(url,{idNumber:idNumber},function (data) {
-                        if(data){
-                            setUserPro(data);
-                        }
-                    });
-                    //防止form提交
-                    return false;
-                }
+            $('#checkedAll').click(function() {
+                $('[name=samplesCheckbox]:checkbox').prop('checked', this.checked);
             });
         });
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
+
+
 
 
         //选择用户返回
@@ -123,104 +49,203 @@
             $("#postId").attr("value", data.postId);
             $("#postId").trigger('change');
         }
+        
+		function searchSamples() {
+		    var url = '${ctx}/wshbj/examinationSamples/getListMap4Result';
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $("#inputForm").serialize(),//核心代码，form表单序列化
+                dataType: "JSON",
+                success: function(data) {
+                    $('#samplesList').find('tr').remove();
+                    samplesRowIdx = 0;
+                    if(data){
+                        $.each(data,function (index,sample) {
+                            sample.idx = samplesRowIdx;
+
+                            addRow('#samplesList', samplesRowIdx, samplesTpl, sample);
+                            samplesRowIdx = samplesRowIdx + 1;
+                        })
+
+
+                    }
+                }
+            });
+
+        }
+
+        function addRow(list, idx, tpl, row){
+            $(list).append(Mustache.render(tpl, {
+                idx: idx, delBtn: false, row: row
+            }));
+            var resultSelect = $(list+idx).find("select")[0];
+            var dictList = row.resultDictList;
+            //结果下拉框
+            $.each(dictList,function (index,dict) {
+                var selected = '';
+                if(dict.defaultFlag == '1'){
+                    selected = 'selected="selected"'
+				}
+                $(resultSelect).append('<option value="'+dict.id+'" '+selected+'" remarks='+dict.remarks+'>'+dict.name+'</option>');
+            });
+
+
+            $('#resultList'+idx+'_resultRemarksId').val($(resultSelect).find("option:selected").attr('remarks'));
+
+            if(row.resultDictId && row.resultDictId!=''){
+                $(resultSelect).val(row.resultDictId);
+            }
+
+            if(row.resultRemarks && row.resultRemarks!=''){
+                $('#resultList'+idx+'_resultRemarksId').val(row.resultRemarks);
+            }
+
+            $(list+idx).find('td:gt(0):lt(4)').click(function () {
+                var checked = $(list+idx).find('input[name=samplesCheckbox]').prop('checked');
+                $(list+idx).find('[name=samplesCheckbox]:checkbox').prop('checked', !checked);
+            });
+        }
+
+		function resultChange(idx,selectDom) {
+            $('#resultList'+idx+'_resultRemarksId').val($(selectDom).find("option:selected").attr('remarks'));
+        }
+
+
+        function saveResults() {
+			var checkedList = $("input[name='samplesCheckbox']:checked");
+			var samplesIdArray = new Array();
+            var resultDictIdArray = new Array();
+            var resultRemarksArray = new Array();
+			$.each(checkedList,function (index,checkbox) {
+                samplesIdArray.push($(checkbox).val());
+			    var idx = $(checkbox).attr('idx');
+                resultDictIdArray.push($('#resultList'+idx+'_dictId').val());
+                resultRemarksArray.push($('#resultList'+idx+'_resultRemarksId').val());
+            });
+			if(samplesIdArray.length<1){
+			    showTip('请选择样本结果','warning');
+			    return;
+			}
+
+            var url = '${ctx}/wshbj/examinationRecord/saveSamplesResult';
+            var params = {
+                samplesIdArray:samplesIdArray,
+                resultDictIdArray:resultDictIdArray,
+                resultRemarksArray:resultRemarksArray
+			}
+			$.post(url,params,function (data) {
+				if(data.code!='0'){
+                    showTip(data.msg,'warning');
+				}else{
+                    showTip('保存结果成功','success');
+				    setTimeout(function () {
+						location.href = '${ctx}/wshbj/examinationRecord/inputSamplesResult';
+                    },2000);
+				}
+            });
+        }
+
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/inputResult">结果录入</a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
+	<form id="inputForm"   method="post" class="form-horizontal">
 		<sys:message content="${message}"/>
 		<div class="control-group">
-			<label class="control-label">采集项目：</label>
+			<label class="control-label">体检编号：</label>
 			<div class="controls">
-				<select id="roleId" class="input-xlarge required">
-					<option value="">请选择</option>
-					<c:forEach items="${roleList}" var="role">
-						<option value="${role.id}">${role.name}</option>
-					</c:forEach>
-				</select>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input id="examinationCode" name="examinationCode" class="input-medium"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">编号：</label>
+			<label class="control-label">采集项目：</label>
 			<div class="controls">
-				<input id="examinationCode" name="examinationCode" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<select id="itemId" name="itemId" class="input-medium">
+					<option value="">全部</option>
+					<c:forEach items="${itemList}" var="item">
+						<option value="${item.id}">${item.name}</option>
+					</c:forEach>
+				</select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">样本号：</label>
 			<div class="controls">
-				<input id="samplesCode" name="sex" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input id="sampleCode" name="sampleCode" class="input-medium"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">姓名：</label>
+			<label class="control-label">样本日期：</label>
 			<div class="controls">
-				<input id="userName" name="userName" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input name="startDate"  readonly="true" class="input-medium Wdate"
+							onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
+				--
+				<input name="endDate"  readonly="true" class="input-medium Wdate"
+							onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">性别：</label>
-			<div class="controls">
-				<input id="sex" name="sex" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-
-		<div class="control-group">
-			<label class="control-label">单位：</label>
-			<div class="controls">
-				<input id="organ" name="organ" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">检验结果：</label>
-			<div class="controls">
-				<select id="resultDictId" class="input-xlarge required">
-					<option value="">请选择</option>
-					<c:forEach items="${roleList}" var="role">
-						<option value="${role.id}">${role.name}</option>
-					</c:forEach>
-				</select>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">结果描述：</label>
-			<div class="controls">
-				<input id="remarks" name="remarks" class="input-xxlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">录入人：</label>
-			<div class="controls">
-				<input id="sysUser" name="sysUser" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">录入日期：</label>
-			<div class="controls">
-				<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
-							onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-
 
 
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
+			<input id="btnSearch" class="btn btn-primary" type="button" value="查询" onclick="searchSamples();"/>
+			<input id="btnSubmit" class="btn btn-primary" type="button" value="保存选中" onclick="saveResults();"/>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+	</form>
+	<form:form   method="post" class="form-horizontal">
+		<div>
+			<table id="contentTable1" class="table table-striped table-bordered table-condensed" style="height: 50px">
+				<thead>
+					<tr>
+						<th width="5%"><input type="checkbox" id="checkedAll"></th>
+						<th width="15%">体检编号</th>
+						<th width="10%">用户</th>
+						<th width="15%">样本编号</th>
+						<th width="15%">名称</th>
+						<th width="15%">结果</th>
+						<th width="25%">结果备注</th>
+					</tr>
+				</thead>
+				<tbody id="samplesList" style="height: 50px;overflow-y: scroll">
+
+				</tbody>
+			</table>
+			<script type="text/template" id="samplesTpl">//<!--
+				<tr id="samplesList{{idx}}">
+					<td><input type="checkbox" id="{{row.id}}" name="samplesCheckbox" value="{{row.id}}" idx="{{row.idx}}"></td>
+					<td >
+						<span  type="text" maxlength="64" class="input-small" >{{row.examinationCode}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.userName}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.code}}</span>
+					</td>
+
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.itemName}}</span>
+					</td>
+					<td>
+						<select id="resultList{{idx}}_dictId" name="resultList[{{idx}}]._dictId" data-value="{{row.itemId}}" onchange="resultChange({{idx}},this);" class="input-small">
+
+						</select>
+					</td>
+					<td>
+						<input type="text" id="resultList{{idx}}_resultRemarksId" name="resultList{{idx}}_resultRemarksName" value="{{row.resultRemarks}}" class="input-large" />
+					</td>
+				</tr>//-->
+			</script>
+
+			<script type="text/javascript">
+				var samplesRowIdx = 0, samplesTpl = $("#samplesTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+			</script>
+
+		</div>
 	</form:form>
+
 </body>
 </html>

@@ -188,17 +188,17 @@
 			</form:select>
 		</div>
 	</div>
-		<div class="control-group" >
-			<label class="control-label">单位：</label>
-			<div class="controls">
-				<form:select  path="organId"  class="input-xlarge">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</div>
+	<div class="control-group" >
+		<label class="control-label">单位：</label>
+		<div class="controls">
+			<form:select  path="organId"  class="input-xlarge">
+				<form:option value="">
+					请选择
+				</form:option>
+				<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+			</form:select>
 		</div>
+	</div>
 	<div class="control-group">
 		<label class="control-label">岗位：</label>
 		<div class="controls">

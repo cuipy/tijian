@@ -16,9 +16,14 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class ExaminationSamples extends DataEntity<ExaminationSamples> {
 	
 	private static final long serialVersionUID = 1L;
-	private String examinationCode;		// 体检编号
+	private String recordId;		// 检查记录
+	private String recordItemId;		// 检查记录项目id
+	private String examinationCode;		// 体检记录编号
 	private String code;		// 编号
 	private String itemId;		// 项目id
+	private String resultDictId;		// 结果id
+	private String resultFlag;		// 体检合格标识：0-否，1-是
+    private String resultRemarks;		// 体检结果备注
 	private String userId;		// 体检用户
 	private String owner;		// 所属体检中心
 	private String examinationFlag;		// 1-初检，2-复检
@@ -90,5 +95,44 @@ public class ExaminationSamples extends DataEntity<ExaminationSamples> {
 	public void setExaminationFlag(String examinationFlag) {
 		this.examinationFlag = examinationFlag;
 	}
-	
+
+	public String getResultDictId() {
+		return resultDictId;
+	}
+
+	public void setResultDictId(String resultDictId) {
+		this.resultDictId = resultDictId;
+	}
+
+	public String getRecordId() {
+		return recordId;
+	}
+
+	public void setRecordId(String recordId) {
+		this.recordId = recordId;
+	}
+
+	public String getResultFlag() {
+		return resultFlag;
+	}
+
+	public void setResultFlag(String resultFlag) {
+		this.resultFlag = resultFlag;
+	}
+
+    public String getResultRemarks() {
+        return resultRemarks;
+    }
+
+    public void setResultRemarks(String resultRemarks) {
+        this.resultRemarks = resultRemarks;
+    }
+
+	public String getRecordItemId() {
+		return recordItemId;
+	}
+
+	public void setRecordItemId(String recordItemId) {
+		this.recordItemId = recordItemId;
+	}
 }

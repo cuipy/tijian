@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationSamplesDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.ibatis.annotations.Param;
@@ -44,6 +45,8 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     private ExaminationItemService examinationItemService;
     @Autowired
     private ExaminationResultDictService resultDictService;
+    @Autowired
+    private ExaminationSamplesDao examinationSamplesDao;
 
     public ExaminationRecord get(String id) {
         ExaminationRecord examinationRecord = super.get(id);
@@ -222,6 +225,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         /**
          * 保存检查项目
          */
+        List<String> itemIdList = new ArrayList<String>();
         //若选择了套餐，则以套餐为准
         if (StringUtils.isNotBlank(examinationRecord.getPackageId())){
             //清除原有体检项目
@@ -232,6 +236,8 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             //保存现有体检项目
             List<ExaminationItem> itemList = examinationItemService.findListByPackage(examinationRecord.getPackageId());
             for (ExaminationItem examinationItem:itemList ) {
+                itemIdList.add(examinationItem.getId());
+
                 recordItem = new ExaminationRecordItem();
                 recordItem.setRecordId(examinationRecord.getId());
                 recordItem.setItemId(examinationItem.getId());
@@ -289,16 +295,69 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
 
     @Transactional(readOnly = false)
-    public ResponseResult saveResult(String recordId,String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
-        if (StringUtils.isBlank(recordId)){
-            return ResponseResult.generateFailResult("缺少体检记录");
+    public ResponseResult saveResult(String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
+        if(recordItemIds==null || recordItemIds.length<1){
+            return ResponseResult.generateFailResult("体检项目数据错误");
         }
-
+        ExaminationResultDict resultDict = null;
+        ExaminationRecordItem recordItem = null;
         for (int i = 0; i < recordItemIds.length; i++) {
-            examinationRecordItemDao.saveRecordResult(recordItemIds[i],null,resultDictIds[i],remarksArray[i]);
+            recordItem = examinationRecordItemDao.get(recordItemIds[i]);
+            if (recordItem==null){
+                continue;
+            }
+            resultDict = resultDictService.get(resultDictIds[i]);
+            if (resultDict==null){
+                continue;
+            }
+            examinationRecordItemDao.saveRecordResult(recordItemIds[i],null,resultDictIds[i],resultDict.getName(),resultDict.getFlag(), remarksArray[i]);
+
+            //如果涉及样本，则同步更新样本的检验结果
+            if(StringUtils.isNotBlank(recordItem.getSampleCode())){
+                examinationSamplesDao.updateResultByCode(recordItem.getSampleCode(),resultDict.getId(),resultDict.getFlag(),remarksArray[i]);
+            }
         }
 
         ResponseResult responseResult = ResponseResult.generateSuccessResult("保存成功");
         return responseResult;
+    }
+
+
+    public List<ExaminationRecord> getList4Result(String startDate,String endDate,String examinationCode,String organId) {
+        List<ExaminationRecord> recordList = this.dao.getList4Result(startDate,endDate,examinationCode,organId);
+        return recordList;
+    }
+
+
+    public List<Map> getItemListMap4Result(String recordId) {
+        List<Map> mapList = new ArrayList<Map>();
+        if (StringUtils.isBlank(recordId)){
+            return mapList;
+        }
+        ExaminationRecordItem recordItem = new ExaminationRecordItem();
+        recordItem.setRecordId(recordId);
+        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
+//                recordItem.setExaminationFlag(examinationFlag);
+        List<ExaminationRecordItem> recordItems = examinationRecordItemDao.findList(recordItem);
+        if(recordItems==null){
+            return mapList;
+        }
+        Map itemMap = null;
+        ExaminationResultDict examinationResultDict = new ExaminationResultDict();
+        for (ExaminationRecordItem recordItem1: recordItems ) {
+            itemMap = new HashMap();
+            itemMap.put("recordItem",recordItem1);
+
+            //项目结果字典
+            examinationResultDict.setItemId(recordItem1.getItemId());
+            examinationResultDict.setDelFlag(ExaminationResultDict.DEL_FLAG_NORMAL);
+            List<ExaminationResultDict> dictList = resultDictService.findList(examinationResultDict);
+
+            itemMap.put("resultDictList",dictList);
+            mapList.add(itemMap);
+
+        }
+
+        return mapList;
     }
 }

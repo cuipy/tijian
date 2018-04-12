@@ -24,6 +24,9 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String needSamples;		//是否需要样本：0-否，1-是
 	private String sampleCode;		// 样本编号
 	private String resultDictId;		// 体检结果
+	private String resultDictName;		// 体检结果
+	private String resultFlag;		// 体检合格标识：0-否，1-是
+	private String resultRemarks;		// 体检结果备注
 	private String examinationFlag;		// 1-初检，2-复检
 	
 	public ExaminationRecordItem() {
@@ -96,5 +99,29 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	public void setSampleCode(String sampleCode) {
 		this.sampleCode = sampleCode;
+	}
+
+	public String getResultDictName() {
+		return resultDictName;
+	}
+
+	public void setResultDictName(String resultDictName) {
+		this.resultDictName = resultDictName;
+	}
+
+	public String getResultFlag() {
+		return resultFlag;
+	}
+
+	public void setResultFlag(String resultFlag) {
+		this.resultFlag = resultFlag;
+	}
+
+	public String getResultRemarks() {
+		return resultRemarks;
+	}
+
+	public void setResultRemarks(String resultRemarks) {
+		this.resultRemarks = resultRemarks;
 	}
 }

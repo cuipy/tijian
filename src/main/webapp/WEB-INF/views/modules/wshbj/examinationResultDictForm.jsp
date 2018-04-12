@@ -53,6 +53,15 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">是否合格：</label>
+			<div class="controls">
+				<form:select path="flag" class="input-xlarge required">
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">是否默认：</label>
 			<div class="controls">
 				<form:select path="defaultFlag" class="input-xlarge required">

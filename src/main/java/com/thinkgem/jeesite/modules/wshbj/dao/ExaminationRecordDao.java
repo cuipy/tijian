@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,4 +24,7 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 	public ExaminationRecord getByCode(String code);
 
 	public Map getMapByCode(String code);
+
+	List<ExaminationRecord> getList4Result(@Param("startDate")String startDate,@Param("endDate") String endDate
+			,@Param("code") String code,@Param("organId") String organId);
 }

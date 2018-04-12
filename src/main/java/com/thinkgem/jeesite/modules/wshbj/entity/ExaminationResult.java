@@ -24,6 +24,7 @@ public class ExaminationResult extends DataEntity<ExaminationResult> {
 	private String itemId;		// 项目id
 	private User userId;		// 体检用户
 	private String resultDictId;		// 体检结果
+	private String resultFlag;		// 体检合格标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	
 	public ExaminationResult() {
@@ -103,5 +104,12 @@ public class ExaminationResult extends DataEntity<ExaminationResult> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+	public String getResultFlag() {
+		return resultFlag;
+	}
+
+	public void setResultFlag(String resultFlag) {
+		this.resultFlag = resultFlag;
+	}
 }

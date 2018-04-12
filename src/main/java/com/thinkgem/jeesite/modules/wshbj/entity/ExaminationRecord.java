@@ -33,7 +33,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String packageId;		// 体检套餐
 	private String packagePrice;		// 套餐价格
 	private String idNumber;		// 身份证号
-	private String status;		// 体检状态，对应examination_record_status字典
+	//体检状态：0-未体检完，10-体检不合格，20-复检合格，30-可制证，40-已制证
+	private String status;
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
 
 	private List<ExaminationRecordItem> examinationRecordItemList = Lists.newArrayList();		// 子表列表

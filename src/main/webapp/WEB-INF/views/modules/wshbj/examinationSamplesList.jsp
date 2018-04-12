@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<%@ taglib prefix="wshbjfns" uri="/WEB-INF/tlds/wshbjfns.tld" %>
 <html>
 <head>
 	<title>体检样本管理</title>
@@ -44,10 +45,10 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>体检编号</th>
-				<th>编号</th>
-				<th>项目id</th>
-				<th>更新时间</th>
+				<th width="150">体检编号</th>
+				<th width="150">编号</th>
+				<th width="300">项目</th>
+				<th width="150">更新时间</th>
 				<th>备注</th>
 				<shiro:hasPermission name="wshbj:examinationSamples:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -64,8 +65,8 @@
 					${examinationSamples.code}
 				</td>
 				<td>
-				
-					${examinationSamples.itemId}
+
+							${wshbjfns:getEntityName('ExaminationItem',examinationSamples.itemId,'')}
 				</td>
 				<td>
 				

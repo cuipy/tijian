@@ -173,7 +173,7 @@ public class UserUtils {
 		}
 		return menuList;
 	}
-	
+
 	/**
 	 * 获取当前用户授权的区域
 	 * @return

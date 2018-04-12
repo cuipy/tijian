@@ -79,9 +79,9 @@
 			<tr>
 				<th width="100">编号</th>
 				<th width="100">姓名</th>
-				<th width="180">身份证号</th>
+				<th width="150">身份证号</th>
 				<th width="100">联系电话</th>
-				<th width="60">性别</th>
+				<th width="40">性别</th>
 				<th>单位</th>
 				<th>体检套餐</th>
 				<th width="120">填报时间</th>

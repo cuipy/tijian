@@ -10,6 +10,9 @@
 		a.need_samples AS "needSamples",
 		a.sample_code AS "sampleCode",
 		a.result_dict_id AS "resultDictId",
+		a.result_dict_name AS "resultDictName",
+		a.result_flag AS "resultFlag",
+		a.result_remarks AS "resultRemarks",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -31,6 +34,18 @@
 		WHERE a.id = #{id}
 	</select>
 
+
+	<select id="getEmptyResult" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		WHERE a.record_id = #{recordId}
+		AND a.item_id = #{itemId}
+		AND a.examination_flag = #{examinationFlag}
+		AND a.result_dict_id is null
+		LIMIT 1
+	</select>
 	
 	<select id="findList" resultType="ExaminationRecordItem">
 		SELECT 
@@ -86,6 +101,9 @@
 			need_samples,
 			sample_code,
 			result_dict_id,
+			result_dict_name,
+			result_flag,
+			result_remarks,
 			del_flag,
 			create_by,
 			create_date,
@@ -101,6 +119,9 @@
 			#{needSamples},
 			#{sampleCode},
 			#{resultDictId},
+			#{resultDictName},
+			#{resultFlag},
+			#{resultRemarks},
 			#{delFlag},
 			#{createBy.id},
 			#{createDate},
@@ -116,11 +137,32 @@
 			<set>
 				<if test="recordId !=null and recordId != '' ">record_id = #{recordId},</if>
 				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
+				<if test="needSamples !=null and needSamples != '' ">sample_code = #{needSamples},</if>
 				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
+				<if test="resultDictName !=null and resultDictName != '' ">result_dict_name = #{resultDictName},</if>
+				<if test="resultFlag !=null and resultFlag != '' ">result_flag = #{resultFlag},</if>
+				<if test="resultRemarks !=null and resultRemarks != '' ">result_remarks = #{resultRemarks},</if>
 				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
 				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
 				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
 			</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateSampleCode">
+		UPDATE bj_examination_record_item
+		<set>
+			sample_code = #{sampleCode}
+		</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="revokeSampleCode">
+		UPDATE bj_examination_record_item
+		<set>
+			sample_code = #{needSamples},
+			result_dict_id = null
+		</set>
 		WHERE id = #{id}
 	</update>
 	
@@ -139,10 +181,14 @@
 
 
 	<update id="saveRecordResult">
-		UPDATE bj_examination_record_item SET
-		result_dict_id = #{resultDictId},
-		<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
-		remarks = #{remarks}
+		UPDATE bj_examination_record_item
+		<set>
+			result_dict_id = #{resultDictId},
+			result_dict_name = #{resultDictName},
+			result_flag = #{resultFlag},
+			result_remarks = #{resultRemarks},
+			<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
+		</set>
 		WHERE id = #{recordItemId}
 	</update>
 	

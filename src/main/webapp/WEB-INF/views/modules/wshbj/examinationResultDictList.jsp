@@ -47,6 +47,7 @@
 			<tr>
 				<th>名称</th>
 				<th>体检项目</th>
+				<th width="80">是否合格</th>
 				<th width="80">是否默认</th>
 				<th>具体描述</th>
 				<shiro:hasPermission name="wshbj:examinationResultDict:edit"><th width="120">操作</th></shiro:hasPermission>
@@ -60,6 +61,9 @@
 				</a></td>
 				<td>
 						${wshbjfns:getEntityName('ExaminationItem',examinationResultDict.itemId,'')}
+				</td>
+				<td>
+						${fns:getDictLabel(examinationResultDict.flag,'yes_no','')}
 				</td>
 				<td>
 						${fns:getDictLabel(examinationResultDict.defaultFlag,'yes_no','')}

@@ -15,9 +15,11 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class ExaminationResultDict extends DataEntity<ExaminationResultDict> {
 	
 	private static final long serialVersionUID = 1L;
-	private String name;		// 名称
 	private String itemId;		// 检查项目
+	private String name;		// 名称
+	private String flag;		// 合格标识：0-否，1-是
 	private String defaultFlag;		// 是否默认：0-否，1-是
+
 	
 	public ExaminationResultDict() {
 		super();
@@ -48,6 +50,14 @@ public class ExaminationResultDict extends DataEntity<ExaminationResultDict> {
 	@Length(min=1, max=1, message="是否默认：0-否，1-是长度必须介于 1 和 1 之间")
 	public String getDefaultFlag() {
 		return defaultFlag;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 
 	public void setDefaultFlag(String defaultFlag) {

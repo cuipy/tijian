@@ -4,9 +4,14 @@
     
 	<sql id="examinationSamplesColumns">
 		a.id AS "id",
+		a.record_id AS "recordId",
+		a.record_item_id AS "recordItemId",
 		a.examination_code AS "examinationCode",
 		a.code AS "code",
 		a.item_id AS "itemId",
+		a.result_dict_id AS "resultDictId",
+		a.result_flag AS "resultFlag",
+		a.result_remarks AS "resultRemarks",
 		a.user_id AS "userId",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
@@ -29,6 +34,24 @@
 		WHERE a.id = #{id}
 	</select>
 
+	<select id="getByCode" resultType="ExaminationSamples">
+		SELECT
+		<include refid="examinationSamplesColumns"/>
+		FROM bj_examination_samples a
+		<include refid="examinationSamplesJoins"/>
+		WHERE a.code = #{code}
+	</select>
+
+	<select id="getEffectiveSample" resultType="ExaminationSamples">
+		SELECT
+		<include refid="examinationSamplesColumns"/>
+		FROM bj_examination_samples a
+		WHERE a.record_id = #{recordId}
+		AND a.item_id = #{itemId}
+		AND (a.result_flag is null OR a.result_flag = '1')
+		LIMIT 0,1
+	</select>
+
 	
 	<select id="findList" resultType="ExaminationSamples">
 		SELECT 
@@ -37,6 +60,9 @@
 		<include refid="examinationSamplesJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="recordId != null and recordId != ''">
+				AND a.record_id = #{recordId}
+			</if>
 			<if test="examinationCode != null and examinationCode != ''">
 				AND a.examination_code = #{examinationCode}
 			</if>
@@ -74,13 +100,52 @@
 			</otherwise>
 		</choose>
 	</select>
+
+
+
+	<select id="findMapList" resultType="java.util.Map">
+		SELECT
+		<include refid="examinationSamplesColumns"/>,
+		u.name AS "userName",i.name AS "itemName"
+		FROM bj_examination_samples a
+		LEFT JOIN bj_examination_user u on a.user_id = u.id
+		LEFT JOIN bj_examination_item i on a.item_id = i.id
+		<where>
+			a.del_flag = '0'
+			<if test="examinationCode != null and examinationCode != ''">
+				AND a.examination_code = #{examinationCode}
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="itemId != null and itemId != ''">
+				AND a.item_id = #{itemId}
+			</if>
+			<if test="startDate != null and startDate != ''">
+				<![CDATA[
+               		 and a.create_date >= #{startDate}
+                ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[
+                	and a.create_date <= #{endDate}
+                ]]>
+			</if>
+		</where>
+		ORDER BY a.create_date ASC
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO bj_examination_samples(
 			id,
+			record_id,
+			record_item_id,
 			examination_code,
 			code,
 			item_id,
+			result_dict_id,
+			result_flag,
+			result_remarks,
 			user_id,
 			del_flag,
 			create_by,
@@ -92,9 +157,14 @@
 			examination_flag
 		) VALUES (
 			#{id},
+			#{recordId},
+			#{recordItemId},
 			#{examinationCode},
 			#{code},
 			#{itemId},
+			#{resultDictId},
+			#{resultFlag},
+			#{resultRemarks},
 			#{userId},
 			#{delFlag},
 			#{createBy.id},
@@ -110,9 +180,13 @@
 	<update id="update">
 		UPDATE bj_examination_samples
 			<set>
+				<if test="recordId !=null and recordId != '' ">record_id = #{recordId},</if>
+				<if test="recordItemId !=null and recordItemId != '' ">record_item_id = #{recordItemId},</if>
 				<if test="examinationCode !=null and examinationCode != '' ">examination_code = #{examinationCode},</if>
 				<if test="code !=null and code != '' ">code = #{code},</if>
 				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
+				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
+				<if test="resultFlag !=null and resultFlag != '' ">result_flag = #{resultFlag},</if>
 				<if test="userId !=null and userId != '' ">user_id = #{userId},</if>
 				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
 				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
@@ -128,5 +202,17 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
+	<update id="updateResult">
+		UPDATE bj_examination_samples SET
+		result_dict_id = #{resultDictId},result_flag = #{resultFlag},result_remarks = #{resultRemarks}
+		WHERE id = #{id}
+	</update>
+
+
+	<update id="updateResultByCode">
+		UPDATE bj_examination_samples SET
+		result_dict_id = #{resultDictId},result_flag = #{resultFlag},result_remarks = #{resultRemarks}
+		WHERE code = #{code}
+	</update>
 </mapper>

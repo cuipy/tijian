@@ -29,6 +29,7 @@
                     var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
                     $.post(url,{code:examinationCode},function (data) {
                         if(data){
+                            $('#recordId').val(data.id);
                             $('#userId').val(data.userId);
                             $('#userName').val(data.userName);
                             $('#sex').val(data.sexLabel);
@@ -41,6 +42,26 @@
                 }
             });
 		});
+		
+		function submitForm() {
+            var url = '${ctx}/wshbj/examinationSamples/saveSamples';
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $("#inputForm").serialize(),//核心代码，form表单序列化
+                dataType: "JSON",
+                success: function(data) {
+                    if(data.code!='0'){
+                        showTip(data.msg,'error');
+                    }else{
+                        showTip('采样成功','success');
+                        setTimeout(function () {
+                            location.href = '${ctx}/wshbj/examinationSamples/form';
+                        },2000)
+                    }
+                }
+            });
+        }
 	</script>
 </head>
 <body>
@@ -49,11 +70,12 @@
 		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
+		<form:hidden path="recordId"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
 			<label class="control-label">体检编号：</label>
 			<div class="controls">
+				<form:hidden path="id"/>
 				<form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-xlarge "/>
 			</div>
 		</div>
@@ -76,9 +98,7 @@
 			<div class="controls">
 				<select id="itemId" name="itemId" class="input-xlarge required">
 					<c:forEach items="${itemList}" var="item">
-						<shiro:hasPermission name="${item.permission}">
 							<option value="${item.id}">${item.name}</option>
-						</shiro:hasPermission>
 					</c:forEach>
 				</select>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -114,8 +134,9 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:examinationSamples:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+			<shiro:hasPermission name="wshbj:examinationSamples:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存" onclick="submitForm();"/>&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="wshbj:examinationSamples:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="撤销" onclick=""/>&nbsp;</shiro:hasPermission>
+            <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
 </body>

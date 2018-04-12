@@ -54,6 +54,8 @@ public class ExaminationRecordController extends BaseController {
 	private JobPostService jobPostService;
 	@Autowired
 	private ExaminationItemService examinationItemService;
+	@Autowired
+	private ExaminationSamplesService examinationSamplesService;
 
 	@Autowired
 	private ExaminationPackageService examinationPackageService;
@@ -163,6 +165,8 @@ public class ExaminationRecordController extends BaseController {
 		addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
 	}
+
+
 	
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = "delete")
@@ -203,9 +207,37 @@ public class ExaminationRecordController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecord:inputSamplesResult")
 	@RequestMapping(value = "inputSamplesResult")
-	public String inputSamplesResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+	public String inputSamplesResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response,Model model, RedirectAttributes redirectAttributes) {
+		Office company = UserUtils.getUser().getCompany();
+		ExaminationItem examinationItem = new ExaminationItem();
+		examinationItem.setOwner(company.getId());
+		examinationItem.setNeedSamples("1");
 
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("itemList", examinationItemList);
 		return "modules/wshbj/inputSamplesResult";
+	}
+
+
+	@RequiresPermissions("wshbj:examinationRecord:inputSamplesResult")
+	@RequestMapping(value = "saveSamplesResult")
+	@ResponseBody
+	public ResponseResult saveSamplesResult(@RequestParam(name="samplesIdArray[]") String[] samplesIdArray
+			,@RequestParam(name="resultDictIdArray[]")String[] resultDictIdArray
+			,@RequestParam(name="resultRemarksArray[]")String[] resultRemarksArray) {
+		ResponseResult result = examinationSamplesService.saveSamplesResult(samplesIdArray,resultDictIdArray,resultRemarksArray);
+		return result;
+	}
+
+
+	@RequiresPermissions("wshbj:examinationRecord:inputResult")
+	@RequestMapping(value = "saveResult")
+	@ResponseBody
+	public ResponseResult saveResult(@RequestParam(name="recordItemIdArray[]")String[] recordItemIdArray
+			,@RequestParam(name="resultDictIdArray[]")String[] resultDictIdArray
+			,@RequestParam(name="resultRemarksArray[]")String[] resultRemarksArray) {
+		ResponseResult responseResult = examinationRecordService.saveResult(recordItemIdArray,resultDictIdArray,resultRemarksArray);
+		return responseResult;
 	}
 
 	/**
@@ -218,19 +250,18 @@ public class ExaminationRecordController extends BaseController {
 	 */
 	@RequiresPermissions("wshbj:examinationRecord:inputResult")
 	@RequestMapping(value = "inputResult")
-	public String inputResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-
+	public String inputResult(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
 		return "modules/wshbj/inputResult";
 	}
 
 
-	@RequiresPermissions("wshbj:examinationRecord:inputResult")
-	@RequestMapping(value = "saveResult")
-	@ResponseBody
-	public ResponseResult saveResult(String recordId,@RequestParam(value="recordItemIds[]")String[] recordItemIds,@RequestParam(value="resultDictIds[]")String[] resultDictIds,@RequestParam(value="remarksArray[]")String[] remarksArray) {
-		ResponseResult responseResult = examinationRecordService.saveResult(recordId,recordItemIds,resultDictIds,remarksArray);
-		return responseResult;
-	}
+
 
 
 
@@ -260,5 +291,20 @@ public class ExaminationRecordController extends BaseController {
 			return new HashedMap();
 		}
 		return examinationRecordService.getMapByCode4Result(code,examinationFlag);
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "getListMap4Result")
+	public List<ExaminationRecord> getListMap4Result(String startDate,String endDate,String examinationCode,String organId) {
+
+		return examinationRecordService.getList4Result(startDate,endDate,examinationCode,organId);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "getItemListMap4Result")
+	public List<Map> getItemListMap4Result(String recordId) {
+
+		return examinationRecordService.getItemListMap4Result(recordId);
 	}
 }

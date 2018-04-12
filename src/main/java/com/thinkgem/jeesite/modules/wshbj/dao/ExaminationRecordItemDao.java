@@ -17,6 +17,14 @@ import org.apache.ibatis.annotations.Param;
 public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem> {
 
     public int saveRecordResult(@Param("recordItemId") String recordItemId, @Param("sampleCode")String sampleCode
-            , @Param("resultDictId")String resultDictId,@Param("remarks") String remarks);
-	
+            , @Param("resultDictId")String resultDictId,@Param("resultDictName")String resultDictName
+            ,@Param("resultFlag")String resultFlag,@Param("resultRemarks") String resultRemarks);
+
+    public ExaminationRecordItem getEmptyResult(ExaminationRecordItem recordItem);
+
+    public int updateSampleCode(@Param("id") String id,@Param("sampleCode")String sampleCode);
+
+    public int revokeSampleCode(@Param("id") String id);
+
+
 }
