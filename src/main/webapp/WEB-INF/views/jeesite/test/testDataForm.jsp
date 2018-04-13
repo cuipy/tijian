@@ -22,8 +22,15 @@
 					}
 				}
 			});
+
+			$("#btnPrint").click(function(){
+                $("#inputForm").print({noPrintSelector:'.no-print',iframe:false});
+            });
 		});
 	</script>
+
+
+
 </head>
 <body>
 	<ul class="nav nav-tabs">
@@ -33,6 +40,15 @@
 	<form:form id="inputForm" modelAttribute="testData" action="${ctx}/test/testData/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
+		<div class="control-group">
+		    <div>
+            <label class="control-label">用户头像：</label>
+                <div class="controls">
+                    <sys:cropper mainImgWidth="360" imgName="头像" path="head1"/>
+                 </div>
+
+            </div>
+        </div>
 		<div class="control-group">
 			<label class="control-label">归属用户：</label>
 			<div class="controls">
@@ -80,8 +96,9 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions no-print">
 			<shiro:hasPermission name="test:testData:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="test:testData:view"><input id="btnPrint" class="btn btn-info" type="button" value="打 印"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

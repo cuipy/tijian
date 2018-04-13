@@ -133,6 +133,8 @@
 		</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="test:test:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="test:test:view"><input id="btnPrint" class="btn btn-primary" type="button" value="打 印"/>&nbsp;</shiro:hasPermission>
+
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

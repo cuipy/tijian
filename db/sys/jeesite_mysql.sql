@@ -214,7 +214,42 @@ CREATE TABLE sys_user_role
 	PRIMARY KEY (user_id, role_id)
 ) COMMENT = '用户-角色';
 
+--  系统序列号
+CREATE TABLE `sys_sequence` (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `express` varchar(64) NOT NULL COMMENT '表达式字符串',
+  `seq_temp` varchar(64) NOT NULL COMMENT '表达式模板,只替换模板中的{d6}中的文字',
+  `seq_val` varchar(64) NOT NULL DEFAULT '1' COMMENT '顺序号',
+  `create_by` varchar(64) NOT NULL COMMENT '创建者',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_by` varchar(64) NOT NULL COMMENT '更新者',
+  `update_date` datetime NOT NULL COMMENT '更新时间',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `unq_sequence_seq_temp` (`seq_temp`),
+  KEY `sys_sequence_del_flag` (`del_flag`)
+) COMMENT='序列表';
 
+CREATE TABLE `sequence_define` (
+  `id` varchar(64) NOT NULL COMMENT '编号',
+  `class_name` varchar(64) NOT NULL COMMENT '类名',
+  `method_name` varchar(64) NOT NULL COMMENT '方法名',
+  `ann_express` varchar(64) NOT NULL COMMENT '注解上默认的表达式，只读',
+  `custom_express` varchar(64) NOT NULL COMMENT '自定义的表达式',
+  `ann_describe` varchar(64) NOT NULL COMMENT '编号描述，只读',
+  `create_by` varchar(64) NOT NULL COMMENT '创建者',
+  `create_date` datetime NOT NULL COMMENT '创建时间',
+  `update_by` varchar(64) NOT NULL COMMENT '更新者',
+  `update_date` datetime NOT NULL COMMENT '更新时间',
+  `remarks` varchar(255) DEFAULT NULL COMMENT '备注信息',
+  `del_flag` char(1) NOT NULL DEFAULT '0' COMMENT '删除标记',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `sequence_define_class_method` (`class_name`,`method_name`),
+  UNIQUE KEY `sequence_define_ann_express` (`ann_express`),
+  UNIQUE KEY `sequence_define_custom_express` (`custom_express`),
+  KEY `sequence_define_del_flag` (`del_flag`)
+) COMMENT='序列表';
 
 /* Create Indexes */
 
