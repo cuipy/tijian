@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -37,6 +38,9 @@ public class ExaminationCategoryController extends BaseController {
 
 	@Autowired
 	private ExaminationCategoryService examinationCategoryService;
+
+	@Autowired
+	private SysSequenceService sysSequenceService;
 	
 	@ModelAttribute
 	public ExaminationCategory get(@RequestParam(required=false) String id) {
@@ -81,6 +85,16 @@ public class ExaminationCategoryController extends BaseController {
 	@RequiresPermissions("wshbj:examinationCategory:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationCategory examinationCategory, Model model) {
+		if(examinationCategory==null){
+			examinationCategory=new ExaminationCategory();
+		}
+		if(StringUtils.isEmpty(examinationCategory.getCode())){
+
+			String code=sysSequenceService.nextSequence(ExaminationCategory.class,"code");
+			logger.error(code);
+			examinationCategory.setCode(code);
+		}
+
 		model.addAttribute("examinationCategory", examinationCategory);
 		return "modules/wshbj/examinationCategoryForm";
 	}

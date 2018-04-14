@@ -59,6 +59,12 @@ public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence>
 		SequenceDefine sd = sequenceDefineService.getByClassMethod(clz, strMethodName);
 
 		// 获得序列生成的表达式
+		if(sd==null){
+			return null;
+		}
+
+		logger.error("ksadjkasd阿斯蒂芬");
+
 		String express=sd.getAnnExpress();
 		if(StringUtils.isNotEmpty(sd.getCustomExpress())){
 			express=sd.getCustomExpress();

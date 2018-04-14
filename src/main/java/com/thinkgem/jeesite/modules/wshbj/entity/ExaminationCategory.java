@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.annotation.SequenceBean;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -12,6 +14,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @author zhxl
  * @version 2018-03-07
  */
+@SequenceBean
 public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 	
 	private static final long serialVersionUID = 1L;
@@ -28,6 +31,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 		super(id);
 	}
 
+	@ExpressSequence(express="EC{yyyy}[4]",describe = "检查类别编号")
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
 	public String getCode() {
 		return code;
