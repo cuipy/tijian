@@ -155,6 +155,15 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    public int updateRecordStatus(String recordId,String status){
+        if (StringUtils.isBlank(recordId) || StringUtils.isBlank(status)){
+            return 0;
+        }
+        int count = this.dao.updateRecordStatus(recordId,status);
+        return count;
+    }
+
+    @Transactional(readOnly = false)
     public void delete(ExaminationRecord examinationRecord) {
         super.delete(examinationRecord);
         ExaminationRecordItem recordItem = new ExaminationRecordItem();
@@ -169,6 +178,15 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
         List<String> resultMessages = Lists.newArrayList();
         resultMessages.add("数据验证失败：");
+
+        //若有体检项目被处理，不允许保存修改
+        int count = examinationRecordItemDao.countCompletedRecordItem(examinationRecord.getId());
+        if (count>0){
+            resultMessages.add("该体检记录不允许修改");
+            return ResponseResult.generateFailResult("该体检记录不允许修改", resultMessages);
+        }
+
+
         ExaminationUser examinationUser = null;
         if (StringUtils.isNotBlank(examinationRecord.getUser().getId())) {
             examinationUser = examinationUserService.get(examinationRecord.getUser().getId());
@@ -244,6 +262,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                 recordItem.setItemName(examinationItem.getName());
                 recordItem.setExaminationFlag("1");//初检
                 recordItem.setNeedSamples(examinationItem.getNeedSamples());
+                recordItem.setLastFlag("1");
                 recordItem.preInsert();
                 examinationRecordItemDao.insert(recordItem);
             }
@@ -263,6 +282,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                         }
                         recordItem.setExaminationFlag("1");//初检
                         recordItem.setNeedSamples(examinationItem.getNeedSamples());
+                        recordItem.setLastFlag("1");
                         recordItem.preInsert();
                         examinationRecordItemDao.insert(recordItem);
                     } else {

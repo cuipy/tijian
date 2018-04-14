@@ -22,9 +22,14 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
 
     public ExaminationRecordItem getEmptyResult(ExaminationRecordItem recordItem);
 
+    ExaminationRecordItem getLastRecordItem(@Param("recordId") String recordId,@Param("itemId")String itemId);
+
     public int updateSampleCode(@Param("id") String id,@Param("sampleCode")String sampleCode);
 
     public int revokeSampleCode(@Param("id") String id);
 
+    int countUnCompletedRecordItem(String recordId);
+
+    int countCompletedRecordItem(String recordId);
 
 }

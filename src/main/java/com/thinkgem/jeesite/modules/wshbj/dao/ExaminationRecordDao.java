@@ -27,4 +27,6 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
 	List<ExaminationRecord> getList4Result(@Param("startDate")String startDate,@Param("endDate") String endDate
 			,@Param("code") String code,@Param("organId") String organId);
+
+	int updateRecordStatus(@Param("id")String id,@Param("status")String status);
 }

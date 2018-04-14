@@ -28,6 +28,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String resultFlag;		// 体检合格标识：0-否，1-是
 	private String resultRemarks;		// 体检结果备注
 	private String examinationFlag;		// 1-初检，2-复检
+	private String lastFlag; //本次检查记录中同项目最后一次检查标识：0-否，1-是
 	
 	public ExaminationRecordItem() {
 		super();
@@ -123,5 +124,13 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	public void setResultRemarks(String resultRemarks) {
 		this.resultRemarks = resultRemarks;
+	}
+
+	public String getLastFlag() {
+		return lastFlag;
+	}
+
+	public void setLastFlag(String lastFlag) {
+		this.lastFlag = lastFlag;
 	}
 }

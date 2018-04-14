@@ -13,6 +13,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordItemDao;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationResultDict;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 	@Autowired
 	private ExaminationRecordService examinationRecordService;
 
+
 	public ExaminationSamples get(String id) {
 		return super.get(id);
 	}
@@ -58,34 +60,73 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 	public ResponseResult saveSamples(ExaminationSamples examinationSamples) {
         List<String> resultMessages = Lists.newArrayList();
         resultMessages.add("数据验证失败：");
-        /**
-         * 验证本次体检是否有通类型未录入检验结果采样
-         */
-        ExaminationSamples effectiveSamples = this.dao.getEffectiveSample(examinationSamples);
-        if(effectiveSamples!=null){
-            resultMessages.add("已录入该项目样本");
-            return ResponseResult.generateFailResult("保存样本失败，已录入该项目样本", resultMessages);
-        }
 
-        effectiveSamples = this.dao.getByCode(examinationSamples.getCode());
+		ExaminationSamples effectiveSamples = this.dao.getByCode(examinationSamples.getCode());
         if(effectiveSamples!=null){
             resultMessages.add("已存在该编号样本");
             return ResponseResult.generateFailResult("保存样本失败，已存在该编号样本", resultMessages);
         }
 
-		//保存样本信息到体检项目中
-		ExaminationRecordItem recordItem = new ExaminationRecordItem();
-		recordItem.setRecordId(examinationSamples.getRecordId());
-		recordItem.setItemId(examinationSamples.getItemId());
-		recordItem.setExaminationFlag(examinationSamples.getExaminationFlag());
-		recordItem = recordItemDao.getEmptyResult(recordItem);
+
+        /**
+         * 获取对应项目的最后有效项目
+         */
+		ExaminationRecordItem recordItem = recordItemDao.getLastRecordItem(examinationSamples.getRecordId(),examinationSamples.getItemId());
 		if(recordItem==null){
 			resultMessages.add("体检项目不存在");
 			return ResponseResult.generateFailResult("保存样本失败，体检项目不存在", resultMessages);
 		}
-		recordItemDao.updateSampleCode(recordItem.getId(),examinationSamples.getCode());
-		examinationSamples.setRecordItemId(recordItem.getId());
-		super.save(examinationSamples);
+
+		/**
+		 * 判断是否已经录入结果
+		 */
+		if(StringUtils.isNotBlank(recordItem.getResultDictId())){
+			//如果体检项目被标记合格，则不重复采样
+			if("1".equals(recordItem.getResultFlag())){
+				resultMessages.add("该项目已标记合格，不能重复采样");
+				return ResponseResult.generateFailResult("保存样本失败，该项目已标记合格，不能重复采样", resultMessages);
+			}
+			/**
+			 * 标记不合格，则视为复检操作：
+			 * 1、新增体检记录项目，并将之前相同项目的lastFlag置为"0"
+			 * 2、新增样本记录，并将项目与样本关联
+			 * 3、标记体检记录为 未体检完状态
+			 */
+			recordItem.setLastFlag("0");
+			recordItemDao.update(recordItem);
+
+			//新建体检记录项目
+			ExaminationRecordItem newRecordItem = new ExaminationRecordItem();
+			newRecordItem.preInsert();
+			newRecordItem.setRecordId(recordItem.getRecordId());
+			newRecordItem.setItemId(recordItem.getItemId());
+			newRecordItem.setItemName(recordItem.getItemName());
+			newRecordItem.setNeedSamples(recordItem.getNeedSamples());
+			newRecordItem.setSampleCode(examinationSamples.getCode());
+			newRecordItem.setExaminationFlag("2");
+			newRecordItem.setLastFlag("1");
+			recordItemDao.insert(newRecordItem);
+
+			//保存样本记录
+			examinationSamples.setRecordItemId(newRecordItem.getId());
+			//复检
+			examinationSamples.setExaminationFlag("2");
+			super.save(examinationSamples);
+
+			//标记体检记录为未体检完
+			examinationRecordService.updateRecordStatus(newRecordItem.getRecordId(),"0");
+		}else{
+			//保存样本
+			examinationSamples.setRecordItemId(recordItem.getId());
+			examinationSamples.setExaminationFlag(recordItem.getExaminationFlag());
+			super.save(examinationSamples);
+
+			/**
+			 * 体检项目还未标记检验结果，直接将对应体检记录项目与样本关联
+			 */
+			recordItem.setSampleCode(examinationSamples.getCode());
+			recordItemDao.update(recordItem);
+		}
 
         resultMessages.remove(0);
         resultMessages.add("保存成功");

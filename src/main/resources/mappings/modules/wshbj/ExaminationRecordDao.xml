@@ -263,6 +263,12 @@
 		WHERE id = #{id}
 	</update>
 
+	<update id="updateRecordStatus">
+		UPDATE bj_examination_record SET
+		status = #{status}
+		WHERE id = #{id}
+	</update>
+
 	<select id="genCode" resultType="String">
 		select concat(#{keyCode},lpad(gen_seq_number(#{keyCode},1),8,'0'))
 	</select>
