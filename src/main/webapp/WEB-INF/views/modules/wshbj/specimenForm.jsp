@@ -29,7 +29,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/wshbj/specimen/list">检查标本类型列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">检查标本类型<shiro:hasPermission name="wshbj:specimen:edit">${not empty specimen.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:specimen:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li>
+		<!--li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li-->
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

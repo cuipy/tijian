@@ -18,10 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationDept/">检查部门列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationDept/list">检查部门列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationDept:edit">
 			<li><a href="${ctx}/wshbj/examinationDept/form">检查部门添加</a></li>
-			<li><a href="${ctx}/wshbj/examinationDept/list4Pull">快速添加</a></li>
+			<!-- li><a href="${ctx}/wshbj/examinationDept/list4Pull">快速添加</a></li -->
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationDept" action="${ctx}/wshbj/examinationDept/" method="post" class="breadcrumb form-search">
@@ -66,5 +66,13 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 检查部门为体检中心的各个部门，例如：前台、内科、眼科等<br>
+
+    </div>
+
+
 </body>
 </html>

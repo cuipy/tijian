@@ -21,7 +21,7 @@
 		<li class="active"><a href="${ctx}/wshbj/specimen/list">检查标本类型列表</a></li>
 		<shiro:hasPermission name="wshbj:specimen:edit">
 			<li><a href="${ctx}/wshbj/specimen/form">检查标本类型添加</a></li>
-			<li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li>
+			<!--li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/list" method="post" class="breadcrumb form-search">
@@ -70,5 +70,13 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 标本类型默认包括：<span class="help-inline">血样和便样</span> 两项<br>
+      2. 操作人可以增加标本类型<br>
+
+    </div>
+
 </body>
 </html>

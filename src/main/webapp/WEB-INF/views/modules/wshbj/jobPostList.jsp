@@ -21,7 +21,7 @@
 		<li class="active"><a href="${ctx}/wshbj/jobPost/list">工作岗位管理列表</a></li>
 		<shiro:hasPermission name="wshbj:jobPost:edit">
 			<li><a href="${ctx}/wshbj/jobPost/form">工作岗位管理添加</a></li>
-			<li><a href="${ctx}/wshbj/jobPost/list4Pull">快速添加</a></li>
+			<!--li><a href="${ctx}/wshbj/jobPost/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/list" method="post" class="breadcrumb form-search">
@@ -69,5 +69,14 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 岗位管理属于岗位的字典列表<br>
+      2. 岗位用于体检人，每个体检人必定属于某种岗位<br>
+      3. 不同岗位体检人的检查项目和健康证可以选择不同的设置
+
+    </div>
+
 </body>
 </html>

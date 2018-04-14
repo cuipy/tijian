@@ -80,5 +80,14 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 项目结果准确的解释为：<span class="help-inline">检查项目的结果选项</span><br>
+      2. 项目结果是针对检查结果定义的属性，可以理解为结果选项字典<br>
+      3. 项目结果只有两种选项：合格和不合格<br
+
+    </div>
+
 </body>
 </html>

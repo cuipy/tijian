@@ -21,7 +21,7 @@
 		<li class="active"><a href="${ctx}/wshbj/industry/list">行业管理列表</a></li>
 		<shiro:hasPermission name="wshbj:industry:edit">
 			<li><a href="${ctx}/wshbj/industry/form">行业管理添加</a></li>
-			<li><a href="${ctx}/wshbj/industry/list4Pull">快速添加</a></li>
+			<!--li><a href="${ctx}/wshbj/industry/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="industry" action="${ctx}/wshbj/industry/list" method="post" class="breadcrumb form-search">
@@ -69,5 +69,14 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 行业管理可以增删改行业列表，例如：餐饮、医疗等<br>
+      2. 在体检人注册的时候，必须选择体检人所属行业<br>
+      3. 不同的行业可能健康证模板不同，通过设置不同行业的健康证打印模板<br>
+
+    </div>
+
 </body>
 </html>
