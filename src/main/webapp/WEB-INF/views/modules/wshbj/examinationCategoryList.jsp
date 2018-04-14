@@ -21,7 +21,7 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationCategory/">检查类别列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationCategory:edit">
 			<li><a href="${ctx}/wshbj/examinationCategory/form">检查类别添加</a></li>
-			<li><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li>
+			<!-- li><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li -->
 		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationCategory" action="${ctx}/wshbj/examinationCategory/" method="post" class="breadcrumb form-search">
@@ -73,5 +73,17 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 检查类别可以理解为检查项目的<span class="help-inline">大类</span><br>
+      2. 检查类别表示何种类型的检查，比如：健康证检查<br>
+      3. 默认，检查类别只有一个<span class="help-inline">健康证检查</span>。<br><br>
+
+      <strong>作用：</strong> <br>
+      1. 检查类别用于项目分类和项目类型中，设置是用于何种目的而检查的。<br>
+      2. 该功能对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 - 检查类别</span>
+    </div>
+
 </body>
 </html>
