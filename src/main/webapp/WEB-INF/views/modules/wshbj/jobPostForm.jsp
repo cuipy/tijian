@@ -59,5 +59,15 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 岗位管理属于岗位的字典列表<br>
+      2. 岗位用于体检人，每个体检人必定属于某种岗位<br>
+      3. 不同岗位体检人的检查项目和健康证可以选择不同的设置
+
+    </div>
+
+
 </body>
 </html>

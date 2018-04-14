@@ -59,5 +59,15 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 行业管理可以增删改行业列表，例如：餐饮、医疗等<br>
+      2. 在体检人注册的时候，必须选择体检人所属行业<br>
+      3. 不同的行业可能健康证模板不同，通过设置不同行业的健康证打印模板<br>
+
+    </div>
+
+
 </body>
 </html>

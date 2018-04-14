@@ -52,5 +52,12 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 检查部门为体检中心的各个部门，例如：前台、内科、眼科等<br>
+
+    </div>
+
 </body>
 </html>

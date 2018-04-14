@@ -87,5 +87,20 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 项目类型可以理解为检查项目的<span class="help-inline">小类</span><br>
+      2. 项目类型表示检查的大类，一般可以对应到科室或中心<br>
+      3. 默认，项目类型包括<span class="help-inline"> 采血、采便、内科、眼科、放射科 </span>。<br><br>
+
+      <strong>作用：</strong> <br>
+      1. 该属性上承<span class="help-inline">检查类别</span>，下接<span class="help-inline">检查项目</span>。<br>
+      2. 可以理解为检查细项的大分类。<br>
+      3. 对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 </span>
+    </div>
+
+
+
 </body>
 </html>

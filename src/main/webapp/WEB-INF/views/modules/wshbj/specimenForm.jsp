@@ -59,5 +59,13 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+	<div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 标本类型默认包括：<span class="help-inline">血样和便样</span> 两项<br>
+      2. 操作人可以增加标本类型<br>
+
+    </div>
+
 </body>
 </html>

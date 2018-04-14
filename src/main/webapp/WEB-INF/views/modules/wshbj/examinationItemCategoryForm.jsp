@@ -59,5 +59,18 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 项目分类属于项目类型下的分类，非必填项目<br><br>
+
+      <strong>作用：</strong> <br>
+      1. 项目分类用于<span class="help-inline">检查项目分类</span>中<br>
+      2. 该属性主要检查项目分类中做分类筛选<br>
+      3. 本属性对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 - 分类</span>
+
+    </div>
+
 </body>
 </html>
