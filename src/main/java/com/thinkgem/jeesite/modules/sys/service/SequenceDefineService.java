@@ -131,8 +131,6 @@ public class SequenceDefineService extends CrudService<SequenceDefineDao, Sequen
 		sd.setClassName(className);
 		sd.setMethodName(methodName);
 
-		logger.error("classname:"+className+"  methodName:"+methodName);
-
 		return getByClassMethod(sd);
 
 	}

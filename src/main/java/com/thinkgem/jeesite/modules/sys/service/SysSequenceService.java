@@ -63,8 +63,6 @@ public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence>
 			return null;
 		}
 
-		logger.error("ksadjkasd阿斯蒂芬");
-
 		String express=sd.getAnnExpress();
 		if(StringUtils.isNotEmpty(sd.getCustomExpress())){
 			express=sd.getCustomExpress();

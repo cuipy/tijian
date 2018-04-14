@@ -91,7 +91,6 @@ public class ExaminationCategoryController extends BaseController {
 		if(StringUtils.isEmpty(examinationCategory.getCode())){
 
 			String code=sysSequenceService.nextSequence(ExaminationCategory.class,"code");
-			logger.error(code);
 			examinationCategory.setCode(code);
 		}
 
