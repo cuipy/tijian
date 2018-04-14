@@ -29,7 +29,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/wshbj/examinationItemCategory/list">检查项目分类列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/form?id=${examinationItemCategory.id}">检查项目分类<shiro:hasPermission name="wshbj:examinationItemCategory:edit">${not empty examinationItemCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItemCategory:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/examinationItemCategory/list4Pull">快速添加</a></li>
+		<!--li><a href="${ctx}/wshbj/examinationItemCategory/list4Pull">快速添加</a></li-->
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationItemCategory" action="${ctx}/wshbj/examinationItemCategory/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
