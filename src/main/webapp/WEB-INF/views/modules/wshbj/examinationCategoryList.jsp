@@ -73,5 +73,12 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<div class="alert alert-info">
+      <strong>帮助：</strong> <br>
+      你必须管理一个固定元素的位置和它的父级的行为。通过<code>affix</code>、<code>affix-top</code>和<code>affix-bottom</code>进行位置控制
+      。因为它的正常流程是通过页面的内页移动来确定的，所以使用该插件时，要检查一下父级是否是切换模式。
+    </div>
+
 </body>
 </html>
