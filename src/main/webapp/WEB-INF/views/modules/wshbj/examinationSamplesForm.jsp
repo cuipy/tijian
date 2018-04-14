@@ -69,6 +69,8 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationSamples/form?id=${examinationSamples.id}">体检样本<shiro:hasPermission name="wshbj:examinationSamples:edit">${not empty examinationSamples.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
 		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 	</ul><br/>
+
+	<div class="row">
 	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
 		<form:hidden path="recordId"/>
 		<sys:message content="${message}"/>
@@ -139,5 +141,7 @@
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	</div>
+
 </body>
 </html>

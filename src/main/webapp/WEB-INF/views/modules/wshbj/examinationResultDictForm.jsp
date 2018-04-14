@@ -30,6 +30,8 @@
 		<li><a href="${ctx}/wshbj/examinationResultDict/">体检结果字典列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationResultDict/form?id=${examinationResultDict.id}">体检结果字典<shiro:hasPermission name="wshbj:examinationResultDict:edit">${not empty examinationResultDict.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationResultDict:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
+
+	<div class="row">
 	<form:form id="inputForm" modelAttribute="examinationResultDict" action="${ctx}/wshbj/examinationResultDict/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -81,6 +83,7 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	</div>
 
 	<div class="alert alert-success">
       <strong>帮助：</strong> <br>

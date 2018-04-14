@@ -31,6 +31,7 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationCategory/form?id=${examinationCategory.id}">检查类别<shiro:hasPermission name="wshbj:examinationCategory:edit">${not empty examinationCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationCategory:edit">查看</shiro:lacksPermission></a></li>
 		<!-- li><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li -->
 	</ul><br/>
+	<div class="row">
 	<form:form id="inputForm" modelAttribute="examinationCategory" action="${ctx}/wshbj/examinationCategory/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -59,6 +60,7 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	</div>
 
 	<div class="alert alert-success">
           <strong>帮助：</strong> <br>

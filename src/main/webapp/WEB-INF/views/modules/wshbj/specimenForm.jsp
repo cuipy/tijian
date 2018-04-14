@@ -31,6 +31,8 @@
 		<li class="active"><a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">检查标本类型<shiro:hasPermission name="wshbj:specimen:edit">${not empty specimen.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:specimen:edit">查看</shiro:lacksPermission></a></li>
 		<!--li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li-->
 	</ul><br/>
+
+	<div class="row">
 	<form:form id="inputForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -59,6 +61,7 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+    </div>
 
 	<div class="alert alert-success">
       <strong>帮助：</strong> <br>

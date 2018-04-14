@@ -31,6 +31,8 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationDept/form?id=${examinationDept.id}">检查部门<shiro:hasPermission name="wshbj:examinationDept:edit">${not empty examinationDept.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationDept:edit">查看</shiro:lacksPermission></a></li>
 		<!--li><a href="${ctx}/wshbj/examinationDept/list4Pull">快速添加</a></li-->
 	</ul><br/>
+
+	<div class="row">
 	<form:form id="inputForm" modelAttribute="examinationDept" action="${ctx}/wshbj/examinationDept/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -52,6 +54,7 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+    </div>
 
 	<div class="alert alert-success">
       <strong>帮助：</strong> <br>
