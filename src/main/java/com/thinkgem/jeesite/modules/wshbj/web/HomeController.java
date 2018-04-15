@@ -34,7 +34,9 @@ public class HomeController extends BaseController {
 	private CertRecordService certRecordService;
 
 	@RequestMapping(value = {"index", ""})
-	public String index() {
+	public String index(Model m) {
+		String v=String.valueOf(new java.util.Date().getTime());
+		m.addAttribute("v",v);
 		return "modules/wshbj/home_index";
 	}
 
