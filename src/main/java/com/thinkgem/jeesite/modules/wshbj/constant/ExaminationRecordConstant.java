@@ -1,0 +1,38 @@
+package com.thinkgem.jeesite.modules.wshbj.constant;
+
+/**
+ * @ClassName ExaminationRecordConstant
+ * @Description 体检记录常量类
+ * @Author zhxl
+ * @Date 2018/4/15 10:34:28
+ **/
+public class ExaminationRecordConstant {
+
+    /**
+     * 10-未体检完
+     */
+    public static final String STATUS10 = "10";
+
+    /**
+     * 20-体检不合格
+     */
+    public static final String STATUS20 = "20";
+
+
+    /**
+     * 30-复检合格
+     */
+    public static final String STATUS30 = "30";
+
+
+    /**
+     * 40-可制证
+     */
+    public static final String STATUS40 = "40";
+
+
+    /**
+     * 50-已制证
+     */
+    public static final String STATUS50 = "50";
+}

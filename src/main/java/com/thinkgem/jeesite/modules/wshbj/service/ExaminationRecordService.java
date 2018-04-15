@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationSamplesDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import org.apache.commons.collections.map.HashedMap;
@@ -179,11 +180,18 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         List<String> resultMessages = Lists.newArrayList();
         resultMessages.add("数据验证失败：");
 
-        //若有体检项目被处理，不允许保存修改
-        int count = examinationRecordItemDao.countCompletedRecordItem(examinationRecord.getId());
-        if (count>0){
-            resultMessages.add("该体检记录不允许修改");
-            return ResponseResult.generateFailResult("该体检记录不允许修改", resultMessages);
+        if(StringUtils.isNotBlank(examinationRecord.getId())){
+            ExaminationRecord record = get(examinationRecord.getId());
+            if(record==null || "1".equals(record.getDelFlag())){
+                resultMessages.add("体检记录错误");
+                return ResponseResult.generateFailResult("体检记录错误", resultMessages);
+            }
+
+            //未体检状态才允许修改
+            if(!"0".equals(record.getStatus())){
+                resultMessages.add("该体检记录不允许修改");
+                return ResponseResult.generateFailResult("该体检记录不允许修改", resultMessages);
+            }
         }
 
 
@@ -236,8 +244,8 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
             examinationUserService.save(examinationUser);
         }
-        //未体检
-        examinationRecord.setStatus("1");
+
+
         super.save(examinationRecord);
 
         /**
@@ -338,6 +346,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             }
         }
 
+        //刷新体检记录状态
         if (recordItem!=null){
             refreshStatus(recordItem.getRecordId());
         }
@@ -352,6 +361,12 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return recordList;
     }
 
+
+    public List<Map> getList4CertForm(String startDate,String endDate
+            ,String code,String organId, String name, String status){
+        List<Map> recordList = this.dao.getList4CertForm(startDate,endDate,code,organId,name,status);
+        return recordList;
+    }
 
     public List<Map> getItemListMap4Result(String recordId) {
         List<Map> mapList = new ArrayList<Map>();
@@ -388,6 +403,66 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     @Transactional(readOnly = false)
     public void refreshStatus(String recordId){
+        if (StringUtils.isBlank(recordId)){
+            return;
+        }
 
+        //不存在或已删除不处理
+        ExaminationRecord record = get(recordId);
+        if (record==null || "1".equals(record.getDelFlag())){
+            return;
+        }
+
+        //已制证返回不处理
+        if(ExaminationRecordConstant.STATUS50.equals(record.getStatus())){
+            return;
+        }
+
+        //未体检完数量
+        int count10 = 0;
+        //体检不合格数量
+        int count20 = 0;
+        //复检合格数量
+        int count30 = 0;
+        //初检合格数量
+        int count40 = 0;
+
+
+        //查询出所有检查项目
+        ExaminationRecordItem recordItem = new ExaminationRecordItem();
+        recordItem.setRecordId(recordId);
+        recordItem.setLastFlag("1");
+        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
+        List<ExaminationRecordItem> itemList = examinationRecordItemDao.findList(recordItem);
+        for (int i = 0; i < itemList.size(); i++) {
+            recordItem = itemList.get(i);
+            if(StringUtils.isBlank(recordItem.getResultDictId())){  //未录入项目体检结果
+                count10 ++;
+            }else{
+                if("1".equals(recordItem.getResultFlag())){  //合格
+                    //初检合格
+                    if("1".equals(recordItem.getExaminationFlag())){
+                        count40 ++;
+                    }else{  //复检合格
+                        count30 ++;
+                    }
+                }else{  //不合格
+                    count20 ++;
+                }
+            }
+        }
+
+        String status = null;
+        if(count10 > 0){    //未体检完
+            status = ExaminationRecordConstant.STATUS10;
+        }else if(count20 > 0){  //体检不合格
+            status = ExaminationRecordConstant.STATUS20;
+        }else if(count30 > 0){  //复检合格
+            status = ExaminationRecordConstant.STATUS30;
+        }else {  //初检合格，可制证
+            status = ExaminationRecordConstant.STATUS40;
+        }
+
+        this.updateRecordStatus(recordId,status);
     }
 }

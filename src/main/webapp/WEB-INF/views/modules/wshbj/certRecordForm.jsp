@@ -6,119 +6,177 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
-				}
-			});
-
+            $('#checkedAll').click(function() {
+                $('[name=recordCheckbox]:checkbox').prop('checked', this.checked);
+            });
 		});
+
+        function searchRecords() {
+            var url = '${ctx}/wshbj/examinationRecord/getList4CertForm';
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: $("#inputForm").serialize(),//核心代码，form表单序列化
+                dataType: "JSON",
+                success: function(data) {
+                    $('#recordsList').find('tr').remove();
+                    recordsRowIdx = 0;
+                    if(data){
+                        $.each(data,function (index,record) {
+                            record.idx = recordsRowIdx;
+
+                            addRow('#recordsList', recordsRowIdx, recordsTpl, record);
+                            recordsRowIdx = recordsRowIdx + 1;
+                        })
+
+
+                    }
+                }
+            });
+
+        }
+
+        function addRow(list, idx, tpl, row){
+            $(list).append(Mustache.render(tpl, {
+                idx: idx, delBtn: false, row: row
+            }));
+
+
+            $(list+idx).find('td:gt(0):lt(12)').click(function () {
+                var checked = $(list+idx).find('input[name=recordCheckbox]').prop('checked');
+                $(list+idx).find('[name=recordCheckbox]:checkbox').prop('checked', !checked);
+            });
+            $('#recordsList'+idx+'_createDate').text(timestampToDate(row.createDate));
+        }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/certRecord/">制卡记录列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/certRecord/form?id=${certRecord.id}">制卡记录<shiro:hasPermission name="wshbj:certRecord:edit">${not empty certRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:certRecord:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/wshbj/certRecord/">制卡记录列表</a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="certRecord" action="${ctx}/wshbj/certRecord/save" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">卡号：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge "/>
-			</div>
-		</div>
+	<form id="inputForm"   method="post" class="form-horizontal">
 		<div class="control-group">
 			<label class="control-label">体检编号：</label>
 			<div class="controls">
-				<form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input id="examinationCode" name="examinationCode" class="input-medium"/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">体检用户：</label>
+			<label class="control-label">样本日期：</label>
 			<div class="controls">
-				<input id="userName" name="userName" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input name="startDate"  readonly="true" class="input-medium Wdate"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
+				--
+				<input name="endDate"  readonly="true" class="input-medium Wdate"
+					   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">身份证号：</label>
+
+		<div class="control-group" >
+			<label class="control-label">单位：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-xlarge "/>
+				<select  name="organId"  class="input-medium">
+					<option value="">全部</option>
+					<c:forEach items="${organList}" var="organ">
+						<option value="${organ.id}">${organ.name}</option>
+					</c:forEach>
+				</select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">姓名：</label>
 			<div class="controls">
-				<form:input path="userName" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input name="userName" class="input-medium"/>
 			</div>
 		</div>
-		<div class="control-group" id="itemsDiv" >
-			<label class="control-label">检查项目列表：</label>
+		<div class="control-group" >
+			<label class="control-label">状态：</label>
 			<div class="controls">
-				<table id="contentTable" class="table table-striped table-bordered table-condensed">
-					<thead>
-					<tr>
-						<th class="hide"></th>
-						<th width="200">检查项目</th>
-						<th width="100">结果</th>
-						<th>结果备注</th>
-					</tr>
-					</thead>
-					<tbody id="examinationRecordItemList">
-					</tbody>
-				</table>
-				<script type="text/template" id="examinationRecordItemTpl">//<!--
-					<tr id="examinationRecordItemList{{idx}}">
-						<td class="hide">
-							<input id="examinationRecordItemList{{idx}}_id" name="examinationRecordItemList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-							<input id="examinationRecordItemList{{idx}}_delFlag" name="examinationRecordItemList[{{idx}}].delFlag" type="hidden" value="0"/>
-						</td>
-						<td>
-							<input id="examinationRecordItemList{{idx}}_itemId" name="examinationRecordItemList[{{idx}}]._itemId" type="hidden" value="{{row._itemId}}"/>
-							<input id="examinationRecordItemList{{idx}}_itemName" name="examinationRecordItemList[{{idx}}]._itemName" type="text" value="{{row.itemId}}"/>
-
-						</td>
-						<td>
-							<select id="examinationRecordItemList{{idx}}_itemId" name="examinationRecordItemList[{{idx}}].itemId" data-value="{{row.itemId}}" class="input-small required">
-									<option value="">请选择</option>
-								</select>
-						</td>
-						<td>
-							<input id="examinationRecordItemList{{idx}}_remarks" name="examinationRecordItemList[{{idx}}].remarks" type="text"  class="input-xxlarge ">{{row.remarks}}</textarea>
-						</td>
-
-					</tr>//-->
-				</script>
-				<script type="text/javascript">
-                    var examinationRecordItemRowIdx = 0, examinationRecordItemTpl = $("#examinationRecordItemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                    $(document).ready(function() {
-                        var data = ${fns:toJson(examinationRecord.examinationRecordItemList)};
-                        for (var i=0; i<data.length; i++){
-                            addRow('#examinationRecordItemList', examinationRecordItemRowIdx, examinationRecordItemTpl, data[i]);
-                            examinationRecordItemRowIdx = examinationRecordItemRowIdx + 1;
-                        }
-                    });
-				</script>
+				<select  name="status"  class="input-medium">
+					<option value="">全部</option>
+					<c:forEach items="${statusDictList}" var="statusDict">
+						<option value="${statusDict.value}">${statusDict.label}</option>
+					</c:forEach>
+				</select>
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="wshbj:certRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<input id="btnSearch" class="btn btn-primary" type="button" value="查询" onclick="searchRecords();"/>
+			<input id="btnSubmit" class="btn btn-primary" type="button" value="读卡" onclick=""/>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		</div>
+	</form>
+	<form:form   method="post" class="form-horizontal">
+		<div>
+			<table id="contentTable1" class="table table-striped table-bordered table-condensed" style="height: 50px">
+				<thead>
+				<tr>
+					<th width="30"><input type="checkbox" checked id="checkedAll"></th>
+					<th width="130">编号</th>
+					<th >用户</th>
+					<th >性别</th>
+					<th width="90">生日</th>
+					<th >是否制证</th>
+					<th >身份证号</th>
+					<th >单位</th>
+					<th >行业</th>
+					<th >岗位</th>
+					<th >联系电话</th>
+					<th >状态</th>
+					<th >登记日期</th>
+				</tr>
+				</thead>
+				<tbody id="recordsList" style="height: 50px;overflow-y: scroll">
+
+				</tbody>
+			</table>
+			<script type="text/template" id="recordsTpl">//<!--
+				<tr id="recordsList{{idx}}">
+					<td><input type="checkbox" id="{{row.id}}" name="recordCheckbox" checked value="{{row.id}}" idx="{{row.idx}}"></td>
+					<td >
+						<span  type="text" maxlength="64" class="input-small" >{{row.code}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.name}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.sexLabel}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.birthday}}</span>
+					</td>
+					<td >
+						<span  type="text" maxlength="64" class="input-small" >{{row.status}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.idNumber}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.organName}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.industryName}}</span>
+					</td>
+					<td >
+						<span  type="text" maxlength="64" class="input-small" >{{row.jobPostName}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.phoneNumber}}</span>
+					</td>
+					<td>
+						<span  type="text" maxlength="64" class="input-small" >{{row.statusLabel}}</span>
+					</td>
+					<td>
+						<span  id="recordsList{{idx}}_createDate" type="text" maxlength="64" class="input-small" ></span>
+					</td>
+				</tr>//-->
+			</script>
+
+			<script type="text/javascript">
+                var recordsRowIdx = 0, recordsTpl = $("#recordsTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
+			</script>
+
 		</div>
 	</form:form>
 </body>

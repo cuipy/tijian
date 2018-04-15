@@ -10,6 +10,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
 import org.apache.commons.collections.map.HashedMap;
@@ -153,12 +154,11 @@ public class ExaminationRecordController extends BaseController {
 		if (!beanValidator(model, examinationRecord)){
 			return form(examinationRecord, model);
 		}
-		examinationRecord.setName(examinationRecord.getUser().getName());
-		examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
-		if (StringUtils.isBlank(examinationRecord.getStatus())){
-			examinationRecord.setStatus("0"); //未体检
+		if(StringUtils.isBlank(examinationRecord.getId())){
+			examinationRecord.setStatus(ExaminationRecordConstant.STATUS10);
+			examinationRecord.setName(examinationRecord.getUser().getName());
+			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}
-
 
 		ResponseResult result = examinationRecordService.saveRecord(examinationRecord);
 		List<String> resultMessages = (List<String>) result.getData();
@@ -306,5 +306,13 @@ public class ExaminationRecordController extends BaseController {
 	public List<Map> getItemListMap4Result(String recordId) {
 
 		return examinationRecordService.getItemListMap4Result(recordId);
+	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "getList4CertForm")
+	public List<Map> getList4CertForm(String startDate,String endDate,String examinationCode
+			,String organId, String userName, String status) {
+		return examinationRecordService.getList4CertForm(startDate,endDate,examinationCode,organId,userName,status);
 	}
 }

@@ -65,7 +65,8 @@
 		LEFT JOIN bj_organ o2 ON o2.id = a.organ_id
 		LEFT JOIN sys_dict d3 ON d3.value = a.sex and d3.type='sex' and d3.del_flag='0'
 	</sql>
-    
+
+
 	<select id="get" resultType="ExaminationRecord">
 		SELECT 
 			<include refid="examinationRecordColumns"/>
@@ -181,6 +182,49 @@
 		</where>
 		ORDER BY a.create_date DESC
 	</select>
+
+
+
+	<select id="getList4CertForm" resultType="java.util.Map">
+		SELECT
+		<include refid="examinationRecord4MapColumns"/>,
+		i4.name AS "industryName",
+		p5.name AS "jobPostName",
+		d6.label AS "statusLabel"
+		FROM bj_examination_record a
+		<include refid="examinationRecord4MapJoins"/>
+		LEFT JOIN bj_industry i4 ON i4.id = a.industry_id
+		LEFT JOIN bj_job_post p5 ON o2.id = a.post_id
+		LEFT JOIN sys_dict d6 ON d6.value = a.status and d6.type='examination_record_status' and d6.del_flag='0'
+		<where>
+			a.del_flag = '0'
+			<if test="code != null and code != ''">
+				AND a.code = #{code}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="organId != null and organId != ''">
+				AND a.organ_id = #{organId}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="startDate != null and startDate != ''">
+				<![CDATA[
+               		 AND a.create_date >= #{startDate}
+                ]]>
+			</if>
+			<if test="endDate != null and endDate != ''">
+				<![CDATA[
+                	AND a.create_date <= #{endDate}
+                ]]>
+			</if>
+		</where>
+		ORDER BY a.create_date DESC
+	</select>
+
+
 	
 	<insert id="insert">
 		INSERT INTO bj_examination_record(

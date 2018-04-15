@@ -12,6 +12,7 @@ import java.util.Map;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordItemDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
@@ -61,12 +62,23 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
         List<String> resultMessages = Lists.newArrayList();
         resultMessages.add("数据验证失败：");
 
+		//体检记录处于未体检、体检不合格时才允许录入样本
+		ExaminationRecord record = examinationRecordService.get(examinationSamples.getRecordId());
+		if(record==null){
+			resultMessages.add("体检记录错误");
+			return ResponseResult.generateFailResult("保存样本失败，体检数据错误", resultMessages);
+		}
+
+		if(!ExaminationRecordConstant.STATUS10.equals(record.getStatus())){
+			resultMessages.add("该体检记录现不允许录入样本");
+			return ResponseResult.generateFailResult("保存样本失败，该体检记录现不允许录入样本", resultMessages);
+		}
+
 		ExaminationSamples effectiveSamples = this.dao.getByCode(examinationSamples.getCode());
         if(effectiveSamples!=null){
             resultMessages.add("已存在该编号样本");
             return ResponseResult.generateFailResult("保存样本失败，已存在该编号样本", resultMessages);
         }
-
 
         /**
          * 获取对应项目的最后有效项目
@@ -86,6 +98,7 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 				resultMessages.add("该项目已标记合格，不能重复采样");
 				return ResponseResult.generateFailResult("保存样本失败，该项目已标记合格，不能重复采样", resultMessages);
 			}
+
 			/**
 			 * 标记不合格，则视为复检操作：
 			 * 1、新增体检记录项目，并将之前相同项目的lastFlag置为"0"
@@ -114,8 +127,14 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 			super.save(examinationSamples);
 
 			//标记体检记录为未体检完
-			examinationRecordService.updateRecordStatus(newRecordItem.getRecordId(),"0");
+			examinationRecordService.updateRecordStatus(newRecordItem.getRecordId(),ExaminationRecordConstant.STATUS10);
 		}else{
+			//判断体检项目是否已采集样本
+			if(StringUtils.isNotBlank(recordItem.getSampleCode())){
+				resultMessages.add("该项目已采集样本，不能重复采样");
+				return ResponseResult.generateFailResult("保存样本失败", resultMessages);
+			}
+
 			//保存样本
 			examinationSamples.setRecordItemId(recordItem.getId());
 			examinationSamples.setExaminationFlag(recordItem.getExaminationFlag());

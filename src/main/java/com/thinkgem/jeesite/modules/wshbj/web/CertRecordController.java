@@ -7,6 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.service.DictService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
+import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationRecordService;
+import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,6 +51,12 @@ public class CertRecordController extends BaseController {
 
 	@Autowired
 	private CertRecordService certRecordService;
+	@Autowired
+	private OrganService organService;
+	@Autowired
+	private DictService dictService;
+	@Autowired
+	private ExaminationRecordService examinationRecordService;
 	
 	@ModelAttribute
 	public CertRecord get(@RequestParam(required=false) String id) {
@@ -73,16 +87,30 @@ public class CertRecordController extends BaseController {
 
 	@RequiresPermissions("wshbj:certRecord:view")
 	@RequestMapping(value = "form")
-	public String form(CertRecord certRecord, Model model) {
+	public String form(CertRecord certRecord,HttpServletRequest request, HttpServletResponse response, Model model) {
 		model.addAttribute("certRecord", certRecord);
+
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+
+		//体检记录状态字典
+		Dict dict = new Dict();
+		dict.setType("examination_record_status");
+		List<Dict> statusDictList = dictService.findList(dict);
+		model.addAttribute("statusDictList", statusDictList);
+
 		return "modules/wshbj/certRecordForm";
 	}
 
 	@RequiresPermissions("wshbj:certRecord:edit")
 	@RequestMapping(value = "save")
-	public String save(CertRecord certRecord, Model model, RedirectAttributes redirectAttributes) {
+	public String save(CertRecord certRecord,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, certRecord)){
-			return form(certRecord, model);
+			return form(certRecord,request,response, model);
 		}
 		certRecordService.save(certRecord);
 		addMessage(redirectAttributes, "保存制卡记录成功");

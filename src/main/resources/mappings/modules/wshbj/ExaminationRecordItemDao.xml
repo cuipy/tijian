@@ -76,6 +76,9 @@
 			<if test="examinationFlag != null and examinationFlag != ''">
 				AND a.examination_flag = #{examinationFlag}
 			</if>
+			<if test="lastFlag != null and lastFlag != ''">
+				AND a.last_flag = #{lastFlag}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -167,7 +170,8 @@
 			<set>
 				<if test="recordId !=null and recordId != '' ">record_id = #{recordId},</if>
 				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
-				<if test="needSamples !=null and needSamples != '' ">sample_code = #{needSamples},</if>
+				<if test="needSamples !=null and needSamples != '' ">need_samples = #{needSamples},</if>
+				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
 				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
 				<if test="resultDictName !=null and resultDictName != '' ">result_dict_name = #{resultDictName},</if>
 				<if test="resultFlag !=null and resultFlag != '' ">result_flag = #{resultFlag},</if>

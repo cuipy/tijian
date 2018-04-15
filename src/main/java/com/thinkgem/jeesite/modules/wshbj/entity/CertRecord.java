@@ -21,6 +21,11 @@ public class CertRecord extends DataEntity<CertRecord> {
 	private String userId;		// 体检用户
 	private String idNumber;		// 身份证号
 	private String userName;		// 姓名
+	private String sex;		// 性别
+	private String industryId;		// 行业
+	private String postId;		// 岗位
+	private String birthday;		// 出生日期
+	private String organId;		// 单位
 	private String owner;		// 所属体检中心
 	
 	public CertRecord() {
@@ -90,5 +95,44 @@ public class CertRecord extends DataEntity<CertRecord> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public String getIndustryId() {
+		return industryId;
+	}
+
+	public void setIndustryId(String industryId) {
+		this.industryId = industryId;
+	}
+
+	public String getPostId() {
+		return postId;
+	}
+
+	public void setPostId(String postId) {
+		this.postId = postId;
+	}
+
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getOrganId() {
+		return organId;
+	}
+
+	public void setOrganId(String organId) {
+		this.organId = organId;
+	}
 }

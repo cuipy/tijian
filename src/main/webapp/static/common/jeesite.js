@@ -222,6 +222,28 @@ function strToDate(date){
 	return new Date(date.replace(/-/g,"/"));
 }
 
+//将时间戳转换成日期格式  yyyy-MM-dd
+function timestampToDate(timestamp) {
+    var date = new Date(timestamp);
+    Y = date.getFullYear() + '-';
+    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    D = date.getDate();
+    return Y+M+D;
+}
+
+//将时间戳转换成时间格式
+function timestampToTime(timestamp) {
+    var date = new Date(timestamp);
+    Y = date.getFullYear() + '-';
+    M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+    D = date.getDate() + ' ';
+    h = date.getHours() + ':';
+    m = date.getMinutes() + ':';
+    s = date.getSeconds();
+    return Y+M+D+h+m+s;
+}
+
+
 // 日期加减
 function addDate(date, dadd){  
 	date = date.valueOf();
