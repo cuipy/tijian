@@ -9,23 +9,23 @@ function cvsInit2(){
     var cvsMain = new fabric.Canvas('cvs-main',opt);
     cvsMain.items={};
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon08.png','体检用户','http://www.baidu.com',80,100,120,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon08.png','体检用户','/wshbj/a/wshbj/examinationUser/list',80,100,120,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon07.png','体检单位','http://www.baidu.com',80,100,280,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon07.png','体检单位','/wshbj/a/wshbj/organ/list',80,100,280,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon06.png','体检套餐','http://www.baidu.com',80,100,440,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon06.png','体检套餐','/wshbj/a/wshbj/examinationPackage/list',80,100,440,{'zoom1':true});
 
     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon04.png','医生',null,100,600,360);
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','http://www.baidu.com',80,600,120,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','/wshbj/a/wshbj/examinationRecord/form',80,600,120,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','2 样品采集','http://www.baidu.com',80,860,260,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','2 样品采集','/wshbj/a/wshbj/examinationSamples/form',80,860,260,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','3 样品结果','http://www.baidu.com',80,790,570,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','3 样品结果','/wshbj/a/wshbj/examinationRecord/inputSamplesResult',80,790,570,{'zoom1':true});
 
-     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon09.png','4 样本结果录入','http://www.baidu.com',80,450,600,{'zoom1':true});
+     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon09.png','4 样本结果录入','/wshbj/a/wshbj/examinationRecord/inputResult',80,450,600,{'zoom1':true});
 
-     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon13.png','5 制卡','http://www.baidu.com',80,300,360,{'zoom1':true});
+     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon13.png','5 制卡','/wshbj/a/wshbj/certRecord/form',80,300,360,{'zoom1':true});
 
     fabricLine(cvsMain,'#666',{'x':200,'y':50},{'x':200,'y':520},6);
 
