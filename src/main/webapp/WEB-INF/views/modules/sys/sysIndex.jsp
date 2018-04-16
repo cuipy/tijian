@@ -71,28 +71,31 @@
 						});
 						// 二级标题
 						$(menuId + " .accordion-heading a").click(function(){
+
+						    //  cuipengyu调整 ，二级菜单始终向下图标
 							$(menuId + " .accordion-toggle i").removeClass('icon-chevron-down').addClass('icon-chevron-right');
+
 							if(!$($(this).attr('data-href')).hasClass('in')){
 								$(this).children("i").removeClass('icon-chevron-right').addClass('icon-chevron-down');
 							}
 						});
 						// 二级内容
 						$(menuId + " .accordion-body a").click(function(){
-							$(menuId + " li").removeClass("active");
-							$(menuId + " li i").removeClass("icon-white");
-							$(this).parent().addClass("active");
-							$(this).children("i").addClass("icon-white");
+							//$(menuId + " li").removeClass("active");
+							//$(menuId + " li i").removeClass("icon-white");
+							//$(this).parent().addClass("active");
+							//$(this).children("i").addClass("icon-white");
 						});
-						// 展现三级
-						$(menuId + " .accordion-inner a").click(function(){
-							var href = $(this).attr("data-href");
-							if($(href).length > 0){
-								$(href).toggle().parent().toggle();
-								return false;
-							}
+						// 展现三级  cuipengyu 注释  20180416
+						//$(menuId + " .accordion-inner a").click(function(){
+						//	var href = $(this).attr("data-href");
+						//	if($(href).length > 0){
+						//		$(href).toggle().parent().toggle();
+						//		return false;
+						//	}
 							// <c:if test="${tabmode eq '1'}"> 打开显示页签
-							return addTab($(this)); // </c:if>
-						});
+						//	return addTab($(this)); // </c:if>
+						//});
 						// 默认选中第一个菜单
 						$(menuId + " .accordion-body a:first i").click();
 						$(menuId + " .accordion-body li:first li:first a:first i").click();

@@ -122,5 +122,12 @@
 	</form:form>
 	</div>
 
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 体检用户是体检人管理，由前台操作录入<br>
+      2. 体检用户身份证是唯一标记，不可重复。
+
+    </div>
+
 </body>
 </html>
