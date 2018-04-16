@@ -1,44 +1,47 @@
 
 $(function(){
-    // cvsInit();
     cvsInit2();
 });
-var userWidth=120;
 
 function cvsInit2(){
 
-    var opt={width:1024,height:768,backgroundColor:'#eee'};
+    var opt={width:1248,height:768,backgroundColor:'#eee'};
     var cvsMain = new fabric.Canvas('cvs-main',opt);
     cvsMain.items={};
 
-    //  fabricDrawArray(_canvas,fill,left,top,ganLong,ganWidth1,ganWidth2,headLong,headWidth)
-    fabricDrawArray(cvsMain,'#f70',300,300,100,20,30,40,40);
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon08.png','体检用户','http://www.baidu.com',80,100,120,{'zoom1':true});
 
-    fabricArraw(cvsMain,'#7f0',{x:520,y:220},{x:150,y:230},10,20,40,40);
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon07.png','体检单位','http://www.baidu.com',80,100,280,{'zoom1':true});
 
-    // 装载护士图片
-    fabric.Image.fromURL('/wshbj/static/images/icons/icon01.png',function(img){
-        img.selectable = img.hasControls = img.hasBorders = false;
-        img.set({left:0,top:0});
-        img.scaleToWidth(100);
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon06.png','体检套餐','http://www.baidu.com',80,100,440,{'zoom1':true});
 
-        var txt = new fabric.Text('护士',{top:110,left:50,originX:'center',fontFamily:'微软雅黑',stroke:"#333",strokeWidth:0.5,
-        shadow: 'rgba(0,0,0,0.3) 5px 5px 5px' ,fontSize:20,textAlign:'center',fill:'#f50',fontWeight:800});
-        txt.selectable = txt.hasControls = txt.hasBorders = false;
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon04.png','医生',null,100,600,360);
+
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','http://www.baidu.com',80,600,120,{'zoom1':true});
+
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','2 样品采集','http://www.baidu.com',80,860,260,{'zoom1':true});
+
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','3 样品结果','http://www.baidu.com',80,790,570,{'zoom1':true});
+
+     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon09.png','4 样本结果录入','http://www.baidu.com',80,450,600,{'zoom1':true});
+
+     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon13.png','5 制卡','http://www.baidu.com',80,300,360,{'zoom1':true});
+
+    fabricLine(cvsMain,'#666',{'x':200,'y':50},{'x':200,'y':520},6);
 
 
-        // 创建护士图标组
-        var groupNurse=new fabric.Group([img,txt],{left:200,top:200,originX:'center',originY:'center'});
-        groupNurse.selectable = groupNurse.hasControls = groupNurse.hasBorders = false;
-        groupNurse.scaleToWidth(120);
-        groupNurse.evtKeys=['zoom1'];
-        groupNurse.linkURL = '/wshbj/a/wshbj/examinationSamples/form';
+    fabricArraw(cvsMain,'#f60',{x:600,y:280},{x:600,y:190},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:665,y:320},{x:810,y:280},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:640,y:415},{x:754,y:546},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:562,y:418},{x:477,y:556},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:545,y:343},{x:352,y:346},10,20,40,40);
 
-        cvsMain.hoverCursor = 'pointer';
-        cvsMain.add(groupNurse);
-    });
 
-    cvsMain.on('mouse:up',function(evt){
+    fabricEvent(cvsMain);
+}
+
+function fabricEvent(_canvas){
+    _canvas.on('mouse:up',function(evt){
         var item= evt.target;
         if(item==null){
             return;
@@ -51,23 +54,26 @@ function cvsInit2(){
 
     })
 
-    function zoomForOver(evt){
-        zoomEvent(evt,'over');
+    function mouseForOver(evt){
+        mouseEvent(evt,'over');
     }
-    function zoomForOut(evt){
-        zoomEvent(evt,'out');
+    function mouseForOut(evt){
+        mouseEvent(evt,'out');
     }
 
-    function zoomEvent(evt,evtType){
+    function mouseEvent(evt,evtType){
+
         var item=evt.target;
         if(item==null||item.evtKeys==null){
             return
         }
-        var _startWidth = evtType=='over'?userWidth:userWidth*1.1;
-        var _endWidth = evtType=='over'?userWidth*1.1:userWidth;
 
         // 验证对象绑定的事件
-        if(item.evtKeys.contains('zoom1')){
+        if(item.evtKeys.zoom1){
+            var _w=item.width;
+            var _startWidth = evtType=='over'?_w:_w*1.1;
+            var _endWidth = evtType=='over'?_w*1.1:_w;
+
             fabric.util.animate({
                 startValue:_startWidth,
                 endValue:_endWidth,
@@ -75,178 +81,138 @@ function cvsInit2(){
                 ease:'easeInOutBounce',
                 onChange:function(val){
                     item.scaleToWidth(val);
-                    cvsMain.renderAll();
+                    _canvas.renderAll();
                 }
             });
         }
+
+        if(item.evtKeys.change_fill!=null){
+            var clr1 = item.evtKeys.change_fill.color1;
+            var clr2 = item.evtKeys.change_fill.color2;
+
+            var clr= evtType == 'over'? clr2:clr1;
+
+            item.setColor(clr);
+            _canvas.renderAll();
+        }
+
+        if(item.evtKeys.change_stroke_color!=null){
+            var clr1 = item.evtKeys.change_stroke_color.color1;
+            var clr2 = item.evtKeys.change_stroke_color.color2;
+
+            var clr= evtType == 'over'? clr2:clr1;
+
+            item.stroke=clr;
+            _canvas.renderAll();
+        }
     }
 
-    cvsMain.on('mouse:over',zoomForOver);
-    cvsMain.on('mouse:out',zoomForOut);
+    function mouseForMove(evt){
+        console.log(evt.e.x+"  "+evt.e.y);
+    }
 
+
+
+    _canvas.on('mouse:over',mouseForOver);
+    _canvas.on('mouse:out',mouseForOut);
+    _canvas.on('mouse:move',mouseForMove);
 }
 
-function fabricDrawArray(_canvas,fill,left,top,ganLong,ganWidth1,ganWidth2,headLong,headWidth){
-    var px=left;
-    var py=top+ganWidth1/2;
 
-    var ps=[{x:px,y:py},{x:px,y:py-ganWidth1/2},{x:px+ganLong,y:py-ganWidth2/2},{x:px+ganLong,y:py-headWidth/2},{x:px+ganLong+headLong,y:py},{x:px+ganLong,y:py+headWidth/2},{x:px+ganLong,y:py+ganWidth2/2}
-    ,{x:px,y:py+ganWidth1/2},{x:px,y:py}];
-    var polygon=new fabric.Polygon(ps,{left:left,top:top,fill:fill});
-    _canvas.add(polygon);
+function fabricAddButton(_canvas,_imgUrl,_title,_linkURL,_width,_left,_top,_evtKeys){
+    // 装载护士图片
+    fabric.Image.fromURL(_imgUrl,function(img){
+        img.selectable = img.hasControls = img.hasBorders = false;
+        img.set({left:0,top:0});
+        img.scaleToWidth(_width);
+
+        // 获取图片原 width height
+        var imgSrcWidth= img.width;
+        var imgSrcHeight= img.height;
+
+       // get image scale height
+        var scaleHeight= _width/imgSrcWidth*imgSrcHeight;
+
+        // get title top
+        var titleTop= scaleHeight-10;
+        var titleLeft = _width/2;
+
+        var txt = new fabric.Text(_title,{top:titleTop,left:titleLeft,originX:'center',fontFamily:'微软雅黑',stroke:"#333",strokeWidth:0.5,
+        shadow: 'rgba(0,0,0,0.3) 5px 5px 5px' ,fontSize:16,textAlign:'center',fill:'#f50',fontWeight:800});
+        txt.selectable = txt.hasControls = txt.hasBorders = false;
+
+        // 创建护士图标组
+        var grpButton=new fabric.Group([img,txt],{left:_left,top:_top,originX:'center',originY:'center'});
+        grpButton.selectable = grpButton.hasControls = grpButton.hasBorders = false;
+        grpButton.scaleToWidth(_width);
+        grpButton.evtKeys=_evtKeys;
+        grpButton.linkURL = _linkURL;
+
+        _canvas.hoverCursor = 'pointer';
+        _canvas.add(grpButton);
+    });
 }
 
+
+
+/*** 绘制一条线  **/
+function fabricLine(_canvas,_stroke,_startPoint,_endPoint,_width){
+    var ps=[_startPoint.x,_startPoint.y,_endPoint.x,_endPoint.y];
+    var l=new fabric.Line(ps,{strokeWidth:_width,stroke:_stroke});
+
+    l.evtKeys={'change_stroke_color':{'color1':_stroke,'color2': '#ccc'}};
+    _canvas.add(l);
+}
+
+/*** 绘制箭头  **/
 function fabricArraw(_canvas,_fill,_startPoint,_endPoint,_ganWidth1,_ganWidth2,_headLong,_headWidth){
 
     var angle = getAngle(_startPoint.x,_startPoint.y,_endPoint.x,_endPoint.y)+270;
 
+    // 根据开始点和结束点，获得斜度的sin 和 cos 值
     var _cos=Math.cos(angle*Math.PI/180);
     var _sin=Math.sin(angle*Math.PI/180);
 
-    var _long= Math.abs((_endPoint.x-_startPoint.x)/_cos);
-    var _ganLong = _long - _headLong;
+    if(Math.abs(_cos)==1){
+        _sin=0;
+    }
 
-    var px2 = _ganLong*_cos;
-    var py2 = _ganLong*_sin;
+    if(Math.abs(_sin)==1){
+        _cos=0;
+    }
 
-    var p1={x:0,y:0};
-    var p2={x:_ganWidth1/2*_sin,y:-_ganWidth1/2*_cos};
+    // 计算总长度，可能会出现负值
+    var _long= Math.abs(_cos ==0? _endPoint.y-_startPoint.y :(_endPoint.x-_startPoint.x)/_cos);
+    var _ganLong = _long - _headLong ;
+
+    var sx=_startPoint.x;
+    var sy=_startPoint.y;
+
+    // 杆儿的终止点的坐标
+    var px2 = sx+_ganLong*_cos;
+    var py2 = sy+_ganLong*_sin;
+
+    var p1={x:sx,y:sy};
+    var p2={x:sx+_ganWidth1/2*_sin,y:sy-_ganWidth1/2*_cos};
     var p3={x:px2+_ganWidth2/2*_sin ,y:py2-_ganWidth2/2*_cos};
     var p4={x:px2+_headWidth/2*_sin,y:py2-_headWidth/2*_cos};
-    var p5={x:_long*_cos,y:_long*_sin};
+    var p5={x:sx+_long*_cos,y:sy+_long*_sin};
     var p6={x:px2-_headWidth/2*_sin,y:py2+_headWidth/2*_cos};
     var p7={x:px2-_ganWidth2/2*_sin,y:py2+_ganWidth2/2*_cos};
-    var p8={x:-_ganWidth1/2*_sin,y:_ganWidth1/2*_cos};
-    var p9={x:0,y:0};
+    var p8={x:sx-_ganWidth1/2*_sin,y:sy+_ganWidth1/2*_cos};
+    var p9={x:sx,y:sy};
 
-console.log(angle+"   "+_long);
-console.log(_cos+"  "+_sin);
-console.log(px2+"  "+py2);
-    console.log(p2);
-    console.log(p3);
-    console.log(p4);
-    console.log(p5);
-    console.log(p6);
-    console.log(p7);console.log(p8);console.log(p9);
+    console.log(angle+"   "+_long+"  "+_ganLong);
 
+    console.log(px2+"   "+py2);
 
     var ps=[p1,p2,p3,p4,p5,p6,p7,p8,p9];
-    var polygon=new fabric.Polygon(ps,{left:_startPoint.x,top:_startPoint.y,fill:_fill});
+    var polygon=new fabric.Polygon(ps,{fill:_fill});
+    polygon.evtKeys={'change_fill':{'color1':_fill,'color2':'#f90'}};
+
     _canvas.add(polygon);
 
 }
-//
-//var sw=90;
-//var ew=100;
-//
-//function cvsInit(){
-//    var opt={width:1000,height:700};
-//    var cvsMain = new fabric.Canvas('cvs-main',opt);
-//
-//    fabricLoadImg(cvsMain,'/wshbj/static/images/icons/icon01.png',"img1",100,100,sw,['scale']);
-//    fabricLoadImg(cvsMain,'/wshbj/static/images/icons/icon02.png',"img2",100,240,sw,['no_scale']);
-//
-//    fabricAddText(cvsMain,"护士","txtNurse",100,150,['scale']);
-//
-//    fabricAniScale(cvsMain,['scale'],'mouse:over',sw,ew,300);
-//    fabricAniScale(cvsMain,['scale'],'mouse:out',ew,sw,300);
-//
-//    var f=fabricGetById(cvsMain,'txtNurse');
-//    f.fontFamily = '黑体';
-//    f.fontWeight = 700;
-//    f.fontSize = 50;
-//    f.fill= '#f30';
-//
-//    cvsMain.hoverCursor="pointer";
-//
-//}
-//
-//function fabricGetById(_canvas,_id){
-//    if(_canvas.objects==null){
-//        return null;
-//    }
-//    return _canvas.objects[_id];
-//}
-//
-//// 装载一张图片
-//function fabricLoadImg(_canvas,_imgUrl,_id,_left,_top,_width,_evtKeys){
-//    if(_canvas.objects==null){
-//        _canvas.objects={};
-//    }
-//
-//    if(_canvas.objects[_id] != null){
-//        console.log("已经存在元素的id="+ _id);
-//        return ;
-//    }
-//
-//    fabric.Image.fromURL(_imgUrl, function(img) {
-//        img.set({
-//          left: _left,top: _top,originX:'center',originY:'center'
-//        });
-//        img.scaleToWidth(_width);
-//
-//        if(_evtKeys!=null&&_evtKeys.contains('no_scale')){
-//            try{
-//                img.filters.push(new fabric.Image.filters.Grayscale());
-//                img.applyFilters();
-//            }catch(err){
-//                console.log(err);
-//            }
-//        }
-//
-//        img.hasControls = img.hasBorders = img.selectable = false;
-//        img.evtKeys = _evtKeys;
-//
-//        // 在画布对象中添加一个json对象，存储所有的对象
-//        _canvas.objects[_id] = img;
-//
-//        _canvas.add(img);
-//    });
-//}
-//
-//function fabricAddText(_canvas,_text,_id,_left,_top,_height,_evtKeys){
-//    if(_canvas.objects==null){
-//        _canvas.objects={};
-//    }
-//
-//    if(_canvas.objects[_id] != null){
-//        console.log("已经存在元素的id="+ _id);
-//        return ;
-//    }
-//
-//    var txt=new fabric.Text(_text,{left:_left,top:_top ,originX:'center',originY:'center'});
-//    txt.scaleToHeight(16);
-//    txt.hasControls = txt.hasBorders = txt.selectable = false;
-//
-//    _canvas.objects[_id]=txt;
-//    _canvas.add(txt);
-//
-//}
-//
-//function fabricAniScale(_canvas,_evtKeys,_evt,_startWidth,_endWidth,_duration){
-//   _canvas.on(_evt,function(evt){
-//       var tgt=evt.target;
-//
-//       if(tgt==null){
-//           return false;
-//       }
-//
-//       if(tgt.evtKeys==null||!tgt.evtKeys.contains('scale')){
-//           return false;
-//       }
-//       fabric.util.animate({
-//           startValue:_startWidth,
-//           endValue:_endWidth,
-//           duration:_duration,
-//           ease:fabric.util.ease.easeInOutBounce,
-//           onChange:function(val){
-//               tgt.scaleToWidth(val);
-//               _canvas.renderAll();
-//           }
-//       });
-//    });
-//}
-
 
 
 /***********  基础函数  **************/
