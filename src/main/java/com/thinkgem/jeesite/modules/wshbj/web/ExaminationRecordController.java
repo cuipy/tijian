@@ -262,7 +262,24 @@ public class ExaminationRecordController extends BaseController {
 
 
 
-
+	/**
+	* @author zhxl
+	* @Description 
+	* @Date 2018/4/16 00:30:12
+	* @Param [examinationRecord, request, response, model, redirectAttributes]
+	* @return java.lang.String 
+	*/
+	@RequiresPermissions("wshbj:examinationRecord:inputResult")
+	@RequestMapping(value = "recordResultDetailPop")
+	public String recordResultDetailPop(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+		return "modules/wshbj/recordResultDetailPop";
+	}
 
 
 	@ResponseBody
