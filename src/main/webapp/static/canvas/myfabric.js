@@ -17,24 +17,24 @@ function cvsInit2(){
 
     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon04.png','医生',null,100,600,360);
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','/wshbj/a/wshbj/examinationRecord/form',80,550,92,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','/wshbj/a/wshbj/examinationRecord/form',70,400,130,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','2 样品采集','/wshbj/a/wshbj/examinationSamples/form',80,860,260,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon11.png','2 样品采集','/wshbj/a/wshbj/examinationSamples/form',80,600,130,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','3 样品结果','/wshbj/a/wshbj/examinationRecord/inputSamplesResult',80,790,570,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','3 样品结果','/wshbj/a/wshbj/examinationRecord/inputSamplesResult',80,800,130,{'zoom1':true});
 
-     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon09.png','4 样本结果录入','/wshbj/a/wshbj/examinationRecord/inputResult',80,450,600,{'zoom1':true});
+     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon09.png','4 样本结果录入','/wshbj/a/wshbj/examinationRecord/inputResult',100,470,540,{'zoom1':true});
 
-     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon13.png','5 制卡','/wshbj/a/wshbj/certRecord/form',80,300,360,{'zoom1':true});
+     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon13.png','5 制卡','/wshbj/a/wshbj/certRecord/form',80,740,540,{'zoom1':true});
 
     fabricLine(cvsMain,'#666',{'x':200,'y':50},{'x':200,'y':520},6);
 
 
-    fabricArraw(cvsMain,'#f60',{x:600,y:280},{x:562,y:160},10,20,40,40);
-    fabricArraw(cvsMain,'#f60',{x:665,y:320},{x:810,y:280},10,20,40,40);
-    fabricArraw(cvsMain,'#f60',{x:640,y:415},{x:754,y:546},10,20,40,40);
-    fabricArraw(cvsMain,'#f60',{x:562,y:418},{x:477,y:556},10,20,40,40);
-    fabricArraw(cvsMain,'#f60',{x:545,y:343},{x:352,y:346},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:552,y:307},{x:435,y:190},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:600,y:290},{x:600,y:190},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:640,y:307},{x:780,y:190},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:560,y:400},{x:500,y:500},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:640,y:400},{x:700,y:500},10,20,40,40);
 
 
     fabricEvent(cvsMain);
@@ -111,8 +111,6 @@ function fabricEvent(_canvas){
         console.log(evt.e.x+"  "+evt.e.y);
     }
 
-
-
     _canvas.on('mouse:over',mouseForOver);
     _canvas.on('mouse:out',mouseForOut);
     _canvas.on('mouse:move',mouseForMove);
@@ -137,8 +135,8 @@ function fabricAddButton(_canvas,_imgUrl,_title,_linkURL,_width,_left,_top,_evtK
         var titleTop= scaleHeight-10;
         var titleLeft = _width/2;
 
-        var txt = new fabric.Text(_title,{top:titleTop,left:titleLeft,originX:'center',fontFamily:'微软雅黑',stroke:"#333",strokeWidth:0.5,
-        shadow: 'rgba(0,0,0,0.3) 5px 5px 5px' ,fontSize:16,textAlign:'center',fill:'#f50',fontWeight:800});
+        var txt = new fabric.Text(_title,{top:titleTop,left:titleLeft,originX:'center',fontFamily:'微软雅黑',
+        shadow: 'rgba(0,0,0,0.3) 5px 5px 5px' ,fontSize:16,textAlign:'center',fill:'#f30',fontWeight:800});
         txt.selectable = txt.hasControls = txt.hasBorders = false;
 
         // 创建护士图标组
@@ -161,6 +159,7 @@ function fabricLine(_canvas,_stroke,_startPoint,_endPoint,_width){
     var l=new fabric.Line(ps,{strokeWidth:_width,stroke:_stroke});
 
     l.evtKeys={'change_stroke_color':{'color1':_stroke,'color2': '#ccc'}};
+    l.selectable = l.hasControls = l.hasBorders = false;
     _canvas.add(l);
 }
 
@@ -202,13 +201,14 @@ function fabricArraw(_canvas,_fill,_startPoint,_endPoint,_ganWidth1,_ganWidth2,_
     var p8={x:sx-_ganWidth1/2*_sin,y:sy+_ganWidth1/2*_cos};
     var p9={x:sx,y:sy};
 
-    console.log(angle+"   "+_long+"  "+_ganLong);
+    //console.log(angle+"   "+_long+"  "+_ganLong);
 
-    console.log(px2+"   "+py2);
+    //console.log(px2+"   "+py2);
 
     var ps=[p1,p2,p3,p4,p5,p6,p7,p8,p9];
     var polygon=new fabric.Polygon(ps,{fill:_fill});
     polygon.evtKeys={'change_fill':{'color1':_fill,'color2':'#f90'}};
+    polygon.selectable = polygon.hasControls = polygon.hasBorders = false;
 
     _canvas.add(polygon);
 
