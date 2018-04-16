@@ -4,6 +4,7 @@
 <head>
 	<title>制卡记录管理</title>
 	<meta name="decorator" content="default"/>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
             $('#checkedAll').click(function() {
@@ -42,18 +43,25 @@
             }));
 
 
-            $(list+idx).find('td:gt(0):lt(12)').click(function () {
+            $(list+idx).find('td:gt(1):lt(11)').click(function () {
                 var checked = $(list+idx).find('input[name=recordCheckbox]').prop('checked');
                 $(list+idx).find('[name=recordCheckbox]:checkbox').prop('checked', !checked);
             });
             $('#recordsList'+idx+'_createDate').text(timestampToDate(row.createDate));
+        }
+
+        function openResultDetail(recordId) {
+            var url = '${ctx}/wshbj/examinationRecord/recordResultDetailPop';
+            //windowOpen(url,'体检结果',500,500);
+
+			addTabPage('123',url,true,this,false);
         }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/wshbj/certRecord/form?id=${certRecord.id}">制卡记录<shiro:hasPermission name="wshbj:certRecord:edit">${not empty certRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:certRecord:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/certRecord/">制卡记录列表</a></li>
+		<%--<li><a href="${ctx}/wshbj/certRecord/">制卡记录列表</a></li>--%>
 	</ul><br/>
 	<form id="inputForm"   method="post" class="form-horizontal">
 		<div class="control-group">
@@ -103,7 +111,7 @@
 		</div>
 		<div class="form-actions">
 			<input id="btnSearch" class="btn btn-primary" type="button" value="查询" onclick="searchRecords();"/>
-			<input id="btnSubmit" class="btn btn-primary" type="button" value="读卡" onclick=""/>
+			<input id="btnSubmit" class="btn btn-primary" type="button" value="制卡" onclick=""/>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form>
@@ -135,7 +143,7 @@
 				<tr id="recordsList{{idx}}">
 					<td><input type="checkbox" id="{{row.id}}" name="recordCheckbox" checked value="{{row.id}}" idx="{{row.idx}}"></td>
 					<td >
-						<span  type="text" maxlength="64" class="input-small" >{{row.code}}</span>
+						<a href="javascript:openResultDetail('{{row.id}}');">{{row.code}}</a>
 					</td>
 					<td>
 						<span  type="text" maxlength="64" class="input-small" >{{row.name}}</span>
