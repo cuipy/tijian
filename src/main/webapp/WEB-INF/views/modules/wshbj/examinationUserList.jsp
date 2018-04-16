@@ -97,10 +97,17 @@
 	</table>
 	<div class="pagination">${page}</div>
 
-	<div class="alert alert-success">
+    <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 体检用户是体检人管理，由前台操作录入<br>
       2. 体检用户身份证是唯一标记，不可重复。
+
+    </div>
+
+   <div class="alert alert-danger">
+      <strong>重要提示，需要完成的准备工作：</strong> <br>
+      1. 体检单位、行业、岗位，必须录入系统<br>
+      2. 身份证号码不允许重复。
 
     </div>
 

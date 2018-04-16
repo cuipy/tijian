@@ -130,5 +130,21 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 信息登记是在体检前进行登记<br>
+      2. 该信息一般由前台登记人员创建<br>
+
+
+    </div>
+
+    <div class="alert alert-danger">
+      <strong>重要提示，需要完成的准备工作：</strong> <br>
+      1. 体检用户必须录入系统，见：<span class="help-inline">左侧菜单 - 体检人  -  体检用户</span>，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
+      2. 体检套餐必须录入系统，见：<span class="help-inline">左侧菜单 - 基础数据 - 体检套餐</span>，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
+      3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
+
+    </div>
 </body>
 </html>

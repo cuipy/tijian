@@ -59,5 +59,13 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 体检单位，每个体检人必须属于一个单位。<br>
+
+
+    </div>
+
 </body>
 </html>
