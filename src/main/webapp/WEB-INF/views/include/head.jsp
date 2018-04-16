@@ -13,7 +13,7 @@
 <link href="${ctxStatic}/jquery-validation/1.11.0/jquery.validate.min.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/jquery-validation/1.11.0/jquery.validate.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/jquery-jbox/2.3/Skins/Green/jbox.css" rel="stylesheet" />
-<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js?v=1" type="text/javascript"></script>
 <script src="${ctxStatic}/jquery-plugin/jQuery.print.js" type="text/javascript"></script>
 <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 
