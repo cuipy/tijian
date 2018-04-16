@@ -17,7 +17,7 @@ function cvsInit2(){
 
     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon04.png','医生',null,100,600,360);
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','/wshbj/a/wshbj/examinationRecord/form',80,600,120,{'zoom1':true});
+    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','/wshbj/a/wshbj/examinationRecord/form',80,550,92,{'zoom1':true});
 
     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon10.png','2 样品采集','/wshbj/a/wshbj/examinationSamples/form',80,860,260,{'zoom1':true});
 
@@ -30,7 +30,7 @@ function cvsInit2(){
     fabricLine(cvsMain,'#666',{'x':200,'y':50},{'x':200,'y':520},6);
 
 
-    fabricArraw(cvsMain,'#f60',{x:600,y:280},{x:600,y:190},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:600,y:280},{x:562,y:160},10,20,40,40);
     fabricArraw(cvsMain,'#f60',{x:665,y:320},{x:810,y:280},10,20,40,40);
     fabricArraw(cvsMain,'#f60',{x:640,y:415},{x:754,y:546},10,20,40,40);
     fabricArraw(cvsMain,'#f60',{x:562,y:418},{x:477,y:556},10,20,40,40);
