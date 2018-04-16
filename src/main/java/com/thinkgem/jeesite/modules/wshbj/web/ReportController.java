@@ -26,7 +26,6 @@ public class ReportController extends BaseController {
 	public String test2(Model m) {
 
 		m.addAttribute("format","pdf");
-		m.addAttribute("url","/WEB-INF/jasper/test2.jasper");
 
 		return "test2";
 	}
