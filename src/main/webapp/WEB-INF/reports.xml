@@ -9,4 +9,10 @@
         <property name="url" value="/WEB-INF/jasper/lr1.jasper"/>
         <property name="jdbcDataSource" ref="dataSource" />
     </bean>
+
+    <bean id="test2" class="com.thinkgem.jeesite.common.jasperreports.CuiJasperReportsView">
+        <property name="url" value="/WEB-INF/jasper/test2.jasper"/>
+        <property name="jdbcDataSource" ref="dataSource" />
+    </bean>
+
 </beans>
