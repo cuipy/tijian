@@ -37,6 +37,17 @@
 		<thead><tr><th>机构名称</th><th>归属区域</th><th>机构编码</th><th>机构类型</th><th>备注</th><shiro:hasPermission name="sys:office:edit"><th>操作</th></shiro:hasPermission></tr></thead>
 		<tbody id="treeTableList"></tbody>
 	</table>
+
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 机构管理是体检中心和其下部门的管理<br>
+      2. 体检中心节点<span class="help-inline">不允许删除</span><br>
+      3. 体检中心下创建公司类型的节点，要求是当前体检中心的名称，例如：长城体检中心<br>
+      4. 在公司类型节点下创建部门类型节点，例如：长城体检中心 下有 - 前台、内科、外科 等部门<br>
+
+
+    </div>
+
 	<script type="text/template" id="treeTableTpl">
 		<tr id="{{row.id}}" pId="{{pid}}">
 			<td><a href="${ctx}/sys/office/form?id={{row.id}}">{{row.name}}</a></td>

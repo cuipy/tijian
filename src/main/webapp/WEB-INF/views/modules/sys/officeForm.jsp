@@ -30,6 +30,8 @@
 		<li><a href="${ctx}/sys/office/list?id=${office.parent.id}&parentIds=${office.parentIds}">机构列表</a></li>
 		<li class="active"><a href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">机构<shiro:hasPermission name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
+
+	<div class="row">
 	<form:form id="inputForm" modelAttribute="office" action="${ctx}/sys/office/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
@@ -153,5 +155,17 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	</div>
+
+    <div class="alert alert-success">
+      <strong>帮助：</strong> <br>
+      1. 机构管理是体检中心和其下部门的管理<br>
+      2. 体检中心节点<span class="help-inline">不允许删除</span><br>
+      3. 体检中心下创建公司类型的节点，要求是当前体检中心的名称，例如：长城体检中心<br>
+      4. 在公司类型节点下创建部门类型节点，例如：长城体检中心 下有 - 前台、内科、外科 等部门<br>
+
+
+    </div>
+
 </body>
 </html>
