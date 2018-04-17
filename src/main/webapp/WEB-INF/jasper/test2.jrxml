@@ -106,9 +106,9 @@
 		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
 	</field>
 	<detail>
-		<band height="195" splitType="Stretch">
+		<band height="188" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="80" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+				<reportElement x="0" y="72" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
@@ -132,126 +132,126 @@
 				<textFieldExpression><![CDATA[$P{tjsj}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="0" y="83" width="75" height="28" uuid="ad19d78b-1a19-4631-9c9f-878caea24f7c"/>
+				<reportElement x="0" y="76" width="75" height="28" uuid="ad19d78b-1a19-4631-9c9f-878caea24f7c"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="75" y="83" width="110" height="28" uuid="cab453ef-f79c-4c97-b2e4-ef6474b82f60"/>
+				<reportElement x="75" y="76" width="110" height="28" uuid="cab453ef-f79c-4c97-b2e4-ef6474b82f60"/>
 			</rectangle>
 			<textField>
-				<reportElement x="75" y="83" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<reportElement x="75" y="76" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{login_name}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="185" y="83" width="75" height="28" uuid="27f3eee8-076c-4faf-be30-d34f22082bfa"/>
+				<reportElement x="185" y="76" width="75" height="28" uuid="27f3eee8-076c-4faf-be30-d34f22082bfa"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="260" y="83" width="110" height="28" uuid="c5102307-c39b-41bf-b3a3-f2eba4ad2875"/>
+				<reportElement x="260" y="76" width="110" height="28" uuid="c5102307-c39b-41bf-b3a3-f2eba4ad2875"/>
 			</rectangle>
 			<textField>
-				<reportElement x="260" y="83" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<reportElement x="260" y="76" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="370" y="83" width="75" height="28" uuid="35895305-34cd-48ce-9508-58423305bcc7"/>
+				<reportElement x="370" y="76" width="75" height="28" uuid="35895305-34cd-48ce-9508-58423305bcc7"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="445" y="83" width="110" height="28" uuid="2e1a8ad7-497d-48bc-82cb-99db534a1342"/>
+				<reportElement x="445" y="76" width="110" height="28" uuid="2e1a8ad7-497d-48bc-82cb-99db534a1342"/>
 			</rectangle>
 			<staticText>
-				<reportElement style="PdfSytle" x="0" y="83" width="75" height="28" uuid="8fc52fc0-b5b3-4174-8c5e-cc2791cd1a0e"/>
+				<reportElement style="PdfSytle" x="0" y="76" width="75" height="28" uuid="8fc52fc0-b5b3-4174-8c5e-cc2791cd1a0e"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[姓名]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="184" y="83" width="75" height="28" uuid="914523ad-986e-4502-a746-88a34e8e79f7"/>
+				<reportElement style="PdfSytle" x="184" y="76" width="75" height="28" uuid="914523ad-986e-4502-a746-88a34e8e79f7"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[性别]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="370" y="83" width="75" height="28" uuid="0ad7291a-e12a-4fa8-9a89-acd88cdb99b2"/>
+				<reportElement style="PdfSytle" x="370" y="76" width="75" height="28" uuid="0ad7291a-e12a-4fa8-9a89-acd88cdb99b2"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[年龄]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="111" width="75" height="28" uuid="c79864ed-c333-46b9-8e42-bc23c171e942"/>
+				<reportElement x="0" y="104" width="75" height="28" uuid="c79864ed-c333-46b9-8e42-bc23c171e942"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="75" y="111" width="110" height="28" uuid="0eaaa578-5778-4397-afbe-e89435078ec6"/>
+				<reportElement x="75" y="104" width="110" height="28" uuid="0eaaa578-5778-4397-afbe-e89435078ec6"/>
 			</rectangle>
 			<textField>
-				<reportElement x="75" y="111" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<reportElement x="75" y="104" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{login_name}]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="185" y="111" width="75" height="28" uuid="4c6303d4-4728-4a18-b42a-29ede18cf148"/>
+				<reportElement x="185" y="104" width="75" height="28" uuid="4c6303d4-4728-4a18-b42a-29ede18cf148"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="260" y="111" width="110" height="28" uuid="d4fd758c-b257-457a-b221-1f28d0477a8b"/>
+				<reportElement x="260" y="104" width="110" height="28" uuid="d4fd758c-b257-457a-b221-1f28d0477a8b"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="370" y="111" width="75" height="28" uuid="2ab8d548-61d7-4a53-9e4c-0a1138c54ef7"/>
+				<reportElement x="370" y="104" width="75" height="28" uuid="2ab8d548-61d7-4a53-9e4c-0a1138c54ef7"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="445" y="111" width="110" height="28" uuid="06b5a973-5631-478f-8876-ed4563b02bc2"/>
+				<reportElement x="445" y="104" width="110" height="28" uuid="06b5a973-5631-478f-8876-ed4563b02bc2"/>
 			</rectangle>
 			<staticText>
-				<reportElement style="PdfSytle" x="0" y="111" width="75" height="28" uuid="7ec77309-cc58-4cda-a726-5515fa78a35c"/>
+				<reportElement style="PdfSytle" x="0" y="104" width="75" height="28" uuid="7ec77309-cc58-4cda-a726-5515fa78a35c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[类别]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="184" y="111" width="75" height="28" uuid="7b4da8fd-2d77-44e9-ac86-523cb82518e6"/>
+				<reportElement style="PdfSytle" x="184" y="104" width="75" height="28" uuid="7b4da8fd-2d77-44e9-ac86-523cb82518e6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[岗位]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="370" y="111" width="75" height="28" uuid="5ddc3c48-8782-4a87-9d3a-fea1c8feaaf8"/>
+				<reportElement style="PdfSytle" x="370" y="104" width="75" height="28" uuid="5ddc3c48-8782-4a87-9d3a-fea1c8feaaf8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[联系电话]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="139" width="75" height="28" uuid="746dabc3-73ce-495b-9811-a34c5a350ca3"/>
+				<reportElement x="0" y="132" width="75" height="28" uuid="746dabc3-73ce-495b-9811-a34c5a350ca3"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="75" y="139" width="480" height="28" uuid="92e5ef57-3276-4da8-b015-f64ecd3f2297"/>
+				<reportElement x="75" y="132" width="480" height="28" uuid="92e5ef57-3276-4da8-b015-f64ecd3f2297"/>
 			</rectangle>
 			<staticText>
-				<reportElement style="PdfSytle" x="0" y="139" width="75" height="28" uuid="8a2e0a08-7012-49cd-b14a-2c31713bbed4"/>
+				<reportElement style="PdfSytle" x="0" y="132" width="75" height="28" uuid="8a2e0a08-7012-49cd-b14a-2c31713bbed4"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[单位]]></text>
 			</staticText>
 			<rectangle>
-				<reportElement x="0" y="167" width="75" height="28" uuid="8558c4d0-e599-4655-bd31-e82f3100c774"/>
+				<reportElement x="0" y="160" width="75" height="28" uuid="8558c4d0-e599-4655-bd31-e82f3100c774"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="75" y="167" width="110" height="28" uuid="950718e1-25c5-44dc-bfa3-d87fd68d5951"/>
+				<reportElement x="75" y="160" width="110" height="28" uuid="950718e1-25c5-44dc-bfa3-d87fd68d5951"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="185" y="167" width="260" height="28" uuid="fdd1606a-81e0-4fc1-bd0a-fef38dad7ba0"/>
+				<reportElement x="185" y="160" width="260" height="28" uuid="fdd1606a-81e0-4fc1-bd0a-fef38dad7ba0"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="445" y="167" width="110" height="28" uuid="340abc7e-877c-41e4-9692-908198a0e0b2"/>
+				<reportElement x="445" y="160" width="110" height="28" uuid="340abc7e-877c-41e4-9692-908198a0e0b2"/>
 			</rectangle>
 			<staticText>
-				<reportElement style="PdfSytle" x="0" y="167" width="75" height="28" uuid="6d720006-6cf0-4fd0-8e59-ccc6b682ca88"/>
+				<reportElement style="PdfSytle" x="0" y="160" width="75" height="28" uuid="6d720006-6cf0-4fd0-8e59-ccc6b682ca88"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[序号]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="93" y="167" width="75" height="28" uuid="33f8cc82-383c-46b5-81fc-1245d8c3505c"/>
+				<reportElement style="PdfSytle" x="93" y="160" width="75" height="28" uuid="33f8cc82-383c-46b5-81fc-1245d8c3505c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[检查项目]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="270" y="167" width="75" height="28" uuid="5cc1f87f-acaa-434a-b65c-b04c33865524"/>
+				<reportElement style="PdfSytle" x="270" y="160" width="75" height="28" uuid="5cc1f87f-acaa-434a-b65c-b04c33865524"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[检查结果]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="PdfSytle" x="463" y="167" width="75" height="28" uuid="13d9ec87-14b5-41a7-98cd-5beb2bf61905"/>
+				<reportElement style="PdfSytle" x="463" y="160" width="75" height="28" uuid="13d9ec87-14b5-41a7-98cd-5beb2bf61905"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<text><![CDATA[医师签名]]></text>
 			</staticText>
@@ -260,7 +260,7 @@
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode(new String("1234454321".getBytes("UTF-8"),"ISO-8859-1"),com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="355" y="64" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
+				<reportElement x="355" y="58" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
@@ -372,7 +372,12 @@
 2、体检机构应将此表存档备查。
 3、交表时，请在表格相关位置填写联系电话。]]></text>
 			</staticText>
+			<break>
+				<reportElement x="0" y="124" width="100" height="1" uuid="435174d5-b603-48f7-af5f-000fd81d13a2"/>
+			</break>
 		</band>
+	</detail>
+	<pageFooter>
 		<band height="250" splitType="Stretch">
 			<line>
 				<reportElement x="-20" y="10" width="595" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
@@ -498,7 +503,7 @@
 				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode(new String("1234454321".getBytes("UTF-8"),"ISO-8859-1"),com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="355" y="72" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
+				<reportElement x="355" y="68" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
 				<textElement textAlignment="Center">
 					<font size="9"/>
 				</textElement>
@@ -523,9 +528,6 @@
 3、自体检次日起，五个工作日后领取健康合格证。
 4、如有疑问请拨打咨询电话：]]></text>
 			</staticText>
-			<break>
-				<reportElement x="0" y="232" width="100" height="1" uuid="435174d5-b603-48f7-af5f-000fd81d13a2"/>
-			</break>
 		</band>
-	</detail>
+	</pageFooter>
 </jasperReport>
