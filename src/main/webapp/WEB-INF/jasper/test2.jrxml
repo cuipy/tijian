@@ -118,7 +118,7 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="19" isBold="true"/>
 				</textElement>
 				<text><![CDATA[石家庄市食品从业人员健康检查流程表]]></text>
@@ -393,7 +393,7 @@
 					<property name="local_mesure_unitheight" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.height" value="px"/>
 				</reportElement>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="19" isBold="true"/>
 				</textElement>
 				<text><![CDATA[石家庄市食品从业人员健康证领取凭证]]></text>
