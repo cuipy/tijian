@@ -91,7 +91,7 @@ public class Test1Controller extends BaseController {
 	public String lr1(String format,HttpServletResponse resp,Model m) {
 
 		m.addAttribute("format",format);
-		m.addAttribute("url","/WEB-INF/jasper/lr1.jasper");
+		m.addAttribute("url","/WEB-INF/jasper/test3.jasper");
 
 		return "jr";
 	}
