@@ -16,6 +16,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		a.default_record,
 		p.name AS "parent.name"
 	</sql>
 	
@@ -76,7 +77,8 @@
 			update_by, 
 			update_date, 
 			remarks, 
-			del_flag
+			del_flag,
+			default_record,
 		) VALUES (
 			#{id}, 
 			#{parent.id}, 
@@ -90,21 +92,24 @@
 			#{updateBy.id}, 
 			#{updateDate}, 
 			#{remarks}, 
-			#{delFlag}
+			#{delFlag},
+			#{defaultRecord}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE sys_area SET 
-			parent_id = #{parent.id}, 
-			parent_ids = #{parentIds}, 
-			code = #{code}, 
-			name = #{name}, 
-			sort = #{sort}, 
-			type = #{type}, 
-			update_by = #{updateBy.id}, 
-			update_date = #{updateDate}, 
-			remarks = #{remarks}
+		UPDATE sys_area <set>
+		parent_id = #{parent.id},
+		parent_ids = #{parentIds},
+		<if test="code != null">code = #{code},</if>
+		<if test="name != null">name = #{name},</if>
+		<if test="sort != null">sort = #{sort},</if>
+		<if test="type != null">type = #{type},</if>
+		<if test="updateBy.id != null">update_by = #{updateBy.id},</if>
+		<if test="updateDate != null">update_date = #{updateDate},</if>
+		<if test="remarks != null">remarks = #{remarks},</if>
+			<if test="defaultRecord != null">default_record = #{defaultRecord },</if>
+	</set>
 		WHERE id = #{id}
 	</update>
 	
@@ -118,10 +123,10 @@
 	<update id="delete">
 		UPDATE sys_area SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id} OR parent_ids LIKE 
+		WHERE default_record = 0 and ( id = #{id} OR parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>
 					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if> )
 	</update>
 	
 </mapper>

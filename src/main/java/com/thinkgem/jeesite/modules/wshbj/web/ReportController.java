@@ -28,9 +28,6 @@ import java.io.IOException;
 @RequestMapping(value = "${adminPath}/wshbj/report")
 public class ReportController extends BaseController {
 
-	@Autowired
-	private CertRecordService certRecordService;
-
 	@RequestMapping(value = {"test1"})
 	public String test1(Model m) {
 		m.addAttribute("format","pdf");

@@ -105,11 +105,14 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationRecord examinationRecord, Model model) {
-		if (StringUtils.isBlank(examinationRecord.getCode())){
-			examinationRecord.setCode(examinationRecordService.genCode());
-		}
+
+		// 编号在保存的时候才创建
+//		if (StringUtils.isBlank(examinationRecord.getCode())){
+//			examinationRecord.setCode(examinationRecordService.genCode());
+//		}
 		model.addAttribute("examinationRecord", examinationRecord);
 
+		// 根据当前用户所在的体检中心 获得 当前体检单位，
 		Organ organ = new Organ();
 		organ.setOwner(UserUtils.getUser().getCompany().getId());
 		organ.setDelFlag("0");
@@ -117,6 +120,7 @@ public class ExaminationRecordController extends BaseController {
 		List<Organ> organList = organService.findList(organ);
 		model.addAttribute("organList", organList);
 
+		// 根据当前用户所在的公司，获得行业信息
 		Industry industry = new Industry();
 		industry.setOwner(UserUtils.getUser().getCompany().getId());
 		industry.setDelFlag("0");
@@ -124,6 +128,7 @@ public class ExaminationRecordController extends BaseController {
 		List<Industry> industryList = industryService.findList(industry);
 		model.addAttribute("industryList", industryList);
 
+		// 根据当前用户所在的体检中心，获得岗位信息
 		JobPost jobPost = new JobPost();
 		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
 		jobPost.setDelFlag("0");
@@ -131,6 +136,7 @@ public class ExaminationRecordController extends BaseController {
 		List<JobPost> postList = jobPostService.findList(jobPost);
 		model.addAttribute("postList", postList);
 
+		// 获得体检套餐
 		ExaminationPackage examinationPackage = new ExaminationPackage();
 		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationPackage.setDelFlag("0");
@@ -138,6 +144,7 @@ public class ExaminationRecordController extends BaseController {
 		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
 		model.addAttribute("packageList", packageList);
 
+		// 获得体检项目类别
 		ExaminationItem examinationItem = new ExaminationItem();
 		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationItem.setDelFlag("0");

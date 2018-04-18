@@ -24,6 +24,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		a.default_record,
 		a.useable AS useable,
 		a.primary_person AS "primaryPerson.id",
 		a.deputy_person AS "deputyPerson.id",
@@ -102,6 +103,7 @@
 			update_date, 
 			remarks, 
 			del_flag,
+			default_record,
 			useable,
 			primary_person,
 			deputy_person
@@ -127,6 +129,7 @@
 			#{updateDate}, 
 			#{remarks}, 
 			#{delFlag},
+		#{defaultRecord},
 			#{useable},
 			#{primaryPerson.id},
 			#{deputyPerson.id}
@@ -167,10 +170,10 @@
 	<update id="delete">
 		UPDATE sys_office SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id} OR parent_ids LIKE 
+		WHERE default_record = 0 and (id = #{id} OR parent_ids LIKE
 					<if test="dbName == 'oracle'">'%,'||#{id}||',%'</if>
 					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
-					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
+					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>)
 	</update>
 	
 </mapper>

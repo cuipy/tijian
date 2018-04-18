@@ -19,7 +19,7 @@
 					$(list).append(Mustache.render(tpl, {
 						dict: {
 							type: getDictLabel(${fns:toJson(fns:getDictList('sys_area_type'))}, row.type)
-						}, pid: (root?0:pid), row: row
+						}, pid: (root?0:pid), row: row,canDel:row.defaultRecord==0
 					}));
 					addRow(list, tpl, data, row.id);
 				}
@@ -45,8 +45,10 @@
 			<td>{{row.remarks}}</td>
 			<shiro:hasPermission name="sys:area:edit"><td>
 				<a href="${ctx}/sys/area/form?id={{row.id}}">修改</a>
+				{{#canDel}}
 				<a href="${ctx}/sys/area/delete?id={{row.id}}" onclick="return confirmx('要删除该区域及所有子区域项吗？', this.href)">删除</a>
-				<a href="${ctx}/sys/area/form?parent.id={{row.id}}">添加下级区域</a> 
+				{{/canDel}}
+				<a href="${ctx}/sys/area/form?parent.id={{row.id}}">添加下级区域</a>
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

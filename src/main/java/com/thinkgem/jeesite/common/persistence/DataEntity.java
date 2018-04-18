@@ -36,6 +36,12 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	protected User updateBy;	// 更新者
 	protected Date updateDate;	// 更新日期
 	protected String delFlag; 	// 删除标记（0：正常；1：删除；2：审核）
+	/**
+	 * 缺省记录，不可删除
+	 * 默认 0
+	 * 0 不是默认记录，可删除   1 默认记录 不可删除
+	 */
+	protected String defaultRecord = "0";
 	
 	public DataEntity() {
 		super();
@@ -176,5 +182,12 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 		fields.addAll(sets);
 		return fields;
 	}
+	@Length(min=1, max=1)
+	public String getDefaultRecord() {
+		return defaultRecord;
+	}
 
+	public void setDefaultRecord(String defaultRecord) {
+		this.defaultRecord = defaultRecord;
+	}
 }
