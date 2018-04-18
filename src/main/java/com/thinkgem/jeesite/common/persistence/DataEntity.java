@@ -41,7 +41,7 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	 * 默认 0
 	 * 0 不是默认记录，可删除   1 默认记录 不可删除
 	 */
-	protected String defaultRecord = "0";
+	protected String defaultRecord ;
 	
 	public DataEntity() {
 		super();

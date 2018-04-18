@@ -16,4 +16,6 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 public interface OfficeDao extends TreeDao<Office> {
 
     Integer countByType(Office office);
+
+
 }

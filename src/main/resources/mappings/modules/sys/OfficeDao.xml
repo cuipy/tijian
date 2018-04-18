@@ -82,6 +82,7 @@
 
 	<select id="countByType" resultType="java.lang.Integer">
 		select count(id) from sys_office a where a.del_flag = #{DEL_FLAG_NORMAL} and type=#{type}
+		<if test="defaultRecord != null"> and default_record=#{defaultRecord}</if>
 	</select>
 	
 	<insert id="insert">

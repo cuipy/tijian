@@ -57,12 +57,13 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	}
 
 	/**
-	 * 获取公司类型的数量
+	 * 我的公司节点的数量
 	 * @return
 	 */
-	public Integer countType1(){
+	public Integer countMyCompany(){
 		Office office=new Office();
-		office.setType("1");
+		office.setType("1");  // 1 代表公司
+		office.setDefaultRecord("0");
 
 		return dao.countByType(office);
 	}

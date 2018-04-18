@@ -16,10 +16,27 @@
 			for (var i=0; i<data.length; i++){
 				var row = data[i];
 				if ((${fns:jsGetVal('row.parentId')}) == pid){
+
+				    var canAddChild = true;
+				    var canDel = true;
+				    if(row.defaultRecord == 1 ){
+				        if(row.parentId==0){
+				            canAddChild=false;
+				        }else{
+                            var countMyCompany="${countMyCompany}";
+                            if(countMyCompany > 0){
+                                canAddChild = false;
+                            }
+                         }
+				    }
+				    if(row.defaultRecord==1 || row.type==1){
+				        canDel=false;
+				    }
+
 					$(list).append(Mustache.render(tpl, {
 						dict: {
 							type: getDictLabel(${fns:toJson(fns:getDictList('sys_office_type'))}, row.type)
-						}, pid: (root?0:pid), row: row,canDel:row.defaultRecord==0, notRoot:(row.parentId!=0)
+						}, pid: (root?0:pid), row: row,canDel:canDel, canAddChild: canAddChild
 					}));
 					addRow(list, tpl, data, row.id);
 				}
@@ -58,7 +75,7 @@
 			<shiro:hasPermission name="sys:office:edit"><td>
 				 <a href="${ctx}/sys/office/form?id={{row.id}}">修改</a>
 				{{#canDel}}<a href="${ctx}/sys/office/delete?id={{row.id}}" onclick="return confirmx('要删除该机构及所有子机构项吗？', this.href)">删除</a>{{/canDel}}
-				{{#notRoot}}<a href="${ctx}/sys/office/form?parent.id={{row.id}}">添加下级机构</a> {{/notRoot}}
+				{{#canAddChild}}<a href="${ctx}/sys/office/form?parent.id={{row.id}}">添加下级机构</a> {{/canAddChild}}
 			</td></shiro:hasPermission>
 		</tr>
 	</script>

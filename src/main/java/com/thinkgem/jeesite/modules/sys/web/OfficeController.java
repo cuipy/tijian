@@ -60,6 +60,7 @@ public class OfficeController extends BaseController {
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = {"list"})
 	public String list(Office office, Model model) {
+		model.addAttribute("countMyCompany",officeService.countMyCompany());
         model.addAttribute("list", officeService.findList(office));
 		return "modules/sys/officeList";
 	}
