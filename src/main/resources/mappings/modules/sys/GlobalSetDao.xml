@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.GlobalSetDao">
+    
+	<sql id="globalSetColumns">
+		a.id AS "id",
+		a.owner AS "owner",
+		a.code_pre AS "codePre",
+		a.center_name AS "centerName"
+	</sql>
+	
+	<sql id="globalSetJoins">
+	</sql>
+    
+	<select id="get" resultType="GlobalSet">
+		SELECT 
+			<include refid="globalSetColumns"/>
+		FROM bj_global_set a
+		<include refid="globalSetJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="GlobalSet">
+		SELECT 
+			<include refid="globalSetColumns"/>
+		FROM bj_global_set a
+		<include refid="globalSetJoins"/>
+		<where>
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="GlobalSet">
+		SELECT 
+			<include refid="globalSetColumns"/>
+		FROM bj_global_set a
+		<include refid="globalSetJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bj_global_set(
+			id,
+			owner,
+			code_pre,
+			center_name
+		) VALUES (
+			#{id},
+			#{owner},
+			#{codePre},
+			#{centerName}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bj_global_set
+			<set>
+				<if test="codePre !=null and codePre != '' ">code_pre = #{codePre},</if>
+				<if test="centerName !=null and centerName != '' ">center_name = #{centerName},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM bj_global_set
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

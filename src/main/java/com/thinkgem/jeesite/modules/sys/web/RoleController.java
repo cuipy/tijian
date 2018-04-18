@@ -134,6 +134,7 @@ public class RoleController extends BaseController {
 	@RequiresPermissions("sys:role:edit")
 	@RequestMapping(value = "assign")
 	public String assign(Role role, Model model) {
+		logger.error("ask等级分:"+role);
 		List<User> userList = systemService.findUser(new User(new Role(role.getId())));
 		model.addAttribute("userList", userList);
 		return "modules/sys/roleAssign";
