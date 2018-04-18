@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.annotation.SequenceBean;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
@@ -17,6 +19,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @author zhxl
  * @version 2018-03-17
  */
+@SequenceBean
 public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	private static final long serialVersionUID = 1L;
@@ -56,7 +59,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	@ExpressSequence(express="TJJL{yyyyMMmm}[5]",describe = "编号")
 	@Length(min=1, max=50, message="编号长度必须介于 1 和 50 之间")
 	@ExcelField(value="code",title="编号",type=0,sort=30)
 	public String getCode() {

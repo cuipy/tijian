@@ -4,7 +4,11 @@
 package com.thinkgem.jeesite.modules.sys.utils;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.sys.dao.GlobalSetDao;
+import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
 
 /**
  * 序列表操作类
@@ -12,6 +16,14 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  * @version 2018-03-19
  */
 public class SysSequenceUtils {
+
+	private static SysSequenceService sysSequenceService = SpringContextHolder.getBean(SysSequenceService.class);
+
+
+	public static String nextSequence(Class clz,String fieldName){
+		String code=sysSequenceService.nextSequence(clz,fieldName);
+		return code;
+	}
 
 	/**
 	 * 将表达式中{XXX}部分转换为真实的值

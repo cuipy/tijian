@@ -135,54 +135,77 @@
         <li><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 	</ul><br/>
 
-	<div class="row">
+	<div >
 	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
-			<label class="control-label">编号：</label>
+
+    <div class="row">
+
+		<div class="control-group span6">
+			 <label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" ondblclick="test();" readonly="true" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="code" htmlEscape="false" maxlength="45" ondblclick="test();" readonly="true" class="input-medium required"/>
+
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">体检用户：</label>
+
+		<div class="control-group span6">
+			<label class="control-label"><font color="red">*</font>  体检用户：</label>
 			<div class="controls">
 				<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
 									   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="必填信息"
-									   cssClass="input-xlarge required" allowClear="true" notAllowSelectParent="true"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+									   cssClass="input-medium required" allowClear="true" notAllowSelectParent="true"/>
+
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">身份证号：</label>
+
+		<div class="control-group span6">
+			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-medium required"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">联系电话：</label>
+
+
+		<div class="control-group span6">
+			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium required"/>
+
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">性别：</label>
+
+
+
+
+
+		<div class="control-group span6">
+			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
-				<form:select path="sex" class="input-xlarge required">
+				<form:select path="sex" class="input-medium required">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
+
 			</div>
 		</div>
-	<div class="control-group">
+		<div class="control-group span6">
+            <label class="control-label"><font color="red">*</font> 出生日期：</label>
+            <div class="controls">
+                <form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
+                            onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+
+            </div>
+        </div>
+
+
+
+
+	<div class="control-group span6">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-			<form:select path="industryId"  class="input-xlarge">
+			<form:select path="industryId"  class="input-medium">
 				<form:option value="">
 					请选择
 				</form:option>
@@ -190,10 +213,10 @@
 			</form:select>
 		</div>
 	</div>
-	<div class="control-group" >
+	<div class="control-group span6" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
-			<form:select  path="organId"  class="input-xlarge">
+			<form:select  path="organId"  class="input-medium">
 				<form:option value="">
 					请选择
 				</form:option>
@@ -201,10 +224,10 @@
 			</form:select>
 		</div>
 	</div>
-	<div class="control-group">
+	<div class="control-group span6">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
-			<form:select path="postId" class="input-xlarge">
+			<form:select path="postId" class="input-medium">
 				<form:option value="">
 					请选择
 				</form:option>
@@ -213,44 +236,37 @@
 		</div>
 	</div>
 
-		<div class="control-group">
-			<label class="control-label">出生日期：</label>
-			<div class="controls">
-				<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
-							onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-
-
-		<div class="control-group">
-			<label class="control-label">价格：</label>
-			<div class="controls">
-				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group-100">
+		<div class="cl"></div>
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="cl"></div>
+		<div class="control-group span6">
 			<label class="control-label">体检项目方式：</label>
 			<div class="controls">
 				<input type="radio" id="itemType1" name="itemType" value="1" /><label for="itemType1">体检套餐</label>
 				<input type="radio" id="itemType2" name="itemType" value="2" /><label for="itemType2">自由选择</label>
 			</div>
 		</div>
-		<div class="control-group" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
+				<div class="control-group span6">
+        			<label class="control-label">价格：</label>
+        			<div class="controls">
+        				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium "/>
+        			</div>
+        		</div>
+
+		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-				<form:select path="packageId" class="input-xlarge">
+				<form:select path="packageId" class="input-medium">
 					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
+		<div class="control-group span12" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
 				<table id="contentTable" class="table table-striped table-bordered table-condensed">
@@ -306,10 +322,13 @@
 				</script>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="cl"></div>
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+
+</div>
 	</form:form>
 	</div>
 

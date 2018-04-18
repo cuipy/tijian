@@ -69,11 +69,6 @@ public class Test1Controller extends BaseController {
 	@Autowired
 	private Test1Service test1Service;
 
-	@Autowired
-	private SequenceDefineService sequenceDefineService;
-
-
-	
 	@ModelAttribute
 	public Test1 get(@RequestParam(required=false) String id) {
 		Test1 entity = null;

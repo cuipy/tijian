@@ -9,6 +9,8 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
@@ -158,6 +160,12 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = "save")
 	public String save(ExaminationRecord examinationRecord, Model model, RedirectAttributes redirectAttributes) {
+
+		//编号在保存的时候才创建
+		if (StringUtils.isEmpty(examinationRecord.getCode())){
+			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationCategory.class,"code"));
+		}
+
 		if (!beanValidator(model, examinationRecord)){
 			return form(examinationRecord, model);
 		}

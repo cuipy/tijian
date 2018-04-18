@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -38,9 +40,6 @@ public class ExaminationCategoryController extends BaseController {
 
 	@Autowired
 	private ExaminationCategoryService examinationCategoryService;
-
-	@Autowired
-	private SysSequenceService sysSequenceService;
 	
 	@ModelAttribute
 	public ExaminationCategory get(@RequestParam(required=false) String id) {
@@ -90,7 +89,7 @@ public class ExaminationCategoryController extends BaseController {
 		}
 		if(StringUtils.isEmpty(examinationCategory.getCode())){
 
-			String code=sysSequenceService.nextSequence(ExaminationCategory.class,"code");
+			String code=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationCategory.class,"code");
 			examinationCategory.setCode(code);
 		}
 

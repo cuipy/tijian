@@ -108,7 +108,7 @@ function fabricEvent(_canvas){
     }
 
     function mouseForMove(evt){
-        console.log(evt.e.x+"  "+evt.e.y);
+        // console.log(evt.e.x+"  "+evt.e.y);
     }
 
     _canvas.on('mouse:over',mouseForOver);

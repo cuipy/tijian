@@ -31,7 +31,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 		super(id);
 	}
 
-	@ExpressSequence(express="EC{yyyy}[4]",describe = "检查类别编号")
+	@ExpressSequence(express="JCLB{yyyy}[4]",describe = "检查类别编号")
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
 	public String getCode() {
 		return code;

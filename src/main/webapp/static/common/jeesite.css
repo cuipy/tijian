@@ -12,7 +12,7 @@ label {display:inline-block;margin-bottom:0;} input[type="radio"],input[type="ch
 input[disabled],select[disabled],textarea[disabled],input[readonly],select[readonly],textarea[readonly] {cursor:auto;background-color:#f3f3f3;}
 .input-prepend input,.input-append input,.input-prepend select,.input-append select,.input-prepend .uneditable-input,.input-append .uneditable-input {position:static;}
 legend {margin:10px 0;*left:-7px;*position:relative;color:#0088CC;*width:99.5%}
-
+.cl{clear:both}
 .collapse {*display:none;_position:static;} .collapse.in {*display:block;}
 .close {opacity:0.3;filter:alpha(opacity=30);} .close:hover {opacity:0.8;filter:alpha(opacity=80);}
 
@@ -40,7 +40,8 @@ input.btn:hover {*color:#333333}
 
 .supcan {border:1px #d3d3d3 solid;height:300px;}
 
-.control-group {padding-bottom:8px;margin-bottom:0;border-bottom:1px dotted #dddddd;} legend + .control-group {margin-top:8px;}
+.form-horizontal .control-group {padding-bottom:6px;margin-bottom:6px;border-bottom:1px dotted #dddddd;}
+legend + .control-group {margin-top:6px;}
 .controls .lbl {display:inline-block;padding-top:5px;margin-bottom:0;vertical-align:middle;}
 .measure-input {background:url("../images/ruler.gif") repeat-x scroll 0 bottom transparent;}
 .input-min{width:30px;} .input-mini{width:90px;} .input-small{width:120px;} .input-medium {width:163px;}.input-xxlarge {width:460px;}
@@ -57,15 +58,14 @@ input.btn:hover {*color:#333333}
 .form-search .ul-form li.btns .btn{margin-right:5px;}
 
 .form-horizontal {margin:0 10px;}
- .form-horizontal .control-group {margin-bottom:8px;float:left;width:50%;}
- .form-horizontal .control-group-100 {margin-bottom:8px;float:left;width:100%;}
+
 .form-horizontal .control-label {padding-top:3px;} .form-horizontal .controls {text-align:left;overflow-x:auto;overflow-y:hidden;}
 .form-horizontal .controls label.error {background-position:0 2px;}
 
 .form-horizontal .table-form{width:100%;border-color:#dddddd;}
 .form-horizontal .table-form, .form-horizontal .table-form td{border:1px solid #ddd;background-color:#fdfdfd;padding:4px;} 
 .form-horizontal .table-form td.tit{background:#fafafa;text-align:center;padding-right:8px;white-space:nowrap;}
-.form-horizontal .form-actions{margin-bottom:0;float:left;width:100%;box-sizing:border-box;}
+.form-horizontal .form-actions{margin-bottom:0;float:left;box-sizing:border-box;}
 
 .form-horizontal fieldset .row-fluid {margin-bottom:10px;}
 
