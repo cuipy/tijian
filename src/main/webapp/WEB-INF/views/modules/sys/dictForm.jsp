@@ -36,7 +36,12 @@
 		<div class="control-group">
 			<label class="control-label">键值:</label>
 			<div class="controls">
-				<form:input path="value" htmlEscape="false" maxlength="50" class="required"/>
+            <c:if test="${dict.defaultRecord==1}">
+				<form:input path="value" htmlEscape="false" maxlength="50" class="required" readOnly="true"/>
+			</c:if>
+            <c:if test="${dict.defaultRecord!=1}">
+                <form:input path="value" htmlEscape="false" maxlength="50" class="required"/>
+            </c:if>
 			</div>
 		</div>
 		<div class="control-group">

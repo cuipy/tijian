@@ -102,6 +102,7 @@ public class OfficeController extends BaseController {
 		if (!beanValidator(model, office)){
 			return form(office, model);
 		}
+
 		officeService.save(office);
 		
 		if(office.getChildDeptList()!=null){

@@ -56,7 +56,8 @@
 			update_by, 
 			update_date, 
 			remarks, 
-			del_flag
+			del_flag,
+			default_record
 		) VALUES (
 			#{id}, 
 			#{value}, 
@@ -69,7 +70,8 @@
 			#{updateBy.id}, 
 			#{updateDate}, 
 			#{remarks}, 
-			#{delFlag}
+			#{delFlag},
+			#{defaultRecord}
 		)
 	</insert>
 	
@@ -89,7 +91,7 @@
 	<update id="delete">
 		UPDATE sys_dict SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
+		WHERE id = #{id} and default_record = 0
 	</update>
 	
 </mapper>

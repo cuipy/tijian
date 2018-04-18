@@ -79,6 +79,10 @@
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_ids LIKE #{parentIds}
 		ORDER BY a.code
 	</select>
+
+	<select id="countByType" resultType="java.lang.Integer">
+		select count(id) from sys_office a where a.del_flag = #{DEL_FLAG_NORMAL} and type=#{type}
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO sys_office(

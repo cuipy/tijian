@@ -55,5 +55,16 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		super.delete(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
+
+	/**
+	 * 获取公司类型的数量
+	 * @return
+	 */
+	public Integer countType1(){
+		Office office=new Office();
+		office.setType("1");
+
+		return dao.countByType(office);
+	}
 	
 }

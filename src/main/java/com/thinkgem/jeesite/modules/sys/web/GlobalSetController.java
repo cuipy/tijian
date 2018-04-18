@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,7 +39,7 @@ import com.thinkgem.jeesite.modules.sys.service.GlobalSetService;
  * @version 2018-04-18
  */
 @Controller
-@RequestMapping(value = "${adminPath}/sys/globalset")
+@RequestMapping(value = "${adminPath}/sys/globalSet")
 public class GlobalSetController extends BaseController {
 
 	@Autowired
@@ -58,7 +59,7 @@ public class GlobalSetController extends BaseController {
 	@RequestMapping(value = "view")
 	public String view(GlobalSet globalSet, Model model) {
 		model.addAttribute("globalSet", globalSet);
-		return "modules/sys/globalSetPage";
+		return "modules/sys/globalSetView";
 	}
 
 	@RequiresPermissions("sys:globalSet:view")
@@ -75,9 +76,15 @@ public class GlobalSetController extends BaseController {
 		if (!beanValidator(model, globalSet)){
 			return form(globalSet, model);
 		}
+
+		if(StringUtils.isEmpty(globalSet.getOwner())){
+			String owner = UserUtils.getUser().getOffice().getId();
+			globalSet.setOwner(owner);
+		}
+
 		globalSetService.save(globalSet);
 		addMessage(redirectAttributes, "保存全局参数配置成功");
-		return "redirect:"+Global.getAdminPath()+"/sys/globalSet/?repage";
+		return "redirect:"+Global.getAdminPath()+"/sys/globalSet/form";
 	}
 
 
