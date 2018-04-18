@@ -38,14 +38,14 @@
 	<form:form id="inputForm" modelAttribute="link" action="${ctx}/cms/link/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">归属栏目:</label>
 			<div class="controls">
                 <sys:treeselect id="category" name="category.id" value="${link.category.id}" labelName="category.name" labelValue="${link.category.name}"
 					title="栏目" url="/cms/category/treeData" module="link" selectScopeModule="true" notAllowSelectRoot="false" notAllowSelectParent="true" cssClass="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">名称:</label>
 			<div class="controls">
 				<form:input path="title" htmlEscape="false" maxlength="200" class="input-xxlarge required measure-input"/>
@@ -56,20 +56,20 @@
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">链接图片:</label>
 			<div class="controls">
 				<form:hidden path="image" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 				<sys:ckfinder input="image" type="images" uploadPath="/cms/link" selectMultiple="false"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">链接地址:</label>
 			<div class="controls">
 				<form:input path="href" htmlEscape="false" maxlength="255" class="input-xxlarge"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">权重:</label>
 			<div class="controls">
 				<form:input path="weight" htmlEscape="false" maxlength="200" class="input-mini required digits"/>&nbsp;
@@ -83,14 +83,14 @@
 				<span class="help-inline">数值越大排序越靠前，过期时间可为空，过期后取消置顶。</span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">备注:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="200" class="input-xxlarge"/>
 			</div>
 		</div>
 		<shiro:hasPermission name="cms:article:audit">
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">发布状态:</label>
 				<div class="controls">
 					<form:radiobuttons path="delFlag" items="${fns:getDictList('cms_del_flag')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>

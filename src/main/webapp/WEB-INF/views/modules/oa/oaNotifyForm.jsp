@@ -33,7 +33,7 @@
 	<form:form id="inputForm" modelAttribute="oaNotify" action="${ctx}/oa/oaNotify/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>	
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">类型：</label>
 			<div class="controls">
 				<form:select path="type" class="input-xlarge required">
@@ -43,14 +43,14 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>	
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">标题：</label>
 			<div class="controls">
 				<form:input path="title" htmlEscape="false" maxlength="200" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">内容：</label>
 			<div class="controls">
 				<form:textarea path="content" htmlEscape="false" rows="6" maxlength="2000" class="input-xxlarge required"/>
@@ -58,21 +58,21 @@
 			</div>
 		</div>
 		<c:if test="${oaNotify.status ne '1'}">
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">附件：</label>
 				<div class="controls">
 					<form:hidden id="files" path="files" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 					<sys:ckfinder input="files" type="files" uploadPath="/oa/notify" selectMultiple="true"/>
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">状态：</label>
 				<div class="controls">
 					<form:radiobuttons path="status" items="${fns:getDictList('oa_notify_status')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
 					<span class="help-inline"><font color="red">*</font> 发布后不能进行操作。</span>
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">接受人：</label>
 				<div class="controls">
 	                <sys:treeselect id="oaNotifyRecord" name="oaNotifyRecordIds" value="${oaNotify.oaNotifyRecordIds}" labelName="oaNotifyRecordNames" labelValue="${oaNotify.oaNotifyRecordNames}"
@@ -82,14 +82,14 @@
 			</div>
 		</c:if>
 		<c:if test="${oaNotify.status eq '1'}">
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">附件：</label>
 				<div class="controls">
 					<form:hidden id="files" path="files" htmlEscape="false" maxlength="255" class="input-xlarge"/>
 					<sys:ckfinder input="files" type="files" uploadPath="/oa/notify" selectMultiple="true" readonly="true" />
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">接受人：</label>
 				<div class="controls">
 					<table id="contentTable" class="table table-striped table-bordered table-condensed">

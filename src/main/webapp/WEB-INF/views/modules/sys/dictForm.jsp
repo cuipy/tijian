@@ -33,7 +33,9 @@
 	<form:form id="inputForm" modelAttribute="dict" action="${ctx}/sys/dict/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
+
+
+		<div class="control-group span12">
 			<label class="control-label">键值:</label>
 			<div class="controls">
             <c:if test="${dict.defaultRecord==1}">
@@ -44,40 +46,50 @@
             </c:if>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">标签:</label>
 			<div class="controls">
 				<form:input path="label" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">类型:</label>
 			<div class="controls">
 				<form:input path="type" htmlEscape="false" maxlength="50" class="required abc"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">描述:</label>
 			<div class="controls">
 				<form:input path="description" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
+            <label class="control-label">是否禁止删除:</label>
+            <div class="controls">
+                <input type="radio" name="defaultRecord" id="defaultRecord0" value="0" <c:if test="${dict.defaultRecord==0}">checked="checked"</c:if>/><label for="defaultRecord0">允许删除</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="defaultRecord" id="defaultRecord1" value="1" <c:if test="${dict.defaultRecord==1}">checked="checked"</c:if> /><label for="defaultRecord1">禁止删除</label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+            </div>
+        </div>
+		<div class="control-group  span12">
 			<label class="control-label">排序:</label>
 			<div class="controls">
 				<form:input path="sort" htmlEscape="false" maxlength="11" class="required digits"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">备注:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions  span12">
 			<shiro:hasPermission name="sys:dict:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+
+
 	</form:form>
 </body>
 </html>

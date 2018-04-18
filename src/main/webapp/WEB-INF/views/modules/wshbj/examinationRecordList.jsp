@@ -83,7 +83,7 @@
 				<th width="100">联系电话</th>
 				<th width="40">性别</th>
 				<th>单位</th>
-				<th>体检套餐</th>
+				<th>体检套餐/项目</th>
 				<th width="120">填报时间</th>
 				<th width="60">状态</th>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="150">操作</th></shiro:hasPermission>
@@ -93,7 +93,7 @@
 		<c:forEach items="${page.list}" var="examinationRecord">
 			<tr>
 				<td>
-						${examinationRecord.code}
+						<a href="${ctx}/wshbj/examinationRecord/view?id=${examinationRecord.id}">${examinationRecord.code}</a>
 				</td>
 				<td>
 						${examinationRecord.name}
@@ -112,7 +112,11 @@
 						${wshbjfns:getEntityName('Organ',examinationRecord.organId,'')}
 				</td>
 				<td>
-						${wshbjfns:getEntityName('ExaminationPackage',examinationRecord.packageId,'')}
+				    <c:if test="${examinationRecord.itemType==1}">${wshbjfns:getEntityName('ExaminationPackage',examinationRecord.packageId,'')}</c:if>
+					<c:if test="${examinationRecord.itemType == 2}">
+					    <c:forEach items="${examinationRecord.items}" var="ri">${ri.itemName} | </c:forEach>
+					</c:if>
+
 				</td>
 				<td>
 					<fmt:formatDate value="${examinationRecord.updateDate}" pattern="yyyy-MM-dd HH:mm"/>

@@ -5,11 +5,23 @@ package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.annotation.SequenceBean;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
+import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
+import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordItemDao;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
+import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import com.google.common.collect.Lists;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -39,6 +51,17 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	//体检状态：10-未体检完，20-体检不合格，30-复检合格，40-可制证，50-已制证
 	private String status;
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
+
+	/**
+	 * 获取行业
+	 * @return
+	 */
+	public Industry getIndustry(){
+		IndustryService industryService = SpringContextHolder.getBean(IndustryService.class);
+		return industryService.get(industryId);
+	}
+
+	private Boolean itemListLoaded=false;
 
 	private List<ExaminationRecordItem> examinationRecordItemList = Lists.newArrayList();		// 子表列表
 	
@@ -190,8 +213,26 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public List<ExaminationRecordItem> getExaminationRecordItemList() {
+		return examinationRecordItemList;
+	}
+
+	public List<ExaminationRecordItem> getItems() {
+		if(itemListLoaded){
+			return examinationRecordItemList;
+		}
+
+		if(StringUtils.isEmpty(getId())){
+			return null;
+		}
+
+		itemListLoaded=true;
+
+		ExaminationRecordItemDao examinationRecordItemDao=SpringContextHolder.getBean(ExaminationRecordItemDao.class);
+		ExaminationRecordItem eri=new ExaminationRecordItem();
+		eri.setRecordId(id);
+		examinationRecordItemList = examinationRecordItemDao.findList(eri);
 		return examinationRecordItemList;
 	}
 
@@ -207,4 +248,22 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
+
+
+	public String getSexStr(){
+		return DictUtils.getDictLabel(sex,"sex","未设置");
+	}
+
+	public Set<String> getItemIds(){
+		if(!ExaminationRecordConstant.ITEM_TYPE_2.equals(this.getItemType())||getItems()==null||getItems().size()<=0){
+			return null;
+		}
+
+		Set<String> sets=new HashSet();
+		for(ExaminationRecordItem ri:getItems()){
+			sets.add(ri.getItemId());
+		}
+		return sets;
+	}
+
 }

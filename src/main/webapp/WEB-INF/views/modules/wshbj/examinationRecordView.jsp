@@ -4,142 +4,7 @@
 <head>
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			//$("#name").focus();
-			$("#inputForm").validate({
-				submitHandler: function(form){
-					loading('正在提交，请稍等...');
-					form.submit();
-				},
-				errorContainer: "#messageBox",
-				errorPlacement: function(error, element) {
-					$("#messageBox").text("输入有误，请先更正。");
-					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
-						error.appendTo(element.parent().parent());
-					} else {
-						error.insertAfter(element);
-					}
-				}
-			});
-            $("input[name='itemType']:radio").change(function() {
-                if($(this).val()=='1'){
-                    $('#packageIdDiv').show();
-                    $('#itemsDiv').hide();
-				}else {
-                    $('#packageIdDiv').hide();
-                    $('#itemsDiv').show();
-				}
-            });
-            <c:choose>
-				<c:when test="${not empty examinationRecord.id}">
-					 $("input[name='itemType'][value=${examinationRecord.itemType}]").attr("checked",true);
-				</c:when>
-				<c:otherwise>
-					$("input[name='itemType'][value='1']").attr("checked",true);
-				</c:otherwise>
-            </c:choose>
 
-
-
-            $('#idNumber').bind('keypress',function(event){
-                if(event.keyCode == 13) {
-                    var idNumber = $('#idNumber').val();
-                    var url = '${ctx}/wshbj/examinationUser/getByIdNumber';
-                    $.post(url,{idNumber:idNumber},function (data) {
-                        if(data){
-                            setUserPro(data);
-                        }
-                    });
-                    //防止form提交
-                    return false;
-                }
-            });
-        });
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
-
-
-        //选择用户返回
-        function userTreeselectCallBack(v, h, f) {
-            if('ok'==v){
-                var euserId = $('#userId').val();
-                var url = '${ctx}/wshbj/examinationUser/getById';
-                $.post(url,{id:euserId},function (data) {
-                    if(data){
-                        setUserPro(data);
-                    }
-                },'json');
-            }else if('clear'==v){
-
-            }
-        }
-
-        function setUserPro(data) {
-            $('#userName').val(data.name);
-            $('#userId').val(data.id);
-            $('#idNumber').val(data.idNumber);
-            $('#phoneNumber').val(data.phoneNumber);
-            $('#birthday').val(data.birthday);
-
-            $("#sex").attr("value", data.sex);
-            $("#sex").trigger('change');
-
-            $("#organId").attr("value", data.organId);
-            $("#organId").trigger('change');
-
-            $("#industryId").attr("value", data.industryId);
-            $("#industryId").trigger('change');
-
-            $("#postId").attr("value", data.postId);
-            $("#postId").trigger('change');
-        }
-
-        function chgPackage() {
-            var packageid=$('#packageId').val();
-            var price=$('#packageId option:selected').attr('data-price');
-
-            $("#packagePrice").val(price);
-        }
-
-        function clkItems(){
-            var aprice=0;
-            $("input[type='checkbox'][id*=ri]:checked").each(function(i){
-                var price=$(this).attr("data-price");
-                aprice+= parseInt(price);
-            })
-            $("#packagePrice").val(aprice);
-        }
-	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
@@ -157,17 +22,14 @@
 		<div class="control-group span6">
 			 <label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" ondblclick="test();" readonly="true" class="input-large"/>
-
+				${examinationRecord.code}
 			</div>
 		</div>
 
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font>  体检用户：</label>
 			<div class="controls">
-				<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-									   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="必填信息"
-									   cssClass="input-large required" allowClear="true" notAllowSelectParent="true"/>
+				${examinationRecord.name}
 
 			</div>
 		</div>
@@ -175,7 +37,7 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large required"/>
+				${examinationRecord.idNumber}
 			</div>
 		</div>
 
@@ -183,46 +45,28 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large required"/>
+				${examinationRecord.phoneNumber}
 
 			</div>
 		</div>
 
-
-
-
-
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
-				<form:select path="sex" class="input-large required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-
+			    ${fns:getDictLabel(examinationRecord.sex,'sex','')}
 			</div>
 		</div>
 		<div class="control-group span6">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-large Wdate required"
-                            onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-
+                ${examinationRecord.birthday}
             </div>
         </div>
-
-
-
 
 	<div class="control-group span6">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-			<form:select path="industryId"  class="input-large">
-				<form:option value="">
-					请选择
-				</form:option>
-				<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-			</form:select>
+		     ${examinationRecord.industry.name}
 		</div>
 	</div>
 	<div class="control-group span6" >
@@ -285,18 +129,15 @@
 		<div class="control-group span12" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
-			    <c:if test="${not empty examinationItemList  }">
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
 				<input id="ri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="clkItems()"
-				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
+				<c:if test="${fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
 				<label for="ri${ri.id}">[${ri.code}] ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
 				</c:forEach>
-				</c:if>
 			</div>
 		</div>
 		<div class="cl"></div>
 		<div class="form-actions span12">
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 

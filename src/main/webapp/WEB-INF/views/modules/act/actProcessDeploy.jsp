@@ -32,7 +32,7 @@
 	</ul><br/>
 	<sys:message content="${message}"/>
 	<form id="inputForm" action="${ctx}/act/process/deploy" method="post" enctype="multipart/form-data" class="form-horizontal">
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">流程分类：</label>
 			<div class="controls">
 				<select id="category" name="category" class="required input-medium">
@@ -42,7 +42,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">流程文件：</label>
 			<div class="controls">
 				<input type="file" id="file" name="file" class="required"/>

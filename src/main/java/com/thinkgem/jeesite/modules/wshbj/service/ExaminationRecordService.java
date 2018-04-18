@@ -51,7 +51,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     public ExaminationRecord get(String id) {
         ExaminationRecord examinationRecord = super.get(id);
-        if (examinationRecord != null) {
+
+        // 如果选择的是自由类型，则将信息列表读出来
+        if (examinationRecord != null&&examinationRecord.getItemType().equals(ExaminationRecordConstant.ITEM_TYPE_2)) {
             ExaminationRecordItem recordItem = new ExaminationRecordItem();
             recordItem.setRecordId(id);
             examinationRecord.setExaminationRecordItemList(examinationRecordItemDao.findList(recordItem));
@@ -136,7 +138,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     @Transactional(readOnly = false)
     public void save(ExaminationRecord examinationRecord) {
         super.save(examinationRecord);
-        for (ExaminationRecordItem examinationRecordItem : examinationRecord.getExaminationRecordItemList()) {
+        for (ExaminationRecordItem examinationRecordItem : examinationRecord.getItems()) {
             if (examinationRecordItem.getId() == null) {
                 continue;
             }
@@ -188,9 +190,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             }
 
             //未体检状态才允许修改
-            if(!"0".equals(record.getStatus())){
-                resultMessages.add("该体检记录不允许修改");
-                return ResponseResult.generateFailResult("该体检记录不允许修改", resultMessages);
+            if(!ExaminationRecordConstant.STATUS0.equals(record.getStatus())){
+                resultMessages.add("未体检状态才可以修改，该体检记录不允许修改");
+                return ResponseResult.generateFailResult("未体检状态才可以修改，该体检记录不允许修改", resultMessages);
             }
         }
 
@@ -199,7 +201,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         if (StringUtils.isNotBlank(examinationRecord.getUser().getId())) {
             examinationUser = examinationUserService.get(examinationRecord.getUser().getId());
             if (examinationUser == null) {
-                resultMessages.add("体检用户信息错误");
+                resultMessages.add("由于未知原因，未能获取该体检用户的信息");
                 return ResponseResult.generateFailResult("用户信息错误", resultMessages);
             }
         }

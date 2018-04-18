@@ -36,7 +36,7 @@
 	</ul><br/>
 	<sys:message content="${message}"/>
 	<form id="inputForm" action="${ctx}/act/model/create" target="_blank" method="post" class="form-horizontal">
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">流程分类：</label>
 			<div class="controls">
 				<select id="category" name="category" class="required input-medium">
@@ -46,21 +46,21 @@
 				</select>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">模块名称：</label>
 			<div class="controls">
 				<input id="name" name="name" type="text" class="required" />
 				<span class="help-inline"></span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">模块标识：</label>
 			<div class="controls">
 				<input id="key" name="key" type="text" class="required" />
 				<span class="help-inline"></span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">模块描述：</label>
 			<div class="controls">
 				<textarea id="description" name="description" class="required"></textarea>

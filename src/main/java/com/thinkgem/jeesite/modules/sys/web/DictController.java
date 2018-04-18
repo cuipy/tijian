@@ -76,6 +76,9 @@ public class DictController extends BaseController {
 		if (!beanValidator(model, dict)){
 			return form(dict, model);
 		}
+		if(StringUtils.isEmpty(dict.getDefaultRecord())){
+			dict.setDefaultRecord("0");
+		}
 		dictService.save(dict);
 		addMessage(redirectAttributes, "保存字典'" + dict.getLabel() + "'成功");
 		return "redirect:" + adminPath + "/sys/dict/?repage&type="+dict.getType();

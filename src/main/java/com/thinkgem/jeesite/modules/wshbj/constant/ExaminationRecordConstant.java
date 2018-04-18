@@ -9,6 +9,11 @@ package com.thinkgem.jeesite.modules.wshbj.constant;
 public class ExaminationRecordConstant {
 
     /**
+     * 0-未体检
+     */
+    public static final String STATUS0 = "0";
+
+    /**
      * 10-未体检完
      */
     public static final String STATUS10 = "10";
@@ -35,4 +40,11 @@ public class ExaminationRecordConstant {
      * 50-已制证
      */
     public static final String STATUS50 = "50";
+
+    /**
+     * 选择套餐
+     */
+    public static final String ITEM_TYPE_1="1";
+
+    public static final String ITEM_TYPE_2="2";
 }

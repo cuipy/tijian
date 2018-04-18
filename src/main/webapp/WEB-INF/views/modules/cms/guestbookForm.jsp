@@ -34,69 +34,69 @@
 		<form:hidden path="id"/>
 		<form:hidden path="delFlag"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">名称:</label>
 			<div class="controls">
 				<c:out value="${guestbook.name}"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">邮箱:</label>
 			<div class="controls">
 				<c:out value="${guestbook.email}"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">电话:</label>
 			<div class="controls">
 				<c:out value="${guestbook.phone}"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">单位:</label>
 			<div class="controls">
 				<c:out value="${guestbook.workunit}"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">留言分类:</label>
 			<div class="controls">
 				<span style="font-weight:bold;"><c:out value="${fns:getDictLabel(guestbook.type, 'cms_guestbook', '无')}"/></span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">IP:</label>
 			<div class="controls">
 				<c:out value="${guestbook.ip}"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">留言时间:</label>
 			<div class="controls">
 				<fmt:formatDate value="${guestbook.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">留言内容:</label>
 			<div class="controls">
 				<form:textarea path="content" htmlEscape="false" rows="4" maxlength="200" class="input-xxlarge" disabled="true"/>
 			</div>
 		</div>
 		<c:if test="${not empty guestbook.reUser}">
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">回复人:</label>
 				<div class="controls">
 					<c:out value="${guestbook.reUser.name}"/>
 				</div>
 			</div>
-			<div class="control-group">
+			<div class="control-group  span12">
 				<label class="control-label">回复时间:</label>
 				<div class="controls">
 					<fmt:formatDate value="${guestbook.reDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</div>
 			</div>
 		</c:if>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">回复内容:</label>
 			<div class="controls">
 				<form:textarea path="reContent" htmlEscape="false" rows="4" maxlength="200" class="required input-xxlarge"/>

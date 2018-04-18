@@ -32,13 +32,13 @@
 	<form:form id="inputForm" modelAttribute="template" action="${ctx}/cms/template/save" method="post" class="form-horizontal">
         <form:hidden path="name" />
 		<sys:message content="${message}"/>
-		<div class="control-group">
+		<div class="control-group  span12">
 			<label class="control-label">文件名:</label>
 			<div class="controls">
 				<form:input path="filename" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span12">
             <form:textarea id="source" path="source" htmlEscape="true" cssStyle="width:100%;height:460px;"/>
             <%--<sys:ckeditor replace="source" uploadPath="/cms/template" />--%>
 		</div>

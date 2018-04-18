@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
@@ -101,7 +103,7 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = "view")
 	public String view(ExaminationRecord examinationRecord, Model model) {
 		model.addAttribute("examinationRecord", examinationRecord);
-		return "modules/wshbj/examinationRecordPage";
+		return "modules/wshbj/examinationRecordView";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
@@ -170,7 +172,7 @@ public class ExaminationRecordController extends BaseController {
 			return form(examinationRecord, model);
 		}
 		if(StringUtils.isBlank(examinationRecord.getId())){
-			examinationRecord.setStatus(ExaminationRecordConstant.STATUS10);
+			examinationRecord.setStatus(ExaminationRecordConstant.STATUS0);
 			examinationRecord.setName(examinationRecord.getUser().getName());
 			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}
