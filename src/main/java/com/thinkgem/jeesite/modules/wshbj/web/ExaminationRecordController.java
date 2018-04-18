@@ -64,6 +64,9 @@ public class ExaminationRecordController extends BaseController {
 
 	@Autowired
 	private ExaminationPackageService examinationPackageService;
+
+	@Autowired
+	private ExaminationRecordItemService examinationRecordItemService;
 	
 	@ModelAttribute
 	public ExaminationRecord get(@RequestParam(required=false) String id) {
@@ -172,7 +175,7 @@ public class ExaminationRecordController extends BaseController {
 			return form(examinationRecord, model);
 		}
 		if(StringUtils.isBlank(examinationRecord.getId())){
-			examinationRecord.setStatus(ExaminationRecordConstant.STATUS0);
+			examinationRecord.setStatus(ExaminationRecordConstant.STATUS10);
 			examinationRecord.setName(examinationRecord.getUser().getName());
 			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}
@@ -286,15 +289,18 @@ public class ExaminationRecordController extends BaseController {
 	* @Param [examinationRecord, request, response, model, redirectAttributes]
 	* @return java.lang.String 
 	*/
-	@RequiresPermissions("wshbj:examinationRecord:inputResult")
+	@RequiresPermissions("wshbj:certRecord:edit")
 	@RequestMapping(value = "recordResultDetailPop")
-	public String recordResultDetailPop(ExaminationRecord examinationRecord,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
-		Organ organ = new Organ();
-		organ.setOwner(UserUtils.getUser().getCompany().getId());
-		organ.setDelFlag("0");
-		organ.setReferenceFlag("0");
-		List<Organ> organList = organService.findList(organ);
-		model.addAttribute("organList", organList);
+	public String recordResultDetailPop(String recordId,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+		ExaminationRecord record = examinationRecordService.get(recordId);
+		model.addAttribute("record", record);
+
+		/**
+		 * 获取体检记录所有体检项目
+		 */
+		List<ExaminationRecordItem> recordItemList = examinationRecordItemService.listByRecordId(recordId);
+		model.addAttribute("recordItemList", recordItemList);
+
 		return "modules/wshbj/recordResultDetailPop";
 	}
 

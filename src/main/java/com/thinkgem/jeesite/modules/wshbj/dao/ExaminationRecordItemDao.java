@@ -8,6 +8,8 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 体检记录DAO接口
  * @author zhxl
@@ -31,5 +33,14 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
     int countUnCompletedRecordItem(String recordId);
 
     int countCompletedRecordItem(String recordId);
+
+    /**
+     * @author zhxl
+     * @description 根据体检记录查询所有体检记录项目
+     * @date 2018/4/18 23:36:48
+     * @param
+     * @return java.util.List<com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem>
+     */
+    List<ExaminationRecordItem> listByRecordId(String recordId);
 
 }

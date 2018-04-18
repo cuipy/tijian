@@ -101,13 +101,12 @@
             });
         }
 
-
         function itemIdRadioChange(iddom) {
             $('#resultDictList').find('tr').remove();
             resultDictRowIdx = 0;
-
+            var recordId = $(iddom).val();
 			var url = "${ctx}/wshbj/examinationRecord/getItemListMap4Result";
-			$.post(url,{recordId:$(iddom).val()},function (data) {
+			$.post(url,{recordId:recordId},function (data) {
                 $.each(data,function (index,row) {
                     //增加对应结果tr
                     addRow2('#resultDictList', resultDictRowIdx, resultDictTpl, row);
@@ -117,6 +116,11 @@
         }
 
         function addRow2(list, idx, tpl, row){
+			var recordId = $("input[name='itemIdRadio']:checked").val();
+            if(recordId!=row.recordId){
+                return;
+			}
+
             $(list).append(Mustache.render(tpl, {
                 idx: idx, delBtn: false, row: row
             }));

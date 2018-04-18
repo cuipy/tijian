@@ -157,7 +157,7 @@
 		<div class="control-group span6">
 			 <label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" ondblclick="test();" readonly="true" class="input-large"/>
+				<form:input path="code" htmlEscape="false" maxlength="45"  readonly="true" class="input-large"/>
 
 			</div>
 		</div>

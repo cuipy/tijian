@@ -51,10 +51,10 @@
         }
 
         function openResultDetail(recordId) {
-            var url = '${ctx}/wshbj/examinationRecord/recordResultDetailPop';
-            //windowOpen(url,'体检结果',500,500);
+            var url = '${ctx}/wshbj/examinationRecord/recordResultDetailPop?recordId='+recordId;
+            windowOpen(url,'体检结果',800,500);
 
-			addTabPage('123',url,true,this,false);
+			//addTabPage('123',url,true,this,false);
         }
 	</script>
 </head>

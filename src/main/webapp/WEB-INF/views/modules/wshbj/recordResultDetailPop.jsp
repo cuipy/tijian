@@ -28,22 +28,6 @@
 
 
 
-
-        //选择用户返回
-        function userTreeselectCallBack(v, h, f) {
-            if('ok'==v){
-                var euserId = $('#userId').val();
-                var url = '${ctx}/wshbj/examinationUser/getById';
-                $.post(url,{id:euserId},function (data) {
-                    if(data){
-                        setUserPro(data);
-                    }
-                },'json');
-            }else if('clear'==v){
-
-            }
-        }
-
         function setUserPro(data) {
             $('#userName').val(data.name);
             $('#userId').val(data.id);
@@ -186,108 +170,103 @@
 </head>
 <body>
 <ul class="nav nav-tabs">
-	<li class="active"><a href="${ctx}/wshbj/examinationRecord/inputResult">结果录入</a></li>
+	<li class="active"><a href="javascript:void(0);">制卡</a></li>
 </ul><br/>
 <form id="inputForm" class="form-horizontal">
 	<sys:message content="${message}"/>
-	<div class="control-group">
-		<label class="control-label">登记日期：</label>
-		<div class="controls">
-			<input name="startDate"  readonly="true" class="input-medium Wdate"
-				   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
-			--
-			<input name="endDate"  readonly="true" class="input-medium Wdate"
-				   onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:true});"/>
+	<div class="row">
+		<div class="control-group span5">
+			<label class="control-label">体检编号：</label>
+			<div class="controls">
+				<input  value="${record.code}" readonly class="input-medium"/>
+			</div>
+		</div>
+		<div class="control-group span5">
+			<label class="control-label">状态：</label>
+			<div class="controls">
+				<input value="${fns:getDictLabel(record.status,'examination_record_status','')}" readonly class="input-medium"/>
+			</div>
+		</div>
+		<div class="control-group span5">
+			<label class="control-label">身份证号：</label>
+			<div class="controls">
+				<input value="${record.idNumber}" readonly class="input-medium"/>
+			</div>
+		</div>
+		<div class="control-group span5">
+			<label class="control-label">用户：</label>
+			<div class="controls">
+				<input value="${record.name}" readonly class="input-medium"/>
+			</div>
+		</div>
+		<div class="control-group span5">
+			<label class="control-label">卡号：</label>
+			<div class="controls">
+				<input   class="input-medium"/>
+			</div>
 		</div>
 	</div>
-	<div class="control-group">
-		<label class="control-label">体检编号：</label>
-		<div class="controls">
-			<input id="examinationCode" name="examinationCode" class="input-medium"/>
-		</div>
-	</div>
-	<div class="control-group" >
-		<label class="control-label">单位：</label>
-		<div class="controls">
-			<select  name="organId"  class="input-xlarge">
-				<option value="">
-					全部
-				</option>
-				<c:forEach items="${organList}" var="organ">
-					<option value="${organ.id}">${organ.name}</option>
-				</c:forEach>
-			</select>
-		</div>
-	</div>
-
 
 
 	<div class="form-actions">
-		<input id="btnSearch" class="btn btn-primary" type="button" value="查询" onclick="searchRecords();"/>
-		<input id="btnSubmit" class="btn btn-primary" type="button" value="保 存" onclick="saveResults();"/>
-		<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+		<shiro:hasPermission name="wshbj:certRecord:edit">
+			<c:if test="${record.status eq '30' or record.status eq '40'}">
+				<input id="btnSearch" class="btn btn-primary" type="button" value="制卡" onclick=""/>
+			</c:if>
+		</shiro:hasPermission>
+		<input id="btnCancel" class="btn" type="button" value="返 回" onclick=""/>
 	</div>
 </form>
 <form  class="form-horizontal">
-	<div>
-		<div style="width: 38%;float:left;">
+	<div >
+		<div style="width: 60%;float:left;">
 			<table id="contentTable1" class="table table-striped table-bordered table-condensed" style="height: 50px">
 				<thead>
-				<tr>
-					<th width="50"></th>
-					<th >体检编号</th>
-					<th width="150">用户</th>
-				</tr>
+					<tr>
+						<th >项目</th>
+						<th width="70">初/复检</th>
+						<th width="90">结果</th>
+						<th >结果描述</th>
+					</tr>
 				</thead>
 				<tbody id="recordList" style="height: 50px;overflow-y: scroll">
-
+					<c:forEach items="${recordItemList}" var="recordItem">
+						<tr>
+							<th >${recordItem.itemName}</th>
+							<th >${recordItem.examinationFlag eq '1'?"初检":"复检"}</th>
+							<th >
+								<c:choose>
+									<c:when test="${empty recordItem.resultDictId}">未录入结果</c:when>
+									<c:otherwise>${recordItem.resultFlag eq '1'?"合格":"不合格"}</c:otherwise>
+								</c:choose>
+							</th>
+							<th >${recordItem.resultRemarks}</th>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
-			<script type="text/template" id="recordTpl">//<!--
-					<tr id="recordList{{idx}}">
-						<td>
-							<input type="radio" name="itemIdRadio" value="{{row.id}}" idx="{{idx}}" onchange="itemIdRadioChange(this);">
-						</td>
-						<td>
-							<span  type="text" maxlength="64" class="input-small" >{{row.code}}</span>
-						</td>
-						<td>
-							<span  type="text" maxlength="64" class="input-small" >{{row.name}}</span>
-						</td>
 
-					</tr>//-->
-			</script>
-			<script type="text/template" id="resultDictTpl">//<!--
-					<tr id="resultDictList{{idx}}">
-						<td >
-							<input type="hidden" name="recordItemId" value="{{row.recordItem.id}}" idx="{{idx}}"/>
-							<span  type="text"class="input-small" >{{row.recordItem.itemName}}</span>
-						</td>
-						<td>
-							<select id="resultDictList{{idx}}_dictId" name="resultDictList[{{idx}}]._dictId"  onchange="resultChange({{idx}},this);" class="input-small">
-							</select>
-						</td>
-						<td>
-							<input type="text" class="input-xlarge" id="resultList{{idx}}_resultRemarksId" name="resultList{{idx}}_resultRemarksName" value="{{row.recordItem.resultRemarks}}"/>
-						</td>
 
-					</tr>//-->
-			</script>
-			<script type="text/javascript">
-                var recordRowIdx = 0, recordTpl = $("#recordTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-                var resultDictRowIdx = 0, resultDictTpl = $("#resultDictTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-			</script>
 		</div>
-		<div style="width: 58%;float:right;"><table id="contentTable2" class="table table-striped table-bordered table-condensed">
+		<div style="width: 38%;float:right;"><table id="contentTable2" class="table table-striped table-bordered table-condensed">
 			<thead>
 			<tr>
-				<th width="150">名称</th>
-				<th width="100">结果</th>
-				<th>结果备注</th>
+				<th width="150">不合格原因</th>
 			</tr>
 			</thead>
 			<tbody id="resultDictList">
-
+			<c:forEach items="${recordItemList}" var="recordItem">
+				<c:if test="${recordItem.resultFlag eq '0' and recordItem.lastFlag eq '1'}">
+					<tr>
+						<th >
+							${recordItem.itemName} &nbsp;&nbsp;
+							${recordItem.examinationFlag eq '1'?"初检":"复检"}
+						    &nbsp;&nbsp;
+							不合格:${recordItem.resultRemarks}
+						</th>
+					</tr>
+				</c:if>
+			</c:forEach>
 			</tbody>
 		</table></div>
 	</div>

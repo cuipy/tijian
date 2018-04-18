@@ -395,6 +395,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             List<ExaminationResultDict> dictList = resultDictService.findList(examinationResultDict);
 
             itemMap.put("resultDictList",dictList);
+
+            itemMap.put("recordId",recordId);
+
             mapList.add(itemMap);
 
         }
@@ -456,7 +459,12 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
         String status = null;
         if(count10 > 0){    //未体检完
-            status = ExaminationRecordConstant.STATUS10;
+            if(count10==itemList.size()){   //未体检
+                status = ExaminationRecordConstant.STATUS0;
+            }else{  //未体检完
+                status = ExaminationRecordConstant.STATUS10;
+            }
+
         }else if(count20 > 0){  //体检不合格
             status = ExaminationRecordConstant.STATUS20;
         }else if(count30 > 0){  //复检合格
