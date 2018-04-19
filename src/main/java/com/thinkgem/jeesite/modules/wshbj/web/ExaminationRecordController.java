@@ -179,7 +179,7 @@ public class ExaminationRecordController extends BaseController {
 
 		//编号在保存的时候才创建
 		if (StringUtils.isEmpty(examinationRecord.getCode())){
-			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationCategory.class,"code"));
+			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code"));
 		}
 
 		if (!beanValidator(model, examinationRecord)){
@@ -202,8 +202,8 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = "delete")
 	public String delete(ExaminationRecord examinationRecord, RedirectAttributes redirectAttributes) {
-		examinationRecordService.delete(examinationRecord);
-		addMessage(redirectAttributes, "删除体检记录成功");
+		ResponseResult rr = examinationRecordService.delRecord(examinationRecord);
+		addMessage(redirectAttributes, rr.getMsg());
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
 	}
 

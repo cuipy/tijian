@@ -13,8 +13,7 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordItemDao;
-import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
-import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
+import com.thinkgem.jeesite.modules.wshbj.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -52,14 +51,42 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String status;
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
 
+	private Industry _industry;
 	/**
 	 * 获取行业
 	 * @return
 	 */
 	public Industry getIndustry(){
-		IndustryService industryService = SpringContextHolder.getBean(IndustryService.class);
-		return industryService.get(industryId);
+		if(_industry==null&&industryId!=null) {
+			IndustryService industryService = SpringContextHolder.getBean(IndustryService.class);
+			_industry = industryService.get(industryId);
+		}
+		return _industry;
 	}
+
+	private JobPost _jobPost;
+
+	/**
+	 * 获取岗位
+	 * @return
+	 */
+	public JobPost getJobPost(){
+		if(_jobPost==null&&postId!=null) {
+			JobPostService jobPostService = SpringContextHolder.getBean(JobPostService.class);
+			_jobPost = jobPostService.get(postId);
+		}
+		return _jobPost;
+	}
+
+	private Organ _organ;
+	public Organ getOrgan(){
+		if(_organ==null&&organId!=null){
+			OrganService organService=SpringContextHolder.getBean(OrganService.class);
+			_organ=organService.get(organId);
+		}
+		return _organ;
+	}
+
 
 	private Boolean itemListLoaded=false;
 
@@ -83,7 +110,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.user = user;
 	}
 
-	@ExpressSequence(express="10{yyMMdd}[4]",describe = "编号")
+	@ExpressSequence(express="10{yyyyMMdd}[4]",describe = "编号")
 	@Length(min=1, max=50, message="编号长度必须介于 1 和 50 之间")
 	@ExcelField(value="code",title="编号",type=0,sort=30)
 	public String getCode() {
@@ -131,6 +158,9 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	public void setIndustryId(String industryId) {
+		if(industryId==null||!industryId.equals(this.industryId)){
+			_industry=null;
+		}
 		this.industryId = industryId;
 	}
 	
@@ -141,6 +171,10 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	public void setPostId(String postId) {
+		if(postId==null||!postId.equals(this.postId)){
+			_jobPost=null;
+		}
+
 		this.postId = postId;
 	}
 	
@@ -181,6 +215,9 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	public void setPackageId(String packageId) {
+		if(packageId==null||!packageId.equals(this.packageId)){
+			_examinationPackage=null;
+		}
 		this.packageId = packageId;
 	}
 	
@@ -216,6 +253,18 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	public List<ExaminationRecordItem> getExaminationRecordItemList() {
 		return examinationRecordItemList;
+	}
+
+	private ExaminationPackage _examinationPackage;
+	public ExaminationPackage getExaminationPackage(){
+		if("2".equals(this.itemType)){
+			return null;
+		}
+		if(_examinationPackage==null&&this.packageId!=null&&"1".equals(this.itemType)){
+			ExaminationPackageService examinationPackageService=SpringContextHolder.getBean(ExaminationPackageService.class);
+			_examinationPackage=examinationPackageService.get(packageId);
+		}
+		return _examinationPackage;
 	}
 
 	/**

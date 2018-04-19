@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.*;
 
@@ -22,37 +23,28 @@ public class ReflectionUtils {
      * @return
      */
     public static List<String> listClassNames(String packageName){
-        String packageDirName=packageName.replaceAll("\\.", File.separator);
-        String classPath=SystemPath.getClassPath();
+        String packageDirName=StringUtils.replace(packageName,".", File.separator);
 
         List<String> lst=new ArrayList();
 
-        try {
-            Enumeration<URL> lst2 = Thread.currentThread().getContextClassLoader().getResources(packageDirName);
 
-            String[] exts={"class"};
-            while(lst2.hasMoreElements()){
-                URL u=lst2.nextElement();
-                String path=u.getPath();
+        URL packageDir = Thread.currentThread().getContextClassLoader().getResource(packageDirName);
+        URL rootDir=Thread.currentThread().getContextClassLoader().getResource("/");
 
+        String[] exts={"class"};
 
-                Collection<File> lst3 = FileUtils.listFiles(new File(path), exts, true);
+        String path=packageDir.getPath();
+        String rootPath=rootDir.getPath();
 
-                for(File f:lst3){
-                    String classDir=StringUtils.replace(f.getPath(),classPath,File.separator);
-                    String nclass= StringUtils.replace(classDir,File.separator,".");
-                    nclass=StringUtils.substring(nclass,1,nclass.length()-6);
+        Collection<File> lst3 = FileUtils.listFiles(new File(path), exts, true);
 
-                    lst.add(nclass);
-                }
+        for(File f:lst3){
+            String classDir=StringUtils.replace(f.getPath(),rootPath,File.separator);
+            String nclass= StringUtils.replace(classDir,File.separator,".");
+            nclass=StringUtils.substring(nclass,1,nclass.length()-6);
 
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            lst.add(nclass);
         }
-
 
         return lst;
 
@@ -113,6 +105,32 @@ public class ReflectionUtils {
         }
         return lstRes;
 
+    }
+
+    public static Method getMethod( Class clz, String methdName, Class...clzArgs){
+        if(clz==null){
+            return null;
+        }
+
+        try {
+            Method m= clz.getMethod(methdName,clzArgs);
+            return m;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+    }
+
+    public static Annotation getAnn(Class clzAnn,Class clzClass,String methodName,Class...clzArgs){
+        Method m=getMethod(clzClass,methodName,clzArgs);
+        if(m==null){
+            return null;
+        }
+
+        Annotation ann = m.getAnnotation(clzAnn);
+        return ann;
     }
 
 

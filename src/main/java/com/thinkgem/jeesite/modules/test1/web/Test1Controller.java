@@ -15,8 +15,6 @@ import com.thinkgem.jeesite.common.annotation.SequenceBean;
 import com.thinkgem.jeesite.common.utils.*;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.Servlets;
-import com.thinkgem.jeesite.modules.sys.entity.SequenceDefine;
-import com.thinkgem.jeesite.modules.sys.service.SequenceDefineService;
 import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.export.HtmlExporter;

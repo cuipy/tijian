@@ -72,23 +72,13 @@
 	<div class="control-group span6" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
-			<form:select  path="organId"  class="input-large">
-				<form:option value="">
-					请选择
-				</form:option>
-				<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-			</form:select>
+			${examinationRecord.organ.name}
 		</div>
 	</div>
 	<div class="control-group span6">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
-			<form:select path="postId" class="input-large">
-				<form:option value="">
-					请选择
-				</form:option>
-				<form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-			</form:select>
+			${examinationRecord.jobPost.name}
 		</div>
 	</div>
 
@@ -96,44 +86,36 @@
 		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				${examinationRecord.remarks}
 			</div>
 		</div>
 		<div class="cl"></div>
 		<div class="control-group span6">
 			<label class="control-label">体检项目方式：</label>
 			<div class="controls">
-				<input type="radio" id="itemType1" name="itemType" value="1" <c:if test="${examinationRecord.itemType eq 1}">selected="selected"</c:if>/><label for="itemType1">体检套餐</label>
-				<input type="radio" id="itemType2" name="itemType" value="2" <c:if test="${examinationRecord.itemType eq 2}">selected="selected"</c:if>/><label for="itemType2">自由选择</label>
+
+			${examinationRecord.itemType=="1"? "体检套餐":"自由选择"}
 			</div>
 		</div>
 				<div class="control-group span6">
         			<label class="control-label">价格：</label>
         			<div class="controls">
-        				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-large "/>
+        				${examinationRecord.packagePrice } 元
         			</div>
         		</div>
 
 		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-				<select id="packageId" name="packageId" class="input-large" onchange="chgPackage()">
-				     <option/>请选择体检套餐
-					<c:forEach items="${packageList}" var="p">
-					<option value="${p.id}" data-price="${p.price}" <c:if test="${p.id == examinationRecord.packageId}">selected='selected'</c:if> >${p.name}</option>
-					</c:forEach>
-				</select>
-
+                ${examinationRecord.examinationPackage.name }
 			</div>
 		</div>
 		<div class="control-group span12" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
-			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
-				<input id="ri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="clkItems()"
-				<c:if test="${fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
-				<label for="ri${ri.id}">[${ri.code}] ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
-				</c:forEach>
+			   <c:if test="${examinationRecord.itemType == 2}">
+                    <c:forEach items="${examinationRecord.items}" var="ri">${ri.itemName} | </c:forEach>
+                </c:if>
 			</div>
 		</div>
 		<div class="cl"></div>

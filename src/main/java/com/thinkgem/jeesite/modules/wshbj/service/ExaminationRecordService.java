@@ -174,6 +174,24 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         examinationRecordItemDao.delete(recordItem);
     }
 
+    @Transactional(readOnly = false)
+    public ResponseResult delRecord(ExaminationRecord examinationRecord) {
+
+
+        ExaminationRecord record = get(examinationRecord.getId());
+        //未体检状态才允许修改
+        if(!ExaminationRecordConstant.STATUS0.equals(record.getStatus())){
+            return ResponseResult.generate("10","未体检状态才可以删除，该体检记录不允许删除");
+        }
+
+        super.delete(examinationRecord);
+        ExaminationRecordItem recordItem = new ExaminationRecordItem();
+        recordItem.setRecordId(examinationRecord.getId());
+        examinationRecordItemDao.delete(recordItem);
+
+        // 返回执行成功
+        return ResponseResult.generate("0","删除成功");
+    }
 
     @Transactional(readOnly = false)
     public ResponseResult saveRecord(ExaminationRecord examinationRecord) {

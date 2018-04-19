@@ -125,10 +125,10 @@
 						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
-					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>
+					<c:if test="${examinationRecord.status == '0'}"><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
 					<a href="${ctx}/wshbj/examinationRecord/print?id=${examinationRecord.id}" target="_blank">打印体检表</a>
 					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">填报结果</a>
-					<a href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a>
+					<c:if test="${examinationRecord.status == '0'}"><a href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a></c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
