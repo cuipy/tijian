@@ -110,6 +110,17 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = "print")
+	public String print(String id, Model model) {
+
+		String ids="'"+id+"'";
+
+		model.addAttribute("format","pdf");
+		model.addAttribute("ids", ids);
+		return "tjb";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationRecord examinationRecord, Model model) {
 
@@ -175,7 +186,7 @@ public class ExaminationRecordController extends BaseController {
 			return form(examinationRecord, model);
 		}
 		if(StringUtils.isBlank(examinationRecord.getId())){
-			examinationRecord.setStatus(ExaminationRecordConstant.STATUS10);
+			examinationRecord.setStatus(ExaminationRecordConstant.STATUS0);
 			examinationRecord.setName(examinationRecord.getUser().getName());
 			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}

@@ -126,6 +126,7 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a>
+					<a href="${ctx}/wshbj/examinationRecord/print?id=${examinationRecord.id}" target="_blank">打印体检表</a>
 					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">填报结果</a>
 					<a href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
@@ -138,9 +139,9 @@
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 信息登记是在体检前进行登记<br>
-      2. 该信息一般由前台登记人员创建<br>
-
-
+      2. 该信息一般由前台登记人员创建<br><br>
+ <strong>状态说明：</strong> <br>
+<img src="${ctxStatic}/images/docs/tijian_jilu_status_1.png">
     </div>
 
     <div class="alert alert-danger">

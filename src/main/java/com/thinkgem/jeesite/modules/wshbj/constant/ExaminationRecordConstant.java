@@ -9,7 +9,7 @@ package com.thinkgem.jeesite.modules.wshbj.constant;
 public class ExaminationRecordConstant {
 
     /**
-     * 0-未体检
+     * 0-未体检 cuipengyu   20180418
      */
     public static final String STATUS0 = "0";
 

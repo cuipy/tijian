@@ -28,17 +28,6 @@ import java.io.IOException;
 @RequestMapping(value = "${adminPath}/wshbj/report")
 public class ReportController extends BaseController {
 
-	@RequestMapping(value = {"test1"})
-	public String test1(Model m) {
-		m.addAttribute("format","pdf");
-		return "test1";
-	}
-
-	@RequestMapping(value = {"test3"})
-	public String test3(Model m) {
-		m.addAttribute("format","pdf");
-		return "test3";
-	}
 
 	@RequestMapping(value = {"test2"})
 	public String test2(Model m) {
@@ -47,13 +36,12 @@ public class ReportController extends BaseController {
 		return "test2";
 	}
 
-
 	@RequestMapping(value = {"test4"})
 	@ResponseBody
 	public String test4(Model m) {
 
 		try {
-			BufferedImage mtw = MatrixToImageWriter.toBufferedImage(new Code128Writer().encode("ADD123333444400001", BarcodeFormat.CODE_128, 260, 46));
+			BufferedImage mtw = MatrixToImageWriter.toBufferedImage(new Code128Writer().encode("1001101804180003", BarcodeFormat.CODE_128, 260, 46));
 
 			java.io.File f=new java.io.File("/work/apps/tomcat8/webapps/wshbj/static/a.jpg");
 			ImageIO.write(mtw,"jpg",f);

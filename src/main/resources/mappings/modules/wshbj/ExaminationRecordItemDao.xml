@@ -32,7 +32,7 @@
 			<include refid="examinationRecordItemColumns"/>
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
-		WHERE a.id = #{id}
+		WHERE a.id = #{id} and a.del_flag=#{DEL_FLAG_NORMAL}
 	</select>
 
 
@@ -44,7 +44,7 @@
 		WHERE a.record_id = #{recordId}
 		AND a.item_id = #{itemId}
 		AND a.examination_flag = #{examinationFlag}
-		AND a.result_dict_id is null
+		AND a.result_dict_id is null  and a.del_flag=#{DEL_FLAG_NORMAL}
 		LIMIT 0,1
 	</select>
 
@@ -55,7 +55,7 @@
 		<include refid="examinationRecordItemJoins"/>
 		WHERE a.record_id = #{recordId}
 		AND a.item_id = #{itemId}
-		AND a.last_flag = "1"
+		AND a.last_flag = "1"  and a.del_flag=#{DEL_FLAG_NORMAL}
 		ORDER BY a.create_date DESC
 		LIMIT 0,1
 	</select>
@@ -114,7 +114,7 @@
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag = '0'
+			a.del_flag=#{DEL_FLAG_NORMAL}
 			AND a.record_id = #{recordId}
 		</where>
 		ORDER BY a.create_date ASC
@@ -124,14 +124,14 @@
 	<select id="countCompletedRecordItem" resultType="java.lang.Integer">
 		SELECT COUNT(a.id) FROM bj_examination_record_item a
 		<where>
-			a.del_flag = '0'AND a.result_dict_id IS NOT NULL
+			a.del_flag=#{DEL_FLAG_NORMAL} AND a.result_dict_id IS NOT NULL
 		</where>
 	</select>
 
 	<select id="countUnCompletedRecordItem" resultType="java.lang.Integer">
 		SELECT COUNT(a.id) FROM bj_examination_record_item a
 		<where>
-			a.del_flag = '0'AND (a.result_dict_id IS NULL OR a.result_dict_id = '')
+			a.del_flag=#{DEL_FLAG_NORMAL} AND (a.result_dict_id IS NULL OR a.result_dict_id = '')
 		</where>
 	</select>
 	

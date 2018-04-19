@@ -83,7 +83,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.user = user;
 	}
 
-	@ExpressSequence(express="TJJL{yyyyMMmm}[5]",describe = "编号")
+	@ExpressSequence(express="10{yyMMdd}[4]",describe = "编号")
 	@Length(min=1, max=50, message="编号长度必须介于 1 和 50 之间")
 	@ExcelField(value="code",title="编号",type=0,sort=30)
 	public String getCode() {
@@ -218,17 +218,25 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		return examinationRecordItemList;
 	}
 
+	/**
+	 * 获取体检细项列表，只有采用自定义方式体检，才能获得这个列表
+	 * @auth cuipengyu  20180418
+	 * @return
+	 */
 	public List<ExaminationRecordItem> getItems() {
+		// 如果已经读取，则不再读取
 		if(itemListLoaded){
 			return examinationRecordItemList;
 		}
 
+		// 如果没有逐渐，则一定是i新对象，数据库中不可能获得细项列表
 		if(StringUtils.isEmpty(getId())){
 			return null;
 		}
 
 		itemListLoaded=true;
 
+		// 调用spring管理的对象，获得列表
 		ExaminationRecordItemDao examinationRecordItemDao=SpringContextHolder.getBean(ExaminationRecordItemDao.class);
 		ExaminationRecordItem eri=new ExaminationRecordItem();
 		eri.setRecordId(id);

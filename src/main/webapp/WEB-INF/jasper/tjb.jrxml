@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tjb" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7b3aed0c-3342-49a2-968d-62e0608c3da2">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="TestDataAdapter1"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="宋体" fontSize="50" isBold="false" pdfFontName="宋体"/>
+	<style name="SubTitle" forecolor="#CCCCCC" fontName="宋体" fontSize="18" isBold="false" pdfFontName="宋体"/>
+	<style name="Column header" forecolor="#666666" fontName="宋体" fontSize="14" isBold="true" pdfFontName="宋体"/>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="BarcodeStyle"/>
+	<style name="PdfSytle" fontName="宋体" pdfFontName="宋体"/>
+	<style name="Table 1_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FBFDF0"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#005FB3">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="54d17a6e-5e7e-45f7-b4fc-292faec6147b">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="TestDataAdapter1"/>
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<parameter name="mid" class="java.lang.String"/>
+		<queryString>
+			<![CDATA[SELECT ei.id,ei.`name` AS item_name FROM bj_examination_record r JOIN bj_examination_package ep ON r.`package_id`=ep.id 
+JOIN bj_package_item bpi ON ep.id=bpi.`package_id`
+JOIN bj_examination_item ei ON bpi.`item_id`=ei.id 
+WHERE r.item_type=1 AND ep.`del_flag`='0' AND bpi.`del_flag`=0 AND ei.`del_flag`=0 
+AND r.id=$P{mid}
+
+union
+
+SELECT ri.id,ri.item_name FROM `bj_examination_record_item` ri JOIN `bj_examination_record` r ON ri.`record_id` = r.id 
+ WHERE r.`item_type` = 2  AND ri.del_flag=0 AND ri.record_id =$P{mid}]]>
+		</queryString>
+		<field name="id" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="id"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+		</field>
+		<field name="item_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.label" value="title"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+		</field>
+	</subDataset>
+	<parameter name="ids" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT er.id,er.user_id,er.`code`,er.`name`,er.`phone_number`,er.birthday, TIMESTAMPDIFF(YEAR,er.birthday,NOW()) age
+,er.sex ,(CASE WHEN er.sex=1 THEN '男' ELSE '女' END) AS str_sex  
+,er.industry_id,ind.`name` AS industry_name
+,er.post_id,jp.`name` post_name,er.organ_id,o.`name` AS organ_name FROM bj_examination_record er
+LEFT JOIN bj_industry ind ON er.`industry_id` = ind.`id` 
+LEFT JOIN bj_job_post jp ON er.`post_id`=jp.id 
+LEFT JOIN bj_organ o ON er.`organ_id` = o.id where er.id in ($P!{ids})]]>
+	</queryString>
+	<field name="id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="phone_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="phone_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="birthday" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="birthday"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="age" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="age"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="str_sex" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="str_sex"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="industry_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="industry_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="post_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="post_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<field name="organ_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="organ_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
+	</field>
+	<detail>
+		<band height="188" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="72" width="556" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement style="PdfSytle" x="80" y="0" width="394" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[石家庄市食品从业人员健康检查流程表]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="10" y="49" width="60" height="15" uuid="c226e44d-3bb5-4145-b0b3-903bf1d79fde"/>
+				<text><![CDATA[体检日期：]]></text>
+			</staticText>
+			<textField pattern="yyyy年MM月dd日">
+				<reportElement style="PdfSytle" x="70" y="50" width="110" height="14" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="76" width="75" height="28" uuid="ad19d78b-1a19-4631-9c9f-878caea24f7c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="76" width="110" height="28" uuid="cab453ef-f79c-4c97-b2e4-ef6474b82f60"/>
+			</rectangle>
+			<textField>
+				<reportElement style="PdfSytle" x="75" y="76" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="185" y="76" width="75" height="28" uuid="27f3eee8-076c-4faf-be30-d34f22082bfa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="260" y="76" width="110" height="28" uuid="c5102307-c39b-41bf-b3a3-f2eba4ad2875"/>
+			</rectangle>
+			<textField>
+				<reportElement style="PdfSytle" x="260" y="76" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{str_sex}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="370" y="76" width="75" height="28" uuid="35895305-34cd-48ce-9508-58423305bcc7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="445" y="76" width="110" height="28" uuid="2e1a8ad7-497d-48bc-82cb-99db534a1342"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="76" width="75" height="28" uuid="8fc52fc0-b5b3-4174-8c5e-cc2791cd1a0e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[姓名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="184" y="76" width="75" height="28" uuid="914523ad-986e-4502-a746-88a34e8e79f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[性别]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="370" y="76" width="75" height="28" uuid="0ad7291a-e12a-4fa8-9a89-acd88cdb99b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[年龄]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="104" width="75" height="28" uuid="c79864ed-c333-46b9-8e42-bc23c171e942"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="104" width="110" height="28" uuid="0eaaa578-5778-4397-afbe-e89435078ec6"/>
+			</rectangle>
+			<textField>
+				<reportElement style="PdfSytle" x="75" y="104" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{industry_name}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="185" y="104" width="75" height="28" uuid="4c6303d4-4728-4a18-b42a-29ede18cf148"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="260" y="104" width="110" height="28" uuid="d4fd758c-b257-457a-b221-1f28d0477a8b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="370" y="104" width="75" height="28" uuid="2ab8d548-61d7-4a53-9e4c-0a1138c54ef7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="445" y="104" width="110" height="28" uuid="06b5a973-5631-478f-8876-ed4563b02bc2"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="104" width="75" height="28" uuid="7ec77309-cc58-4cda-a726-5515fa78a35c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[类别]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="184" y="104" width="75" height="28" uuid="7b4da8fd-2d77-44e9-ac86-523cb82518e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[岗位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="370" y="104" width="75" height="28" uuid="5ddc3c48-8782-4a87-9d3a-fea1c8feaaf8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[联系电话]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="132" width="75" height="28" uuid="746dabc3-73ce-495b-9811-a34c5a350ca3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="132" width="480" height="28" uuid="92e5ef57-3276-4da8-b015-f64ecd3f2297"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="132" width="75" height="28" uuid="8a2e0a08-7012-49cd-b14a-2c31713bbed4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[单位]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="160" width="75" height="28" uuid="8558c4d0-e599-4655-bd31-e82f3100c774"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="160" width="110" height="28" uuid="950718e1-25c5-44dc-bfa3-d87fd68d5951"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="185" y="160" width="260" height="28" uuid="fdd1606a-81e0-4fc1-bd0a-fef38dad7ba0"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="445" y="160" width="110" height="28" uuid="340abc7e-877c-41e4-9692-908198a0e0b2"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="160" width="75" height="28" uuid="6d720006-6cf0-4fd0-8e59-ccc6b682ca88"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[序号]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="93" y="160" width="75" height="28" uuid="33f8cc82-383c-46b5-81fc-1245d8c3505c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[检查项目]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="270" y="160" width="75" height="28" uuid="5cc1f87f-acaa-434a-b65c-b04c33865524"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[检查结果]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="463" y="160" width="75" height="28" uuid="13d9ec87-14b5-41a7-98cd-5beb2bf61905"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[医师签名]]></text>
+			</staticText>
+			<image>
+				<reportElement x="355" y="38" width="200" height="26" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement style="PdfSytle" x="355" y="58" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="445" y="76" width="110" height="28" uuid="4b91cdb2-daf1-4380-bc1f-d3b0ad0eb269"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{age}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="260" y="104" width="110" height="28" uuid="13fbc099-94e6-4886-8d2a-4342bb03cf88"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{post_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="445" y="104" width="110" height="28" uuid="3903fbc3-7b79-487b-9b2e-e15b43c33397"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{phone_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="86" y="132" width="469" height="28" uuid="4161b874-40c1-44d4-89fb-fadb52b20651"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{organ_name}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="28">
+			<componentElement>
+				<reportElement x="0" y="0" width="555" height="28" uuid="d9970968-cddf-4dc9-850f-7ef5b8069adf">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table 1_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table 1_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table 1_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset1" uuid="9d7a0f10-363f-4f50-aab9-69ec879ae722">
+						<datasetParameter name="mid">
+							<datasetParameterExpression><![CDATA[$F{id}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="75" uuid="6a46dd1d-aa7a-4bde-878f-8e97819c6955">
+						<jr:detailCell style="Table 1_TD" height="28">
+							<textField>
+								<reportElement style="PdfSytle" x="0" y="0" width="75" height="28" uuid="6b891cd6-1228-4c1d-a89a-3e0e845623cf"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="110" uuid="ea6777d8-1dc0-49b8-ba34-7badb877c04a">
+						<jr:detailCell style="Table 1_TD" height="28">
+							<textField>
+								<reportElement style="PdfSytle" x="0" y="0" width="110" height="28" uuid="53f29112-3202-46e3-a059-f94efe4319c5"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle"/>
+								<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="260" uuid="50289e10-9215-405f-9e56-6bee4b22bf25">
+						<jr:detailCell style="Table 1_TD" height="28"/>
+					</jr:column>
+					<jr:column width="110" uuid="50289e10-9215-405f-9e56-6bee4b22bf25">
+						<jr:detailCell style="Table 1_TD" height="28"/>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="125">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="59" uuid="7a739bb3-f3a8-4c59-8d0e-6a042560b553"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="20" y="10" width="100" height="20" uuid="c34a0e82-d51a-46ad-b862-362fdbdbcf01"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[便标本留验情况：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="190" y="19" width="100" height="20" uuid="fef178ba-e2bd-4bc8-8e0d-3d0f5d2f10d0"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[已留]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="223" y="25" width="10" height="10" uuid="a8585d69-1e86-40d2-8680-6c73a6957cdc"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="390" y="19" width="100" height="20" uuid="fef178ba-e2bd-4bc8-8e0d-3d0f5d2f10d0"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[未留]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="423" y="25" width="10" height="10" uuid="a8585d69-1e86-40d2-8680-6c73a6957cdc"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="10" y="70" width="100" height="20" uuid="fef178ba-e2bd-4bc8-8e0d-3d0f5d2f10d0"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[注意：]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="93" y="70" width="462" height="50" uuid="570f1c0e-ac0a-4b11-b86e-5ad68716ebc7"/>
+				<text><![CDATA[1、此流程表是您本次健康检查的项目，各项检查完毕后请将此表交回服务台。
+2、体检机构应将此表存档备查。
+3、交表时，请在表格相关位置填写联系电话。]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="124" width="100" height="1" uuid="435174d5-b603-48f7-af5f-000fd81d13a2"/>
+			</break>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="250" splitType="Stretch">
+			<line>
+				<reportElement x="-20" y="10" width="595" height="1" uuid="806ce5df-1219-4876-ae0c-ca7405b1f246">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="PdfSytle" x="80" y="17" width="394" height="25" uuid="e622555d-198b-4ccd-a4a1-c59c53304058">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="19" isBold="true"/>
+				</textElement>
+				<text><![CDATA[石家庄市食品从业人员健康证领取凭证]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="10" y="57" width="60" height="15" uuid="c226e44d-3bb5-4145-b0b3-903bf1d79fde"/>
+				<text><![CDATA[体检日期：]]></text>
+			</staticText>
+			<textField pattern="yyyy年MM月dd日">
+				<reportElement style="PdfSytle" x="70" y="58" width="110" height="14" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="87" width="75" height="28" uuid="ad19d78b-1a19-4631-9c9f-878caea24f7c"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="87" width="110" height="28" uuid="cab453ef-f79c-4c97-b2e4-ef6474b82f60"/>
+			</rectangle>
+			<textField>
+				<reportElement style="PdfSytle" x="75" y="87" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="185" y="87" width="75" height="28" uuid="27f3eee8-076c-4faf-be30-d34f22082bfa"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="260" y="87" width="110" height="28" uuid="c5102307-c39b-41bf-b3a3-f2eba4ad2875"/>
+			</rectangle>
+			<textField>
+				<reportElement style="PdfSytle" x="260" y="87" width="110" height="28" uuid="bcb0575e-ffb4-427f-add5-5727e2bfffe0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{str_sex}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="370" y="87" width="75" height="28" uuid="35895305-34cd-48ce-9508-58423305bcc7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="445" y="87" width="110" height="28" uuid="2e1a8ad7-497d-48bc-82cb-99db534a1342"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="87" width="75" height="28" uuid="8fc52fc0-b5b3-4174-8c5e-cc2791cd1a0e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[姓名]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="184" y="87" width="75" height="28" uuid="914523ad-986e-4502-a746-88a34e8e79f7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[性别]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="370" y="87" width="75" height="28" uuid="0ad7291a-e12a-4fa8-9a89-acd88cdb99b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[年龄]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="115" width="75" height="28" uuid="c79864ed-c333-46b9-8e42-bc23c171e942"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="115" width="110" height="28" uuid="0eaaa578-5778-4397-afbe-e89435078ec6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="185" y="115" width="75" height="28" uuid="4c6303d4-4728-4a18-b42a-29ede18cf148"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="260" y="115" width="110" height="28" uuid="d4fd758c-b257-457a-b221-1f28d0477a8b"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="370" y="115" width="75" height="28" uuid="2ab8d548-61d7-4a53-9e4c-0a1138c54ef7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="445" y="115" width="110" height="28" uuid="06b5a973-5631-478f-8876-ed4563b02bc2"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="115" width="75" height="28" uuid="7ec77309-cc58-4cda-a726-5515fa78a35c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[类别]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="184" y="115" width="75" height="28" uuid="7b4da8fd-2d77-44e9-ac86-523cb82518e6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[岗位]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="PdfSytle" x="370" y="115" width="75" height="28" uuid="5ddc3c48-8782-4a87-9d3a-fea1c8feaaf8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[联系电话]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="143" width="75" height="28" uuid="746dabc3-73ce-495b-9811-a34c5a350ca3"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="75" y="143" width="480" height="28" uuid="92e5ef57-3276-4da8-b015-f64ecd3f2297"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="143" width="75" height="28" uuid="8a2e0a08-7012-49cd-b14a-2c31713bbed4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[单位]]></text>
+			</staticText>
+			<image>
+				<reportElement x="355" y="46" width="200" height="26" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement style="PdfSytle" x="355" y="68" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="171" width="75" height="60" uuid="c58709d8-0c36-4e05-8ed0-7833831e7df5"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="0" y="171" width="75" height="60" uuid="98a029f0-4485-41db-877d-77b0e6a11c12"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[注意事项]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="75" y="171" width="480" height="60" uuid="13114dfb-f8e0-48d3-9670-ce935451e98d"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="PdfSytle" x="86" y="174" width="452" height="57" uuid="6f0bdfb0-02c0-497c-9595-93bc7d953632"/>
+				<textElement textAlignment="Left" verticalAlignment="Top"/>
+				<text><![CDATA[1、凭此证领取健康合格证。
+2、健康合格证需由本人领取，单位组织体检领取健康合格证需出示代领人的有效证件。
+3、自体检次日起，五个工作日后领取健康合格证。
+4、如有疑问请拨打咨询电话：]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="PdfSytle" x="445" y="87" width="110" height="28" uuid="77046a47-9dce-4a68-9498-e11f4165011f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{age}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="75" y="115" width="110" height="28" uuid="1f7f873d-8860-4910-8879-1a24b1c80f85"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{industry_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="260" y="115" width="110" height="28" uuid="e160bc62-80c7-4e5b-808a-df171734ddbf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{post_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="445" y="115" width="110" height="28" uuid="b4484b60-e088-49a4-a41f-cb4ad1e0fddd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{phone_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="PdfSytle" x="90" y="143" width="448" height="28" uuid="af7211e8-8ec6-4a71-8b27-287bc733b61f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{organ_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
