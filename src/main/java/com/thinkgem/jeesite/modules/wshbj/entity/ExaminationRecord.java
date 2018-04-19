@@ -101,7 +101,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	@NotNull(message="体检用户不能为空")
-	@ExcelField(value="user.id",title="体检用户",type=0,sort=20)
 	public User getUser() {
 		return user;
 	}
@@ -142,9 +141,13 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="性别长度必须介于 1 和 64 之间")
-	@ExcelField(value="sex",title="性别",type=0,sort=60)
 	public String getSex() {
 		return sex;
+	}
+
+	@ExcelField(value="strSex",title="性别",type=0,sort=60)
+	public String getStrSex(){
+		return DictUtils.getDictLabel(sex,"sex","");
 	}
 
 	public void setSex(String sex) {
@@ -152,11 +155,21 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="行业长度必须介于 1 和 64 之间")
-	@ExcelField(value="industryId",title="行业",type=0,sort=70)
+
 	public String getIndustryId() {
 		return industryId;
 	}
 
+	@ExcelField(value="industryName",title="行业",type=0,sort=70)
+	public String getIndustryName(){
+		Industry ind = getIndustry();
+
+		if(ind==null){
+			return "";
+		}
+
+		return ind.getName();
+	}
 	public void setIndustryId(String industryId) {
 		if(industryId==null||!industryId.equals(this.industryId)){
 			_industry=null;
@@ -165,9 +178,19 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="岗位长度必须介于 1 和 64 之间")
-	@ExcelField(value="postId",title="岗位",type=0,sort=80)
+
 	public String getPostId() {
 		return postId;
+	}
+
+	@ExcelField(value="postName",title="岗位",type=0,sort=80)
+	public String getPostName(){
+		JobPost jp = getJobPost();
+
+		if(jp==null||jp.getName()==null){
+			return "";
+		}
+		return jp.getName();
 	}
 
 	public void setPostId(String postId) {
@@ -189,7 +212,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="单位长度必须介于 1 和 64 之间")
-	@ExcelField(value="organId",title="单位",type=0,sort=100)
+
 	public String getOrganId() {
 		return organId;
 	}
@@ -197,9 +220,18 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setOrganId(String organId) {
 		this.organId = organId;
 	}
+
+	@ExcelField(value="organName",title="单位",type=0,sort=100)
+	public String getOrganName(){
+		Organ organ = getOrgan();
+		if(organ==null||organ.getName()==null){
+			return "";
+		}
+		return organ.getName();
+	}
+
 	
 	@Length(min=0, max=64, message="所属体检中心长度必须介于 0 和 64 之间")
-	@ExcelField(value="owner",title="所属体检中心",type=0,sort=170)
 	public String getOwner() {
 		return owner;
 	}
@@ -207,9 +239,10 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+
 	@Length(min=0, max=64, message="体检套餐长度必须介于 0 和 64 之间")
-	@ExcelField(value="packageId",title="体检套餐",type=0,sort=180)
+
 	public String getPackageId() {
 		return packageId;
 	}
@@ -220,7 +253,18 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		}
 		this.packageId = packageId;
 	}
-	
+
+	@ExcelField(value="packageName",title="体检套餐",type=0,sort=180)
+	public String getPackageName(){
+		ExaminationPackage p = getExaminationPackage();
+		if(p==null||p.getName()==null){
+			return "";
+		}
+
+		return p.getName();
+
+	}
+
 	@Length(min=0, max=64, message="套餐价格长度必须介于 0 和 64 之间")
 	@ExcelField(value="packagePrice",title="套餐价格",type=0,sort=190)
 	public String getPackagePrice() {
@@ -242,13 +286,17 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=0, max=64, message="体检状态，对应examination_record_status字典长度必须介于 0 和 64 之间")
-	@ExcelField(value="status",title="体检状态，对应examination_record_status字典",type=0,sort=210)
 	public String getStatus() {
 		return status;
 	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	@ExcelField(value="strStatus",title="体检状态",type=0,sort=210)
+	public String getStrStatus(){
+		return DictUtils.getDictLabel(status,"examination_record_status","");
 	}
 
 	public List<ExaminationRecordItem> getExaminationRecordItemList() {
@@ -306,10 +354,17 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.itemType = itemType;
 	}
 
-
-	public String getSexStr(){
-		return DictUtils.getDictLabel(sex,"sex","未设置");
+	@ExcelField(value="strItemType",title="体检类型",type=0,sort=210)
+	public String getStrItemType(){
+		if("1".equals(itemType)){
+			return "体检套餐";
+		}
+		if("2".equals(itemType)){
+			return "自由选择";
+		}
+		return "";
 	}
+
 
 	public Set<String> getItemIds(){
 		if(!ExaminationRecordConstant.ITEM_TYPE_2.equals(this.getItemType())||getItems()==null||getItems().size()<=0){
@@ -321,6 +376,26 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 			sets.add(ri.getItemId());
 		}
 		return sets;
+	}
+
+	@ExcelField(value="itemNames",title="体检细项",type=0,sort=210)
+	public String getItemNames(){
+		String res="";
+
+		List<ExaminationRecordItem> items = getItems();
+
+		if(items==null||items.size()<=0){
+			return res;
+		}
+
+		for(ExaminationRecordItem ri:items){
+			res+=ri.getItemName()+" | ";
+
+		}
+		if(res.length()>0){
+			StringUtils.substring(res,0,res.length()-3);
+		}
+		return res;
 	}
 
 }
