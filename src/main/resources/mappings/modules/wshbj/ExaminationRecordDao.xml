@@ -112,7 +112,7 @@
 				AND a.status = #{status}
 			</if>
 			<if test="organId != null and organId != ''">
-				AND a.organId = #{organId}
+				AND a.organ_id = #{organId}
 			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE
@@ -312,6 +312,6 @@
 		status = #{status}
 		WHERE id = #{id}
 	</update>
-	
+
 	
 </mapper>
