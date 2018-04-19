@@ -19,8 +19,6 @@ import java.util.Map;
 @MyBatisDao
 public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
-	public String genCode(@Param("keyCode")String keyCode);
-
 	public ExaminationRecord getByCode(String code);
 
 	public Map getMapByCode(String code);

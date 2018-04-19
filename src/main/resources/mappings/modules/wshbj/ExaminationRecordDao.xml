@@ -106,7 +106,7 @@
 				AND a.id_number LIKE concat('%',#{idNumber},'%')
 			</if>
 			<if test="code != null and code != ''">
-				AND a.code = #{code}
+				AND a.code like concat('%',#{code},'%')
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
@@ -164,7 +164,7 @@
 		<where>
 			a.del_flag = '0'
 			<if test="code != null and code != ''">
-				AND a.code = #{code}
+				AND a.code like concat('%',#{code},'%')
 			</if>
 			<if test="organId != null and organId != ''">
 				AND a.organ_id = #{organId}
@@ -199,10 +199,10 @@
 		<where>
 			a.del_flag = '0'
 			<if test="code != null and code != ''">
-				AND a.code = #{code}
+				AND a.code like concat('%',#{code},'%')
 			</if>
 			<if test="name != null and name != ''">
-				AND a.name = #{name}
+				AND a.name like concat('%', #{name},'%')
 			</if>
 			<if test="organId != null and organId != ''">
 				AND a.organ_id = #{organId}
@@ -312,9 +312,6 @@
 		status = #{status}
 		WHERE id = #{id}
 	</update>
-
-	<select id="genCode" resultType="String">
-		select concat(#{keyCode},lpad(gen_seq_number(#{keyCode},1),8,'0'))
-	</select>
+	
 	
 </mapper>

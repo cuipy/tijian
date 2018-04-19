@@ -35,7 +35,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>体检单位：</label>
-				<form:select path="organId"  name="user.organId" class="input-medium">
+				<form:select path="organId" class="input-medium">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -52,6 +52,10 @@
 			<li><label>联系电话：</label>
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
 			</li>
+			<li class="cl"></li>
+			<li><label>编号：</label>
+                <form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
+            </li>
 			<li><label>状态：</label>
 				<form:select path="status" cssStyle="width: 100px">
 					<form:option value="">
@@ -68,8 +72,9 @@
 					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

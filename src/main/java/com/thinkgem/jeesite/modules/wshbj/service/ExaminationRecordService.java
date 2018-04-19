@@ -330,19 +330,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
-    public String genCode() {
-        try {
-            String year = DateUtils.getYear().substring(2);
-            String keyCode = UserUtils.getUser().getCompany().getCode() + year;
-            return this.dao.genCode(keyCode);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
-
-    @Transactional(readOnly = false)
     public ResponseResult saveResult(String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
         if(recordItemIds==null || recordItemIds.length<1){
             return ResponseResult.generateFailResult("体检项目数据错误");
