@@ -80,7 +80,7 @@
 		<include refid="examinationRecordColumns"/>
 		FROM bj_examination_record a
 		<include refid="examinationRecordJoins"/>
-		WHERE a.code = #{code}
+		WHERE a.code = #{code} and a.del_flag= #{DEL_FLAG_NORMAL}
 	</select>
 
 

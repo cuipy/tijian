@@ -20,7 +20,8 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.examination_flag AS "examinationFlag",
-		a.last_flag AS "lastFlag"
+		a.last_flag AS "lastFlag",
+		a.specimen_id as "specimenId"
 	</sql>
 	
 	<sql id="examinationRecordItemJoins">
@@ -143,6 +144,7 @@
 			item_name,
 			need_samples,
 			sample_code,
+			specimen_id,
 			result_dict_id,
 			result_dict_name,
 			result_flag,
@@ -162,6 +164,7 @@
 			#{itemName},
 			#{needSamples},
 			#{sampleCode},
+			#{specimenId},
 			#{resultDictId},
 			#{resultDictName},
 			#{resultFlag},
@@ -184,6 +187,7 @@
 				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
 				<if test="needSamples !=null and needSamples != '' ">need_samples = #{needSamples},</if>
 				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
+				<if test="specimenId !=null and specimenId != '' ">specimen_id = #{specimenId},</if>
 				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
 				<if test="resultDictName !=null and resultDictName != '' ">result_dict_name = #{resultDictName},</if>
 				<if test="resultFlag !=null and resultFlag != '' ">result_flag = #{resultFlag},</if>

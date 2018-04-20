@@ -15,5 +15,6 @@ import com.thinkgem.jeesite.modules.wshbj.entity.SampleCodes;
 @MyBatisDao
 public interface SampleCodesDao extends CrudDao<SampleCodes> {
 
-	
+    SampleCodes getByCode(SampleCodes sampleCodes);
+
 }

@@ -31,6 +31,14 @@
 		WHERE a.id = #{id}
 	</select>
 
+	<select id="getByCode" resultType="SampleCodes">
+		SELECT
+		<include refid="sampleCodesColumns"/>
+		FROM bj_sample_codes a
+		<include refid="sampleCodesJoins"/>
+		WHERE a.sample_code = #{sampleCode}
+	</select>
+
 	
 	<select id="findList" resultType="SampleCodes">
 		SELECT 

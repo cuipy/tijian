@@ -7,14 +7,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -97,6 +95,16 @@ public class SampleCodesController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/wshbj/sampleCodes/?repage";
 	}
 
+	@RequiresPermissions("wshbj:sampleCodes:view")
+	@RequestMapping(value = "ajax_get_by_id")
+	@ResponseBody
+	public RequestResult ajax_get_by_id(SampleCodes sampleCodes, Model model) {
+		SampleCodes sc = sampleCodesService.getByCode(sampleCodes);
+		if(sc==null){
+			return RequestResult.generate(10,"获取样本编号库记录失败。");
+		}
+		return RequestResult.generate(1,"获取成功",sc);
+	}
 
 
 

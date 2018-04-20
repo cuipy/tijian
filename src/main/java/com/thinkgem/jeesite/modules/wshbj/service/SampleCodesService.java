@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.sys.entity.GlobalSet;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.dao.SpecimenDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.SampleCodesPack;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.springframework.stereotype.Service;
@@ -35,9 +36,16 @@ public class SampleCodesService extends CrudService<SampleCodesDao, SampleCodes>
 	@Autowired
 	private SpecimenService specimenService;
 
+	@Autowired
+	private SampleCodesDao sampleCodesDao;
+
 	public SampleCodes get(String id) {
-		return super.get(id);
-	}
+        return super.get(id);
+    }
+
+    public SampleCodes getByCode(SampleCodes sampleCodes) {
+        return sampleCodesDao.getByCode(sampleCodes);
+    }
 	
 	public List<SampleCodes> findList(SampleCodes sampleCodes) {
 		return super.findList(sampleCodes);

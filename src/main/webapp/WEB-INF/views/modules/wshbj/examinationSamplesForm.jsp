@@ -6,6 +6,8 @@
 	<meta name="decorator" content="default"/>
 
 	<script type="text/javascript">
+	    var lastExaminationCode='';
+
 		$(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
@@ -24,33 +26,46 @@
 				}
 			});
 
+            // 体检编号文本框失去焦点事件
             $('#examinationCode').on('blur',inputExaminationCode);
+            $('#examinationCode').on('keypress',enterExaminationCode);
 
-             $('#examinationCode').autocompleter({
+            $('#examinationCode').on('change',chgExaminationCode);
 
-                    highlightMatches: true,
-                    template: '{{ code }} <span>({{ name }})</span>',
-                    hint: false,
-                    cache:false,
-                    empty: false,
-                    limit: 10,
-                    source:"${ctx}/wshbj/examinationRecord/ajax_no_complete_for_autocompleter",
-                    callback: function (value, index, selected) {
+            // 样本编号文本框失去焦点事件
+            $('#code').on('blur',inputCode);
 
-                    }
-                });
+            $('#examinationCode').autocompleter({
+
+                highlightMatches: true,
+                template: '{{ code }} <span>({{ name }})</span>',
+                hint: false,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/examinationRecord/ajax_no_complete_for_autocompleter",
+                callback: function (value, index, selected) {
+
+                }
+            });
 
 		});
 
+		// 选择采集项目的时候触发
+		function clkItemId(){
+            $("#code").removeAttr('readonly');
+		}
+
 		// 设置记录id 用户id 等隐藏控件，设置性别、单位、姓名等现实数据。
 		function setControl(data){
+		    $("#code").prop("readonly",true);
+
 		    if(data==null){
 		        $('#recordId').val('');
                 $('#userId').val('');
                 $('#userName').val('');
                 $('#sex').val('');
                 $('#organ').val('');
-
                 return;
 		    }
             $('#recordId').val(data.id);
@@ -59,25 +74,68 @@
             $('#sex').val(data.strSex);
             $('#organ').val(data.organName);
 
+            // 获取体检类型
+            var specimenId = $("input[name='itemId']:checked").attr('data-specimen_id');
+            if(specimenId!=undefined){
+                $("#code").removeAttr("readonly");
+            }
+
             // 加载当前用户报名的体检项目
             var itemsHtml="";
-            for(var i=0;i<data.items.length;i++){
-                var item=data.items[i];
-                if( item.needSamples != 1){
-                    continue;
+            if(data.items!=null){
+                for(var i=0;i<data.items.length;i++){
+                    var item=data.items[i];
+                    if( item.needSamples != 1){
+                        continue;
+                    }
+                    var result_flag = '';
+                    var resultFlatDetail='';
+
+                    if(item.result_flag==null||item.result_flag=='' ){
+                        result_flag='';
+                        resultFlatDetail='未检查';
+                    }else if(item.result_flag=='0'){
+                         result_flag='0';
+                         resultFlatDetail='不合格';
+                    }else if(item.result_flag=='1'){
+                          result_flag='1';
+                          resultFlatDetail='合格';
+                     }
+
+                    itemsHtml+="<input type='radio' name='itemId' id='itemId_"+item.itemId+"' value='"+item.itemId+"' data-flag='"+item.examinationFlag
+                    +"' data-specimen_id='"+item.specimenId+"' data-result_flag='"+result_flag+"' onclick='clkItemId()'>";
+                    itemsHtml+="<label for='itemId_"+item.itemId+"'>"+item.itemName+"&nbsp;&nbsp;";
+                    itemsHtml+= item.examinationFlag==1?"(初检)":"(复检)";
+                    itemsHtml+= '&nbsp;&nbsp;'+resultFlatDetail;
+
+                    itemsHtml+=" </label>&nbsp;&nbsp;";
                 }
-                itemsHtml+="<input type='radio' name='itemId' id='itemId_"+item.itemId+"' value='"+item.itemId+"' data-flag='"+item.examinationFlag+"'><label for='itemId_"+item.itemId+"'>"+item.itemName+"&nbsp;";
-                itemsHtml+= item.examinationFlag==1?"(初检)":"(复检)";
-                itemsHtml+=" </label>&nbsp;&nbsp;";
             }
             $("#box_items").html(itemsHtml);
         }
 
+        // 体检编号文本框内容发生变化
+        function chgExaminationCode(){
+
+        }
+
+        function enterExaminationCode(evt){
+            if(evt.keyCode==13){
+                inputExaminationCode();
+            }
+        }
+
         function inputExaminationCode(){
+
             var examinationCode = $('#examinationCode').val();
+            if(lastExaminationCode==examinationCode){
+                return;
+            }
 
             if(!examinationCode||examinationCode.length<3){
-                setControl('','','','','');
+                setControl(null);
+                lastExaminationCode='';
+                return;
             }
 
             // ajax方式获取体检项目
@@ -85,11 +143,50 @@
             $.post(url,{'code':examinationCode},function (d1r) {
                 if(!d1r){
                     showTip("由于未知原因，获取数据失败","error");
+                    lastExaminationCode='';
                 }else if(d1r.state!=1){
                     showTip(d1r.msg,"error");
+                    lastExaminationCode='';
                 }else{
                     setControl(d1r.data);
+                    lastExaminationCode=examinationCode;
                 }
+            });
+        }
+
+        // 样本编号输入后做检查
+        function inputCode(){
+            // 当前体检类型
+            var specimenId = $("input[name='itemId']:checked").attr('data-specimen_id');
+
+            var code= $("#code").val();
+
+            if(code==null||code==''){
+                return;
+            }
+
+            var url="${ctx}/wshbj/sampleCodes/ajax_get_by_id";
+            var d1={sampleCode:code,v:new Date().getTime()};
+            $.get(url,d1,function(d1r){
+                if(d1r.state==1 ){
+                    // 如果样本类型编号不一致 ，则报错
+                    if(d1r.data.specimenId != specimenId ){
+                        showTip("样本编号所属类型与采集项目不一致","error");
+                        $("#code").val('');
+                        return;
+                    }
+                    if(d1r.data.isUsed =='1'){
+                        showTip("样本编号已经使用了，不可使用该样本编号","error");
+                        $("#code").val('');
+                        return;
+                    }
+
+                    showTip("编号正确，允许使用");
+                    return;
+                }else{
+                    showTip(d1r.msg,"error");
+                }
+                $("#code").val('');
             });
         }
 
@@ -142,21 +239,12 @@
 		<div class="control-group span12">
             <label class="control-label"><font color="red">*</font>样本编号：</label>
             <div class="controls">
-                <form:input path="code" htmlEscape="false" maxlength="50" class="input-large required"/>
+                <form:input path="code" htmlEscape="false" maxlength="50" class="input-large required" readonly="true"/>
                 <span class="help-inline"> 采样人员定期会领取一定数量的样本编号条码贴。 </span>
             </div>
         </div>
 
 		<div class="cl"></div>
-
-
-		<div class="control-group span12">
-			<label class="control-label">是否初检：</label>
-			<div class="controls" id="box_is_first">
-				<input type="radio" id="examinationFlag1" name="examinationFlag" value="1" checked/><label for="examinationFlag1">初检</label>
-				<input type="radio" id="examinationFlag2" name="examinationFlag" value="2" /><label for="examinationFlag2">复检</label>
-			</div>
-		</div>
 
 		<div class="control-group span12">
 			<label class="control-label"> <font color="red">*</font> 采集项目：</label>
