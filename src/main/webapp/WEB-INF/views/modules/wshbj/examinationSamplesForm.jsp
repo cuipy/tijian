@@ -5,6 +5,7 @@
 	<title>体检样本管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+		var examinationCode;
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
@@ -40,6 +41,27 @@
                     //防止form提交
                     return false;
                 }
+            });
+
+
+            $('#examinationCode').on('input',function(event){
+                examinationCode = $('#examinationCode').val();
+                var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
+                $.post(url,{code:examinationCode},function (data) {
+                    if(data && examinationCode == data.code){
+                        $('#recordId').val(data.id);
+                        $('#userId').val(data.userId);
+                        $('#userName').val(data.userName);
+                        $('#sex').val(data.sexLabel);
+                        $('#organ').val(data.organName);
+                    }else{
+                        $('#recordId').val('');
+                        $('#userId').val('');
+                        $('#userName').val('');
+                        $('#sex').val('');
+                        $('#organ').val('');
+					}
+                });
             });
 		});
 		
@@ -88,7 +110,7 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">是否初检：</label>
 			<div class="controls">
 				<input type="radio" id="examinationFlag1" name="examinationFlag" value="1" checked/><label for="examinationFlag1">初检</label>
