@@ -7,6 +7,8 @@ import java.util.List;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
+import com.thinkgem.jeesite.modules.sys.entity.GlobalSet;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.SampleCodesPack;
@@ -53,6 +55,7 @@ public class SampleCodesService extends CrudService<SampleCodesDao, SampleCodes>
 
 		// 获得前缀
 		String prefix=specimen.getPrefix();
+		String gprefix=GlobalSetUtils.getGlobalSet().getCodePre();
 
 		// 生成编号
 		for (int i = 0; i < sampleCodesPack.getCodeCount(); i++) {
@@ -69,6 +72,7 @@ public class SampleCodesService extends CrudService<SampleCodesDao, SampleCodes>
 
 			// 创建一个新编号
 			String seq = SysSequenceUtils.nextSequence(SampleCodes.class, "sampleCode");
+			sc.setSampleCode(gprefix+prefix+seq);
 
 			super.save(sc);
 		}

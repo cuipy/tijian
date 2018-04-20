@@ -35,7 +35,9 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>更新时间</th>
+				<th>创建时间</th>
+				<th>样本类型</th>
+				<th>编号数量</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="wshbj:sampleCodes:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -45,14 +47,20 @@
 			<tr>
 				<td>
 				<a href="${ctx}/wshbj/sampleCodesPack/view?id=${sampleCodesPack.id}">
-					<fmt:formatDate value="${sampleCodesPack.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${sampleCodesPack.createDate}" pattern="yyyy-MM-dd HH:mm"/>
 				</a></td>
+				<td>
+
+                    ${sampleCodesPack.specimenName}
+                </td>
+                <td>
+                    ${sampleCodesPack.codeCount}
+                </td>
 				<td>
 				
 					${sampleCodesPack.remarks}
 				</td>
 				<shiro:hasPermission name="wshbj:sampleCodes:edit"><td>
-    				<a href="${ctx}/wshbj/sampleCodesPack/form?id=${sampleCodesPack.id}">修改</a>
 					<a href="${ctx}/wshbj/sampleCodesPack/delete?id=${sampleCodesPack.id}" onclick="return confirmx('确认要删除该样本编号包吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>

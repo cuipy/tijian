@@ -11,6 +11,7 @@
 		a.is_used AS "isUsed",
 		a.auth_id AS "authId",
 		a.auth_name AS "authName",
+		a.owner ,
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -75,6 +76,7 @@
 			pack_id,
 			sample_code,
 			is_used,
+			owner,
 			auth_id,
 			auth_name,
 			create_by,
@@ -90,6 +92,7 @@
 			#{packId},
 			#{sampleCode},
 			#{isUsed},
+			#{owner},
 			#{authId},
 			#{authName},
 			#{createBy.id},
@@ -109,6 +112,7 @@
 				<if test="packId !=null and packId != '' ">pack_id = #{packId},</if>
 				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
 				<if test="isUsed !=null and isUsed != '' ">is_used = #{isUsed},</if>
+				<if test="owner !=null and owner != '' ">owner = #{owner},</if>
 				<if test="authId !=null and authId != '' ">auth_id = #{authId},</if>
 				<if test="authName !=null and authName != '' ">auth_name = #{authName},</if>
 				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>

@@ -105,6 +105,11 @@ public class SampleCodesPackController extends BaseController {
 	@RequestMapping(value = "save")
 	public String save(SampleCodesPack sampleCodesPack, Model model, RedirectAttributes redirectAttributes) {
 
+		if(!StringUtils.isEmpty(sampleCodesPack.getId())){
+			addMessage(redirectAttributes,"该数据不允许编辑");
+			return "redirect:"+Global.getAdminPath()+"/wshbj/sampleCodesPack/?repage";
+		}
+
 		// 设置创建人
 		sampleCodesPack.setAuthId(UserUtils.getUser().getId());
 		sampleCodesPack.setAuthName(UserUtils.getUser().getName());
@@ -119,6 +124,8 @@ public class SampleCodesPackController extends BaseController {
 			addMessage(redirectAttributes,rr.getMsg());
 			return "redirect:"+Global.getAdminPath()+"/wshbj/sampleCodesPack/?repage";
 		}
+
+		// 创建编号
 		RequestResult rr2 = sampleCodesService.createCodes(sampleCodesPack);
 
 		if(rr2.getState()!=1){
