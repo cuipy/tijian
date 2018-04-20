@@ -59,7 +59,8 @@ legend + .control-group {margin-top:6px;}
 
 .form-horizontal {margin:0 10px;}
 
-.form-horizontal .control-label {padding-top:3px;} .form-horizontal .controls {text-align:left;overflow-x:auto;overflow-y:hidden;}
+.form-horizontal .control-label {padding-top:3px;}
+.form-horizontal .controls {text-align:left;}
 .form-horizontal .controls label.error {background-position:0 2px;}
 
 .form-horizontal .table-form{width:100%;border-color:#dddddd;}

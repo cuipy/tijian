@@ -4,6 +4,7 @@
 <head>
 	<title>体检样本管理</title>
 	<meta name="decorator" content="default"/>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
@@ -41,6 +42,22 @@
                     return false;
                 }
             });
+
+             $('#examinationCode').autocompleter({
+
+                    highlightMatches: true,
+                    template: '{{ code }} <span>({{ name }})</span>',
+                    hint: false,
+                    cache:false,
+                    empty: false,
+                    limit: 10,
+                    source:"${ctx}/wshbj/examinationRecord/ajax_no_complete_for_autocompleter",
+                    // source :function(resp){resp([{label:'ask等级分',value:'1232323'}])},
+                    callback: function (value, index, selected) {
+
+                    }
+                });
+
 		});
 		
 		function submitForm() {
@@ -66,7 +83,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationSamples/form?id=${examinationSamples.id}">体检样本<shiro:hasPermission name="wshbj:examinationSamples:edit">${not empty examinationSamples.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active">
+		<shiro:hasPermission name="wshbj:examinationSamples:edit">
+		    <a href="${ctx}/wshbj/examinationSamples/form?id=${examinationSamples.id}">体检样本${not empty examinationSamples.id?'修改':'采集'}</shiro:hasPermission>
+		<shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
 		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 	</ul><br/>
 
@@ -74,72 +94,80 @@
 	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
 		<form:hidden path="recordId"/>
 		<sys:message content="${message}"/>
-		<div class="control-group">
-			<label class="control-label">体检编号：</label>
+
+		<div class="row">
+		<div class="control-group span12">
+			<label class="control-label"><font color="red">*</font>体检编号：</label>
 			<div class="controls">
 				<form:hidden path="id"/>
-				<form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+				<div class="autocompleter-box"><form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-large"/></div>
+				<span class="help-inline"> 信息登记时的编号，推荐采用条码扫描枪录入。 </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">样本编号：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
+        <div class="cl"></div>
+
+		<div class="control-group span12">
+            <label class="control-label"><font color="red">*</font>样本编号：</label>
+            <div class="controls">
+                <form:input path="code" htmlEscape="false" maxlength="50" class="input-large required"/>
+                <span class="help-inline"> 采样人员定期会领取一定数量的样本编号条码贴。 </span>
+            </div>
+        </div>
+
+		<div class="cl"></div>
+
+
+		<div class="control-group span12">
 			<label class="control-label">是否初检：</label>
 			<div class="controls">
 				<input type="radio" id="examinationFlag1" name="examinationFlag" value="1" checked/><label for="examinationFlag1">初检</label>
 				<input type="radio" id="examinationFlag2" name="examinationFlag" value="2" /><label for="examinationFlag2">复检</label>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">采集项目：</label>
+
+		<div class="control-group span12">
+			<label class="control-label"> <font color="red">*</font> 采集项目：</label>
 			<div class="controls">
-				<select id="itemId" name="itemId" class="input-xlarge required">
-					<c:forEach items="${itemList}" var="item">
-							<option value="${item.id}">${item.name}</option>
-					</c:forEach>
-				</select>
-				<span class="help-inline"><font color="red">*</font> </span>
+                <c:forEach items="${itemList}" var="item">
+                 <input type="radio" name="itemId" id="itemId_${item.id}" value="${item.id}"><label for="itemId_${item.id}">${item.name}</label> &nbsp;&nbsp;&nbsp;&nbsp;
+                </c:forEach>
 			</div>
 		</div>
-		<div class="control-group">
+        <div class="cl"></div>
+
+		<div class="control-group span6">
 			<label class="control-label">体检用户：</label>
 			<div class="controls">
 				<form:hidden path="userId"/>
-				<input id="userName" name="userName" readonly class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input type="text" id="userName" name="userName" readonly class="input-large "/>
+
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group  span6">
 			<label class="control-label">性别：</label>
 			<div class="controls">
-				<input id="sex" name="sex" readonly class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input type="text" id="sex" name="sex" readonly class="input-large "/>
 			</div>
 		</div>
 
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<input id="organ" name="organ" readonly class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<input type="text" id="organ" name="organ" readonly class="input-large"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions  span12">
 			<shiro:hasPermission name="wshbj:examinationSamples:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存" onclick="submitForm();"/>&nbsp;</shiro:hasPermission>
-            <shiro:hasPermission name="wshbj:examinationSamples:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="撤销" onclick=""/>&nbsp;</shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		</div>
+
 	</form:form>
 	</div>
 

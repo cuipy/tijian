@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.wshbj.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
 import org.apache.ibatis.annotations.Param;
 

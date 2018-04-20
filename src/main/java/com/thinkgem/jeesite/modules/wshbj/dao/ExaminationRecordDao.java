@@ -31,4 +31,7 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
 	List<Map> getList4CertForm(@Param("startDate")String startDate,@Param("endDate") String endDate
 			,@Param("code") String code,@Param("organId") String organId,@Param("name") String name,@Param("status") String status);
+
+	List<ExaminationRecord> listBeforeStatus(ExaminationRecord examinationRecord);
+
 }

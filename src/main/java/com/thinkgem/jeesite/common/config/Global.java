@@ -81,7 +81,7 @@ public class Global {
 	/**
 	 * 获取配置
 	 * 
-	 * @see ${fns:getConfig('adminPath')}
+	 * @see /${fns:getConfig('adminPath')}
 	 */
 	public static String getConfig(String key) {
 		String value = map.get(key);
@@ -132,7 +132,7 @@ public class Global {
 	/**
 	 * 页面获取常量
 	 * 
-	 * @see ${fns:getConst('YES')}
+	 * @see /${fns:getConst('YES')}
 	 */
 	public static Object getConst(String field) {
 		try {
@@ -168,7 +168,7 @@ public class Global {
 		String siteHost = getConfig("site_host");
 		if (StringUtils.isEmpty(siteHost)) {
 			try {
-				siteHost = "localhost"
+				siteHost = "localhost";
 			} catch (Exception e) {
 				return "";
 			}

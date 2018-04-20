@@ -1,0 +1,145 @@
+/* 
+ * Autocompleter v0.1.2.1 - 2014-05-23 
+ * Simple, easy, customisable and with cache support. 
+ * http://github.com/ArtemFitiskin/jquery-autocompleter 
+ * 
+ * Copyright 2014 Artem Fitiskin; MIT Licensed 
+ */ 
+
+.autocompleter {
+    width: 100%;
+    display: none;
+}
+
+.autocompleter-show {
+    display: block;
+}
+
+.autocompleter,
+.autocompleter-hint {
+    position: absolute;
+}
+
+.autocompleter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.autocompleter-item {
+    cursor: pointer;
+}
+
+.autocompleter-item:hover {
+    /* Hover State */
+}
+
+.autocompleter-item-selected {
+    /* Selected State */
+}
+
+.autocompleter-item strong {
+    /* Highlight Matches */
+}
+
+.autocompleter-hint {
+    width: 100%;
+    display: none;
+
+    /** Need absolute position over input text */
+}
+
+.autocompleter-hint-show {
+    display: block;
+}
+
+.autocompleter-hint span {
+    color: transparent;
+}
+
+
+
+/**
+ * Simplecomplete
+ */
+.autocompleter-box{
+    display:inline-block;
+    position:relative;
+    overflow-x:visible;
+    overflow-y:visible;
+}
+
+.autocompleter {
+    width: auto;
+    background: #dddddd;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    z-index: 1000;
+}
+
+.autocompleter,
+.autocompleter-hint {
+    position: absolute;
+}
+
+.autocompleter-list {
+    box-shadow: inset 0px 0px 6px rgba(0,0,0,0.1);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.autocompleter-item-selected {
+    background: #ffffff;
+}
+
+.autocompleter-item {
+    padding: 6px 12px;
+    color: #444444;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.autocompleter-item:hover {
+    background: #dbed8a;
+}
+
+.autocompleter-item strong {
+    background: #f9de8f;
+    text-shadow: 0 1px 0 #ffffff;
+}
+
+.autocompleter-item span {
+    color: #bbbbbb;
+}
+
+.autocompleter-hint {
+    font-family: Helvetica, Georgia, Arial, sans-serif, 宋体;
+    color: #ccc;
+    text-align: left;
+    top: -30px;
+    font-weight: 400;
+    left: 0;
+    width: 100%;
+    padding: 5px 6px;
+    font-size:14px;
+    display: none;
+}
+
+.autocompleter-hint span {
+    color: transparent;
+}
+
+.autocompleter-hint-show {
+    display: block;
+}
+
+.autocompleter-closed {
+    display: none;
+}

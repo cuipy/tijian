@@ -39,6 +39,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ExaminationRecordService extends CrudService<ExaminationRecordDao, ExaminationRecord> {
 
     @Autowired
+    private ExaminationRecordDao examinationRecordDao;
+    @Autowired
     private ExaminationRecordItemDao examinationRecordItemDao;
     @Autowired
     private ExaminationUserService examinationUserService;
@@ -129,6 +131,15 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     public List<ExaminationRecord> findList(ExaminationRecord examinationRecord) {
         return super.findList(examinationRecord);
+    }
+
+    /**
+     * 获取状态小于等于某个值的记录列表
+     * @param examinationRecord
+     * @return
+     */
+    public List<ExaminationRecord> listBeforeStatus(ExaminationRecord examinationRecord) {
+        return examinationRecordDao.listBeforeStatus(examinationRecord);
     }
 
     public Page<ExaminationRecord> findPage(Page<ExaminationRecord> page, ExaminationRecord examinationRecord) {

@@ -19,21 +19,26 @@ public class ExaminationRecordConstant {
     public static final String STATUS10 = "10";
 
     /**
-     * 20-体检不合格
+     * 20-初验不合格
      */
     public static final String STATUS20 = "20";
 
 
     /**
-     * 30-复检合格
+     * 30-复检不合格
      */
     public static final String STATUS30 = "30";
 
 
     /**
-     * 40-可制证
+     * 40-初检合格可制证
      */
     public static final String STATUS40 = "40";
+
+    /**
+     * 40-复检合格可制证
+     */
+    public static final String STATUS45 = "45";
 
 
     /**

@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
@@ -29,6 +30,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.ConstraintViolationException;
@@ -365,5 +369,41 @@ public class ExaminationRecordController extends BaseController {
 	public List<Map> getList4CertForm(String startDate,String endDate,String examinationCode
 			,String organId, String userName, String status) {
 		return examinationRecordService.getList4CertForm(startDate,endDate,examinationCode,organId,userName,status);
+	}
+
+	/**
+	 * ajax方式获取未完成的体检记录列表，用于autocomplete
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@GetMapping(value = {"ajax_no_complete_for_autocompleter"})
+	@ResponseBody
+	public List ajax_no_complete_for_autocompleter(String query, Model model){
+		List<Map<String, String>> lstres = new ArrayList();
+		try {
+			ExaminationRecord er = new ExaminationRecord();
+
+			er.setOwner(UserUtils.getUser().getCompany().getId());
+			er.setCode(query);
+			er.setStatus(ExaminationRecordConstant.STATUS30);
+			List<ExaminationRecord> lst = examinationRecordService.listBeforeStatus(er);
+
+
+			for (ExaminationRecord ertmp : lst) {
+				Map<String, String> mer = new HashMap();
+				mer.put("id", ertmp.getId());
+				mer.put("name", ertmp.getName());
+				mer.put("code", ertmp.getCode());
+
+				mer.put("value", ertmp.getCode());
+				mer.put("label", ertmp.getCode() + "[" + ertmp.getName() + "]");
+				lstres.add(mer);
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();;
+		}
+		return lstres;
 	}
 }
