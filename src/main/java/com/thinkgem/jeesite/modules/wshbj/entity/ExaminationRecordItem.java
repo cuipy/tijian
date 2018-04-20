@@ -22,6 +22,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String itemId;		// 检查项目
 	private String itemName;		// 项目
 	private String needSamples;		//是否需要样本：0-否，1-是
+	private String specimenId;		// 体检标本类型ID  最终样本编号的specimenId必须与这个一致
 	private String sampleCode;		// 样本编号
 	private String resultDictId;		// 体检结果
 	private String resultDictName;		// 体检结果
@@ -132,5 +133,14 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	public void setLastFlag(String lastFlag) {
 		this.lastFlag = lastFlag;
+	}
+
+	@Length(min=1, max=64, message="体检样本id的长度必须介于 1 和 64 之间")
+	public String getSpecimenId() {
+		return specimenId;
+	}
+
+	public void setSpecimenId(String specimenId) {
+		this.specimenId = specimenId;
 	}
 }

@@ -280,6 +280,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                 recordItem.setItemName(examinationItem.getName());
                 recordItem.setExaminationFlag("1");//初检
                 recordItem.setNeedSamples(examinationItem.getNeedSamples());
+                recordItem.setSpecimenId(examinationItem.getSpecimenId());
                 recordItem.setLastFlag("1");
                 recordItem.preInsert();
                 examinationRecordItemDao.insert(recordItem);
@@ -300,6 +301,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                         }
                         recordItem.setExaminationFlag("1");//初检
                         recordItem.setNeedSamples(examinationItem.getNeedSamples());
+                        recordItem.setSpecimenId(examinationItem.getSpecimenId());
                         recordItem.setLastFlag("1");
                         recordItem.preInsert();
                         examinationRecordItemDao.insert(recordItem);

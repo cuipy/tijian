@@ -98,6 +98,7 @@ public class ExaminationItemController extends BaseController {
 	public String form(ExaminationItem examinationItem, Model model) {
 		model.addAttribute("examinationItem", examinationItem);
 
+		// 加载体检项目类型 属于体检小类
 		ExaminationItemType examinationItemType = new ExaminationItemType();
 		examinationItemType.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationItemType.setDelFlag("0");
@@ -105,6 +106,7 @@ public class ExaminationItemController extends BaseController {
 		List<ExaminationItemType> examinationItemTypeList = examinationItemTypeService.findList(examinationItemType);
 		model.addAttribute("examinationItemTypeList", examinationItemTypeList);
 
+		// 加载标本列表
 		Specimen specimen = new Specimen();
 		specimen.setOwner(UserUtils.getUser().getCompany().getId());
 		specimen.setDelFlag("0");
