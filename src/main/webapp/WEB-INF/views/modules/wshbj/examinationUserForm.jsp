@@ -35,6 +35,14 @@
 	<form:form id="inputForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
+
+		<div class="control-group">
+            <label class="control-label">真人照片采集：</label>
+            <div class="controls">
+                <sys:cropper mainImgWidth="360" imgName="真人照片" path="headImgPath" value="${examinationUser.headImgPath}"/>
+            </div>
+        </div>
+
 		<div class="control-group">
 			<label class="control-label">姓名：</label>
 			<div class="controls">

@@ -75,7 +75,7 @@
 				<td>${user.roleNames}</td> --%>
 				<shiro:hasPermission name="sys:user:edit"><td>
     				<a href="${ctx}/sys/user/form?id=${user.id}">修改</a>
-					<a href="${ctx}/sys/user/delete?id=${user.id}" onclick="return confirmx('确认要删除该用户吗？', this.href)">删除</a>
+					<c:if test="${user.defaultRecord == 0 }"><a href="${ctx}/sys/user/delete?id=${user.id}" onclick="return confirmx('确认要删除该用户吗？', this.href)">删除</a> </c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

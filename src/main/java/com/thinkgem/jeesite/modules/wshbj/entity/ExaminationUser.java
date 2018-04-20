@@ -17,6 +17,8 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private static final long serialVersionUID = 1L;
 	private String code;		// 编号
 	private String name;		// 姓名
+
+	private String headImgPath;		// 真实照片
 	private String phoneNumber;		// 联系电话
 	private String idNumber;		// 身份证号
 	private String sex;		// 性别
@@ -123,5 +125,13 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+	@Length(min=0, max=128, message="真实照片图片地址字符长度必须介于 0 和 128 之间")
+	public String getHeadImgPath() {
+		return headImgPath;
+	}
+
+	public void setHeadImgPath(String headImgPath) {
+		this.headImgPath = headImgPath;
+	}
 }

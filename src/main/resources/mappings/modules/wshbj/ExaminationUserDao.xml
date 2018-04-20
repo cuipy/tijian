@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.code AS "code",
 		a.name AS "name",
+		a.head_img_path as "headImgPath",
 		a.phone_number AS "phoneNumber",
 		a.id_number AS "idNumber",
 		a.sex AS "sex",
@@ -104,6 +105,7 @@
 			id,
 			code,
 			name,
+			<if test="headImgPath != null ">head_img_path,</if>
 			phone_number,
 			sex,
 			id_number,
@@ -122,6 +124,7 @@
 			#{id},
 			#{code},
 			#{name},
+		<if test="headImgPath != null ">#{headImgPath},</if>
 			#{phoneNumber},
 			#{sex},
 			#{idNumber},
@@ -143,6 +146,7 @@
 		UPDATE bj_examination_user SET 	
 			code = #{code},
 			name = #{name},
+		<if test="headImgPath != null ">head_img_path=#{headImgPath},</if>
 			phone_number = #{phoneNumber},
 			sex = #{sex},
 			id_number = #{idNumber},

@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.core.io.DefaultResourceLoader;
 
 import com.ckfinder.connector.ServletContextFactory;
@@ -161,6 +162,27 @@ public class Global {
 		}
 		// System.out.println("userfiles.basedir: " + dir);
 		return dir;
+	}
+
+	public static String getSiteHost(){
+		String siteHost = getConfig("site_host");
+		if (StringUtils.isEmpty(siteHost)) {
+			try {
+				siteHost = "localhost"
+			} catch (Exception e) {
+				return "";
+			}
+		}
+		return siteHost;
+	}
+
+	public static Integer getWebsocketPort(){
+		String port=getConfig("websockt_port");
+		if(StringUtils.isEmpty(port)||!NumberUtils.isNumber(port)){
+			port="5432";
+		}
+
+		return Integer.parseInt(port);
 	}
 
 	/**

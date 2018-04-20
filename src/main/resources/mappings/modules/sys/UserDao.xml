@@ -80,6 +80,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		a.default_record,
     	c.name AS "company.name",
 		c.code AS "company.code",
 		c.parent_id AS "company.parent.id",
@@ -244,7 +245,8 @@
 			update_date, 
 			remarks, 
 			login_flag, 
-			photo, 
+			photo,
+			<if test="defaultRecord != null ">default_record,</if>
 			del_flag
 		) VALUES (
 			#{id}, 
@@ -264,7 +266,8 @@
 			#{updateDate}, 
 			#{remarks}, 
 			#{loginFlag}, 
-			#{photo}, 
+			#{photo},
+		<if test="defaultRecord != null ">defaultRecord,</if>
 			#{delFlag}
 		)
 	</insert>
@@ -286,6 +289,7 @@
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
 			login_flag = #{loginFlag},
+		<if test="defaultRecord != null ">default_record=#{defaultRecord},</if>
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>
@@ -338,7 +342,7 @@
 	<update id="delete">
 		UPDATE sys_user SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
+		WHERE id = #{id} and default_record = 0
 	</update>
 	
 </mapper>
