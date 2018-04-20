@@ -19,7 +19,7 @@ import java.util.Map;
 @MyBatisDao
 public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
-	public ExaminationRecord getByCode(String code);
+	public ExaminationRecord getByCode(ExaminationRecord examinationRecord);
 
 	public Map getMapByCode(String code);
 

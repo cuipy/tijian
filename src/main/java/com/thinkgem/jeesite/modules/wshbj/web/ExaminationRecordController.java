@@ -113,6 +113,12 @@ public class ExaminationRecordController extends BaseController {
 		return "modules/wshbj/examinationRecordView";
 	}
 
+	/**
+	 * 制作 体检流程表
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "print")
 	public String print(String id, Model model) {
@@ -320,23 +326,25 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 
-	@ResponseBody
-	@RequestMapping(value = "getByCode")
-	public ExaminationRecord getByCode(@RequestParam(required=true) String code, HttpServletResponse response) {
-		if (org.apache.commons.lang3.StringUtils.isBlank(code)){
-			return null;
-		}
-		ExaminationRecord examinationRecord = examinationRecordService.getByCode(code);
-		return examinationRecord;
-	}
 
+	/**
+	 * 通过记录id获取采购信息
+	 * @param response
+	 * @return
+	 */
     @ResponseBody
-    @RequestMapping(value = "getMapByCode")
-    public Map getMapByCode(@RequestParam(required=true) String code, HttpServletResponse response) {
-        if (org.apache.commons.lang3.StringUtils.isBlank(code)){
-            return new HashedMap();
-        }
-        return examinationRecordService.getMapByCode(code);
+    @RequestMapping(value = "ajax_get_by_record_code")
+    public RequestResult ajax_get_by_record_code(ExaminationRecord examinationRecord, HttpServletResponse response) {
+    	if(examinationRecord==null||StringUtils.isEmpty(examinationRecord.getCode())){
+    		return RequestResult.generate(10,"未能获取体检记录的code");
+		}
+
+		ExaminationRecord er = examinationRecordService.getByCode(examinationRecord);
+    	if(er==null){
+			return RequestResult.generate(12,"由于未知原因，code :"+examinationRecord.getCode()+"未能获取体检记录数据");
+		}
+
+		return RequestResult.generate(RequestResult.SUCCESS,"获取体检记录成功",er);
     }
 
 	@ResponseBody

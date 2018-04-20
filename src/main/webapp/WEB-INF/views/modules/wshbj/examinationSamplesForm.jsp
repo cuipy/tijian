@@ -24,25 +24,6 @@
 				}
 			});
 
-            /** $('#examinationCode').bind('keypress',function(event){
-                if(event.keyCode == 13) {
-                    var examinationCode = $('#examinationCode').val();
-                    var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
-                    $.post(url,{code:examinationCode},function (data) {
-                        if(data){
-                            $('#recordId').val(data.id);
-                            $('#userId').val(data.userId);
-                            $('#userName').val(data.userName);
-                            $('#sex').val(data.sexLabel);
-                            $('#organ').val(data.organName);
-
-                        }
-                    });
-                    //防止form提交
-                    return false;
-                }
-            }); */
-
             $('#examinationCode').on('blur',inputExaminationCode);
 
              $('#examinationCode').autocompleter({
@@ -61,27 +42,53 @@
 
 		});
 
+		// 设置记录id 用户id 等隐藏控件，设置性别、单位、姓名等现实数据。
+		function setControl(data){
+		    if(data==null){
+		        $('#recordId').val('');
+                $('#userId').val('');
+                $('#userName').val('');
+                $('#sex').val('');
+                $('#organ').val('');
+
+                return;
+		    }
+            $('#recordId').val(data.id);
+            $('#userId').val(data.userId);
+            $('#userName').val(data.name);
+            $('#sex').val(data.strSex);
+            $('#organ').val(data.organName);
+
+            // 加载当前用户报名的体检项目
+            var itemsHtml="";
+            for(var i=0;i<data.items.length;i++){
+                var item=data.items[i];
+                if( item.needSamples != 1){
+                    continue;
+                }
+                itemsHtml+="<input type='radio' name='itemId' id='itemId_"+item.itemId+"' value='"+item.itemId+"' data-flag='"+item.examinationFlag+"'><label for='itemId_"+item.itemId+"'>"+item.itemName+"&nbsp;";
+                itemsHtml+= item.examinationFlag==1?"(初检)":"(复检)";
+                itemsHtml+=" </label>&nbsp;&nbsp;";
+            }
+            $("#box_items").html(itemsHtml);
+        }
+
         function inputExaminationCode(){
             var examinationCode = $('#examinationCode').val();
-
-            function setControl(_id,_userId,_userName,_sexLabel,_organName){
-                $('#recordId').val(_id);
-                $('#userId').val(_userId);
-                $('#userName').val(_userName);
-                $('#sex').val(_sexLabel);
-                $('#organ').val(_organName);
-            }
 
             if(!examinationCode||examinationCode.length<3){
                 setControl('','','','','');
             }
 
-            var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
-            $.post(url,{code:examinationCode},function (data) {
-                if(data && examinationCode == data.code){
-                    setControl(data.id,data.userId,data.userName,data.sexLabel,data.organName);
+            // ajax方式获取体检项目
+            var url = '${ctx}/wshbj/examinationRecord/ajax_get_by_record_code';
+            $.post(url,{'code':examinationCode},function (d1r) {
+                if(!d1r){
+                    showTip("由于未知原因，获取数据失败","error");
+                }else if(d1r.state!=1){
+                    showTip(d1r.msg,"error");
                 }else{
-                    setControl('','','','','');
+                    setControl(d1r.data);
                 }
             });
         }
@@ -145,7 +152,7 @@
 
 		<div class="control-group span12">
 			<label class="control-label">是否初检：</label>
-			<div class="controls">
+			<div class="controls" id="box_is_first">
 				<input type="radio" id="examinationFlag1" name="examinationFlag" value="1" checked/><label for="examinationFlag1">初检</label>
 				<input type="radio" id="examinationFlag2" name="examinationFlag" value="2" /><label for="examinationFlag2">复检</label>
 			</div>
@@ -153,10 +160,8 @@
 
 		<div class="control-group span12">
 			<label class="control-label"> <font color="red">*</font> 采集项目：</label>
-			<div class="controls">
-                <c:forEach items="${itemList}" var="item">
-                 <input type="radio" name="itemId" id="itemId_${item.id}" value="${item.id}"><label for="itemId_${item.id}">${item.name}</label> &nbsp;&nbsp;&nbsp;&nbsp;
-                </c:forEach>
+			<div class="controls" id="box_items">
+
 			</div>
 		</div>
         <div class="cl"></div>
@@ -203,6 +208,12 @@
       2. 样本采用在第一阶段只包括：血样和尿样<br>
       3. 样本采集要基于<br>
       4. 本功能的目的是定义哪些角色可以操作哪些检查项目，比如一个医生拥有了“抽血”的项目，他就可以在系统中看到抽血相关的操作了。
+
+    </div>
+
+    <div class="alert">
+      <strong>操作流程：</strong> <br>
+      <img src="${ctxStatic}/images/docs/yangben_caiji_flow_1.png">
 
     </div>
 

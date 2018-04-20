@@ -145,8 +145,8 @@
       <strong>帮助：</strong> <br>
       1. 信息登记是在体检前进行登记<br>
       2. 该信息一般由前台登记人员创建<br><br>
- <strong>状态说明：</strong> <br>
-<img src="${ctxStatic}/images/docs/tijian_jilu_status_1.png">
+     <strong>状态说明：</strong> <br>
+     <img src="${ctxStatic}/images/docs/tijian_jilu_status_1.png">
     </div>
 
     <div class="alert alert-danger">

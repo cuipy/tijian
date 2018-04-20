@@ -22,13 +22,18 @@
 					}
 				}
 			});
+
+			// 当体检项目方式更改的时候
             $("input[name='itemType']:radio").change(function() {
                 if($(this).val()=='1'){
                     $('#packageIdDiv').show();
                     $('#itemsDiv').hide();
+                    refreshPackagePrice();
+
 				}else {
                     $('#packageIdDiv').hide();
                     $('#itemsDiv').show();
+                    refreshItemsPrice();
 				}
             });
             <c:choose>
@@ -124,14 +129,14 @@
             $("#postId").trigger('change');
         }
 
-        function chgPackage() {
-            var packageid=$('#packageId').val();
-            var price=$('#packageId option:selected').attr('data-price');
-
+        // 选中某个体检套餐，更新总费用
+        function refreshPackagePrice() {
+            var price=$("input[type='radio'][id*='packageId_']:checked").attr('data-price');
             $("#packagePrice").val(price);
         }
 
-        function clkItems(){
+        // 当勾选体检项目的时候，刷新体检项目总费用
+        function refreshItemsPrice(){
             var aprice=0;
             $("input[type='checkbox'][id*=ri]:checked").each(function(i){
                 var price=$(this).attr("data-price");
@@ -273,12 +278,13 @@
 		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-				<select id="packageId" name="packageId" class="input-large" onchange="chgPackage()">
-				     <option/>请选择体检套餐
-					<c:forEach items="${packageList}" var="p">
-					<option value="${p.id}" data-price="${p.price}" <c:if test="${p.id == examinationRecord.packageId}">selected='selected'</c:if> >${p.name}</option>
-					</c:forEach>
-				</select>
+
+                <c:forEach items="${packageList}" var="p">
+                <input type="radio" id="packageId_${p.id}" name="packageId" value="${p.id}"
+                 onclick="refreshPackagePrice()"
+                 data-price="${p.price}" <c:if test="${p.id == examinationRecord.packageId}">checked='checked'</c:if> />
+                <label for="packageId_${p.id}">${p.name}</label>
+                </c:forEach>
 
 			</div>
 		</div>
@@ -287,7 +293,7 @@
 			<div class="controls">
 			    <c:if test="${not empty examinationItemList  }">
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
-				<input id="ri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="clkItems()"
+				<input id="ri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
 				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
 				<label for="ri${ri.id}">[${ri.code}] ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
 				</c:forEach>

@@ -64,30 +64,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return examinationRecord;
     }
 
-    public ExaminationRecord getByCode(String code) {
-        ExaminationRecord examinationRecord = this.dao.getByCode(code);
-        if (examinationRecord != null) {
-            ExaminationRecordItem recordItem = new ExaminationRecordItem();
-            recordItem.setRecordId(examinationRecord.getId());
-            examinationRecord.setExaminationRecordItemList(examinationRecordItemDao.findList(recordItem));
-        }
-
+    public ExaminationRecord getByCode(ExaminationRecord examinationRecord) {
+        examinationRecord = this.dao.getByCode(examinationRecord);
         return examinationRecord;
-    }
-
-    public Map getMapByCode(String code) {
-        if (StringUtils.isBlank(code)){
-            new HashMap<String,Object>();
-        }
-
-        Map map = this.dao.getMapByCode(code);
-        if (map!=null && map.containsKey("id")){
-            ExaminationRecordItem recordItem = new ExaminationRecordItem();
-            recordItem.setRecordId(map.get("id").toString());
-            map.put("examinationRecordItemList",examinationRecordItemDao.findList(recordItem));
-        }
-
-        return map;
     }
 
     public Map getMapByCode4Result(String code,String examinationFlag) {
@@ -238,21 +217,21 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         //
         if (examinationUser != null) {
             if (!examinationRecord.getIdNumber().equals(examinationUser.getIdNumber())) {
-                resultMessages.add("身份证与系统内信息不一致");
+                resultMessages.add("身份证与体检用户内记录信息不一致");
                 return ResponseResult.generateFailResult("用户信息错误", resultMessages);
             }
             if (!examinationRecord.getName().equals(examinationUser.getName())) {
-                resultMessages.add("名称与系统内信息不一致");
+                resultMessages.add("名称与体检用户内记录信息不一致");
                 return ResponseResult.generateFailResult("用户信息错误", resultMessages);
             }
             if (!examinationRecord.getSex().equals(examinationUser.getSex())) {
-                resultMessages.add("性别与系统内信息不一致");
+                resultMessages.add("性别与体检用户内记录的信息不一致");
                 return ResponseResult.generateFailResult("用户信息错误", resultMessages);
             }
-            if (!examinationRecord.getBirthday().equals(examinationUser.getBirthday())) {
-                resultMessages.add("出生日期与系统内信息不一致");
-                return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-            }
+//            if (!examinationRecord.getBirthday().equals(examinationUser.getBirthday())) {
+//                resultMessages.add("出生日期与系统内信息不一致");
+//                return ResponseResult.generateFailResult("用户信息错误", resultMessages);
+//            }
         } else {
             //验证是否存在相同身份证用户
             examinationUser = examinationUserService.getByIdNumberAndOwner(examinationRecord.getIdNumber(), examinationRecord.getOwner());

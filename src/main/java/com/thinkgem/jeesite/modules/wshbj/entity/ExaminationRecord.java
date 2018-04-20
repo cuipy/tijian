@@ -368,9 +368,14 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	public Set<String> getItemIds(){
 
+
 		Set<String> sets=new HashSet();
-		for(ExaminationRecordItem ri:getItems()){
-			sets.add(ri.getItemId());
+		List<ExaminationRecordItem> lst = getItems();
+
+		if(lst!=null) {
+			for (ExaminationRecordItem ri : lst) {
+				sets.add(ri.getItemId());
+			}
 		}
 		return sets;
 	}
