@@ -9,6 +9,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import com.thinkgem.jeesite.modules.wshbj.entity.SampleCodes;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import com.thinkgem.jeesite.modules.wshbj.service.SampleCodesService;
@@ -135,6 +136,24 @@ public class SampleCodesPackController extends BaseController {
 
 		addMessage(redirectAttributes, "保存样本编号包成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/sampleCodesPack/?repage";
+	}
+
+	@RequiresPermissions("wshbj:sampleCodes:view")
+	@RequestMapping(value = "export_excel")
+	public String export_excel(SampleCodesPack sampleCodesPack, RedirectAttributes redirectAttributes,HttpServletResponse response) {
+		try {
+			String fileName = "体检样本编号"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+
+			SampleCodes sampleCodes=new SampleCodes();
+			sampleCodes.setPackId(sampleCodesPack.getId());
+
+			List<SampleCodes> list = sampleCodesService.findList(sampleCodes);
+			new ExportExcel("体检样本编号", SampleCodes.class).setDataList(list).write(response, fileName).dispose();
+			return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出体检记录失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + Global.getAdminPath() + "/wshbj/examinationRecord/list?repage";
 	}
 	
 	@RequiresPermissions("wshbj:sampleCodes:edit")

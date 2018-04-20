@@ -61,6 +61,7 @@
 					${sampleCodesPack.remarks}
 				</td>
 				<shiro:hasPermission name="wshbj:sampleCodes:edit"><td>
+					<a href="${ctx}/wshbj/sampleCodesPack/export_excel?id=${sampleCodesPack.id}" onclick="return confirmx('确认要导出该样本编号包吗？', this.href)">导出Excel</a>
 					<a href="${ctx}/wshbj/sampleCodesPack/delete?id=${sampleCodesPack.id}" onclick="return confirmx('确认要删除该样本编号包吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>

@@ -45,6 +45,7 @@ public class SampleCodes extends DataEntity<SampleCodes> {
 	}
 	
 	@Length(min=1, max=64, message="样本类型名称长度必须介于 1 和 64 之间")
+	@ExcelField(value="specimenName",title="样本类型",type=1,sort=10)
 	public String getSpecimenName() {
 		return specimenName;
 	}
@@ -64,6 +65,7 @@ public class SampleCodes extends DataEntity<SampleCodes> {
 
 	@ExpressSequence(express = "{yyyyMMdd}[4]",describe = "样本编号")
 	@Length(min=1, max=64, message="样本编号长度必须介于 1 和 64 之间")
+	@ExcelField(value="sampleCode",title="样本编号",type=1,sort=20)
 	public String getSampleCode() {
 		return sampleCode;
 	}
@@ -79,6 +81,14 @@ public class SampleCodes extends DataEntity<SampleCodes> {
 
 	public void setIsUsed(String isUsed) {
 		this.isUsed = isUsed;
+	}
+
+	@ExcelField(value="strIsUsed",title="是否使用",type=1,sort=30)
+	public String getStrIsUsed(){
+		if("1".equals(isUsed)){
+			return "已使用";
+		}
+		return "未使用";
 	}
 	
 	@Length(min=1, max=64, message="auth_id长度必须介于 1 和 64 之间")
