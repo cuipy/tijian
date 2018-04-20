@@ -19,6 +19,8 @@ public class Specimen extends DataEntity<Specimen> {
 	private String name;		// 名称
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
+
+	private String prefix;
 	
 	public Specimen() {
 		super();
@@ -63,5 +65,12 @@ public class Specimen extends DataEntity<Specimen> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+	public String getPrefix() {
+		return prefix;
+	}
+
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
 }

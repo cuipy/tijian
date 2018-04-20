@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.SampleCodesDao">
+    
+	<sql id="sampleCodesColumns">
+		a.id AS "id",
+		a.specimen_id AS "specimenId",
+		a.specimen_name AS "specimenName",
+		a.pack_id AS "packId",
+		a.sample_code AS "sampleCode",
+		a.is_used AS "isUsed",
+		a.auth_id AS "authId",
+		a.auth_name AS "authName",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="sampleCodesJoins">
+	</sql>
+    
+	<select id="get" resultType="SampleCodes">
+		SELECT 
+			<include refid="sampleCodesColumns"/>
+		FROM bj_sample_codes a
+		<include refid="sampleCodesJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+	
+	<select id="findList" resultType="SampleCodes">
+		SELECT 
+			<include refid="sampleCodesColumns"/>
+		FROM bj_sample_codes a
+		<include refid="sampleCodesJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SampleCodes">
+		SELECT 
+			<include refid="sampleCodesColumns"/>
+		FROM bj_sample_codes a
+		<include refid="sampleCodesJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO bj_sample_codes(
+			id,
+			specimen_id,
+			specimen_name,
+			pack_id,
+			sample_code,
+			is_used,
+			auth_id,
+			auth_name,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{specimenId},
+			#{specimenName},
+			#{packId},
+			#{sampleCode},
+			#{isUsed},
+			#{authId},
+			#{authName},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE bj_sample_codes
+			<set>
+				<if test="specimenId !=null and specimenId != '' ">specimen_id = #{specimenId},</if>
+				<if test="specimenName !=null and specimenName != '' ">specimen_name = #{specimenName},</if>
+				<if test="packId !=null and packId != '' ">pack_id = #{packId},</if>
+				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
+				<if test="isUsed !=null and isUsed != '' ">is_used = #{isUsed},</if>
+				<if test="authId !=null and authId != '' ">auth_id = #{authId},</if>
+				<if test="authName !=null and authName != '' ">auth_name = #{authName},</if>
+				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
+				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
+				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
+			</set>
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE bj_sample_codes SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

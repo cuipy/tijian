@@ -39,21 +39,27 @@
 		<div class="control-group">
 			<label class="control-label">编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-large required"/>
+				<span class="help-inline"> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">名称：</label>
+			<label class="control-label"><font color="red">*</font>名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="input-large required"/>
+				<span class="help-inline"> </span>
 			</div>
 		</div>
+		<div class="control-group">
+            <label class="control-label">样本编号的前缀：</label>
+            <div class="controls">
+                <form:input path="prefix" htmlEscape="false" maxlength="16" class="input-large required"/>
+            </div>
+        </div>
 		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-large "/>
 			</div>
 		</div>
 		<div class="form-actions">
