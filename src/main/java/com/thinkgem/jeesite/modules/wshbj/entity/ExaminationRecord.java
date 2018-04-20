@@ -367,9 +367,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 
 	public Set<String> getItemIds(){
-		if(!ExaminationRecordConstant.ITEM_TYPE_2.equals(this.getItemType())||getItems()==null||getItems().size()<=0){
-			return null;
-		}
 
 		Set<String> sets=new HashSet();
 		for(ExaminationRecordItem ri:getItems()){

@@ -6,7 +6,7 @@
 	<meta name="decorator" content="default"/>
 
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -24,7 +24,7 @@
 				}
 			});
 
-            $('#examinationCode').bind('keypress',function(event){
+            /** $('#examinationCode').bind('keypress',function(event){
                 if(event.keyCode == 13) {
                     var examinationCode = $('#examinationCode').val();
                     var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
@@ -41,7 +41,9 @@
                     //防止form提交
                     return false;
                 }
-            });
+            }); */
+
+            $('#examinationCode').on('blur',inputExaminationCode);
 
              $('#examinationCode').autocompleter({
 
@@ -52,14 +54,38 @@
                     empty: false,
                     limit: 10,
                     source:"${ctx}/wshbj/examinationRecord/ajax_no_complete_for_autocompleter",
-                    // source :function(resp){resp([{label:'ask等级分',value:'1232323'}])},
                     callback: function (value, index, selected) {
 
                     }
                 });
 
 		});
-		
+
+        function inputExaminationCode(){
+            var examinationCode = $('#examinationCode').val();
+
+            function setControl(_id,_userId,_userName,_sexLabel,_organName){
+                $('#recordId').val(_id);
+                $('#userId').val(_userId);
+                $('#userName').val(_userName);
+                $('#sex').val(_sexLabel);
+                $('#organ').val(_organName);
+            }
+
+            if(!examinationCode||examinationCode.length<3){
+                setControl('','','','','');
+            }
+
+            var url = '${ctx}/wshbj/examinationRecord/getMapByCode';
+            $.post(url,{code:examinationCode},function (data) {
+                if(data && examinationCode == data.code){
+                    setControl(data.id,data.userId,data.userName,data.sexLabel,data.organName);
+                }else{
+                    setControl('','','','','');
+                }
+            });
+        }
+
 		function submitForm() {
             var url = '${ctx}/wshbj/examinationSamples/saveSamples';
             $.ajax({
