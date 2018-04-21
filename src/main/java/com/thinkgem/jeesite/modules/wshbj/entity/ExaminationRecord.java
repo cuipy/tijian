@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.annotation.SequenceBean;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
@@ -17,9 +18,7 @@ import com.thinkgem.jeesite.modules.wshbj.service.*;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.google.common.collect.Lists;
 
@@ -51,40 +50,35 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String status;
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
 
-	private Industry _industry;
 	/**
 	 * 获取行业
 	 * @return
 	 */
+	@JsonIgnore
 	public Industry getIndustry(){
-		if(_industry==null&&industryId!=null) {
-			IndustryService industryService = SpringContextHolder.getBean(IndustryService.class);
-			_industry = industryService.get(industryId);
-		}
+		Industry _industry;
+		IndustryService industryService = SpringContextHolder.getBean(IndustryService.class);
+		_industry = industryService.get(industryId);
 		return _industry;
 	}
-
-	private JobPost _jobPost;
 
 	/**
 	 * 获取岗位
 	 * @return
 	 */
+	@JsonIgnore
 	public JobPost getJobPost(){
-		if(_jobPost==null&&postId!=null) {
-			JobPostService jobPostService = SpringContextHolder.getBean(JobPostService.class);
-			_jobPost = jobPostService.get(postId);
-		}
+		JobPost _jobPost;
+		JobPostService jobPostService = SpringContextHolder.getBean(JobPostService.class);
+		_jobPost = jobPostService.get(postId);
 		return _jobPost;
 	}
 
-	private Organ _organ;
+
+	@JsonIgnore
 	public Organ getOrgan(){
-		if(_organ==null&&organId!=null){
-			OrganService organService=SpringContextHolder.getBean(OrganService.class);
-			_organ=organService.get(organId);
-		}
-		return _organ;
+		OrganService organService=SpringContextHolder.getBean(OrganService.class);
+		return organService.get(organId);
 	}
 
 
@@ -171,9 +165,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		return ind.getName();
 	}
 	public void setIndustryId(String industryId) {
-		if(industryId==null||!industryId.equals(this.industryId)){
-			_industry=null;
-		}
 		this.industryId = industryId;
 	}
 	
@@ -194,10 +185,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	public void setPostId(String postId) {
-		if(postId==null||!postId.equals(this.postId)){
-			_jobPost=null;
-		}
-
 		this.postId = postId;
 	}
 	
@@ -248,9 +235,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	public void setPackageId(String packageId) {
-		if(packageId==null||!packageId.equals(this.packageId)){
-			_examinationPackage=null;
-		}
 		this.packageId = packageId;
 	}
 
@@ -299,12 +283,16 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		return DictUtils.getDictLabel(status,"examination_record_status","");
 	}
 
+	@JsonIgnore
 	public List<ExaminationRecordItem> getExaminationRecordItemList() {
 		return examinationRecordItemList;
 	}
 
-	private ExaminationPackage _examinationPackage;
+	@JsonIgnore
 	public ExaminationPackage getExaminationPackage(){
+
+		ExaminationPackage _examinationPackage=null;
+
 		if("2".equals(this.itemType)){
 			return null;
 		}
@@ -399,5 +387,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		}
 		return res;
 	}
+
 
 }

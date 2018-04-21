@@ -256,10 +256,10 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active">
-		<shiro:hasPermission name="wshbj:examinationSamples:edit">
-		    <a href="${ctx}/wshbj/examinationSamples/form?id=${examinationSamples.id}">体检样本${not empty examinationSamples.id?'修改':'采集'}</shiro:hasPermission>
-		<shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
+		<shiro:hasPermission name="wshbj:examinationRecordItem:edit">
+		    <a href="${ctx}/wshbj/examinationSamples/form?id=${examinationSamples.id}">体检样本${not empty examinationSamples.id?'修改':'采集'}</a></shiro:hasPermission>
+		</li>
+		<li><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample">体检样本列表</a></li>
 	</ul><br/>
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
 	<div class="row">
@@ -324,7 +324,7 @@
 			</div>
 		</div>
 		<div class="form-actions  span12">
-			<shiro:hasPermission name="wshbj:examinationSamples:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存" onclick="submitForm();"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存" onclick="submitForm();"/>&nbsp;</shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		</div>

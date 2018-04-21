@@ -15,7 +15,7 @@
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationSamples/view?id=${examinationSamples.id}">体检样本
-		<shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
+		<shiro:lacksPermission name="wshbj:examinationRecordItem:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationSamples" class="form-horizontal">
 		<form:hidden path="id"/>

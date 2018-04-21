@@ -66,19 +66,19 @@
 	<div class="control-group span6">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-		     ${examinationRecord.industry.name}
+		     ${examinationRecord.industryName}
 		</div>
 	</div>
 	<div class="control-group span6" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
-			${examinationRecord.organ.name}
+			${examinationRecord.organName}
 		</div>
 	</div>
 	<div class="control-group span6">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
-			${examinationRecord.jobPost.name}
+			${examinationRecord.postName}
 		</div>
 	</div>
 
@@ -107,15 +107,13 @@
 		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-                ${examinationRecord.examinationPackage.name }
+                ${examinationRecord.packageName }
 			</div>
 		</div>
 		<div class="control-group span12" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
-			   <c:if test="${examinationRecord.itemType == 2}">
-                    <c:forEach items="${examinationRecord.items}" var="ri">${ri.itemName} | </c:forEach>
-                </c:if>
+			   ${exinimationRecord.itemNames}
 			</div>
 		</div>
 		<div class="cl"></div>

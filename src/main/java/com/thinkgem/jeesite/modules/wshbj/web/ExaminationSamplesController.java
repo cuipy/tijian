@@ -66,7 +66,7 @@ public class ExaminationSamplesController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("wshbj:examinationSamples:view")
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ExaminationSamples examinationSamples, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ExaminationSamples> page = examinationSamplesService.findPage(new Page<ExaminationSamples>(request, response), examinationSamples); 
@@ -74,14 +74,14 @@ public class ExaminationSamplesController extends BaseController {
 		return "modules/wshbj/examinationSamplesList";
 	}
 
-	@RequiresPermissions("wshbj:examinationSamples:view")
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = "view")
 	public String view(ExaminationSamples examinationSamples, Model model) {
 		model.addAttribute("examinationSamples", examinationSamples);
 		return "modules/wshbj/examinationSamplesPage";
 	}
 
-	@RequiresPermissions("wshbj:examinationSamples:view")
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationSamples examinationSamples, Model model) {
 		model.addAttribute("examinationSamples", examinationSamples);
@@ -107,24 +107,24 @@ public class ExaminationSamplesController extends BaseController {
 		return "modules/wshbj/examinationSamplesForm";
 	}
 
-	@RequiresPermissions("wshbj:examinationSamples:edit")
-	@RequestMapping(value = "save")
-	public String save(ExaminationSamples examinationSamples, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, examinationSamples)){
-			return form(examinationSamples, model);
-		}
-		examinationSamples.setOwner(UserUtils.getUser().getCompany().getId());
-        ResponseResult result = examinationSamplesService.saveSamples(examinationSamples);
-        if(!ResponseResult.SUCCESS.equals(result.getCode())){
-            List<String> resultMessages = (List<String>) result.getData();
-            addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
-            return form(examinationSamples, model);
-        }
+//	@RequiresPermissions("wshbj:examinationRecordItem:edit")
+//	@RequestMapping(value = "save")
+//	public String save(ExaminationSamples examinationSamples, Model model, RedirectAttributes redirectAttributes) {
+//		if (!beanValidator(model, examinationSamples)){
+//			return form(examinationSamples, model);
+//		}
+//		examinationSamples.setOwner(UserUtils.getUser().getCompany().getId());
+//        ResponseResult result = examinationSamplesService.saveSamples(examinationSamples);
+//        if(!ResponseResult.SUCCESS.equals(result.getCode())){
+//            List<String> resultMessages = (List<String>) result.getData();
+//            addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
+//            return form(examinationSamples, model);
+//        }
+//
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationSamples/form";
+//	}
 
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationSamples/form";
-	}
-
-    @RequiresPermissions("wshbj:examinationSamples:edit")
+    @RequiresPermissions("wshbj:examinationRecordItem:edit")
     @RequestMapping(value = "saveSamples")
     @ResponseBody
     public ResponseResult saveSamples(ExaminationSamples examinationSamples, Model model, RedirectAttributes redirectAttributes) {
@@ -135,7 +135,7 @@ public class ExaminationSamplesController extends BaseController {
 
 
 	
-	@RequiresPermissions("wshbj:examinationSamples:edit")
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = "delete")
 	public String delete(ExaminationSamples examinationSamples, RedirectAttributes redirectAttributes) {
 		examinationSamplesService.delete(examinationSamples);

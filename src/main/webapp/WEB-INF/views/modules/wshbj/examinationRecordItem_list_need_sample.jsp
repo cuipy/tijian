@@ -19,9 +19,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><li><a href="${ctx}/wshbj/examinationSamples/form">体检样本添加</a></li></shiro:hasPermission>
-		<li class="active"><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample">体检样本列表</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_need_sample" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -29,7 +29,7 @@
 				<form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>样本编号：</label>
-				<form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="sampleCode" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>体检用户：</label>
 				<form:input path="userId" htmlEscape="false" maxlength="64" class="input-medium"/>
@@ -62,7 +62,7 @@
 				<a href="${ctx}/wshbj/examinationSamples/view?id=${examinationSamples.id}">
 					${examinationSamples.examinationCode}
 				</a></td>
-				<td> ${examinationSamples.code} </td>
+				<td> ${examinationSamples.sampleCode} </td>
 				<td> <c:if test="${not empty examinationSample.recordOrganName }">${examinationSamples.recordOrganName} - </c:if> ${examinationSamples.recordUserName}  </td>
 				<td>${wshbjfns:getEntityName('ExaminationItem',examinationSamples.itemId,'')} </td>
 				<td>${examinationSamples.strStatus}</td>
