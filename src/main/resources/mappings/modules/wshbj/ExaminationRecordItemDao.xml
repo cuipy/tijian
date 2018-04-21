@@ -32,6 +32,9 @@
 		<if test="userName != null and userName != ''">
 			AND b.name like  concat('%', #{userName},'%')
 		</if>
+		<if test="queryExamCode != null and queryExamCode != ''">
+			AND b.code like  concat('%', #{queryExamCode},'%')
+		</if>
 		<if test="recordId != null and recordId != ''">
 			AND a.record_id = #{recordId}
 		</if>
@@ -120,6 +123,9 @@
 			<if test="examinationFlag != null and examinationFlag != ''">
 				AND a.examination_flag = #{examinationFlag}
 			</if>
+			<if test="queryExamCode != null and queryExamCode != ''">
+				AND b.code like  concat('%', #{queryExamCode},'%')
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -137,7 +143,7 @@
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and ((a.need_samples = 1 and a.sample_code is not null and a.result_flag is null) or a.result_flag = 1)
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and ((a.need_samples = 1 and a.sample_code is not null and a.result_flag is null) or a.result_flag = 0)
 			<if test="userName != null and userName != ''">
 				AND b.name like  concat('%', #{userName},'%')
 			</if>
@@ -149,6 +155,9 @@
 			</if>
 			<if test="examinationFlag != null and examinationFlag != ''">
 				AND a.examination_flag = #{examinationFlag}
+			</if>
+			<if test="queryExamCode != null and queryExamCode != ''">
+				AND b.code like  concat('%', #{queryExamCode},'%')
 			</if>
 		</where>
 		<choose>

@@ -36,6 +36,8 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String lastFlag; //本次检查记录中同项目最后一次检查标识：0-否，1-是
 
 	private String userName;     // 体检用户姓名
+
+	private String queryExamCode;
 	
 	public ExaminationRecordItem() {
 		super();
@@ -284,5 +286,13 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getQueryExamCode() {
+		return queryExamCode;
+	}
+
+	public void setQueryExamCode(String queryExamCode) {
+		this.queryExamCode = queryExamCode;
 	}
 }
