@@ -7,6 +7,7 @@
 
 	<script type="text/javascript">
 	    var lastExaminationCode='';
+	    var lastCode='';
 
 		$(function() {
 			//$("#name").focus();
@@ -34,6 +35,7 @@
 
             // 样本编号文本框失去焦点事件
             $('#code').on('blur',inputCode);
+            $('#code').on('keypress',enterCode);
 
             $('#examinationCode').autocompleter({
 
@@ -54,6 +56,7 @@
 		// 选择采集项目的时候触发
 		function clkItemId(){
             $("#code").removeAttr('readonly');
+            $("#code").focus();
 		}
 
 		// 设置记录id 用户id 等隐藏控件，设置性别、单位、姓名等现实数据。
@@ -112,6 +115,7 @@
                 }
             }
             $("#box_items").html(itemsHtml);
+            $("input[name='itemId']").focus();
         }
 
         // 体检编号文本框内容发生变化
@@ -122,6 +126,14 @@
         function enterExaminationCode(evt){
             if(evt.keyCode==13){
                 inputExaminationCode();
+                $("#code").focus();
+            }
+        }
+
+        function enterCode(evt){
+            if(evt.keyCode==13){
+                inputCode();
+                $("input[name='itemId']").focus();
             }
         }
 
@@ -161,9 +173,11 @@
 
             var code= $("#code").val();
 
-            if(code==null||code==''){
+            if(code==null||code==''||code==lastCode){
                 return;
             }
+
+
 
             var url="${ctx}/wshbj/sampleCodes/ajax_get_by_id";
             var d1={sampleCode:code,v:new Date().getTime()};
@@ -172,20 +186,17 @@
                     // 如果样本类型编号不一致 ，则报错
                     if(d1r.data.specimenId != specimenId ){
                         showTip("样本编号所属类型与采集项目不一致","error");
-                        $("#code").val('');
-                        return;
-                    }
-                    if(d1r.data.isUsed =='1'){
+                    }else if(d1r.data.isUsed =='1'){
                         showTip("样本编号已经使用了，不可使用该样本编号","error");
-                        $("#code").val('');
+                    }else{
+                        lastCode=code;
+                        showTip("编号正确，允许使用");
                         return;
                     }
-
-                    showTip("编号正确，允许使用");
-                    return;
                 }else{
                     showTip(d1r.msg,"error");
                 }
+                lastCode='';
                 $("#code").val('');
             });
         }
@@ -240,7 +251,7 @@
             <label class="control-label"><font color="red">*</font>样本编号：</label>
             <div class="controls">
                 <form:input path="code" htmlEscape="false" maxlength="50" class="input-large required" readonly="true"/>
-                <span class="help-inline"> 采样人员定期会领取一定数量的样本编号条码贴。 </span>
+                <span class="help-inline"> 采样人员领取的样本编号条码贴。选中采集项目后，才可以录入样本编号。 </span>
             </div>
         </div>
 
@@ -249,7 +260,7 @@
 		<div class="control-group span12">
 			<label class="control-label"> <font color="red">*</font> 采集项目：</label>
 			<div class="controls" id="box_items">
-
+                <span class="help-inline"> 录入正确的体检编号后，自动加载采集项目。 </span>
 			</div>
 		</div>
         <div class="cl"></div>

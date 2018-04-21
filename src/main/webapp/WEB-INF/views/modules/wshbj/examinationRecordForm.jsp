@@ -56,6 +56,7 @@
                             setUserPro(data);
                         }
                     });
+
                     //防止form提交
                     return false;
                 }
@@ -159,23 +160,24 @@
 
     <div class="row">
 
-		<div class="control-group span6">
+		<div class="control-group span12">
 			 <label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="45"  readonly="true" class="input-large"/>
-
+                <span class="help-inline">编号无需录入，在保存的时候根据系统配置自动生成。编号格式：全局设置编号前缀+{yyyyMMdd}[4位数字]</span>
 			</div>
 		</div>
-
-		<div class="control-group span6">
+        <div class="cl"></div>
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>  体检用户：</label>
 			<div class="controls">
 				<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
 									   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="必填信息"
 									   cssClass="input-large required" allowClear="true" notAllowSelectParent="true"/>
-
+                <span class="help-inline">选择体检用户，则自动获得身份证、电话、性别、出生日期、行业、单位、岗位等信息。</span>
 			</div>
 		</div>
+        <div class="cl"></div>
 
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
