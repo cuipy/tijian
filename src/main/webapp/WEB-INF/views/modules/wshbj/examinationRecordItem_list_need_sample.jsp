@@ -32,7 +32,7 @@
 				<form:input path="sampleCode" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li><label>体检用户：</label>
-				<form:input path="userId" htmlEscape="false" maxlength="64" class="input-medium"/>
+				<form:input path="userName" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			
@@ -56,22 +56,24 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="examinationSamples">
+		<c:forEach items="${page.list}" var="item">
 			<tr>
 				<td>
 				<a href="${ctx}/wshbj/examinationSamples/view?id=${examinationSamples.id}">
-					${examinationSamples.examinationCode}
+					${item.examinationCode}
 				</a></td>
-				<td> ${examinationSamples.sampleCode} </td>
-				<td> <c:if test="${not empty examinationSample.recordOrganName }">${examinationSamples.recordOrganName} - </c:if> ${examinationSamples.recordUserName}  </td>
-				<td>${wshbjfns:getEntityName('ExaminationItem',examinationSamples.itemId,'')} </td>
-				<td>${examinationSamples.strStatus}</td>
-				<td>${examinationSamples.strExaminationFlag}</td>
-				<td> ${examinationSamples.remarks} </td>
+				<td> ${item.sampleCode} </td>
+				<td> <c:if test="${not empty examinationSample.recordOrganName }">${item.recordOrganName} - </c:if> ${item.recordUserName}  </td>
+				<td>${wshbjfns:getEntityName('ExaminationItem',item.itemId,'')} </td>
+				<td>${item.strStatus}</td>
+				<td>${item.strExaminationFlag}</td>
+				<td> ${item.remarks} </td>
 				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td>
-    				<c:if test="${examinationSamples.status ==1 }">
-    				<a href="${ctx}/wshbj/examinationSamples/cancel?id=${examinationSamples.id}">撤销</a> </c:if>
-					<a href="${ctx}/wshbj/examinationSamples/delete?id=${examinationSamples.id}" onclick="return confirmx('确认要删除该体检样本吗？', this.href)">删除</a>
+    				<c:if test="${item.status ==0 }">
+    				<a class="label label-important" href="${ctx}/wshbj/examinationRecordItem/form?id=${item.id}">采集</a> </c:if>
+    				<c:if test="${item.status ==1  }">
+                    <a class="label" href="${ctx}/wshbj/examinationRecordItem/cancel?id=${item.id}">撤销</a> </c:if>
+
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

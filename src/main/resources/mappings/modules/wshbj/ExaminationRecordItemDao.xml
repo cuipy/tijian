@@ -33,7 +33,7 @@
 			<include refid="examinationRecordItemColumns"/>
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
-		WHERE a.id = #{id} and a.del_flag=#{DEL_FLAG_NORMAL}
+		WHERE a.id = #{id} and a.del_flag=0
 	</select>
 
 
@@ -68,8 +68,14 @@
 		<include refid="examinationRecordItemJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userName != null and userName != ''">
+				AND b.name like  concat('%', #{userName},'%')
+			</if>
 			<if test="recordId != null and recordId != ''">
 				AND a.record_id = #{recordId}
+			</if>
+			<if test="sampleCode != null and sampleCode != ''">
+				AND a.sample_code like  concat('%', #{sampleCode},'%')
 			</if>
 			<if test="needSamples != null and needSamples != ''">
 				AND a.need_samples = #{needSamples}
@@ -119,6 +125,42 @@
 			AND a.record_id = #{recordId}
 		</where>
 		ORDER BY a.create_date ASC
+	</select>
+
+	<select id="count" resultType="java.lang.Integer">
+		SELECT
+			count(a.id) cnt
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userName != null and userName != ''">
+				AND b.name like  concat('%', #{userName},'%')
+			</if>
+			<if test="sampleCode != null and sampleCode != ''">
+				AND a.sample_code like  concat('%', #{sampleCode},'%')
+			</if>
+			<if test="recordId != null and recordId != ''">
+				AND a.record_id = #{recordId}
+			</if>
+			<if test="needSamples != null and needSamples != ''">
+				AND a.need_samples = #{needSamples}
+			</if>
+			<if test="examinationFlag != null and examinationFlag != ''">
+				AND a.examination_flag = #{examinationFlag}
+			</if>
+			<if test="lastFlag != null and lastFlag != ''">
+				AND a.last_flag = #{lastFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
 	</select>
 
 

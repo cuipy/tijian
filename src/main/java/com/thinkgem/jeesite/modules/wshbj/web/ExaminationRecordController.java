@@ -199,7 +199,7 @@ public class ExaminationRecordController extends BaseController {
 		//如果是新创建而不是编辑的时候，则设置状态为 未检查状态
 		if(StringUtils.isBlank(examinationRecord.getId())){
 			examinationRecord.setStatus(ExaminationRecordConstant.STATUS0);
-			examinationRecord.setName(examinationRecord.getUser().getName());
+			examinationRecord.setName(examinationRecord.getName());
 			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}
 

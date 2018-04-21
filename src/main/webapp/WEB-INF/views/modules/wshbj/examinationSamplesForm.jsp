@@ -127,7 +127,7 @@
                     +"' data-specimen_id='"+item.specimenId+"' data-result_flag='"+resultFlag+"' ";
 
                     // 如果未取样，或者取样了，但结果不是不合格，则不可再取样。
-                    if(hasSampleCode&&result_flag!='0'){
+                    if(hasSampleCode&&resultFlag!='0'){
                         itemsHtml+=" disabled='disabled' ";
                     }else{
                         itemsHtml+=" onclick='clkItemId()'";

@@ -29,5 +29,14 @@
 	<!-- 系统活动会话缓存 -->
     <cache name="activeSessionsCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
            diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="examRecordCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="examRecordItemCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="examRecordUserCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
     	
 </ehcache>

@@ -34,6 +34,8 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String resultRemarks;		// 体检结果备注
 	private String examinationFlag;		// 1-初检，2-复检
 	private String lastFlag; //本次检查记录中同项目最后一次检查标识：0-否，1-是
+
+	private String userName;     // 体检用户姓名
 	
 	public ExaminationRecordItem() {
 		super();
@@ -239,24 +241,48 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return r;
 	}
 
-	@JsonIgnore
-	public User getRecordUser(){
+//	@JsonIgnore
+//	public User getRecordUser(){
+//		ExaminationRecord record = getRecord();
+//
+//		if(record==null){
+//			return null;
+//		}
+//		return record.getUser();
+//	}
+
+	public String getRecordUserId(){
 		ExaminationRecord record = getRecord();
 
 		if(record==null){
-			return null;
-		}
-		return record.getUser();
-	}
-
-	public String getRecordUserId(){
-		User user = getRecordUser();
-
-		if(user==null){
 			return "";
 		}
-		return user.getId();
+		return record.getName();
 	}
 
+	public String getRecordUserSex(){
+		ExaminationRecord record = getRecord();
 
+		if(record==null){
+			return "";
+		}
+		return record.getSex();
+	}
+
+	public String getRecordUserStrSex(){
+		ExaminationRecord record = getRecord();
+
+		if(record==null){
+			return "";
+		}
+		return record.getStrSex();
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

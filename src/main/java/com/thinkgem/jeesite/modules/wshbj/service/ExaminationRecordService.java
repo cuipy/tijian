@@ -53,14 +53,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     public ExaminationRecord get(String id) {
         ExaminationRecord examinationRecord = super.get(id);
-
-        // 如果选择的是自由类型，则将信息列表读出来
-        if (examinationRecord != null&&examinationRecord.getItemType().equals(ExaminationRecordConstant.ITEM_TYPE_2)) {
-            ExaminationRecordItem recordItem = new ExaminationRecordItem();
-            recordItem.setRecordId(id);
-            examinationRecord.setExaminationRecordItemList(examinationRecordItemDao.findList(recordItem));
-        }
-
         return examinationRecord;
     }
 
