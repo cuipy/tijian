@@ -44,9 +44,45 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
      */
     List<ExaminationRecordItem> listByRecordId(String recordId);
 
+    int count(ExaminationRecordItem item);
+
+    /**
+     * 有几个项目没通过
+     * @param item
+     * @return
+     */
+    int countNotOk(ExaminationRecordItem item);
+
+    /**
+     * 复检的数量
+     * @param item
+     * @return
+     */
+    int countExamFlag2(ExaminationRecordItem item);
+
+    /**
+     * 样本编号在整个表中的数量，验证一个样本编号是否已经被用了
+     * @param item
+     * @return
+     */
     int countSampleCode(ExaminationRecordItem item);
+
+    /**
+     * 还没有体检结果的项目
+     * @param item
+     * @return
+     */
+    int countNoResult(ExaminationRecordItem item);
+
+    /**
+     * 计算没体检的项目
+     * @param item
+     * @return
+     */
+    int countNoExam(ExaminationRecordItem item);
 
     List<ExaminationRecordItem> listNodo(ExaminationRecordItem entity);
 
     List<ExaminationRecordItem> listDone(ExaminationRecordItem entity);
+
 }

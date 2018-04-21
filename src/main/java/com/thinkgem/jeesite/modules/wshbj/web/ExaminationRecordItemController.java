@@ -98,6 +98,15 @@ public class ExaminationRecordItemController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = {"list_no_result"})
+	public String list_no_result(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageDone(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		model.addAttribute("page", page);
+		return "modules/wshbj/examinationRecordItem_list_no_result";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationRecordItem examinationRecordItem, Model model) {
 		model.addAttribute("examinationRecordItem", examinationRecordItem);
@@ -127,6 +136,13 @@ public class ExaminationRecordItemController extends BaseController {
 	@ResponseBody
 	public RequestResult ajax_check_sample_code(ExaminationRecordItem examinationRecordItem, Model model){
 		return examinationRecordItemService.checkSampleCode(examinationRecordItem);
+	}
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = "ajax_update_result_flag")
+	@ResponseBody
+	public RequestResult ajax_update_result_flag(ExaminationRecordItem examinationRecordItem, Model model){
+		return examinationRecordItemService.updateResultFlag(examinationRecordItem);
 	}
 
 

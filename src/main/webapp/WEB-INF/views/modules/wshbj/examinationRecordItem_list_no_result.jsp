@@ -14,15 +14,36 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+        function clkResult(itemId,result){
+
+            var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
+            var d1={id:itemId,resultFlag:result};
+            $.ajax({
+                type:'post',dataType:'json',url:url,data:d1,
+                success:function(d1r){
+                    if(d1r.state== 1){
+                        showTip(d1r.msg);
+                        $("#tr_"+itemId).remove();
+                    }else{
+                        showTip(d1r.state+":"+d1r.msg);
+                         $("#msg").html(d1r.state+":"+d1r.msg).show();
+                    }
+
+                },
+                error:function(err){
+                    $("#msg").html(""+err.status+"<br>"+err.responseText+"").show();
+                }
+            })
+
+        }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li <c:if test="${where == '_nodo'}"> class="active"</c:if> ><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample_nodo">待采集列表</a></li>
-		<li <c:if test="${where == '_done'}"> class="active"</c:if> ><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample_done">已采集列表</a></li>
-		<li <c:if test="${where == ''}"> class="active"</c:if> ><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample">全部采集列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_no_result">待录结果项目</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_need_sample${where}" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_no_result" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -39,7 +60,10 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
-	<div id="msg" class="alert alert-danger" style="display:none"></div>
+	<div id="msg" class="alert alert-danger" style="display:none">
+	    <a class="close" data-dismiss="alert" href="#">&times;</a>
+	    <span class="text"></span>
+	</div>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
@@ -56,7 +80,7 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="item">
-			<tr>
+			<tr id="tr_${item.id}">
 				<td>
 					${item.examinationCode}
 				</td>
@@ -67,10 +91,9 @@
 				<td>${item.strExaminationFlag}</td>
 				<td> ${item.remarks} </td>
 				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td>
-    				<c:if test="${item.status ==0 }">
-    				<a class="label label-important" href="${ctx}/wshbj/examinationRecordItem/form?id=${item.id}">采集</a> </c:if>
-    				<c:if test="${item.status ==1  }">
-                    <a class="label" href="${ctx}/wshbj/examinationRecordItem/cancel?id=${item.id}">撤销</a> </c:if>
+
+    				<span class="btn btn-mini btn-success" onclick="clkResult('${item.id}',1)">合格</span>&nbsp;&nbsp;&nbsp;
+    				<span class="btn btn-mini btn-danger" onclick="clkResult('${item.id}',0)">不合格</span>
 
 				</td></shiro:hasPermission>
 			</tr>
