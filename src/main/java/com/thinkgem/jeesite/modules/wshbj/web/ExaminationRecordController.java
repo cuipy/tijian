@@ -329,25 +329,6 @@ public class ExaminationRecordController extends BaseController {
 
 
 
-	/**
-	 * 通过记录id获取采购信息
-	 * @param response
-	 * @return
-	 */
-    @ResponseBody
-    @RequestMapping(value = "ajax_get_by_record_code")
-    public RequestResult ajax_get_by_record_code(ExaminationRecord examinationRecord, HttpServletResponse response) {
-    	if(examinationRecord==null||StringUtils.isEmpty(examinationRecord.getCode())){
-    		return RequestResult.generate(10,"未能获取体检记录的code");
-		}
-
-		ExaminationRecord er = examinationRecordService.getByCode(examinationRecord);
-    	if(er==null){
-			return RequestResult.generate(12,"由于未知原因，code :"+examinationRecord.getCode()+"未能获取体检记录数据");
-		}
-
-		return RequestResult.generate(RequestResult.SUCCESS,"获取体检记录成功",er);
-    }
 
 	@ResponseBody
 	@RequestMapping(value = "getMapByCode4Result")
@@ -416,4 +397,26 @@ public class ExaminationRecordController extends BaseController {
 		}
 		return lstres;
 	}
+
+
+	/**
+	 * 通过记录id获取采购信息
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "ajax_get_by_record_code")
+	public RequestResult ajax_get_by_record_code(ExaminationRecord examinationRecord, HttpServletResponse response) {
+		if(examinationRecord==null||StringUtils.isEmpty(examinationRecord.getCode())){
+			return RequestResult.generate(10,"未能获取体检记录的code");
+		}
+
+		ExaminationRecord er = examinationRecordService.getByCode(examinationRecord);
+		if(er==null){
+			return RequestResult.generate(12,"由于未知原因，code :"+examinationRecord.getCode()+"未能获取体检记录数据");
+		}
+
+		return RequestResult.generate(RequestResult.SUCCESS,"获取体检记录成功",er);
+	}
+
 }

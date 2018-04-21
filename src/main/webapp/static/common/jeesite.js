@@ -6,6 +6,7 @@
  * @version 2014-4-29
  */
 $(document).ready(function() {
+
 	try{
 		// 链接去掉虚框
 		$("a").bind("focus",function() {
@@ -65,6 +66,7 @@ function windowOpen(url, name, width, height){
 		"resizable=yes,scrollbars=yes,"+"width="+width+",height="+height+",top="+top+",left="+left;
 	window.open(url ,name , options);
 }
+
 
 // 恢复提示框显示
 function resetTip(){

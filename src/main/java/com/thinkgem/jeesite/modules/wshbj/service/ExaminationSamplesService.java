@@ -69,15 +69,17 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 			return ResponseResult.generateFailResult("保存样本失败，体检数据错误", resultMessages);
 		}
 
-		if(!ExaminationRecordConstant.STATUS10.equals(record.getStatus())){
-			resultMessages.add("该体检记录现不允许录入样本");
-			return ResponseResult.generateFailResult("保存样本失败，该体检记录现不允许录入样本", resultMessages);
+		// 判断体检状态是否为可操作
+		if(!ExaminationRecordConstant.STATUS10.equals(record.getStatus())&&!ExaminationRecordConstant.STATUS0.equals(record.getStatus())
+				&&!ExaminationRecordConstant.STATUS20.equals(record.getStatus())&&!ExaminationRecordConstant.STATUS30.equals(record.getStatus())){
+			resultMessages.add("该体检记录的状态值"+record.getStatus()+"不允许录入样本");
+			return ResponseResult.generateFailResult("保存样本失败，该体检记录的状态值"+record.getStatus()+"不允许录入样本", resultMessages);
 		}
 
 		ExaminationSamples effectiveSamples = this.dao.getByCode(examinationSamples.getCode());
         if(effectiveSamples!=null){
-            resultMessages.add("已存在该编号样本");
-            return ResponseResult.generateFailResult("保存样本失败，已存在该编号样本", resultMessages);
+            resultMessages.add("该样本编号已使用");
+            return ResponseResult.generateFailResult("保存样本失败，该样本编号的状态为已使用，请更改为其他样本编号", resultMessages);
         }
 
         /**

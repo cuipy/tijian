@@ -27,6 +27,8 @@
 				}
 			});
 
+
+
             // 体检编号文本框失去焦点事件
             $('#examinationCode').on('blur',inputExaminationCode);
             $('#examinationCode').on('keypress',enterExaminationCode);
@@ -72,7 +74,7 @@
                 return;
 		    }
             $('#recordId').val(data.id);
-            $('#userId').val(data.userId);
+            $('#userId').val(data.user.id);
             $('#userName').val(data.name);
             $('#sex').val(data.strSex);
             $('#organ').val(data.organName);
@@ -88,27 +90,50 @@
             if(data.items!=null){
                 for(var i=0;i<data.items.length;i++){
                     var item=data.items[i];
-                    if( item.needSamples != 1){
+                    // 不需要体检，或者不是最后一次体检样本，则过滤掉
+                    if( item.needSamples != 1||item.lastFlag!= 1){
                         continue;
                     }
-                    var result_flag = '';
+
+                    // 是否已经取样
+                    var hasSampleCode = false;
+                    // 样本检查结果标记
+                    var resultFlag = '';
                     var resultFlatDetail='';
 
-                    if(item.result_flag==null||item.result_flag=='' ){
-                        result_flag='';
-                        resultFlatDetail='未检查';
-                    }else if(item.result_flag=='0'){
-                         result_flag='0';
-                         resultFlatDetail='不合格';
-                    }else if(item.result_flag=='1'){
-                          result_flag='1';
-                          resultFlatDetail='合格';
+
+                    if(item.sampleCode==null){
+                        hasSampleCode=false;
+                        resultFlatDetail='未取样';
+
+                     }else{
+                        hasSampleCode=true;
+                        resultFlatDetail='已取样';
+
+                        // 判断检查结果
+                        if(item.resultFlag==null||item.resultFlag=='' ){
+                            resultFlag='';
+                            resultFlatDetail='未出结果';
+                        }else if(item.resultFlag=='0'){
+                             resultFlag='0';
+                             resultFlatDetail='不合格';
+                        }else if(item.resultFlag=='1'){
+                              resultFlag='1';
+                              resultFlatDetail='合格';
+                         }
                      }
 
                     itemsHtml+="<input type='radio' name='itemId' id='itemId_"+item.itemId+"' value='"+item.itemId+"' data-flag='"+item.examinationFlag
-                    +"' data-specimen_id='"+item.specimenId+"' data-result_flag='"+result_flag+"' onclick='clkItemId()'>";
-                    itemsHtml+="<label for='itemId_"+item.itemId+"'>"+item.itemName+"&nbsp;&nbsp;";
-                    itemsHtml+= item.examinationFlag==1?"(初检)":"(复检)";
+                    +"' data-specimen_id='"+item.specimenId+"' data-result_flag='"+resultFlag+"' ";
+
+                    // 如果未取样，或者取样了，但结果不是不合格，则不可再取样。
+                    if(hasSampleCode&&result_flag!='0'){
+                        itemsHtml+=" disabled='disabled' ";
+                    }else{
+                        itemsHtml+=" onclick='clkItemId()'";
+                    }
+                    itemsHtml+="><label for='itemId_"+item.itemId+"'>"+item.itemName+"&nbsp;&nbsp;";
+                    itemsHtml+= item.examinationFlag==1?"初检":"复检";
                     itemsHtml+= '&nbsp;&nbsp;'+resultFlatDetail;
 
                     itemsHtml+=" </label>&nbsp;&nbsp;";
@@ -123,6 +148,7 @@
 
         }
 
+        // 在体检编号文本框操作键盘
         function enterExaminationCode(evt){
             if(evt.keyCode==13){
                 inputExaminationCode();
@@ -130,6 +156,7 @@
             }
         }
 
+        // 在样本编号文本框操作键盘的事件
         function enterCode(evt){
             if(evt.keyCode==13){
                 inputCode();
@@ -137,6 +164,7 @@
             }
         }
 
+        // 成功录入体检编号后的方法
         function inputExaminationCode(){
 
             var examinationCode = $('#examinationCode').val();
@@ -166,7 +194,7 @@
             });
         }
 
-        // 样本编号输入后做检查
+        // 样本编号输入后的操作
         function inputCode(){
             // 当前体检类型
             var specimenId = $("input[name='itemId']:checked").attr('data-specimen_id');
@@ -176,8 +204,6 @@
             if(code==null||code==''||code==lastCode){
                 return;
             }
-
-
 
             var url="${ctx}/wshbj/sampleCodes/ajax_get_by_id";
             var d1={sampleCode:code,v:new Date().getTime()};
@@ -202,6 +228,8 @@
         }
 
 		function submitForm() {
+            $("#msg").html("").hide();
+
             var url = '${ctx}/wshbj/examinationSamples/saveSamples';
             $.ajax({
                 url: url,
@@ -217,6 +245,9 @@
                             location.href = '${ctx}/wshbj/examinationSamples/form';
                         },2000)
                     }
+                },
+                error:function(err){
+                    $("#msg").html("<pre>"+err.responseText+"</pre>").show();
                 }
             });
         }
@@ -230,7 +261,7 @@
 		<shiro:lacksPermission name="wshbj:examinationSamples:edit">查看</shiro:lacksPermission></a></li>
 		<li><a href="${ctx}/wshbj/examinationSamples/">体检样本列表</a></li>
 	</ul><br/>
-
+    <div id="msg" class="alert alert-danger" style="display:none" ></div>
 	<div class="row">
 	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
 		<form:hidden path="recordId"/>
