@@ -44,5 +44,9 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
      */
     List<ExaminationRecordItem> listByRecordId(String recordId);
 
-    int count(ExaminationRecordItem item);
+    int countSampleCode(ExaminationRecordItem item);
+
+    List<ExaminationRecordItem> listNodo(ExaminationRecordItem entity);
+
+    List<ExaminationRecordItem> listDone(ExaminationRecordItem entity);
 }

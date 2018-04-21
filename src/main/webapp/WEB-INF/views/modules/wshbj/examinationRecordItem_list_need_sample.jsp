@@ -18,10 +18,11 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><li><a href="${ctx}/wshbj/examinationSamples/form">体检样本添加</a></li></shiro:hasPermission>
-		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample">体检样本列表</a></li>
+		<li <c:if test="${where == '_nodo'}"> class="active"</c:if> ><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample_nodo">待采集列表</a></li>
+		<li <c:if test="${where == '_done'}"> class="active"</c:if> ><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample_done">已采集列表</a></li>
+		<li <c:if test="${where == ''}"> class="active"</c:if> ><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample">全部采集列表</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_need_sample" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_need_sample${where}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">

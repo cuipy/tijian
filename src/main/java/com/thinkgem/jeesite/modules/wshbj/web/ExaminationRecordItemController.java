@@ -63,7 +63,29 @@ public class ExaminationRecordItemController extends BaseController {
 		}
 		return entity;
 	}
-	
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = {"list_need_sample_nodo"})
+	public String list_need_sample_nodo(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		examinationRecordItem.setNeedSamples("1");
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageNodo(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		model.addAttribute("page", page);
+		model.addAttribute("where","_nodo");
+		return "modules/wshbj/examinationRecordItem_list_need_sample";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = {"list_need_sample_done"})
+	public String list_need_sample_done(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		examinationRecordItem.setNeedSamples("1");
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageDone(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		model.addAttribute("page", page);
+		model.addAttribute("where","_done");
+		return "modules/wshbj/examinationRecordItem_list_need_sample";
+	}
+
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = {"list_need_sample"})
 	public String list_need_sample(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -71,6 +93,7 @@ public class ExaminationRecordItemController extends BaseController {
 		examinationRecordItem.setNeedSamples("1");
 		Page<ExaminationRecordItem> page = examinationRecordItemService.findPage(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
+		model.addAttribute("where","");
 		return "modules/wshbj/examinationRecordItem_list_need_sample";
 	}
 
@@ -84,7 +107,16 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = "saveSamples")
 	@ResponseBody
-	public RequestResult saveSamples(ExaminationRecordItem examinationRecordItem, Model model, RedirectAttributes redirectAttributes) {
+	public RequestResult saveSamples(ExaminationRecordItem examinationRecordItem) {
+
+		if(examinationRecordItem==null||StringUtils.isEmpty(examinationRecordItem.getRecordId())){
+			return RequestResult.generate(100,"检查记录为空，无法进行采样数据保存");
+		}
+
+		if(StringUtils.isEmpty(examinationRecordItem.getSampleCode())){
+			return RequestResult.generate(120,"样本编号为空，无法进行采样数据保存");
+		}
+
 		RequestResult result = examinationRecordItemService.saveSamples(examinationRecordItem);
 		return result;
 	}

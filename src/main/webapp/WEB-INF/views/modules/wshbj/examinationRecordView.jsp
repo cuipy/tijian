@@ -8,7 +8,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">体检记录<shiro:hasPermission name="wshbj:examinationRecord:edit">${not empty examinationRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationRecord:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecord/view?id=${examinationRecord.id}">体检记录</a></li>
         <li><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 	</ul><br/>
 
@@ -103,17 +103,17 @@
         				${examinationRecord.packagePrice } 元
         			</div>
         		</div>
-
-		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
+        <div class="cl"></div>
+		<div class="control-group span6" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
                 ${examinationRecord.packageName }
 			</div>
 		</div>
-		<div class="control-group span12" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
+		<div class="control-group span6" id="itemsDiv">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
-			   ${exinimationRecord.itemNames}
+			   ${examinationRecord.itemNames}
 			</div>
 		</div>
 		<div class="cl"></div>

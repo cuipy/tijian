@@ -53,8 +53,20 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         return this.dao.listByRecordId(recordId);
     }
 
-    public Integer count(ExaminationRecordItem item){
-        int cnt=dao.count(item);
+    public Page<ExaminationRecordItem> pageNodo(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+        entity.setPage(page);
+        page.setList(dao.listNodo(entity));
+        return page;
+    }
+
+    public Page<ExaminationRecordItem> pageDone(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+        entity.setPage(page);
+        page.setList(dao.listDone(entity));
+        return page;
+    }
+
+    public Integer countSampleCode(ExaminationRecordItem item){
+        int cnt=dao.countSampleCode(item);
         return cnt;
     }
 
@@ -64,7 +76,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
 
         ExaminationRecordItem sitem=new ExaminationRecordItem();
         sitem.setSampleCode(scode);
-        Integer cnt=count(sitem);
+        Integer cnt=countSampleCode(sitem);
         if(cnt>0){
             return RequestResult.generate(10,"样本编号已经被使用。");
         }
