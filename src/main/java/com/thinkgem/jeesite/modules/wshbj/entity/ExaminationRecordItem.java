@@ -227,8 +227,8 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return "未定义";
 	}
 
-	private String examinationCode;
 	public String getExaminationCode(){
+		String examinationCode=null;
 		if(StringUtils.isEmpty(examinationCode)) {
 			ExaminationRecord record = getRecord();
 			if (record != null) {
