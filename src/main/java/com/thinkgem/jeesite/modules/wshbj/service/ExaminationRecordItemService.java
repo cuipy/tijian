@@ -65,6 +65,12 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         return page;
     }
 
+    public Page<ExaminationRecordItem> pageResulted(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+        entity.setPage(page);
+        page.setList(dao.listResulted(entity));
+        return page;
+    }
+
 
     public Integer countSampleCode(ExaminationRecordItem item){
         int cnt=dao.countSampleCode(item);
@@ -204,6 +210,75 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         if(eri.getResultFlag()!=null){
             examinationRecordItem.setExaminationFlag("2");
         }
+        super.save(examinationRecordItem);
+
+        // 更新体检记录的状态
+        examinationRecordService.updateStatus(record);
+
+        return RequestResult.generate(1,"保存成功。");
+    }
+
+    @Transactional(readOnly = false)
+    public RequestResult cancelSample(ExaminationRecordItem examinationRecordItem) {
+
+        ExaminationRecord record = examinationRecordItem.getRecord();
+        ExaminationRecordItem eri = get(examinationRecordItem.getId());
+
+        if(eri==null){
+            return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败");
+        }
+
+        // 首先获取当前记录，检查状态是否合法
+        if(record==null){
+            return RequestResult.generate(10,"由于未知原因，根据体检项目获取体检记录信息失败，无法继续操作，保存操作失败");
+        }
+
+        // 检查体检项目的状态
+        if("0".equals(eri.getLastFlag())){
+            return RequestResult.generate(30,"该体检项目属于废弃的记录，无法撤销样本编号。");
+        }
+
+        if("0".equals(eri.getNeedSamples())){
+            return RequestResult.generate(40,"体检项目不需要样本，因此无法进行样本编号撤销。");
+        }
+
+        if(eri.getStatus()==0){
+            return RequestResult.generate(50,"体检项目需要体检样本，但似乎没有进行样本采集，因此无需样本编号撤销。");
+        }
+
+        // 设置样本编号和结果为null
+        examinationRecordItem.setSampleCode(null);
+        examinationRecordItem.setResultFlag(null);
+        super.save(examinationRecordItem);
+
+        // 更新体检记录的状态
+        examinationRecordService.updateStatus(record);
+
+        return RequestResult.generate(1,"保存成功。");
+    }
+
+    @Transactional(readOnly = false)
+    public RequestResult cancelResult(ExaminationRecordItem examinationRecordItem) {
+
+        ExaminationRecord record = examinationRecordItem.getRecord();
+        ExaminationRecordItem eri = get(examinationRecordItem.getId());
+
+        if(eri==null){
+            return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败");
+        }
+
+        // 首先获取当前记录，检查状态是否合法
+        if(record==null){
+            return RequestResult.generate(10,"由于未知原因，根据体检项目获取体检记录信息失败，无法继续操作，保存操作失败");
+        }
+
+        // 检查体检项目的状态
+        if("0".equals(eri.getLastFlag())){
+            return RequestResult.generate(30,"该体检项目属于废弃的记录，无法撤销样本编号。");
+        }
+
+        // 设置样本编号和结果为null
+        examinationRecordItem.setResultFlag(null);
         super.save(examinationRecordItem);
 
         // 更新体检记录的状态

@@ -101,9 +101,20 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = {"list_no_result"})
 	public String list_no_result(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
 
+		// 读取已经有采样，但还没有输入结果的项目
 		Page<ExaminationRecordItem> page = examinationRecordItemService.pageDone(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
 		return "modules/wshbj/examinationRecordItem_list_no_result";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = {"list_resulted"})
+	public String list_resulted(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		// 已经有采样，且有输入结果，并且体检记录还没结束的项目
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageResulted(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		model.addAttribute("page", page);
+		return "modules/wshbj/examinationRecordItem_list_resulted";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
@@ -143,6 +154,20 @@ public class ExaminationRecordItemController extends BaseController {
 	@ResponseBody
 	public RequestResult ajax_update_result_flag(ExaminationRecordItem examinationRecordItem, Model model){
 		return examinationRecordItemService.updateResultFlag(examinationRecordItem);
+	}
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = "ajax_cancel_sample")
+	@ResponseBody
+	public RequestResult ajax_cancel_sample(ExaminationRecordItem examinationRecordItem, Model model){
+		return examinationRecordItemService.cancelSample(examinationRecordItem);
+	}
+
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequestMapping(value = "ajax_cancel_result")
+	@ResponseBody
+	public RequestResult ajax_cancel_result(ExaminationRecordItem examinationRecordItem, Model model){
+		return examinationRecordItemService.cancelSample(examinationRecordItem);
 	}
 
 

@@ -70,7 +70,7 @@
     				<c:if test="${item.status ==0 }">
     				<a class="label label-important" href="${ctx}/wshbj/examinationRecordItem/form?id=${item.id}">采集</a> </c:if>
     				<c:if test="${item.status ==1  }">
-                    <a class="label" href="${ctx}/wshbj/examinationRecordItem/cancel?id=${item.id}">撤销</a> </c:if>
+                    <a class="label" href="${ctx}/wshbj/examinationRecordItem/cancel?id=${item.id}">撤销样本</a> </c:if>
 
 				</td></shiro:hasPermission>
 			</tr>

@@ -70,8 +70,7 @@
                     return;
 
                 }
-                showTip(d1r.msg,"error");
-                $("#msg").html(d1r.msg).show();
+                showMsgx($("#msg"),d1r);
 
                 lastSampleCode='';
                 $("#sampleCode").val('');
@@ -89,16 +88,16 @@
                 dataType: "JSON",
                 success: function(data) {
                     if(data.sampleCode!='0'){
-                        showTip(data.msg,'error');
+                        showMsgx($("#msg"),data);
                     }else{
-                        showTip('采样成功','success');
+                        showMsgx($("#msg"),data);
                         setTimeout(function () {
                             location.href = '${ctx}/wshbj/examinationRecordItem/list_need_sample';
                         },2000)
                     }
                 },
                 error:function(err){
-                    $("#msg").html("<pre>"+err.responseText+"</pre>").show();
+                    showMsgx($("#msg"),err);
                 }
             });
         }
@@ -123,8 +122,8 @@
 			<label class="control-label"><font color="red">*</font>体检编号：</label>
 			<div class="controls">
 				<form:hidden path="id"/>
-				<div class="autocompleter-box"><form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-large"/></div>
-				<span class="help-inline"> 信息登记时的编号，推荐采用条码扫描枪录入。 </span>
+				<div class="autocompleter-box"><form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-large" readonly="true"/></div>
+				<span class="help-inline"> 只读的  <a href="${ctx}/wshbj/examinationSamples/form">条码扫描自由选择</a> </span>
 			</div>
 		</div>
         <div class="cl"></div>
@@ -134,7 +133,7 @@
             <div class="controls">
                 <input type="text" id="sampleCode" name="sampleCode" value="${examinationRecordItem.sampleCode}" maxlength="50" class="input-large required"
                  <c:if test="${empty examinationRecordItem.examinationCode }">readonly="true" </c:if> />
-                <span class="help-inline"> 采样人员领取的样本编号条码贴。选中采集项目后，才可以录入样本编号。 </span>
+                <span class="help-inline"> 采样人员领取的样本编号条码贴。 </span>
             </div>
         </div>
 
@@ -145,7 +144,7 @@
 			<div class="controls" id="box_items">
 			    <input type="radio" name="itemId" value="${examinationRecordItem.itemId}" data-specimen_id="${examinationRecordItem.specimenId}" checked="checked">
 			    ${examinationRecordItem.itemName}   ${examinationRecordItem.strExaminationFlag}  ${examinationRecordItem.strStatus}
-                <span class="help-inline"> 录入正确的体检编号后，自动加载采集项目。 </span>
+                <span class="help-inline">  </span>
 			</div>
 		</div>
         <div class="cl"></div>

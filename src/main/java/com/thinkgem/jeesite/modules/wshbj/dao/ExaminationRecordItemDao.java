@@ -85,4 +85,6 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
 
     List<ExaminationRecordItem> listDone(ExaminationRecordItem entity);
 
+    List<ExaminationRecordItem> listResulted(ExaminationRecordItem entity);
+
 }

@@ -162,6 +162,17 @@
 			</otherwise>
 		</choose>
 	</select>
+
+	<select id="listResulted" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.result_flag = 1 and b.status<![CDATA[ < ]]> 40
+			<include refid="whereif2"/>
+		</where>
+	</select>
 	
 	<select id="findAllList" resultType="ExaminationRecordItem">
 		SELECT 
@@ -319,18 +330,11 @@
 	<update id="update">
 		UPDATE bj_examination_record_item
 			<set>
-				<if test="recordId !=null and recordId != '' ">record_id = #{recordId},</if>
-				<if test="itemId !=null and itemId != '' ">item_id = #{itemId},</if>
-				<if test="needSamples !=null and needSamples != '' ">need_samples = #{needSamples},</if>
-				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
-				<if test="specimenId !=null and specimenId != '' ">specimen_id = #{specimenId},</if>
-				<if test="resultDictId !=null and resultDictId != '' ">result_dict_id = #{resultDictId},</if>
-				<if test="resultDictName !=null and resultDictName != '' ">result_dict_name = #{resultDictName},</if>
-				<if test="resultFlag !=null and resultFlag != '' ">result_flag = #{resultFlag},</if>
-				<if test="resultRemarks !=null and resultRemarks != '' ">result_remarks = #{resultRemarks},</if>
-				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
-				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
-				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
+				record_id = #{recordId},item_id = #{itemId},need_samples = #{needSamples},
+				sample_code = #{sampleCode},specimen_id = #{specimenId},result_dict_id = #{resultDictId},
+				result_dict_name = #{resultDictName},result_flag = #{resultFlag},
+				result_remarks = #{resultRemarks},update_by = #{updateBy.id},
+				update_date = #{updateDate},remarks = #{remarks},
 			</set>
 		WHERE id = #{id}
 	</update>

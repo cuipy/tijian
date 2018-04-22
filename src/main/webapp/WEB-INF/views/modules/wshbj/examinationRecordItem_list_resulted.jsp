@@ -15,33 +15,51 @@
         	return false;
         }
 
-        function clkResult(itemId,result){
+        function clkCancelSample(id,result){
 
-            var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
-            var d1={id:itemId,resultFlag:result};
-            $.ajax({
-                type:'post',dataType:'json',url:url,data:d1,
-                success:function(d1r){
-                    if(d1r.state== 1){
-                        showTip(d1r.msg);
-                        $("#tr_"+itemId).remove();
-                    }else{
-                        showMsgx($("#msg"),d1r);
+            confirmx('您确信要撤销这个样本吗？一旦撤销，该项目需要重新进行取样。',function(){
+                var url="${ctx}/wshbj/examinationRecordItem/ajax_canecl_sample";
+                var d1={'id':id};
+                $.ajax({
+                    type:'post',dataType:'json',url:url,data:d1,
+                    success:function(d1r){
+                        showMsgx($('#msg'),d1r);
+                        if(d1r.state==1){
+                            $('tr_'+id).remove();
+                        }
+                    },
+                    error:function(err){
+                        showMsgx($('#msg'),err);
                     }
+                })
+            });
+        }
 
-                },
-                error:function(err){
-                   showMsgx($("#msg"),d1r);
-                }
-            })
+        function clkCancelResult(id,result){
 
+            confirmx('您确信要撤销这个结果吗？一旦撤销，该项目需要重新设置结果。',function(){
+                var url="${ctx}/wshbj/examinationRecordItem/ajax_canecl_result";
+                var d1={'id':id};
+                $.ajax({
+                    type:'post',dataType:'json',url:url,data:d1,
+                    success:function(d1r){
+                        showMsgx($('#msg'),d1r);
+                        if(d1r.state==1){
+                            $('tr_'+id).remove();
+                        }
+                    },
+                    error:function(err){
+                        showMsgx($('#msg'),err);
+                    }
+                })
+            });
         }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_no_result">待录结果项目</a></li>
-		<li><a href="${ctx}/wshbj/examinationRecordItem/list_resulted">已录结果项目</a></li>
+		<li><a href="${ctx}/wshbj/examinationRecordItem/list_no_result">待录结果项目</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_resulted">已录结果项目</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_no_result" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -92,8 +110,8 @@
 				<td> ${item.remarks} </td>
 				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td>
 
-    				<span class="btn btn-mini btn-success" onclick="clkResult('${item.id}',1)">合格</span>&nbsp;&nbsp;&nbsp;
-    				<span class="btn btn-mini btn-danger" onclick="clkResult('${item.id}',0)">不合格</span>
+                    <c:if test="${item.needSamples == '1' }"><span class="btn btn-mini btn-warning" onclick="clkCancelSample('${item.id}')">撤销样本</span>&nbsp;&nbsp;&nbsp;</c:if>
+    				<span class="btn btn-mini btn-warning" onclick="clkCancelResult('${item.id}')">撤销结果</span>&nbsp;&nbsp;&nbsp;
 
 				</td></shiro:hasPermission>
 			</tr>

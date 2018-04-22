@@ -67,6 +67,43 @@ function windowOpen(url, name, width, height){
 	window.open(url ,name , options);
 }
 
+function showMsgx(jqContainer,msg){
+
+    var html='';
+    // 如果是RequestResult
+    if(msg.state!=null&&msg.msg!=null){
+        html='<b>自定义状态值：'+msg.state;
+        html+='</b>\n自定义状态描述:'+msg.msg;
+    }else if(msg.status!=null&&msg.responseText!=null){
+        html='<b>HTTP状态值：'+msg.status;
+        html+='</b>\nHTTP状态描述:'+msg.responseText;
+    }else{
+        html=msg;
+    }
+
+     if(html==null||html==''){
+        jqContainer.hide();
+        return;
+    }
+    html=html.replace(/\n/,"<br>");
+    html='<a class="close" >&times;</a>'+html;
+    if(html.length<300){
+        var err=false;
+        if(msg.status!=null&&msg.status!=200){
+            err=true;
+        }
+        if(msg.state!=null&&msg.state!=1){
+            err=true;
+        }
+        if(err){
+            showTip(html,err);
+        }else{
+            showTip(html);
+        }
+    }
+    jqContainer.html(html).show();
+    jqContainer.find('.close').on('click',function(){$(this).parent().hide()});
+}
 
 // 恢复提示框显示
 function resetTip(){
