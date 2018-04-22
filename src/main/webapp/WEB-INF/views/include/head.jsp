@@ -31,7 +31,7 @@
 <script src="${ctxStatic}/ueditor/ueditor.all.js" type="text/javascript"></script>
 
 <link href="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.css?v=20" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.js?v=15" type="text/javascript"></script>
+<script src="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.js?v=161" type="text/javascript"></script>
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/jeesite.css?v=15" type="text/css" rel="stylesheet" />

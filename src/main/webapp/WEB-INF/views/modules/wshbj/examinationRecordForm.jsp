@@ -6,7 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(function() {
-			//$("#name").focus();
+
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
@@ -53,7 +53,7 @@
                 }
             });
 
-             $('#userInfo').focus();
+
              var lastUserName='';
              $('#userInfo').autocompleter({
 
@@ -79,10 +79,10 @@
                     $("#industryName").val(u.industryName);
                     $("#postId").val(u.postId);
                     $("#postName").val(u.jobPostName);
-
-
                 }
             });
+
+            setTimeout("$('#userInfo').focus();",1000);
         });
 		function addRow(list, idx, tpl, row){
 			$(list).append(Mustache.render(tpl, {
@@ -276,8 +276,8 @@
 		<div class="control-group span6">
 			<label class="control-label">体检项目方式：</label>
 			<div class="controls">
-				<input type="radio" id="itemType1" name="itemType" value="1" <c:if test="${examinationRecord.itemType eq 1}">selected="selected"</c:if>/><label for="itemType1">体检套餐</label>
-				<input type="radio" id="itemType2" name="itemType" value="2" <c:if test="${examinationRecord.itemType eq 2}">selected="selected"</c:if>/><label for="itemType2">自由选择</label>
+				<input type="radio" id="itemType1" name="itemType" value="1" <c:if test="${examinationRecord.itemType eq 1}">checked="checked"</c:if>/><label for="itemType1">体检套餐</label>
+				<input type="radio" id="itemType2" name="itemType" value="2" <c:if test="${examinationRecord.itemType eq 2}">checked="checked"</c:if>/><label for="itemType2">自由选择</label>
 			</div>
 		</div>
 				<div class="control-group span6">

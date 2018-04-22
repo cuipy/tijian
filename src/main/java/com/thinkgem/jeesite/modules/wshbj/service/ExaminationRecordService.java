@@ -18,6 +18,8 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.crypto.hash.Hash;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,12 +52,16 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     private ExaminationResultDictService resultDictService;
     @Autowired
     private ExaminationSamplesDao examinationSamplesDao;
+    @Autowired
+    private ExaminationRecordItemService examinationRecordItemService;
 
+    @Cacheable(value = "examinationRecordCache",key="'examinationRecord_get_'+#id")
     public ExaminationRecord get(String id) {
         ExaminationRecord examinationRecord = super.get(id);
         return examinationRecord;
     }
 
+    @Cacheable(value = "examinationRecordCache",key="'examinationRecord_getByCode_'+#examinationRecord.code")
     public ExaminationRecord getByCode(ExaminationRecord examinationRecord) {
         examinationRecord = this.dao.getByCode(examinationRecord);
         return examinationRecord;
@@ -119,6 +125,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void save(ExaminationRecord examinationRecord) {
         super.save(examinationRecord);
         for (ExaminationRecordItem examinationRecordItem : examinationRecord.getItems()) {
@@ -141,6 +148,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public int updateRecordStatus(String recordId, String status) {
         if (StringUtils.isBlank(recordId) || StringUtils.isBlank(status)) {
             return 0;
@@ -150,6 +158,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void delete(ExaminationRecord examinationRecord) {
         super.delete(examinationRecord);
         ExaminationRecordItem recordItem = new ExaminationRecordItem();
@@ -158,6 +167,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public ResponseResult delRecord(ExaminationRecord examinationRecord) {
 
 
@@ -177,6 +187,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public ResponseResult saveRecord(ExaminationRecord examinationRecord) {
         //验证用户名、身份证号是否与系统数据一致
 
@@ -256,60 +267,129 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
         /**
          * 保存检查项目
+         * 1 读取现有的项目，
+         * 2 获得本次设置的项目
+         * 3 循环比对并保存
+         *
          */
-        List<String> itemIdList = new ArrayList<String>();
-        //若选择了套餐，则以套餐为准
-        if (StringUtils.isNotBlank(examinationRecord.getPackageId())) {
-            //清除原有体检项目
-            ExaminationRecordItem recordItem = new ExaminationRecordItem();
-            recordItem.setRecordId(examinationRecord.getId());
-            examinationRecordItemDao.delete(recordItem);
+        List<ExaminationRecordItem> currRecordItems=examinationRecord.getItems();
 
-            //保存现有体检项目
-            List<ExaminationItem> itemList = examinationItemService.findListByPackage(examinationRecord.getPackageId());
-            for (ExaminationItem examinationItem : itemList) {
-                itemIdList.add(examinationItem.getId());
+        // 打算保存的
+        List<ExaminationItem> savingItems= null;
+        // 如果是套餐
+        if ("1".equals(examinationRecord.getItemType())) {
+            savingItems = examinationItemService.findListByPackage(examinationRecord.getPackageId());
+        }else{
+            // 如果自由選擇
+            List<ExaminationRecordItem> lst = examinationRecord.getExaminationRecordItemList();
 
-                recordItem = new ExaminationRecordItem();
-                recordItem.setRecordId(examinationRecord.getId());
-                recordItem.setItemId(examinationItem.getId());
-                recordItem.setItemName(examinationItem.getName());
-                recordItem.setExaminationFlag("1");//初检
-                recordItem.setNeedSamples(examinationItem.getNeedSamples());
-                recordItem.setSpecimenId(examinationItem.getSpecimenId());
-                recordItem.setLastFlag("1");
-                recordItem.preInsert();
-                examinationRecordItemDao.insert(recordItem);
-            }
-        } else {
-            //自由选择体检项目
-            ExaminationItem examinationItem = null;
-            for (ExaminationRecordItem recordItem : examinationRecord.getExaminationRecordItemList()) {
-                if (recordItem.getId() == null) {
-                    continue;
-                }
-                if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(recordItem.getDelFlag())) {
-                    if (StringUtils.isBlank(recordItem.getId())) {
-                        recordItem.setRecordId(examinationRecord.getId());
-                        examinationItem = examinationItemService.get(recordItem.getId());
-                        if (examinationItem != null) {
-                            recordItem.setItemName(examinationItem.getName());
-                        }
-                        recordItem.setExaminationFlag("1");//初检
-                        recordItem.setNeedSamples(examinationItem.getNeedSamples());
-                        recordItem.setSpecimenId(examinationItem.getSpecimenId());
-                        recordItem.setLastFlag("1");
-                        recordItem.preInsert();
-                        examinationRecordItemDao.insert(recordItem);
-                    } else {
-                        recordItem.preUpdate();
-                        examinationRecordItemDao.update(recordItem);
-                    }
-                } else {
-                    examinationRecordItemDao.delete(recordItem);
+            for(ExaminationRecordItem savingItem:lst){
+                ExaminationItem item = examinationItemService.get(savingItem.getId());
+                if(item!=null){
+                    savingItems.add(item);
                 }
             }
         }
+
+        // 循環比对，目前存在的，是否已经需要剔除了。
+        for(ExaminationRecordItem currItem:currRecordItems){
+            // 已经处理的，就不能删除了
+            if(!StringUtils.isEmpty(currItem.getSampleCode())||!StringUtils.isEmpty(currItem.getResultFlag())){
+                continue;
+            }
+
+            // 如果不是最后一次的，也不处理
+            if("0".equals(currItem.getLastFlag())){
+                continue;
+            }
+
+            // 从要保存的记录里查查，是否已经在当前的记录里面不存在了。 。
+            ExaminationItem sameItem=null;
+            for(ExaminationItem savingItem:savingItems){
+                if(savingItem.getId().equals(currItem.getItemId())){
+                    sameItem=savingItem;
+                    break;
+                }
+            }
+
+            // 1 如果不存在，就把当前这条记录删除；2 如果存在，就将要保持的这条记录剔除不做处理
+            if(sameItem==null){
+                examinationRecordItemDao.delete(currItem);
+            }else{
+                savingItems.remove(sameItem);
+            }
+        }
+
+        // savingItems 中剩下的都是要添加到记录中的
+        for(ExaminationItem savingItem:savingItems){
+            ExaminationRecordItem item=new ExaminationRecordItem();
+            item.setRecordId(examinationRecord.getId());
+
+            item.setItemId(savingItem.getId());
+            item.setItemName(savingItem.getName());
+            item.setExaminationFlag("1");//初检
+            item.setNeedSamples(savingItem.getNeedSamples());
+            item.setSpecimenId(savingItem.getSpecimenId());
+            item.setLastFlag("1");
+            item.preInsert();
+
+            examinationRecordItemService.save(item);
+        }
+
+
+//        List<String> itemIdList = new ArrayList<String>();
+//        //若选择了套餐，则以套餐为准
+//        if (StringUtils.isNotBlank(examinationRecord.getPackageId())) {
+//            //清除原有体检项目
+//            ExaminationRecordItem recordItem = new ExaminationRecordItem();
+//            recordItem.setRecordId(examinationRecord.getId());
+//            examinationRecordItemDao.delete(recordItem);
+//
+//            //保存现有体检项目
+//            List<ExaminationItem> itemList = examinationItemService.findListByPackage(examinationRecord.getPackageId());
+//            for (ExaminationItem examinationItem : itemList) {
+//                itemIdList.add(examinationItem.getId());
+//
+//                recordItem = new ExaminationRecordItem();
+//                recordItem.setRecordId(examinationRecord.getId());
+//                recordItem.setItemId(examinationItem.getId());
+//                recordItem.setItemName(examinationItem.getName());
+//                recordItem.setExaminationFlag("1");//初检
+//                recordItem.setNeedSamples(examinationItem.getNeedSamples());
+//                recordItem.setSpecimenId(examinationItem.getSpecimenId());
+//                recordItem.setLastFlag("1");
+//                recordItem.preInsert();
+//                examinationRecordItemDao.insert(recordItem);
+//            }
+//        } else {
+//            //自由选择体检项目
+//            ExaminationItem examinationItem = null;
+//            for (ExaminationRecordItem recordItem : examinationRecord.getItems()) {
+//                if (recordItem.getId() == null) {
+//                    continue;
+//                }
+//                if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(recordItem.getDelFlag())) {
+//                    if (StringUtils.isBlank(recordItem.getId())) {
+//                        recordItem.setRecordId(examinationRecord.getId());
+//                        examinationItem = examinationItemService.get(recordItem.getId());
+//                        if (examinationItem != null) {
+//                            recordItem.setItemName(examinationItem.getName());
+//                        }
+//                        recordItem.setExaminationFlag("1");//初检
+//                        recordItem.setNeedSamples(examinationItem.getNeedSamples());
+//                        recordItem.setSpecimenId(examinationItem.getSpecimenId());
+//                        recordItem.setLastFlag("1");
+//                        recordItem.preInsert();
+//                        examinationRecordItemDao.insert(recordItem);
+//                    } else {
+//                        recordItem.preUpdate();
+//                        examinationRecordItemDao.update(recordItem);
+//                    }
+//                } else {
+//                    examinationRecordItemDao.delete(recordItem);
+//                }
+//            }
+//        }
 
 
         resultMessages.remove(0);
@@ -318,6 +398,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public ResponseResult saveResult(String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
         if (recordItemIds == null || recordItemIds.length < 1) {
             return ResponseResult.generateFailResult("体检项目数据错误");
@@ -400,6 +481,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
 
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void refreshStatus(String recordId) {
         if (StringUtils.isBlank(recordId)) {
             return;
@@ -473,6 +555,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
      * 更新状态，只需要id
      */
     @Transactional(readOnly = false)
+    @CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void updateStatus(ExaminationRecord record) {
 
         ExaminationRecordItem eriTmp = new ExaminationRecordItem();
