@@ -14,6 +14,26 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+        function clkCancelSample(id,result){
+
+            confirmx('您确信要撤销这个样本吗？一旦撤销，该项目需要重新进行取样。',function(){
+                var url="${ctx}/wshbj/examinationRecordItem/ajax_cancel_sample";
+                var d1={'id':id};
+                $.ajax({
+                    type:'post',dataType:'json',url:url,data:d1,
+                    success:function(d1r){
+                        showMsgx($('#msg'),d1r);
+                        if(d1r.state==1){
+                            $('tr_'+id).remove();
+                        }
+                    },
+                    error:function(err){
+                        showMsgx($('#msg'),err);
+                    }
+                })
+            });
+        }
 	</script>
 </head>
 <body>
@@ -56,7 +76,7 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="item">
-			<tr>
+			<tr id="tr_${item.id}">
 				<td>
 					${item.examinationCode}
 				</td>
@@ -69,9 +89,9 @@
 				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td>
     				<c:if test="${item.status ==0 }">
     				<a class="label label-important" href="${ctx}/wshbj/examinationRecordItem/form?id=${item.id}">采集</a> </c:if>
-    				<c:if test="${item.status ==1  }">
-                    <a class="label" href="${ctx}/wshbj/examinationRecordItem/cancel?id=${item.id}">撤销样本</a> </c:if>
 
+    				<c:if test="${item.needSamples == '1' and item.status ==1 }">
+    				    <span class="btn btn-mini btn-warning" onclick="clkCancelSample('${item.id}')">撤销样本</span>&nbsp;&nbsp;&nbsp;</c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
