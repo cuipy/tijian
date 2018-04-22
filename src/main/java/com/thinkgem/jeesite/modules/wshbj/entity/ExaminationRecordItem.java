@@ -227,12 +227,15 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return "未定义";
 	}
 
+	private String examinationCode;
 	public String getExaminationCode(){
-		ExaminationRecord record = getRecord();
-		if(record==null){
-			return "";
+		if(StringUtils.isEmpty(examinationCode)) {
+			ExaminationRecord record = getRecord();
+			if (record != null) {
+				return examinationCode=record.getCode();
+			}
 		}
-		return record.getCode();
+		return examinationCode;
 	}
 
 	@JsonIgnore
@@ -262,22 +265,26 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return record.getName();
 	}
 
+	private String recordUserSex;
 	public String getRecordUserSex(){
-		ExaminationRecord record = getRecord();
-
-		if(record==null){
-			return "";
+		if(StringUtils.isEmpty(recordUserSex)) {
+			ExaminationRecord record = getRecord();
+			if (record != null) {
+				recordUserSex=record.getSex();
+			}
 		}
-		return record.getSex();
+		return recordUserSex;
 	}
 
+	private String recoreUserStrSex;
 	public String getRecordUserStrSex(){
-		ExaminationRecord record = getRecord();
-
-		if(record==null){
-			return "";
+		if(StringUtils.isEmpty(recoreUserStrSex)) {
+			ExaminationRecord record = getRecord();
+			if (record == null) {
+				recoreUserStrSex=record.getStrSex();
+			}
 		}
-		return record.getStrSex();
+		return recoreUserStrSex;
 	}
 
 	public String getUserName() {
