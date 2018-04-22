@@ -25,16 +25,8 @@ public interface SpecimenDao extends CrudDao<Specimen> {
     Specimen get(String id);
 
     @Override
-    @Cacheable(value = "specimenCache",key="'specimen_findList_'+#name+#owner")
-    List<Specimen> findList(Specimen entity);
-
-    @Override
     @Cacheable(value = "specimenCache",key="'specimen_ge_'+#id+#name+#owner")
     Specimen get(Specimen entity);
-
-    @Override
-    @Cacheable(value = "specimenCache",key="'specimen_findAllList_'+#id+#name+#owner")
-    List<Specimen> findAllList(Specimen entity);
 
     @Override
     @CacheEvict(value="specimenCache",allEntries=true)

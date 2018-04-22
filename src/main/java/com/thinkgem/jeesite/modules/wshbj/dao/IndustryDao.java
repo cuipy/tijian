@@ -25,16 +25,8 @@ public interface IndustryDao extends CrudDao<Industry> {
     Industry get(String id);
 
     @Override
-    @Cacheable(value = "industryCache",key="'industry_findList_'")
-    List<Industry> findList(Industry entity);
-
-    @Override
     @Cacheable(value = "industryCache",key="'industry_get_'+#id+#name+#owner")
     Industry get(Industry entity);
-
-    @Override
-    @Cacheable(value = "industryCache",key="'industry_findAllList_'+#id+#name+#owner")
-    List<Industry> findAllList(Industry entity);
 
     @Override
     @CacheEvict(value="industryCache",allEntries=true)

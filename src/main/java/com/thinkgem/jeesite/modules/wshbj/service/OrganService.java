@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +26,13 @@ public class OrganService extends CrudService<OrganDao, Organ> {
 	public Organ get(String id) {
 		return super.get(id);
 	}
-	
+
+	@Cacheable(value = "organCache",key="'organ_findList_'+#organ.name+#organ.owner")
 	public List<Organ> findList(Organ organ) {
 		return super.findList(organ);
 	}
-	
+
+	@Cacheable(value = "organCache",key="'organ_findPage_'+#page.pageNo+#page.pageSize+#organ.name+#organ.owner")
 	public Page<Organ> findPage(Page<Organ> page, Organ organ) {
 		return super.findPage(page, organ);
 	}

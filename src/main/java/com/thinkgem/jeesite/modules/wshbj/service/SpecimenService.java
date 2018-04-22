@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemType;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +30,13 @@ public class SpecimenService extends CrudService<SpecimenDao, Specimen> {
 	public Specimen get(String id) {
 		return super.get(id);
 	}
-	
+
+	@Cacheable(value = "specimenCache",key="'specimen_findList_'+#specimen.code+#specimen.name+#specimen.owner")
 	public List<Specimen> findList(Specimen specimen) {
 		return super.findList(specimen);
 	}
-	
+
+	@Cacheable(value = "specimenCache",key="'specimen_findPage_'+#page.pageNo+#page.pageSize+#specimen.code+#specimen.name+#specimen.owner")
 	public Page<Specimen> findPage(Page<Specimen> page, Specimen specimen) {
 		return super.findPage(page, specimen);
 	}

@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,11 +34,13 @@ public class IndustryService extends CrudService<IndustryDao, Industry> {
 		Industry entity = super.get(id);
 		return entity;
 	}
-	
+
+	@Cacheable(value = "industryCache",key="'industry_findList_'+#industry.code+#industry.name+#industry.owner")
 	public List<Industry> findList(Industry industry) {
 		return super.findList(industry);
 	}
-	
+
+	@Cacheable(value = "industryCache",key="'industry_findPage_'+#page.pageNo+#page.pageSize+#industry.code+#industry.name+#industry.owner")
 	public Page<Industry> findPage(Page<Industry> page, Industry industry) {
 		return super.findPage(page, industry);
 	}

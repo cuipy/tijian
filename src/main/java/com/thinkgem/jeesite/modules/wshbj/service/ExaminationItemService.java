@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,8 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	public ExaminationItem get(String id) {
 		return super.get(id);
 	}
-	
+
+	@Cacheable(value = "examinationItemCache",key="'examinationItem_findList_'+#examinationItem.code+#examinationItem.name+#examinationItem.owner")
 	public List<ExaminationItem> findList(ExaminationItem examinationItem) {
 		return super.findList(examinationItem);
 	}
