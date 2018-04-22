@@ -140,29 +140,30 @@ public class ExaminationRecordController extends BaseController {
 //		}
 		model.addAttribute("examinationRecord", examinationRecord);
 
+		// cuipengyu  20180422 注释
 		// 根据当前用户所在的体检中心 获得 当前体检单位，
-		Organ organ = new Organ();
-		organ.setOwner(UserUtils.getUser().getCompany().getId());
-		organ.setDelFlag("0");
-		organ.setReferenceFlag("0");
-		List<Organ> organList = organService.findList(organ);
-		model.addAttribute("organList", organList);
-
-		// 根据当前用户所在的公司，获得行业信息
-		Industry industry = new Industry();
-		industry.setOwner(UserUtils.getUser().getCompany().getId());
-		industry.setDelFlag("0");
-		industry.setReferenceFlag("0");
-		List<Industry> industryList = industryService.findList(industry);
-		model.addAttribute("industryList", industryList);
-
-		// 根据当前用户所在的体检中心，获得岗位信息
-		JobPost jobPost = new JobPost();
-		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
-		jobPost.setDelFlag("0");
-		jobPost.setReferenceFlag("0");
-		List<JobPost> postList = jobPostService.findList(jobPost);
-		model.addAttribute("postList", postList);
+//		Organ organ = new Organ();
+//		organ.setOwner(UserUtils.getUser().getCompany().getId());
+//		organ.setDelFlag("0");
+//		organ.setReferenceFlag("0");
+//		List<Organ> organList = organService.findList(organ);
+//		model.addAttribute("organList", organList);
+//
+//		// 根据当前用户所在的公司，获得行业信息
+//		Industry industry = new Industry();
+//		industry.setOwner(UserUtils.getUser().getCompany().getId());
+//		industry.setDelFlag("0");
+//		industry.setReferenceFlag("0");
+//		List<Industry> industryList = industryService.findList(industry);
+//		model.addAttribute("industryList", industryList);
+//
+//		// 根据当前用户所在的体检中心，获得岗位信息
+//		JobPost jobPost = new JobPost();
+//		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
+//		jobPost.setDelFlag("0");
+//		jobPost.setReferenceFlag("0");
+//		List<JobPost> postList = jobPostService.findList(jobPost);
+//		model.addAttribute("postList", postList);
 
 		// 获得体检套餐
 		ExaminationPackage examinationPackage = new ExaminationPackage();
