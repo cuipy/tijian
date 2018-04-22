@@ -83,12 +83,12 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">性别：</label>
+			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
 				<form:select path="sex" cssStyle="width: 100px">
 					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<span class="help-inline"> </span>
 			</div>
 		</div>
 
@@ -101,6 +101,7 @@
 					</form:option>
 					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
+				<span class="help-inline"> 如果行业不存在，点击<a href="${ctx}/wshbj/industry/form" target="_blank">新增行业</a> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -112,6 +113,7 @@
 					</form:option>
 					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
+				<span class="help-inline"> 如果单位不存在，点击<a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -123,6 +125,7 @@
 					</form:option>
 					<form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
+				<span class="help-inline"> 如果岗位不存在，点击<a href="${ctx}/wshbj/jobPost/form" target="_blank">新增岗位</a> </span>
 			</div>
 		</div>
 
