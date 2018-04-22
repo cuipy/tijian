@@ -251,7 +251,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	}
 
-	@Length(min=0, max=64, message="套餐价格长度必须介于 0 和 64 之间")
+	@Length(min=1, max=10, message="套餐价格长度必须介于 1 和 10 之间")
+	@NotNull(message = "体检价格不允许为空")
 	@ExcelField(value="packagePrice",title="套餐价格",type=0,sort=190)
 	public String getPackagePrice() {
 		return packagePrice;

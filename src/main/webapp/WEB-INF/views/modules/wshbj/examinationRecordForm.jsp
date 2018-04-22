@@ -196,7 +196,7 @@
 			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
 			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
 			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo"
-			    value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})" maxlength="50" class="input-xxlarge" /></div>
+			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if> maxlength="50" class="input-xxlarge" /></div>
 
                 <span class="help-inline">选择体检用户 <a href="${ctx}/wshbj/examinationUser/form" target="_blank">添加体检用户</a></span>
 			</div>
