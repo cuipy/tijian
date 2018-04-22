@@ -42,7 +42,18 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	 * 0 不是默认记录，可删除   1 默认记录 不可删除
 	 */
 	protected String defaultRecord ;
-	
+
+	protected String likeField;
+
+	@JsonIgnore
+	public String getLikeField() {
+		return likeField;
+	}
+
+	public void setLikeField(String likeField) {
+		this.likeField = likeField;
+	}
+
 	public DataEntity() {
 		super();
 		this.delFlag = DEL_FLAG_NORMAL;

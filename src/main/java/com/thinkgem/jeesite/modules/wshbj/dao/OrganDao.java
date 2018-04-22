@@ -24,20 +24,4 @@ public interface OrganDao extends CrudDao<Organ> {
     @Cacheable(value = "organCache",key="'organ_get_'+#id")
     Organ get(String id);
 
-    @Override
-    @Cacheable(value = "organCache",key="'organ_ge_'+#id+#name+#owner")
-    Organ get(Organ entity);
-
-
-    @Override
-    @CacheEvict(value="organCache",allEntries=true)
-    int insert(Organ entity);
-
-    @Override
-    @CacheEvict(value="organCache",allEntries=true)
-    int update(Organ entity);
-
-    @Override
-    @CacheEvict(value="organCache",allEntries=true)
-    int delete(Organ entity);
 }

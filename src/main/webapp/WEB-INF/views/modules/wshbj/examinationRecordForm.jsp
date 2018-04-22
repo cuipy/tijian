@@ -36,15 +36,6 @@
                     refreshItemsPrice();
 				}
             });
-            <c:choose>
-				<c:when test="${not empty examinationRecord.id}">
-					 $("input[name='itemType'][value=${examinationRecord.itemType}]").attr("checked",true);
-				</c:when>
-				<c:otherwise>
-					$("input[name='itemType'][value='1']").attr("checked",true);
-				</c:otherwise>
-            </c:choose>
-
 
 
             $('#idNumber').bind('keypress',function(event){
@@ -72,7 +63,10 @@
                 cache:false,
                 empty: false,
                 limit: 10,
-                source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter"
+                source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
+                callback: function (value, index, selected) {
+                    console.log(value);
+                }
             });
         });
 		function addRow(list, idx, tpl, row){

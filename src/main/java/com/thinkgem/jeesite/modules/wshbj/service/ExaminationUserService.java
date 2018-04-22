@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,17 +47,20 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 	public List<ExaminationUser> findList(ExaminationUser examinationUser) {
 		return super.findList(examinationUser);
 	}
-	
+
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_findPage_'+#page.pageNo+#page.pageSize+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
 	public Page<ExaminationUser> findPage(Page<ExaminationUser> page, ExaminationUser examinationUser) {
 		return super.findPage(page, examinationUser);
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "examinationUserCache",allEntries = true)
 	public void save(ExaminationUser examinationUser) {
 		super.save(examinationUser);
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "examinationUserCache",allEntries = true)
 	public void delete(ExaminationUser examinationUser) {
 		super.delete(examinationUser);
 	}

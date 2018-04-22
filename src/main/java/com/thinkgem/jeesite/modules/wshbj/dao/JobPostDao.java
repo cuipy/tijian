@@ -24,21 +24,5 @@ public interface JobPostDao extends CrudDao<JobPost> {
     @Cacheable(value = "jobPostCache",key="'jobPost_get_'+#id")
     JobPost get(String id);
 
-    @Override
-    @Cacheable(value = "jobPostCache",key="'jobPost_ge_'+#id+#name+#owner")
-    JobPost get(JobPost entity);
-
-
-    @Override
-    @CacheEvict(value="jobPostCache",allEntries=true)
-    int insert(JobPost entity);
-
-    @Override
-    @CacheEvict(value="jobPostCache",allEntries=true)
-    int update(JobPost entity);
-
-    @Override
-    @CacheEvict(value="jobPostCache",allEntries=true)
-    int delete(JobPost entity);
     
 }

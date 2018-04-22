@@ -52,26 +52,19 @@
 		FROM bj_examination_user a
 		<include refid="examinationUserJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and ( 1=1
-			<if test="idNumber != null and idNumber != ''">
-				or a.id_number LIKE concat('%',#{idNumber},'%')
-			</if>
-			<if test="code != null and code != ''">
-				or a.code = #{code}
-			</if>
-			<if test="name != null and name != ''">
-				or a.name LIKE
-					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
-			</if>
-			<if test="phoneNumber != null and phoneNumber != ''">
-				or a.phone_number like concat('%', #{phoneNumber},'%')
-			</if>
+			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="organId != null and organId != ''">
-				or a.organ_id = #{organId}
+				and a.organ_id = #{organId}
 			</if>
-			)
+			<if test="likeField != null and likeField !=''">
+				and (
+					a.id_number LIKE concat('%',#{likeField},'%')
+					or a.code like concat('%',#{likeField},'%')
+					or a.name LIKE concat('%',#{likeField},'%')
+				   	or a.phone_number like concat('%', #{likeField},'%')
+				)
+			</if>
+
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

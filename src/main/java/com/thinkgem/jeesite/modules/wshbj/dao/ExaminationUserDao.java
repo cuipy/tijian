@@ -22,18 +22,6 @@ public interface ExaminationUserDao extends CrudDao<ExaminationUser> {
     @Cacheable(value = "examinationUserCache",key="'examinationUser_get_'+#id")
     ExaminationUser get(String id);
 
-    @Override
-    @CacheEvict(value = "examinationUserCache",allEntries = true)
-    int insert(ExaminationUser entity);
-
-    @Override
-    @CacheEvict(value = "examinationUserCache",allEntries = true)
-    int update(ExaminationUser entity);
-
-    @Override
-    @CacheEvict(value = "examinationUserCache",allEntries = true)
-    int delete(ExaminationUser entity);
-
     @Cacheable(value = "examinationUserCache",key="'examinationUser_getByIdNumberAndOwner_'+#idNumber+#owner")
     ExaminationUser getByIdNumberAndOwner(@Param("idNumber")String idNumber, @Param("owner")String owner);
 }

@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemType;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,11 +43,13 @@ public class SpecimenService extends CrudService<SpecimenDao, Specimen> {
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "specimenCache",allEntries = true)
 	public void save(Specimen specimen) {
 		super.save(specimen);
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "specimenCache",allEntries = true)
 	public void delete(Specimen specimen) {
 		super.delete(specimen);
 	}

@@ -190,22 +190,19 @@ public class ExaminationUserController extends BaseController {
 
 	@ResponseBody
 	@GetMapping(value = "ajax_for_autocompleter")
-	public List<Map<String,String>> ajax_for_autocompleter(String query){
-		logger.error("阿深刻的积分卡设计费111111 ");
+	public List<Map<String,String>> ajax_for_autocompleter(String query,Integer limit){
 		ExaminationUser queryUser=new ExaminationUser();
-		queryUser.setCode(query);
-		queryUser.setIdNumber(query);
-		queryUser.setPhoneNumber(query);
-		queryUser.setName(query);
+		queryUser.setLikeField(query);
 
-		List<ExaminationUser> lst = examinationUserService.findList(queryUser);
+		Page<ExaminationUser> page=new Page<ExaminationUser>();
+		page.setPageNo(1);
+		page.setPageSize(limit);
+		Page<ExaminationUser> p = examinationUserService.findPage(page,queryUser);
 		List<Map<String,String>> lst2=new ArrayList();
 
-		for(ExaminationUser u:lst){
+		for(ExaminationUser u:p.getList()){
 			lst2.add(u.getMap());
 		}
-
-		logger.error("阿深刻的积分卡设计费 ");
 
 		return lst2;
 	}

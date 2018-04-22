@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,16 +44,19 @@ public class JobPostService extends CrudService<JobPostDao, JobPost> {
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "jobPostCache",allEntries = true)
 	public void save(JobPost jobPost) {
 		super.save(jobPost);
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "jobPostCache",allEntries = true)
 	public void delete(JobPost jobPost) {
 		super.delete(jobPost);
 	}
 
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "jobPostCache",allEntries = true)
 	public RequestResult saveByPull(User createBy, String jobPostIds) {
 		if (createBy==null){
 			return RequestResult.generateFailResult("权限不足");

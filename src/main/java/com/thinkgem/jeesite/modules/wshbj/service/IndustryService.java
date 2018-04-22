@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,17 +47,20 @@ public class IndustryService extends CrudService<IndustryDao, Industry> {
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "industryCache",allEntries = true)
 	public void save(Industry industry) {
 		super.save(industry);
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "industryCache",allEntries = true)
 	public void delete(Industry industry) {
 		super.delete(industry);
 	}
 
 
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "industryCache",allEntries = true)
 	public RequestResult saveByPull(User createBy, String industryIds) {
 		if (createBy==null){
 			return RequestResult.generateFailResult("权限不足");

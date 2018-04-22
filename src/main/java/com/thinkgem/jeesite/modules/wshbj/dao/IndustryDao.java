@@ -25,19 +25,5 @@ public interface IndustryDao extends CrudDao<Industry> {
     @Cacheable(value = "industryCache",key="'industry_get_'+#id")
     Industry get(String id);
 
-    @Override
-    @Cacheable(value = "industryCache",key="'industry_get_'+#entity.id+#entity.code+#entity.name")
-    Industry get(Industry entity);
 
-    @Override
-    @CacheEvict(value="industryCache",allEntries=true)
-    int insert(Industry entity);
-
-    @Override
-    @CacheEvict(value="industryCache",allEntries=true)
-    int update(Industry entity);
-
-    @Override
-    @CacheEvict(value="industryCache",allEntries=true)
-    int delete(Industry entity);
 }
