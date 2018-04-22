@@ -58,14 +58,29 @@
              $('#userInfo').autocompleter({
 
                 highlightMatches: true,
-                template: '{{ organName }} <span>({{ name }})</span>',
+                template: '{{ label }}',
                 hint: false,
                 cache:false,
                 empty: false,
                 limit: 10,
                 source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
                 callback: function (value, index, selected) {
-                    console.log(value);
+                    var u=selected;
+                    $("#userId").val(u.id);
+                    $("#name").val(u.name);
+                    $("#idNumber").val(u.idNumber);
+                    $("#birthday").val(u.birthday);
+                    $("#phoneNumber").val(u.phoneNumber);
+                    $("#sex").val(u.sex);
+                    $("#strSex").val(u.strSex);
+                    $("#organId").val(u.organId);
+                    $("#organName").val(u.organName);
+                    $("#industryId").val(u.industryId);
+                    $("#industryName").val(u.industryName);
+                    $("#postId").val(u.postId);
+                    $("#postName").val(u.jobPostName);
+
+
                 }
             });
         });
@@ -176,9 +191,12 @@
 		</div>
         <div class="cl"></div>
 		<div class="control-group span12">
-			<label class="control-label"><font color="red">*</font>  体检用户：</label>
+			<label class="control-label"><font color="red">*</font>  身份证/手机号：</label>
 			<div class="controls">
-			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo" maxlength="50" class="input-large" /></div>
+			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
+			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
+			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo"
+			    value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})" maxlength="50" class="input-xxlarge" /></div>
 
                 <span class="help-inline">选择体检用户 <a href="${ctx}/wshbj/examinationUser/form" target="_blank">添加体检用户</a></span>
 			</div>
@@ -209,15 +227,15 @@
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
 
-			    <input type="hidden" id="sex" name="sex" >
-				<input type="text" id="strSex" name="strSex" class="input-large required" readonly="true">
+			    <input type="hidden" id="sex" name="sex"  value="${examinationRecord.sex}">
+				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-large required" readonly="true">
 
 			</div>
 		</div>
 		<div class="control-group span6">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <input type="text" id="birthday" name="birthday" class="input-large required" readonly="true">
+                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-large required" readonly="true">
 
             </div>
         </div>
@@ -225,24 +243,24 @@
 	<div class="control-group span6">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-		   <input type="hidden" id="industryId" name="industryId" >
-           <input type="text" id="industryName" name="industryName" class="input-large required" readonly="true">
+		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
+           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-large required" readonly="true">
 
 		</div>
 	</div>
 	<div class="control-group span6" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
-		    <input type="hidden" id="organId" name="organId" >
-            <input type="text" id="organName" name="organName" class="input-large required" readonly="true">
+		    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
+            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-large required" readonly="true">
 
 		</div>
 	</div>
 	<div class="control-group span6">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
-			<input type="hidden" id="postId" name="postId" >
-            <input type="text" id="postName" name="postName" class="input-large required" readonly="true">
+			<input type="hidden" id="postId" name="postId"  value="${examinationRecord.postId}">
+            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-large required" readonly="true">
 
 		</div>
 	</div>

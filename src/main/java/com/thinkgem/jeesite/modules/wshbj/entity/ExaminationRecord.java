@@ -106,6 +106,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	@ExpressSequence(express="10{yyyyMMdd}[4]",describe = "编号")
 	@Length(min=1, max=50, message="编号长度必须介于 1 和 50 之间")
 	@ExcelField(value="code",title="编号",type=0,sort=30)
+	@NotNull(message="体检编号不允许为空")
 	public String getCode() {
 		return code;
 	}
@@ -116,6 +117,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	@Length(min=1, max=50, message="姓名长度必须介于 1 和 50 之间")
 	@ExcelField(value="name",title="姓名",type=0,sort=40)
+	@NotNull(message="用户名不允许为空")
 	public String getName() {
 		return name;
 	}
@@ -126,6 +128,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	@Length(min=1, max=45, message="联系电话长度必须介于 1 和 45 之间")
 	@ExcelField(value="phoneNumber",title="联系电话",type=0,sort=50)
+	@NotNull(message="用户手机号码不允许为空")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -199,7 +202,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="单位长度必须介于 1 和 64 之间")
-
 	public String getOrganId() {
 		return organId;
 	}
@@ -260,6 +262,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=0, max=20, message="身份证号长度必须介于 0 和 20 之间")
+	@NotNull(message="体检用户身份证号码不能为空")
 	@ExcelField(value="idNumber",title="身份证号",type=0,sort=200)
 	public String getIdNumber() {
 		return idNumber;
@@ -334,6 +337,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	@Length(min=0, max=64, message="体检项目方式长度必须介于 0 和 64 之间")
+	@NotNull(message = "体检类型必须填写")
 	public String getItemType() {
 		return itemType;
 	}
@@ -343,6 +347,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 	@ExcelField(value="strItemType",title="体检类型",type=0,sort=210)
+	@NotNull(message="体检类型必选")
 	public String getStrItemType(){
 		if("1".equals(itemType)){
 			return "体检套餐";

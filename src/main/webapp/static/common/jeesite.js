@@ -341,3 +341,14 @@ function abbr(name, maxLength){
  }  
  return nameSub;  
 }
+
+function getDateFromId(idNumber){
+    if(idNumber==null||idNumber.length<15){
+        return "";
+    }
+
+    var y=idNumber.substr(6,4);
+    var m=idNumber.substr(10,2);
+    var d=idNumber.substr(12,2);
+    return y+"-"+m+"-"+d;
+}

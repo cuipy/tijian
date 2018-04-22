@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
@@ -13,6 +14,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +49,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	}
 
 	@Length(min=0, max=50, message="编号长度必须介于 1 和 50 之间")
+	@ExpressSequence(express = "EU{yyMMdd}[4]",describe = "体检用户编号")
 	public String getCode() {
 		return code;
 	}
@@ -54,16 +58,19 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.code = code;
 	}
 	
-	@Length(min=1, max=50, message="姓名长度必须介于 1 和 50 之间")
+	@Length(min=2, max=50, message="姓名长度必须介于 2 和 50 之间")
+	@NotNull(message = "姓名禁止为空")
 	public String getName() {
 		return name;
 	}
+
 
 	public void setName(String name) {
 		this.name = name;
 	}
 	
-	@Length(min=1, max=45, message="联系电话长度必须介于 1 和 45 之间")
+	@Length(min=5, max=45, message="联系电话长度必须介于 5 和 45 之间")
+	@NotNull(message = "联系电话必须填写")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -72,7 +79,10 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.phoneNumber = phoneNumber;
 	}
 
-	@Length(min=1, max=20, message="身份证号长度必须介于 1 和 20 之间")
+	@Length(min=15, max=20, message="身份证号长度必须介于 15 和 20 之间")
+	@NotNull(message = "身份证号码必须填写")
+	@Pattern(regexp = "(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)" +
+			"|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}[0-9Xx]$)" ,message = "身份证格式不合法")
 	public String getIdNumber() {
 		return idNumber;
 	}
@@ -202,7 +212,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("industryId",industryId);
 		m.put("industryName",getIndustryName());
 		m.put("postId",postId);
-		m.put("getJobPostName",getJobPostName());
+		m.put("jobPostName",getJobPostName());
 		m.put("idNumber",idNumber);
 
 		m.put("phoneNumber",phoneNumber);
@@ -212,8 +222,8 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("code",this.code);
 		m.put("owner",this.owner);
 
-		m.put("value",getOrganName()+"("+getName()+")");
-		m.put("label",getOrganName()+"("+getName()+")");
+		m.put("value",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
+		m.put("label",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
 
 		return m;
 	}

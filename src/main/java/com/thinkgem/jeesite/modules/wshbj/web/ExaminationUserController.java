@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
@@ -115,6 +117,10 @@ public class ExaminationUserController extends BaseController {
 			return form(examinationUser, model);
 		}
 		examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
+		if(StringUtils.isEmpty(examinationUser.getCode())){
+			String c=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationUser.class,"code");
+			examinationUser.setCode(c);
+		}
 		examinationUserService.save(examinationUser);
 		addMessage(redirectAttributes, "保存体检用户成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationUser/?repage";

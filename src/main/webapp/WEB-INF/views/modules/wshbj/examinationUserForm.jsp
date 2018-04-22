@@ -22,7 +22,17 @@
 					}
 				}
 			});
+
+			$("#idNumber").on('blur',refreshBirthday);
+			$("#idNumber").on('change',refreshBirthday);
+
 		});
+
+		function refreshBirthday(){
+		    var idNumber=$("#idNumber").val();
+		    var dt=getDateFromId(idNumber);
+		    $("#birthday").val(dt);
+		}
 	</script>
 </head>
 <body>
