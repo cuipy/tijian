@@ -136,7 +136,7 @@
     </div>
 
     <img name="img${path}" id="img${path}" style="width:100px;height:100px;display:none">
-    <input type="hidden" name="${path}" id="up${path}"/>
+    <input type="hidden" name="${path}" id="up${path}" value="${value}"/>
 
 </div>
 <script>
