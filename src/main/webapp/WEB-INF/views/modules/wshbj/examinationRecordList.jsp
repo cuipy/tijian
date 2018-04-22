@@ -82,26 +82,25 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th width="100">编号</th>
-				<th width="100">姓名</th>
-				<th width="150">身份证号</th>
+				<th width="150">编号</th>
+				<th width="100">体检人</th>
+				<th width="180">身份证号</th>
 				<th width="100">联系电话</th>
 				<th width="40">性别</th>
-				<th>单位</th>
-				<th>体检套餐/项目</th>
+				<th >体检套餐/项目</th>
 				<th width="120">填报时间</th>
-				<th width="60">状态</th>
-				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="150">操作</th></shiro:hasPermission>
+				<th width="80">状态</th>
+				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="300">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationRecord">
-			<tr>
+			<tr >
 				<td>
 						<a href="${ctx}/wshbj/examinationRecord/view?id=${examinationRecord.id}">${examinationRecord.code}</a>
 				</td>
 				<td>
-						${examinationRecord.name}
+					${examinationRecord.organName}	${examinationRecord.name}
 				</td>
 				<td>
 						${examinationRecord.idNumber}
@@ -112,10 +111,7 @@
 				<td>
 						${fns:getDictLabel(examinationRecord.sex,'sex','')}
 				</td>
-				<td>
 
-						${wshbjfns:getEntityName('Organ',examinationRecord.organId,'')}
-				</td>
 				<td>
 				    <c:if test="${examinationRecord.itemType==1}">${wshbjfns:getEntityName('ExaminationPackage',examinationRecord.packageId,'')}</c:if>
 					<c:if test="${examinationRecord.itemType == 2}">
@@ -130,10 +126,13 @@
 						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
-					<c:if test="${examinationRecord.status == '0'}"><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
-					<a href="${ctx}/wshbj/examinationRecord/print?id=${examinationRecord.id}" target="_blank">打印体检表</a>
-					<a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">填报结果</a>
-					<c:if test="${examinationRecord.status == '0'}"><a href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a></c:if>
+					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
+					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print?id=${examinationRecord.id}" target="_blank">打印体检表</a>
+					<c:if test="${examinationRecord.status < 40}">
+					    <a class="label label-warning" href="${ctx}/wshbj/examinationRecordItem/list_need_sample_nodo?queryExamCode=${examinationRecord.code}">采样</a>
+					    <a class="label label-warning" href="${ctx}/wshbj/examinationRecordItem/list_no_result?queryExamCode=${examinationRecord.code}">填报结果</a></c:if>
+					<c:if test="${examinationRecord.status == '0'}">
+					    <a class="label label-danger"  href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a></c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

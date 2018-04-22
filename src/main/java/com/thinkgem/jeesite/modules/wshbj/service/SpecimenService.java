@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.SpecimenDao;
 @Transactional(readOnly = true)
 public class SpecimenService extends CrudService<SpecimenDao, Specimen> {
 
+	@Cacheable(value = "specimenCache",key="'specimen_get_'+#id")
 	public Specimen get(String id) {
 		return super.get(id);
 	}

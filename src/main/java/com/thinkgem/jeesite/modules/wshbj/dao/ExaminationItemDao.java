@@ -25,31 +25,8 @@ public interface ExaminationItemDao extends CrudDao<ExaminationItem> {
 
     public List<ExaminationItem> findAuthorisedList(String roleId);
 
-    @CacheEvict(value="examinationItemCache",allEntries=true)
     public int insertRoleItem(@Param("roleId")String roleId,@Param("itemIdList")List<String> itemIdList);
 
-    @CacheEvict(value="examinationItemCache",allEntries=true)
     public int deleteRoleItem(String roleId);
 
-    @Override
-    @Cacheable(value = "examinationItemCache",key="'examinationItem_get_'+#id")
-    ExaminationItem get(String id);
-
-
-    @Override
-    @Cacheable(value = "examinationItemCache",key="'examinationItem_get_'+#id+#code+#name+#owner")
-    ExaminationItem get(ExaminationItem entity);
-
-
-    @Override
-    @CacheEvict(value="examinationItemCache",allEntries=true)
-    int insert(ExaminationItem entity);
-
-    @Override
-    @CacheEvict(value="examinationItemCache",allEntries=true)
-    int update(ExaminationItem entity);
-
-    @Override
-    @CacheEvict(value="examinationItemCache",allEntries=true)
-    int delete(ExaminationItem entity);
 }

@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.JobPostDao;
 @Transactional(readOnly = true)
 public class JobPostService extends CrudService<JobPostDao, JobPost> {
 
+	@Cacheable(value = "jobPostCache",key="'jobPost_get_'+#id")
 	public JobPost get(String id) {
 		return super.get(id);
 	}

@@ -20,8 +20,5 @@ import java.util.List;
 @MyBatisDao
 public interface OrganDao extends CrudDao<Organ> {
 
-    @Override
-    @Cacheable(value = "organCache",key="'organ_get_'+#id")
-    Organ get(String id);
 
 }

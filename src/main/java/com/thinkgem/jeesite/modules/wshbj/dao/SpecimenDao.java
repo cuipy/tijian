@@ -20,9 +20,5 @@ import java.util.List;
 @MyBatisDao
 public interface SpecimenDao extends CrudDao<Specimen> {
 
-    @Override
-    @Cacheable(value = "specimenCache",key="'specimen_get_'+#id")
-    Specimen get(String id);
-
     
 }

@@ -17,19 +17,4 @@ import org.springframework.cache.annotation.Cacheable;
 @MyBatisDao
 public interface ExaminationPackageDao extends CrudDao<ExaminationPackage> {
 
-    @Override
-    @Cacheable(value = "examinationPackageCache",key="'examinationPage_get_'+#id")
-    ExaminationPackage get(String id);
-
-    @Override
-    @CacheEvict(value = "examinationPackageCache",allEntries = true)
-    int insert(ExaminationPackage entity);
-
-    @Override
-    @CacheEvict(value = "examinationPackageCache",allEntries = true)
-    int update(ExaminationPackage entity);
-
-    @Override
-    @CacheEvict(value = "examinationPackageCache",allEntries = true)
-    int delete(ExaminationPackage entity);
 }

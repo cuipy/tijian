@@ -160,7 +160,9 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	@ExcelField(value="industryName",title="行业",type=0,sort=70)
 	public String getIndustryName(){
 		Industry ind = getIndustry();
-
+System.out.println(industryId);
+		System.out.println(ind.getId());
+System.out.println(ind.getName());
 		if(ind==null){
 			return "";
 		}

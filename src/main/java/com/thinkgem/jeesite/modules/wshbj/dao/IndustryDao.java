@@ -21,9 +21,6 @@ import java.util.List;
 @EnableCaching
 public interface IndustryDao extends CrudDao<Industry> {
 
-    @Override
-    @Cacheable(value = "industryCache",key="'industry_get_'+#id")
-    Industry get(String id);
 
 
 }

@@ -24,6 +24,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.OrganDao;
 @Transactional(readOnly = true)
 public class OrganService extends CrudService<OrganDao, Organ> {
 
+	@Cacheable(value = "organCache",key="'organ_get_'+#id")
 	public Organ get(String id) {
 		return super.get(id);
 	}

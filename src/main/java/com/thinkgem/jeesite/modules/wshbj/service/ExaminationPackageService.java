@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,13 +30,10 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 
 	@Autowired
 	private PackageItemDao packageItemDao;
-	
+
+	@Cacheable(value = "examinationPackageCache",key="'examinationPage_get_'+#id")
 	public ExaminationPackage get(String id) {
 		ExaminationPackage examinationPackage = super.get(id);
-		if (examinationPackage!=null){
-			examinationPackage.setPackageItemList(packageItemDao.findList(new PackageItem(examinationPackage)));
-		}
-
 		return examinationPackage;
 	}
 
@@ -52,6 +50,7 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "examinationPackageCache",allEntries = true)
 	public void save(ExaminationPackage examinationPackage) {
 		super.save(examinationPackage);
 		for (PackageItem packageItem : examinationPackage.getPackageItemList()){
@@ -74,6 +73,7 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value = "examinationPackageCache",allEntries = true)
 	public void delete(ExaminationPackage examinationPackage) {
 		super.delete(examinationPackage);
 		packageItemDao.delete(new PackageItem(examinationPackage));

@@ -18,10 +18,5 @@ import org.springframework.cache.annotation.Cacheable;
 @MyBatisDao
 public interface ExaminationUserDao extends CrudDao<ExaminationUser> {
 
-    @Override
-    @Cacheable(value = "examinationUserCache",key="'examinationUser_get_'+#id")
-    ExaminationUser get(String id);
-
-    @Cacheable(value = "examinationUserCache",key="'examinationUser_getByIdNumberAndOwner_'+#idNumber+#owner")
     ExaminationUser getByIdNumberAndOwner(@Param("idNumber")String idNumber, @Param("owner")String owner);
 }

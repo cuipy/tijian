@@ -14,6 +14,7 @@ import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,7 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	@Autowired
 	private GenSeqNumberService genSeqNumberService;
 
+	@Cacheable(value = "examinationItemCache",key="'examinationItem_get_'+#id")
 	public ExaminationItem get(String id) {
 		return super.get(id);
 	}
@@ -59,6 +61,7 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value="examinationItemCache",allEntries=true)
 	public void save(ExaminationItem examinationItem) {
 		String permission = null;
 		if (com.thinkgem.jeesite.common.utils.StringUtils.isBlank(examinationItem.getPermission())){
@@ -73,16 +76,19 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	}
 
 	@Transactional(readOnly = false)
+	@CacheEvict(value="examinationItemCache",allEntries=true)
 	public void saveByCenter(ExaminationItem examinationItem) {
 		super.save(examinationItem);
 	}
 	
 	@Transactional(readOnly = false)
+	@CacheEvict(value="examinationItemCache",allEntries=true)
 	public void delete(ExaminationItem examinationItem) {
 		super.delete(examinationItem);
 	}
 
 	@Transactional(readOnly = false)
+	@CacheEvict(value="examinationItemCache",allEntries=true)
 	public RequestResult saveByPull(User createBy, String examinationItemIds) {
 		if (createBy==null){
 			return RequestResult.generateFailResult("权限不足");
@@ -124,6 +130,7 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 
 
 	@Transactional(readOnly = false)
+	@CacheEvict(value="examinationItemCache",allEntries=true)
 	public ResponseResult saveAssigning(String roleId, String[] itemIds) {
 		if (StringUtils.isBlank(roleId)){
 			return ResponseResult.generateFailResult("缺少角色信息");

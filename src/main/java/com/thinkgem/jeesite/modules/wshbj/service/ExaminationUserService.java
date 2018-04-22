@@ -26,6 +26,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationUserDao;
 @Transactional(readOnly = true)
 public class ExaminationUserService extends CrudService<ExaminationUserDao, ExaminationUser> {
 
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_get_'+#id")
 	public ExaminationUser get(String id) {
 		return super.get(id);
 	}
@@ -36,6 +37,7 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 	 * @param owner
 	 * @return
 	 */
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_getByIdNumberAndOwner_'+#idNumber+#owner")
 	public ExaminationUser getByIdNumberAndOwner(String idNumber,String owner){
 		if (StringUtils.isBlank(idNumber) || StringUtils.isBlank(owner)){
 			return null;
@@ -43,12 +45,13 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 		return this.dao.getByIdNumberAndOwner(idNumber,owner);
 	}
 
-	@Cacheable(value = "examinationUserCache",key="'examinationUser_findList_'+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_findList_'+#examinationUser.likeField+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
 	public List<ExaminationUser> findList(ExaminationUser examinationUser) {
 		return super.findList(examinationUser);
 	}
 
-	@Cacheable(value = "examinationUserCache",key="'examinationUser_findPage_'+#page.pageNo+#page.pageSize+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_findPage_'+#page.pageNo+#page.pageSize+#examinationUser.likeField" +
+			"+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
 	public Page<ExaminationUser> findPage(Page<ExaminationUser> page, ExaminationUser examinationUser) {
 		return super.findPage(page, examinationUser);
 	}

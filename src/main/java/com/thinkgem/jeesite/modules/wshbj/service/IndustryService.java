@@ -30,7 +30,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.IndustryDao;
 @Transactional(readOnly = true)
 public class IndustryService extends CrudService<IndustryDao, Industry> {
 
-
+	@Cacheable(value = "industryCache",key="'industry_get_'+#id")
 	public Industry get(String id) {
 		Industry entity = super.get(id);
 		return entity;

@@ -20,9 +20,5 @@ import java.util.List;
 @MyBatisDao
 public interface JobPostDao extends CrudDao<JobPost> {
 
-    @Override
-    @Cacheable(value = "jobPostCache",key="'jobPost_get_'+#id")
-    JobPost get(String id);
-
     
 }
