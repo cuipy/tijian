@@ -15,7 +15,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class PackageItem extends DataEntity<PackageItem> {
 	
 	private static final long serialVersionUID = 1L;
-	private ExaminationPackage examinationPackage;		// 检查套餐 父类
+	private String packageId;		// 检查套餐 父类
 	private String itemId;		// 检查项目
 	
 	public PackageItem() {
@@ -26,19 +26,14 @@ public class PackageItem extends DataEntity<PackageItem> {
 		super(id);
 	}
 
-	public PackageItem(ExaminationPackage examinationPackage){
-		this.examinationPackage = examinationPackage;
+	public String getPackageId() {
+		return packageId;
 	}
 
-	@Length(min=1, max=64, message="检查套餐长度必须介于 1 和 64 之间")
-	public ExaminationPackage getExaminationPackage() {
-		return examinationPackage;
+	public void setPackageId(String packageId) {
+		this.packageId = packageId;
 	}
 
-	public void setExaminationPackage(ExaminationPackage examinationPackage) {
-		this.examinationPackage = examinationPackage;
-	}
-	
 	@Length(min=1, max=64, message="检查项目长度必须介于 1 和 64 之间")
 	public String getItemId() {
 		return itemId;

@@ -37,17 +37,17 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">编号：</label>
+			<label class="control-label"><font color="red">*</font>编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
+				<span class="help-inline"> 自动生成 </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">名称：</label>
+			<label class="control-label"><font color="red">*</font>名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<span class="help-inline"> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">检查项目分类：</label>
+			<label class="control-label"><font color="red">*</font>检查项目分类：</label>
 			<div class="controls">
 				<form:select path="itemCategoryId" class="input-medium">
 					<form:option value="">

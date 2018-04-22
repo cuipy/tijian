@@ -12,6 +12,8 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
@@ -119,7 +121,12 @@ public class ExaminationItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationItem:edit")
 	@RequestMapping(value = "save")
 	public String save(ExaminationItem examinationItem, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, examinationItem)){
+        if(StringUtils.isEmpty(examinationItem.getCode())){
+            String code=GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(ExaminationItem.class,"code");
+            examinationItem.setCode(code);
+        }
+
+	    if (!beanValidator(model, examinationItem)){
 			return form(examinationItem, model);
 		}
 

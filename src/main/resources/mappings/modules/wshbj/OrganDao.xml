@@ -4,6 +4,7 @@
     
 	<sql id="organColumns">
 		a.id AS "id",
+		a.code,
 		a.name AS "name",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
@@ -77,7 +78,7 @@
 	<insert id="insert">
 		INSERT INTO bj_organ(
 			id,
-			name,
+			code,name,
 			del_flag,
 			create_by,
 			create_date,
@@ -88,7 +89,7 @@
 			owner
 		) VALUES (
 			#{id},
-			#{name},
+			#{code},#{name},
 			#{delFlag},
 			#{createBy.id},
 			#{createDate},
@@ -101,7 +102,8 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE bj_organ SET 	
+		UPDATE bj_organ SET
+			code=#{code},
 			name = #{name},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

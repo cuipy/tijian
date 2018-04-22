@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 工作岗位Entity
@@ -29,6 +32,8 @@ public class JobPost extends DataEntity<JobPost> {
 	}
 
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+	@NotNull(message = "岗位编号不允许为空")
+	@ExpressSequence(express = "GW{yyyy}[3]",describe = "岗位编号")
 	public String getCode() {
 		return code;
 	}

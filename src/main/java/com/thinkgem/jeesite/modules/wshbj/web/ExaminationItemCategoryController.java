@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
@@ -85,11 +87,18 @@ public class ExaminationItemCategoryController extends BaseController {
 	@RequiresPermissions("wshbj:examinationItemCategory:edit")
 	@RequestMapping(value = "save")
 	public String save(ExaminationItemCategory examinationItemCategory, Model model, RedirectAttributes redirectAttributes) {
+		examinationItemCategory.setReferenceFlag("0");
+		examinationItemCategory.setOwner(UserUtils.getUser().getCompany().getId());
+
+		if(StringUtils.isEmpty(examinationItemCategory.getCode())){
+			String code=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationItemCategory.class,"code");
+			examinationItemCategory.setCode(code);
+		}
+
 		if (!beanValidator(model, examinationItemCategory)){
 			return form(examinationItemCategory, model);
 		}
-		examinationItemCategory.setReferenceFlag("0");
-		examinationItemCategory.setOwner(UserUtils.getUser().getCompany().getId());
+
 		examinationItemCategoryService.save(examinationItemCategory);
 		addMessage(redirectAttributes, "保存检查项目分类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/list?repage";

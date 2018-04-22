@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 检查标本类型Entity
@@ -31,6 +34,8 @@ public class Specimen extends DataEntity<Specimen> {
 	}
 
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+	@NotNull(message = "标本类型编号不允许为空")
+	@ExpressSequence(express = "BBLX{yyyy}[3]",describe = "标本类型编号")
 	public String getCode() {
 		return code;
 	}
@@ -40,6 +45,7 @@ public class Specimen extends DataEntity<Specimen> {
 	}
 	
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")
+	@NotNull(message = "标本类型名称不允许为空")
 	public String getName() {
 		return name;
 	}

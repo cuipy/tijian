@@ -63,7 +63,7 @@ public class SampleCodes extends DataEntity<SampleCodes> {
 		this.packId = packId;
 	}
 
-	@ExpressSequence(express = "{yyyyMMdd}[4]",describe = "样本编号")
+	@ExpressSequence(express = "YB{yyyyMMdd}[4]",describe = "样本编号")
 	@Length(min=1, max=64, message="样本编号长度必须介于 1 和 64 之间")
 	@ExcelField(value="sampleCode",title="样本编号",type=1,sort=20)
 	public String getSampleCode() {

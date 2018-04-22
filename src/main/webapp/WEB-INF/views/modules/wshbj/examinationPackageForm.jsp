@@ -81,15 +81,16 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">检查类别：</label>
+			<label class="control-label"><font color="red">*</font> 检查类别：</label>
 			<div class="controls">
-				<form:select path="categoryId" class="input-xlarge required" dataMsgRequired="必填信息">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${examinationCategoryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
+
+					<c:forEach items="${examinationCategoryList}" var="ec">
+					<input type="radio" id="categoryId${ec.id}" name="categoryId" value="${ec.id}" class="required"
+					<c:if test="${ec.id==examinationPackage.categoryId}">checked="checked"</c:if>
+					/>
+					<label for="categoryId${ec.id}">${ec.name}</label>&nbsp;&nbsp;&nbsp;
+					</c:forEach>
+				<span class="help-inline"> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -101,53 +102,18 @@
 			<div class="control-group">
 				<label class="control-label">包含检查项目：</label>
 				<div class="controls">
-					<table id="contentTable" class="table table-striped table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th class="hide"></th>
-								<th>检查项目</th>
-								<th>备注</th>
-								<shiro:hasPermission name="wshbj:examinationPackage:edit"><th width="10">&nbsp;</th></shiro:hasPermission>
-							</tr>
-						</thead>
-						<tbody id="packageItemList">
-						</tbody>
-						<shiro:hasPermission name="wshbj:examinationPackage:edit"><tfoot>
-							<tr><td colspan="4"><a href="javascript:" onclick="addRow('#packageItemList', packageItemRowIdx, packageItemTpl);packageItemRowIdx = packageItemRowIdx + 1;" class="btn">新增</a></td></tr>
-						</tfoot></shiro:hasPermission>
-					</table>
-					<script type="text/template" id="packageItemTpl">//<!--
-						<tr id="packageItemList{{idx}}">
-							<td class="hide">
-								<input id="packageItemList{{idx}}_id" name="packageItemList[{{idx}}].id" type="hidden" value="{{row.id}}"/>
-								<input id="packageItemList{{idx}}_delFlag" name="packageItemList[{{idx}}].delFlag" type="hidden" value="0"/>
-							</td>
-							<td>
-								<select id="packageItemList{{idx}}_itemId" name="packageItemList[{{idx}}].itemId" data-value="{{row.itemId}}" class="input-small required">
-									<option value="">请选择</option>
-									<c:forEach items="${examinationItemList}" var="examinationItem">
-										<option value="${examinationItem.id}">${examinationItem.name}</option>
-									</c:forEach>
-								</select>
-							</td>
-							<td>
-								<input id="packageItemList{{idx}}_remarks" name="packageItemList[{{idx}}].remarks" type="text" value="{{row.remarks}}" maxlength="255" class="input-xxlarge "/>
-							</td>
-							<shiro:hasPermission name="wshbj:examinationPackage:edit"><td class="text-center" width="20">
-								{{#delBtn}}<span class="close" onclick="delRow(this, '#packageItemList{{idx}}')" title="删除">&times;</span>{{/delBtn}}
-							</td></shiro:hasPermission>
-						</tr>//-->
-					</script>
-					<script type="text/javascript">
-						var packageItemRowIdx = 0, packageItemTpl = $("#packageItemTpl").html().replace(/(\/\/\<!\-\-)|(\/\/\-\->)/g,"");
-						$(document).ready(function() {
-							var data = ${fns:toJson(examinationPackage.packageItemList)};
-							for (var i=0; i<data.length; i++){
-								addRow('#packageItemList', packageItemRowIdx, packageItemTpl, data[i]);
-								packageItemRowIdx = packageItemRowIdx + 1;
-							}
-						});
-					</script>
+
+					<c:forEach items="${examinationItemList}" var="ei">
+                    <input type="checkbox" id="itemId${ei.id}" name="itemId" value="${ei.id}" class="required"
+                    <c:if test="${packageItems != null}">
+                        <c:forEach items="${packageItems}" var="pi">
+                            <c:if test="${pi.itemId== ei.id}">checked="checked"</c:if>
+                        </c:forEach>
+                    </c:if>
+                    />
+                    <label for="itemId${ei.id}">${ei.name}</label>&nbsp;&nbsp;&nbsp;
+                    </c:forEach>
+
 				</div>
 			</div>
 		<div class="form-actions">

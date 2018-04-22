@@ -9,8 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
+import com.thinkgem.jeesite.modules.wshbj.entity.PackageItem;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationCategoryService;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
+import com.thinkgem.jeesite.modules.wshbj.service.PackageItemService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +46,11 @@ public class ExaminationPackageController extends BaseController {
     private ExaminationItemService examinationItemService;
 	@Autowired
 	private ExaminationCategoryService examinationCategoryService;
-	
+	@Autowired
+	private PackageItemService packageItemService;
+
+
+
 	@ModelAttribute
 	public ExaminationPackage get(@RequestParam(required=false) String id) {
 		ExaminationPackage entity = null;
@@ -70,6 +76,7 @@ public class ExaminationPackageController extends BaseController {
 	public String form(ExaminationPackage examinationPackage, Model model) {
 		model.addAttribute("examinationPackage", examinationPackage);
 
+		// 获取体检项目列表
         ExaminationItem examinationItem = new ExaminationItem();
         examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
         examinationItem.setDelFlag("0");
@@ -77,13 +84,22 @@ public class ExaminationPackageController extends BaseController {
         List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
         model.addAttribute("examinationItemList", examinationItemList);
 
-
+		// 获取体检分类列表
 		ExaminationCategory examinationCategory = new ExaminationCategory();
 		examinationCategory.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationCategory.setDelFlag("0");
 		examinationCategory.setReferenceFlag("0");
 		List<ExaminationCategory> examinationCategoryList = examinationCategoryService.findList(examinationCategory);
 		model.addAttribute("examinationCategoryList", examinationCategoryList);
+
+		// 获取所选体检项目列表
+		if(!StringUtils.isEmpty(examinationPackage.getId())) {
+			PackageItem pi = new PackageItem();
+			pi.setPackageId(examinationPackage.getId());
+			List<PackageItem> pis = packageItemService.findList(pi);
+			model.addAttribute("packageItems",pis);
+		}
+
 		return "modules/wshbj/examinationPackageForm";
 	}
 

@@ -57,7 +57,7 @@
 		<div class="control-group">
 			<label class="control-label">样本编号：</label>
 			<div class="controls">
-				<form:input path="sampleCode" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="sampleCode" htmlEscape="false" maxlength="64" class="input-xlarge" readonly="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

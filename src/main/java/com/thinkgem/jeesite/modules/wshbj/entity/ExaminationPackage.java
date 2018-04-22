@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.wshbj.dao.PackageItemDao;
+import com.thinkgem.jeesite.modules.wshbj.service.PackageItemService;
 import org.hibernate.validator.constraints.Length;
 import java.util.List;
 import com.google.common.collect.Lists;
@@ -76,12 +80,25 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+	@JsonIgnore
 	public List<PackageItem> getPackageItemList() {
 		return packageItemList;
 	}
 
 	public void setPackageItemList(List<PackageItem> packageItemList) {
 		this.packageItemList = packageItemList;
+	}
+
+	@JsonIgnore
+	public List<PackageItem> getItems(){
+		PackageItemService packageItemService=SpringContextHolder.getBean(PackageItemService.class);
+		if(packageItemService!=null){
+			PackageItem pi=new PackageItem();
+			pi.setPackageId(id);
+			List<PackageItem> lst = packageItemService.findList(pi);
+			return lst;
+		}
+		return null;
 	}
 }

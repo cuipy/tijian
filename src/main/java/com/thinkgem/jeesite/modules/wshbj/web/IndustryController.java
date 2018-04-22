@@ -6,6 +6,8 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
@@ -84,11 +86,19 @@ public class IndustryController extends BaseController {
 	@RequiresPermissions("wshbj:industry:edit")
 	@RequestMapping(value = "save")
 	public String save(Industry industry, Model model, RedirectAttributes redirectAttributes) {
+
+		industry.setOwner(UserUtils.getUser().getCompany().getId());
+		industry.setReferenceFlag("0");
+
+		if(StringUtils.isEmpty(industry.getCode())){
+			String code=GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(Industry.class,"code");
+			industry.setCode(code);
+		}
+
 		if (!beanValidator(model, industry)){
 			return form(industry, model);
 		}
-		industry.setOwner(UserUtils.getUser().getCompany().getId());
-		industry.setReferenceFlag("0");
+
 		industryService.save(industry);
 		addMessage(redirectAttributes, "保存行业管理成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/industry/list?repage";

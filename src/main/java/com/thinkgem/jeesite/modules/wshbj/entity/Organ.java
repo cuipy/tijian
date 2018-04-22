@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 体检单位Entity
@@ -15,6 +18,8 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class Organ extends DataEntity<Organ> {
 	
 	private static final long serialVersionUID = 1L;
+
+	private String code;
 	private String name;		// 名称
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
@@ -25,6 +30,18 @@ public class Organ extends DataEntity<Organ> {
 
 	public Organ(String id){
 		super(id);
+	}
+
+
+	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+	@NotNull(message = "单位编号不允许为空")
+	@ExpressSequence(express = "DW{yyyyMM}[3]",describe = "单位编号")
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")

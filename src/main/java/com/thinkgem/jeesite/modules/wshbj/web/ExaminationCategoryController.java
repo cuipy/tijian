@@ -87,11 +87,6 @@ public class ExaminationCategoryController extends BaseController {
 		if(examinationCategory==null){
 			examinationCategory=new ExaminationCategory();
 		}
-		if(StringUtils.isEmpty(examinationCategory.getCode())){
-
-			String code=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationCategory.class,"code");
-			examinationCategory.setCode(code);
-		}
 
 		model.addAttribute("examinationCategory", examinationCategory);
 		return "modules/wshbj/examinationCategoryForm";
@@ -100,11 +95,17 @@ public class ExaminationCategoryController extends BaseController {
 	@RequiresPermissions("wshbj:examinationCategory:edit")
 	@RequestMapping(value = "save")
 	public String save(ExaminationCategory examinationCategory, Model model, RedirectAttributes redirectAttributes) {
+
+		examinationCategory.setReferenceFlag("0");
+		examinationCategory.setOwner(UserUtils.getUser().getCompany().getId());
+		if(StringUtils.isEmpty(examinationCategory.getCode())){
+			String code=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationCategory.class,"code");
+			examinationCategory.setCode(code);
+		}
 		if (!beanValidator(model, examinationCategory)){
 			return form(examinationCategory, model);
 		}
-		examinationCategory.setReferenceFlag("0");
-		examinationCategory.setOwner(UserUtils.getUser().getCompany().getId());
+
 		examinationCategoryService.save(examinationCategory);
 		addMessage(redirectAttributes, "保存检查类别成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationCategory/list?repage";

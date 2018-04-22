@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * 检查类别Entity
  * @author zhxl
@@ -31,8 +33,8 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 		super(id);
 	}
 
-	@ExpressSequence(express="21{yyyy}[4]",describe = "检查类别编号")
-	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+	@ExpressSequence(express="JCLB{yyyy}[3]",describe = "检查类别编号")
+	@Length(min=1, max=45, message="检查编号长度必须介于 1 和 45 之间")
 	public String getCode() {
 		return code;
 	}
@@ -42,6 +44,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 	}
 	
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")
+	@NotNull(message = "检查类别名称必须填写")
 	public String getName() {
 		return name;
 	}
@@ -60,6 +63,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 	}
 	
 	@Length(min=0, max=64, message="所属体检中心长度必须介于 0 和 64 之间")
+	@NotNull(message = "所属体检中心必须填写")
 	public String getOwner() {
 		return owner;
 	}

@@ -39,7 +39,7 @@
 		<div class="control-group">
 			<label class="control-label">编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-large required"/>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-large" readonly="true"/>
 				<span class="help-inline"> </span>
 			</div>
 		</div>

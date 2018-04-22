@@ -37,10 +37,10 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">编号：</label>
+			<label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
+				<span class="help-inline"> 不需填写，保存时自动生成 </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -64,8 +64,8 @@
 		<div class="control-group">
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<form:input path="unit" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="unit" htmlEscape="false" maxlength="64" class="input-xlarge"/>
+				<span class="help-inline"> </span>
 			</div>
 		</div>
 		<div class="control-group">
@@ -75,17 +75,14 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">参考范围最大值：</label>
+			<label class="control-label">参考范围：</label>
 			<div class="controls">
-				<form:input path="rangeMax" htmlEscape="false" maxlength="45" class="input-xlarge "/>
+				<form:input path="rangeMin" htmlEscape="false" maxlength="45" class="input-small"/>
+				<span class="help-inline"> - </span>
+				<form:input path="rangeMax" htmlEscape="false" maxlength="45" class="input-small"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">参考范围最小值：</label>
-			<div class="controls">
-				<form:input path="rangeMin" htmlEscape="false" maxlength="45" class="input-xlarge "/>
-			</div>
-		</div>
+
 		<div class="control-group">
 			<label class="control-label">所需标本：</label>
 			<div class="controls">

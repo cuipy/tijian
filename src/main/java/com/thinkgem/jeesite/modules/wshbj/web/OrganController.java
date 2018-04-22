@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -73,6 +76,12 @@ public class OrganController extends BaseController {
 	@RequiresPermissions("wshbj:organ:edit")
 	@RequestMapping(value = "save")
 	public String save(Organ organ, Model model, RedirectAttributes redirectAttributes) {
+
+		if(StringUtils.isEmpty(organ.getCode())){
+			String code=GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(Organ.class,"code");
+			organ.setCode(code);
+		}
+
 		if (!beanValidator(model, organ)){
 			return form(organ, model);
 		}

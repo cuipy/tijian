@@ -49,7 +49,8 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	}
 
 	@Length(min=0, max=50, message="编号长度必须介于 1 和 50 之间")
-	@ExpressSequence(express = "EU{yyMMdd}[4]",describe = "体检用户编号")
+	@ExpressSequence(express = "TJYH{yyMMdd}[4]",describe = "体检用户编号")
+	@NotNull(message = "体检用户编号不允许为空")
 	public String getCode() {
 		return code;
 	}

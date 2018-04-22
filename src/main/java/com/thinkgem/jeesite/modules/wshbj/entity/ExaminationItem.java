@@ -3,9 +3,13 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotNull;
 
 /**
  * 检查项目Entity
@@ -36,7 +40,9 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 		super(id);
 	}
 
+	@ExpressSequence(express = "JCXM{yyyy}[4]",describe = "检查项目编号")
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+    @NotNull(message = "检修项目编号必须填写")
 	public String getCode() {
 		return code;
 	}
@@ -46,6 +52,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	}
 	
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")
+    @NotNull(message = "名称必须填写")
 	public String getName() {
 		return name;
 	}
@@ -118,6 +125,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	}
 	
 	@Length(min=0, max=64, message="所需标本长度必须介于 0 和 64 之间")
+    @NotNull(message = "标本类型必须选择")
 	public String getSpecimenId() {
 		return specimenId;
 	}

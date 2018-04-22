@@ -6,8 +6,11 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +87,12 @@ public class JobPostController extends BaseController {
 	@RequiresPermissions("wshbj:jobPost:edit")
 	@RequestMapping(value = "save")
 	public String save(JobPost jobPost, Model model, RedirectAttributes redirectAttributes) {
+
+		if(StringUtils.isEmpty(jobPost.getCode())){
+			String code=GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(JobPost.class,"code");
+			jobPost.setCode(code);
+		}
+
 		if (!beanValidator(model, jobPost)){
 			return form(jobPost, model);
 		}

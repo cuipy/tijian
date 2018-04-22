@@ -29,7 +29,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.PackageItemDao;
 public class ExaminationPackageService extends CrudService<ExaminationPackageDao, ExaminationPackage> {
 
 	@Autowired
-	private PackageItemDao packageItemDao;
+	private PackageItemService packageItemService;
 
 	@Cacheable(value = "examinationPackageCache",key="'examinationPage_get_'+#id")
 	public ExaminationPackage get(String id) {
@@ -46,37 +46,35 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 	public Page<ExaminationPackage> findPage(Page<ExaminationPackage> page, ExaminationPackage examinationPackage) {
 		return super.findPage(page, examinationPackage);
 	}
-
-
 	
 	@Transactional(readOnly = false)
 	@CacheEvict(value = "examinationPackageCache",allEntries = true)
 	public void save(ExaminationPackage examinationPackage) {
 		super.save(examinationPackage);
+
+		// 将现有的关系都删除掉
+		PackageItem pi=new PackageItem();
+		pi.setPackageId(examinationPackage.getId());
+		packageItemService.delete(pi);
+
+		// 插入新的关系
 		for (PackageItem packageItem : examinationPackage.getPackageItemList()){
-			if (packageItem.getId() == null){
-				continue;
-			}
-			if (PackageItem.DEL_FLAG_NORMAL.equals(packageItem.getDelFlag())){
-				if (StringUtils.isBlank(packageItem.getId())){
-					packageItem.setExaminationPackage(examinationPackage);
-					packageItem.preInsert();
-					packageItemDao.insert(packageItem);
-				}else{
-					packageItem.preUpdate();
-					packageItemDao.update(packageItem);
-				}
-			}else{
-				packageItemDao.delete(packageItem);
-			}
+
+			packageItem.setPackageId(examinationPackage.getId());
+			packageItem.preInsert();
+			packageItemService.save(packageItem);
 		}
 	}
 	
 	@Transactional(readOnly = false)
 	@CacheEvict(value = "examinationPackageCache",allEntries = true)
 	public void delete(ExaminationPackage examinationPackage) {
+		PackageItem pi=new PackageItem();
+		pi.setPackageId(examinationPackage.getId());
+		packageItemService.delete(pi);
+
 		super.delete(examinationPackage);
-		packageItemDao.delete(new PackageItem(examinationPackage));
+
 	}
 	
 }

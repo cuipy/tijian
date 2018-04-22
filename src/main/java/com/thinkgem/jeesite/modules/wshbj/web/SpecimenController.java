@@ -6,8 +6,11 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemType;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,11 +86,18 @@ public class SpecimenController extends BaseController {
 	@RequiresPermissions("wshbj:specimen:edit")
 	@RequestMapping(value = "save")
 	public String save(Specimen specimen, Model model, RedirectAttributes redirectAttributes) {
+		specimen.setOwner(UserUtils.getUser().getCompany().getId());
+		specimen.setReferenceFlag("0");
+
+		if(StringUtils.isEmpty(specimen.getCode())){
+			String code=GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(Specimen.class,"code");
+			specimen.setCode(code);
+		}
+
 		if (!beanValidator(model, specimen)){
 			return form(specimen, model);
 		}
-		specimen.setOwner(UserUtils.getUser().getCompany().getId());
-		specimen.setReferenceFlag("0");
+
 		specimenService.save(specimen);
 		addMessage(redirectAttributes, "保存检查标本类型成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/list?repage";

@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 检查项目类型Entity
@@ -31,7 +34,9 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 		super(id);
 	}
 
+	@ExpressSequence(express = "XMLX{yyyy}[3]",describe = "项目类型编号")
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+	@NotNull(message = "项目类型编号必须填写")
 	public String getCode() {
 		return code;
 	}
@@ -41,6 +46,7 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 	}
 	
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")
+	@NotNull(message = "项目类型名称必须填写")
 	public String getName() {
 		return name;
 	}
@@ -59,6 +65,7 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 	}
 	
 	@Length(min=0, max=64, message="所属体检中心长度必须介于 0 和 64 之间")
+	@NotNull(message = "所属体检中心不允许为空")
 	public String getOwner() {
 		return owner;
 	}
@@ -68,6 +75,7 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 	}
 	
 	@Length(min=0, max=64, message="检查项目分类长度必须介于 0 和 64 之间")
+	@NotNull(message = "检查项目分类必须选择")
 	public String getItemCategoryId() {
 		return itemCategoryId;
 	}

@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 行业基础数据管理Entity
@@ -29,6 +32,8 @@ public class Industry extends DataEntity<Industry> {
 	}
 
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
+	@NotNull(message = "行业编号不允许为空")
+	@ExpressSequence(express = "HY{yyyy}[3]",describe = "行业编号")
 	public String getCode() {
 		return code;
 	}
