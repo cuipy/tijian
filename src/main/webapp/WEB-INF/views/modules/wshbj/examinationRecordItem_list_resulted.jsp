@@ -18,7 +18,7 @@
         function clkCancelSample(id,result){
 
             confirmx('您确信要撤销这个样本吗？一旦撤销，该项目需要重新进行取样。',function(){
-                var url="${ctx}/wshbj/examinationRecordItem/ajax_canecl_sample";
+                var url="${ctx}/wshbj/examinationRecordItem/ajax_cancel_sample";
                 var d1={'id':id};
                 $.ajax({
                     type:'post',dataType:'json',url:url,data:d1,
@@ -38,7 +38,7 @@
         function clkCancelResult(id,result){
 
             confirmx('您确信要撤销这个结果吗？一旦撤销，该项目需要重新设置结果。',function(){
-                var url="${ctx}/wshbj/examinationRecordItem/ajax_canecl_result";
+                var url="${ctx}/wshbj/examinationRecordItem/ajax_cancel_result";
                 var d1={'id':id};
                 $.ajax({
                     type:'post',dataType:'json',url:url,data:d1,

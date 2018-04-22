@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,11 +30,14 @@ public class JobPostService extends CrudService<JobPostDao, JobPost> {
 	public JobPost get(String id) {
 		return super.get(id);
 	}
-	
+
+	@Override
+	@Cacheable(value = "jobPostCache",key="'jobPost_findList_'+#jobPost.name+#jobPost.owner")
 	public List<JobPost> findList(JobPost jobPost) {
 		return super.findList(jobPost);
 	}
-	
+
+	@Cacheable(value = "jobPostCache",key="'jobPost_findPage_'+#page.pageNo+#page.pageSize+#jobPost.code+#jobPost.name+#jobPost.owner")
 	public Page<JobPost> findPage(Page<JobPost> page, JobPost jobPost) {
 		return super.findPage(page, jobPost);
 	}

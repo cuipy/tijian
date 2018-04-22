@@ -52,25 +52,26 @@
 		FROM bj_examination_user a
 		<include refid="examinationUserJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = #{DEL_FLAG_NORMAL} and ( 1=1
 			<if test="idNumber != null and idNumber != ''">
-				AND a.id_number LIKE concat('%',#{idNumber},'%')
+				or a.id_number LIKE concat('%',#{idNumber},'%')
 			</if>
 			<if test="code != null and code != ''">
-				AND a.code = #{code}
+				or a.code = #{code}
 			</if>
 			<if test="name != null and name != ''">
-				AND a.name LIKE 
+				or a.name LIKE
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 			<if test="phoneNumber != null and phoneNumber != ''">
-				AND a.phone_number = #{phoneNumber}
+				or a.phone_number like concat('%', #{phoneNumber},'%')
 			</if>
 			<if test="organId != null and organId != ''">
-				AND a.organ_id = #{organId}
+				or a.organ_id = #{organId}
 			</if>
+			)
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

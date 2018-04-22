@@ -6,6 +6,11 @@ package com.thinkgem.jeesite.modules.wshbj.dao;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
+import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
+import java.util.List;
 
 /**
  * 工作岗位DAO接口
@@ -14,5 +19,29 @@ import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
  */
 @MyBatisDao
 public interface JobPostDao extends CrudDao<JobPost> {
-	
+
+    @Override
+    @Cacheable(value = "jobPostCache",key="'jobPost_get_'+#id")
+    JobPost get(String id);
+
+    List<JobPost> findList(JobPost entity);
+
+    @Override
+    @Cacheable(value = "jobPostCache",key="'jobPost_ge_'+#id+#name+#owner")
+    JobPost get(JobPost entity);
+
+    List<JobPost> findAllList(JobPost entity);
+
+    @Override
+    @CacheEvict(value="jobPostCache",allEntries=true)
+    int insert(JobPost entity);
+
+    @Override
+    @CacheEvict(value="jobPostCache",allEntries=true)
+    int update(JobPost entity);
+
+    @Override
+    @CacheEvict(value="jobPostCache",allEntries=true)
+    int delete(JobPost entity);
+    
 }

@@ -38,5 +38,14 @@
 
 	<cache name="examRecordUserCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
 		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="organCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="industryCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+    <cache name="jobPostCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+           diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
     	
 </ehcache>

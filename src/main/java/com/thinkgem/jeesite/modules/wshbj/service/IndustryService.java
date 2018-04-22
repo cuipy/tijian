@@ -5,10 +5,12 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +28,10 @@ import com.thinkgem.jeesite.modules.wshbj.dao.IndustryDao;
 @Transactional(readOnly = true)
 public class IndustryService extends CrudService<IndustryDao, Industry> {
 
+
 	public Industry get(String id) {
-		return super.get(id);
+		Industry entity = super.get(id);
+		return entity;
 	}
 	
 	public List<Industry> findList(Industry industry) {

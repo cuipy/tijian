@@ -18,10 +18,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -30,6 +27,8 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationUserService;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -188,4 +187,24 @@ public class ExaminationUserController extends BaseController {
 		ExaminationUser examinationUser = examinationUserService.getByIdNumberAndOwner(idNumber,UserUtils.getUser().getCompany().getId());
 		return examinationUser;
 	}
+
+	@ResponseBody
+	@GetMapping(value = "ajax_for_autocompleter")
+	public List<Map<String,String>> ajax_for_autocompleter(String query){
+		ExaminationUser queryUser=new ExaminationUser();
+		queryUser.setCode(query);
+		queryUser.setIdNumber(query);
+		queryUser.setPhoneNumber(query);
+		queryUser.setName(query);
+
+		List<ExaminationUser> lst = examinationUserService.findList(queryUser);
+		List<Map<String,String>> lst2=new ArrayList();
+
+		for(ExaminationUser u:lst){
+			lst2.add(u.getMap());
+		}
+
+		return lst2;
+	}
+
 }

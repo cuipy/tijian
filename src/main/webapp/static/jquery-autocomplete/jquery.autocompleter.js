@@ -309,6 +309,9 @@
      */
     function _launch(data) {
         data.query = $.trim(data.$node.val());
+        if(data.ajaxing){
+            return;
+        }
 
         if (!data.empty && data.query.length === 0) {
             _clear(data);
@@ -346,6 +349,7 @@
                     dataType:   "json",
                     data:       ajaxData,
                     beforeSend: function (xhr) {
+                        data.ajaxing=true;
                         data.$autocompleter.addClass('autocompleter-ajax');
                         _clear(data);
                         if (data.cache) {
@@ -355,10 +359,17 @@
                                 _response(stored, data);
                             }
                         }
+                        if(data.query==data.lastQuery){
+                            xhr.abort();
+                        }else{
+                            data.lastQuery=data.query;
+
+                        }
                     }
                 })
                 .done(function (response) {
                     // Get subobject from responce
+
                     if (data.offset) {
                         response = _grab(response, data.offset);
                     }
@@ -366,9 +377,11 @@
                         _setCache(this.url, response);
                     }
                     _response(response, data);
+
                 })
                 .always(function () {
                     data.$autocompleter.removeClass('autocompleter-ajax');
+                    data.ajaxing=false;
                 });
             }
         }

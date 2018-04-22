@@ -3,9 +3,18 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
+import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
+import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 体检用户Entity
@@ -133,5 +142,79 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 
 	public void setHeadImgPath(String headImgPath) {
 		this.headImgPath = headImgPath;
+	}
+
+	@JsonIgnore
+	public Organ getOrgan(){
+		OrganService organService=SpringContextHolder.getBean(OrganService.class);
+		return organService.get(organId);
+	}
+
+	public String getOrganName(){
+		Organ organ=getOrgan();
+		if(organ==null){
+			return "";
+		}
+		return organ.getName();
+	}
+
+	@JsonIgnore
+	public Industry getIndustry(){
+		IndustryService service=SpringContextHolder.getBean(IndustryService.class);
+		return service.get(industryId);
+	}
+
+	public String getIndustryName(){
+		Industry entity=getIndustry();
+		if(entity==null){
+			return "";
+		}
+		return entity.getName();
+	}
+
+	@JsonIgnore
+	public JobPost getJobPost(){
+		JobPostService service=SpringContextHolder.getBean(JobPostService.class);
+		return service.get(postId);
+	}
+
+	public String getJobPostName(){
+		JobPost entity=getJobPost();
+		if(entity==null){
+			return "";
+		}
+		return entity.getName();
+	}
+
+	public String getStrSex(){
+		return DictUtils.getDictLabel(sex,"sex","");
+	}
+
+	@JsonIgnore
+	public Map<String,String> getMap(){
+		Map<String,String> m=new HashMap();
+		m.put("id",id);
+		m.put("name",name);
+		m.put("organId",organId);
+		m.put("organName",getOrganName());
+		m.put("industryId",industryId);
+		m.put("industryName",getIndustryName());
+		m.put("industryId",industryId);
+		m.put("industryName",getIndustryName());
+		m.put("postId",postId);
+		m.put("getJobPostName",getJobPostName());
+		m.put("idNumber",idNumber);
+
+		m.put("phoneNumber",phoneNumber);
+		m.put("birthday",this.birthday);
+		m.put("sex",this.sex);
+		m.put("strSex",this.getStrSex());
+		m.put("code",this.code);
+		m.put("owner",this.owner);
+
+		m.put("value",getOrganName()+"("+getName()+")");
+		m.put("label",getOrganName()+"("+getName()+")");
+
+		return m;
 	}
 }

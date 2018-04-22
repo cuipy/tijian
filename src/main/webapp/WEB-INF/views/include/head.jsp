@@ -31,10 +31,10 @@
 <script src="${ctxStatic}/ueditor/ueditor.all.js" type="text/javascript"></script>
 
 <link href="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.css?v=20" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.js?v=5" type="text/javascript"></script>
+<script src="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.js?v=10" type="text/javascript"></script>
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/common/jeesite.css?v=11" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/common/jeesite.css?v=14" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=3" type="text/javascript"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 

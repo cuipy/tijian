@@ -5,7 +5,7 @@
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -60,6 +60,19 @@
                     //防止form提交
                     return false;
                 }
+            });
+
+             $('#userInfo').focus();
+             var lastUserName='';
+             $('#userInfo').autocompleter({
+
+                highlightMatches: true,
+                template: '{{ organName }} <span>({{ name }})</span>',
+                hint: false,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter"
             });
         });
 		function addRow(list, idx, tpl, row){
@@ -171,10 +184,9 @@
 		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>  体检用户：</label>
 			<div class="controls">
-				<wshbj:euserTreeSelect id="user" name="user.id" value="${examinationRecord.user.id}" labelName="user.name" labelValue="${examinationRecord.user.name}"
-									   title="用户" url="/wshbj/organ/treeData" allowInput="true" dataMsgRequired="必填信息"
-									   cssClass="input-large required" allowClear="true" notAllowSelectParent="true"/>
-                <span class="help-inline">选择体检用户，则自动获得身份证、电话、性别、出生日期、行业、单位、岗位等信息。</span>
+			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo" maxlength="50" class="input-large" /></div>
+
+                <span class="help-inline">选择体检用户 <a href="${ctx}/wshbj/examinationUser/form" target="_blank">添加体检用户</a></span>
 			</div>
 		</div>
         <div class="cl"></div>
@@ -182,7 +194,7 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large required"/>
+				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large required" readonly="true"/>
 			</div>
 		</div>
 
@@ -190,7 +202,7 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large required"/>
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large required"  readonly="true"/>
 
 			</div>
 		</div>
@@ -202,56 +214,42 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
-				<form:select path="sex" class="input-large required">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+
+			    <input type="hidden" id="sex" name="sex" >
+				<input type="text" id="strSex" name="strSex" class="input-large required" readonly="true">
 
 			</div>
 		</div>
 		<div class="control-group span6">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-large Wdate required"
-                            onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
+                <input type="text" id="birthday" name="birthday" class="input-large required" readonly="true">
 
             </div>
         </div>
 
-
-
-
 	<div class="control-group span6">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-			<form:select path="industryId"  class="input-large">
-				<form:option value="">
-					请选择
-				</form:option>
-				<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-			</form:select>
+		   <input type="hidden" id="industryId" name="industryId" >
+           <input type="text" id="industryName" name="industryName" class="input-large required" readonly="true">
+
 		</div>
 	</div>
 	<div class="control-group span6" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
-			<form:select  path="organId"  class="input-large">
-				<form:option value="">
-					请选择
-				</form:option>
-				<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-			</form:select>
+		    <input type="hidden" id="organId" name="organId" >
+            <input type="text" id="organName" name="organName" class="input-large required" readonly="true">
+
 		</div>
 	</div>
 	<div class="control-group span6">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
-			<form:select path="postId" class="input-large">
-				<form:option value="">
-					请选择
-				</form:option>
-				<form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-			</form:select>
+			<input type="hidden" id="postId" name="postId" >
+            <input type="text" id="postName" name="postName" class="input-large required" readonly="true">
+
 		</div>
 	</div>
 
