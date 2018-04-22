@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +41,8 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 		}
 		return this.dao.getByIdNumberAndOwner(idNumber,owner);
 	}
-	
+
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_findList_'+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
 	public List<ExaminationUser> findList(ExaminationUser examinationUser) {
 		return super.findList(examinationUser);
 	}

@@ -309,9 +309,6 @@
      */
     function _launch(data) {
         data.query = $.trim(data.$node.val());
-        if(data.ajaxing){
-            return;
-        }
 
         if (!data.empty && data.query.length === 0) {
             _clear(data);
@@ -349,7 +346,6 @@
                     dataType:   "json",
                     data:       ajaxData,
                     beforeSend: function (xhr) {
-                        data.ajaxing=true;
                         data.$autocompleter.addClass('autocompleter-ajax');
                         _clear(data);
                         if (data.cache) {
@@ -381,7 +377,6 @@
                 })
                 .always(function () {
                     data.$autocompleter.removeClass('autocompleter-ajax');
-                    data.ajaxing=false;
                 });
             }
         }

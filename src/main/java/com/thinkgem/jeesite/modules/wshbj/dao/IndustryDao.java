@@ -22,10 +22,11 @@ import java.util.List;
 public interface IndustryDao extends CrudDao<Industry> {
 
     @Override
+    @Cacheable(value = "industryCache",key="'industry_get_'+#id")
     Industry get(String id);
 
     @Override
-    @Cacheable(value = "industryCache",key="'industry_get_'+#id+#name+#owner")
+    @Cacheable(value = "industryCache",key="'industry_get_'+#entity.id+#entity.code+#entity.name")
     Industry get(Industry entity);
 
     @Override

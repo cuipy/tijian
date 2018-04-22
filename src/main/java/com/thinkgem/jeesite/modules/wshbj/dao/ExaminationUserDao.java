@@ -7,6 +7,8 @@ import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationUser;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * 体检用户DAO接口
@@ -16,5 +18,22 @@ import org.apache.ibatis.annotations.Param;
 @MyBatisDao
 public interface ExaminationUserDao extends CrudDao<ExaminationUser> {
 
-    ExaminationUser getByIdNumberAndOwner(@Param("idNumber")String idNumber,@Param("owner")String owner);
+    @Override
+    @Cacheable(value = "examinationUserCache",key="'examinationUser_get_'+#id")
+    ExaminationUser get(String id);
+
+    @Override
+    @CacheEvict(value = "examinationUserCache",allEntries = true)
+    int insert(ExaminationUser entity);
+
+    @Override
+    @CacheEvict(value = "examinationUserCache",allEntries = true)
+    int update(ExaminationUser entity);
+
+    @Override
+    @CacheEvict(value = "examinationUserCache",allEntries = true)
+    int delete(ExaminationUser entity);
+
+    @Cacheable(value = "examinationUserCache",key="'examinationUser_getByIdNumberAndOwner_'+#idNumber+#owner")
+    ExaminationUser getByIdNumberAndOwner(@Param("idNumber")String idNumber, @Param("owner")String owner);
 }
