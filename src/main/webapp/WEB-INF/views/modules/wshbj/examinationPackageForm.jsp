@@ -103,14 +103,12 @@
 				<label class="control-label">包含检查项目：</label>
 				<div class="controls">
 
-					<c:forEach items="${examinationItemList}" var="ei">
-                    <input type="checkbox" id="itemId${ei.id}" name="itemId" value="${ei.id}" class="required"
-                    <c:if test="${packageItems != null}">
+					<c:forEach items="${examinationItemList}" var="ei" varStatus="idx">
+                    <input type="checkbox" id="itemId${ei.id}" name="packageItemList[${idx.index}].itemId" value="${ei.id}" <c:if test="${packageItems != null}">
                         <c:forEach items="${packageItems}" var="pi">
                             <c:if test="${pi.itemId== ei.id}">checked="checked"</c:if>
                         </c:forEach>
-                    </c:if>
-                    />
+                    </c:if>  />
                     <label for="itemId${ei.id}">${ei.name}</label>&nbsp;&nbsp;&nbsp;
                     </c:forEach>
 

@@ -59,9 +59,10 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 
 		// 插入新的关系
 		for (PackageItem packageItem : examinationPackage.getPackageItemList()){
-
+			if(StringUtils.isEmpty(packageItem.getItemId())){
+				continue;
+			}
 			packageItem.setPackageId(examinationPackage.getId());
-			packageItem.preInsert();
 			packageItemService.save(packageItem);
 		}
 	}

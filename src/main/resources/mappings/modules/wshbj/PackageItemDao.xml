@@ -78,7 +78,7 @@
 			remarks
 		) VALUES (
 			#{id},
-			#{examinationPackage.id},
+			#{packageId},
 			#{itemId},
 			#{delFlag},
 			#{createBy.id},
@@ -91,7 +91,7 @@
 	
 	<update id="update">
 		UPDATE bj_package_item SET 	
-			package_id = #{examinationPackage.id},
+			package_id = #{packageId},
 			item_id = #{itemId},
 			remarks = #{remarks}
 		WHERE id = #{id}
@@ -104,7 +104,7 @@
 				WHERE id = #{id}
 			</when>
 			<otherwise>
-				WHERE package_id = #{examinationPackage.id}
+				WHERE package_id = #{packageId}
 			</otherwise>
 		</choose>
 	</update>
