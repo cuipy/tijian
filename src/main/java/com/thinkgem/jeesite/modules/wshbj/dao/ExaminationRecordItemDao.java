@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecord;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.CacheEvict;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
     public ExaminationRecordItem getEmptyResult(ExaminationRecordItem recordItem);
 
     ExaminationRecordItem getLastRecordItem(@Param("recordId") String recordId,@Param("itemId")String itemId);
+
 
     public int updateSampleCode(@Param("id") String id,@Param("sampleCode")String sampleCode);
 

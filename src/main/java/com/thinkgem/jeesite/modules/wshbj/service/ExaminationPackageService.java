@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,11 +38,13 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 
 		return examinationPackage;
 	}
-	
+
+	@Cacheable(value = "examinationPackageCache",key="'examinationPage_findList_'+#examinationPackage.name+#examinationPackage.owner")
 	public List<ExaminationPackage> findList(ExaminationPackage examinationPackage) {
 		return super.findList(examinationPackage);
 	}
-	
+
+
 	public Page<ExaminationPackage> findPage(Page<ExaminationPackage> page, ExaminationPackage examinationPackage) {
 		return super.findPage(page, examinationPackage);
 	}
