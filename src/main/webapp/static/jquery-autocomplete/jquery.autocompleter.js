@@ -355,17 +355,10 @@
                                 _response(stored, data);
                             }
                         }
-                        if(data.query==data.lastQuery){
-                            xhr.abort();
-                        }else{
-                            data.lastQuery=data.query;
-
-                        }
                     }
                 })
                 .done(function (response) {
                     // Get subobject from responce
-
                     if (data.offset) {
                         response = _grab(response, data.offset);
                     }
@@ -373,7 +366,6 @@
                         _setCache(this.url, response);
                     }
                     _response(response, data);
-
                 })
                 .always(function () {
                     data.$autocompleter.removeClass('autocompleter-ajax');

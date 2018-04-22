@@ -191,6 +191,7 @@ public class ExaminationUserController extends BaseController {
 	@ResponseBody
 	@GetMapping(value = "ajax_for_autocompleter")
 	public List<Map<String,String>> ajax_for_autocompleter(String query){
+		logger.error("阿深刻的积分卡设计费111111 ");
 		ExaminationUser queryUser=new ExaminationUser();
 		queryUser.setCode(query);
 		queryUser.setIdNumber(query);
@@ -203,6 +204,8 @@ public class ExaminationUserController extends BaseController {
 		for(ExaminationUser u:lst){
 			lst2.add(u.getMap());
 		}
+
+		logger.error("阿深刻的积分卡设计费 ");
 
 		return lst2;
 	}
