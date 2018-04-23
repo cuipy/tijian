@@ -7,6 +7,7 @@ import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.oned.Code128Writer;
+import com.google.zxing.oned.Code39Writer;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.wshbj.service.CertRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class ReportController extends BaseController {
 	public String test4(Model m) {
 
 		try {
-			BufferedImage mtw = MatrixToImageWriter.toBufferedImage(new Code128Writer().encode("1001101804180003", BarcodeFormat.CODE_128, 260, 46));
+			BufferedImage mtw = MatrixToImageWriter.toBufferedImage(new Code39Writer().encode("1001101804180003", BarcodeFormat.CODE_128,151,30));
 
 			java.io.File f=new java.io.File("/work/apps/tomcat8/webapps/wshbj/static/a.jpg");
 			ImageIO.write(mtw,"jpg",f);

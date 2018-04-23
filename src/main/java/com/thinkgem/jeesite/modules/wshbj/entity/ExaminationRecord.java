@@ -312,24 +312,12 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	 * @return
 	 */
 	public List<ExaminationRecordItem> getItems() {
-		// 如果已经读取，则不再读取
-		if(itemListLoaded){
-			return examinationRecordItemList;
-		}
-
-		// 如果没有逐渐，则一定是i新对象，数据库中不可能获得细项列表
-		if(StringUtils.isEmpty(getId())){
-			return null;
-		}
-
-		itemListLoaded=true;
 
 		// 调用spring管理的对象，获得列表
 		ExaminationRecordItemDao examinationRecordItemDao=SpringContextHolder.getBean(ExaminationRecordItemDao.class);
 		ExaminationRecordItem eri=new ExaminationRecordItem();
 		eri.setRecordId(id);
-		examinationRecordItemList = examinationRecordItemDao.findList(eri);
-		return examinationRecordItemList;
+		return  examinationRecordItemDao.findList(eri);
 	}
 
 	public void setExaminationRecordItemList(List<ExaminationRecordItem> examinationRecordItemList) {

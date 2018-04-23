@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jkz1" pageWidth="242" pageHeight="153" whenNoDataType="NoPages" columnWidth="240" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="4794fec0-5760-4c33-bbda-b9c2dd917d4d">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jkz1" pageWidth="242" pageHeight="153" columnWidth="240" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="4794fec0-5760-4c33-bbda-b9c2dd917d4d">
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="TestDataAdapter1"/>
 	<style name="small1" fontName="宋体" fontSize="8" isBold="false" pdfFontName="宋体"/>
@@ -9,7 +9,7 @@
 	<parameter name="currUser" class="java.lang.String"/>
 	<parameter name="imgHost" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT id,`code`,`name`,`head_img_path`,concat($P{imgHost},`head_img_path`) as headImg,`id_number`,case when sex=1 then '男' else '女' end as strSex
+		<![CDATA[SELECT id,`code`,`name`,`head_img_path`,concat($P{imgHost},`head_img_path`) as headImg,`id_number`,case when sex=1 then '男' else '女' end as "strSex"
 		 FROM bj_examination_user WHERE id in ($P!{ids})]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
@@ -36,23 +36,23 @@
 				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
 			</textField>
 			<textField pattern="yyyy-MM-dd">
-				<reportElement x="40" y="100" width="100" height="15" uuid="997db619-41ce-4cfe-8a76-82b5b17582c5"/>
+				<reportElement style="small1" x="40" y="100" width="100" height="15" uuid="997db619-41ce-4cfe-8a76-82b5b17582c5"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="110" y="10" width="40" height="20" uuid="df97c2ab-3693-4db9-a07f-24da9c13adea"/>
+				<reportElement style="big1" x="110" y="10" width="40" height="20" uuid="df97c2ab-3693-4db9-a07f-24da9c13adea"/>
 				<textFieldExpression><![CDATA[$F{strSex}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="-1" y="115" width="151" height="30" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
+				<reportElement x="0" y="115" width="151" height="30" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode("ABC1234567890",com.google.zxing.BarcodeFormat.CODE_128,151,30));]]></imageExpression>
 			</image>
 			<image>
-				<reportElement x="140" y="9" width="86" height="101" uuid="01056939-b697-4834-aa83-395756c32c2c"/>
+				<reportElement x="140" y="9" width="86" height="106" uuid="01056939-b697-4834-aa83-395756c32c2c"/>
 				<imageExpression><![CDATA[$F{headImg}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="150" y="115" width="80" height="20" uuid="5ec2dad0-5186-4cf3-8439-5827d613c768"/>
+				<reportElement style="small1" x="150" y="115" width="80" height="20" uuid="5ec2dad0-5186-4cf3-8439-5827d613c768"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{currUser}]]></textFieldExpression>
 			</textField>

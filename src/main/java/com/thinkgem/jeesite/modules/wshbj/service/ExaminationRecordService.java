@@ -275,7 +275,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         List<ExaminationRecordItem> currRecordItems=examinationRecord.getItems();
 
         // 打算保存的
-        List<ExaminationItem> savingItems= null;
+        List<ExaminationItem> savingItems=  savingItems = new ArrayList<ExaminationItem>();
         // 如果是套餐
         if ("1".equals(examinationRecord.getItemType())) {
             savingItems = examinationItemService.findListByPackage(examinationRecord.getPackageId());
@@ -284,14 +284,14 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             List<ExaminationRecordItem> lst = examinationRecord.getExaminationRecordItemList();
 
             for(ExaminationRecordItem savingItem:lst){
-                ExaminationItem item = examinationItemService.get(savingItem.getId());
+                ExaminationItem item = examinationItemService.get(savingItem.getItemId());
                 if(item!=null){
                     savingItems.add(item);
                 }
             }
         }
 
-        // 循環比对，目前存在的，是否已经需要剔除了。
+        // 循環比对，目前存在的，是否不存在需要剔除了。
         for(ExaminationRecordItem currItem:currRecordItems){
             // 已经处理的，就不能删除了
             if(!StringUtils.isEmpty(currItem.getSampleCode())||!StringUtils.isEmpty(currItem.getResultFlag())){
@@ -305,12 +305,14 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
             // 从要保存的记录里查查，是否已经在当前的记录里面不存在了。 。
             ExaminationItem sameItem=null;
-            for(ExaminationItem savingItem:savingItems){
-                if(savingItem.getId().equals(currItem.getItemId())){
-                    sameItem=savingItem;
+
+            for (ExaminationItem savingItem : savingItems) {
+                if (savingItem.getId().equals(currItem.getItemId())) {
+                    sameItem = savingItem;
                     break;
                 }
             }
+
 
             // 1 如果不存在，就把当前这条记录删除；2 如果存在，就将要保持的这条记录剔除不做处理
             if(sameItem==null){
@@ -331,7 +333,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             item.setNeedSamples(savingItem.getNeedSamples());
             item.setSpecimenId(savingItem.getSpecimenId());
             item.setLastFlag("1");
-            item.preInsert();
 
             examinationRecordItemService.save(item);
         }

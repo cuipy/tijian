@@ -70,16 +70,7 @@
 		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
 		<parameter name="mid" class="java.lang.String"/>
 		<queryString>
-			<![CDATA[SELECT ei.id,ei.`name` AS item_name FROM bj_examination_record r JOIN bj_examination_package ep ON r.`package_id`=ep.id 
-JOIN bj_package_item bpi ON ep.id=bpi.`package_id`
-JOIN bj_examination_item ei ON bpi.`item_id`=ei.id 
-WHERE r.item_type=1 AND ep.`del_flag`='0' AND bpi.`del_flag`=0 AND ei.`del_flag`=0 
-AND r.id=$P{mid}
-
-union
-
-SELECT ri.id,ri.item_name FROM `bj_examination_record_item` ri JOIN `bj_examination_record` r ON ri.`record_id` = r.id 
- WHERE r.`item_type` = 2  AND ri.del_flag=0 AND ri.record_id =$P{mid}]]>
+			<![CDATA[SELECT ri.id,ri.item_name FROM `bj_examination_record_item` ri WHERE ri.del_flag=0 and ri.last_flag=1 AND ri.record_id =$P{mid}]]>
 		</queryString>
 		<field name="id" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.label" value="id"/>
@@ -100,46 +91,16 @@ LEFT JOIN bj_industry ind ON er.`industry_id` = ind.`id`
 LEFT JOIN bj_job_post jp ON er.`post_id`=jp.id 
 LEFT JOIN bj_organ o ON er.`organ_id` = o.id where er.id in ($P!{ids})]]>
 	</queryString>
-	<field name="id" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="id"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="code" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="code"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="phone_number" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="phone_number"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="birthday" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="birthday"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="age" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="age"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="str_sex" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="str_sex"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="industry_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="industry_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="post_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="post_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
-	<field name="organ_name" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.label" value="organ_name"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="cms_link"/>
-	</field>
+	<field name="id" class="java.lang.String"/>
+	<field name="code" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="phone_number" class="java.lang.String"/>
+	<field name="birthday" class="java.lang.String"/>
+	<field name="age" class="java.lang.String"/>
+	<field name="str_sex" class="java.lang.String"/>
+	<field name="industry_name" class="java.lang.String"/>
+	<field name="post_name" class="java.lang.String"/>
+	<field name="organ_name" class="java.lang.String"/>
 	<detail>
 		<band height="188" splitType="Stretch">
 			<line>
@@ -291,8 +252,8 @@ LEFT JOIN bj_organ o ON er.`organ_id` = o.id where er.id in ($P!{ids})]]>
 				<text><![CDATA[医师签名]]></text>
 			</staticText>
 			<image>
-				<reportElement x="355" y="38" width="200" height="26" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
+				<reportElement x="355" y="32" width="200" height="26" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,200,26));]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement style="PdfSytle" x="355" y="58" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
@@ -537,8 +498,8 @@ LEFT JOIN bj_organ o ON er.`organ_id` = o.id where er.id in ($P!{ids})]]>
 				<text><![CDATA[单位]]></text>
 			</staticText>
 			<image>
-				<reportElement x="355" y="46" width="200" height="26" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
-				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
+				<reportElement x="355" y="42" width="200" height="26" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,200,26));]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement style="PdfSytle" x="355" y="68" width="200" height="12" uuid="5f831ab8-14cb-481d-8bc2-1fac65c3ba9a"/>
@@ -564,7 +525,7 @@ LEFT JOIN bj_organ o ON er.`organ_id` = o.id where er.id in ($P!{ids})]]>
 				<text><![CDATA[1、凭此证领取健康合格证。
 2、健康合格证需由本人领取，单位组织体检领取健康合格证需出示代领人的有效证件。
 3、自体检次日起，五个工作日后领取健康合格证。
-4、如有疑问请拨打咨询电话：]]></text>
+4、如有疑问请拨打咨询电话]]></text>
 			</staticText>
 			<textField>
 				<reportElement style="PdfSytle" x="445" y="87" width="110" height="28" uuid="77046a47-9dce-4a68-9498-e11f4165011f"/>
