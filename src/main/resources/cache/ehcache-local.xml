@@ -62,5 +62,8 @@
 
 	<cache name="examinationRecordCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
 		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="examinationRecordItemCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
     	
 </ehcache>

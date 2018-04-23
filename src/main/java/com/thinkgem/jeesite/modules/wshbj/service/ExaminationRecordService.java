@@ -27,7 +27,6 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordDao;
-import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordItemDao;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -42,8 +41,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     @Autowired
     private ExaminationRecordDao examinationRecordDao;
-    @Autowired
-    private ExaminationRecordItemDao examinationRecordItemDao;
+
     @Autowired
     private ExaminationUserService examinationUserService;
     @Autowired
@@ -77,7 +75,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             ExaminationRecordItem recordItem = new ExaminationRecordItem();
             recordItem.setRecordId(map.get("id").toString());
             recordItem.setExaminationFlag(examinationFlag);
-            List<ExaminationRecordItem> recordItems = examinationRecordItemDao.findList(recordItem);
+            List<ExaminationRecordItem> recordItems = examinationRecordItemService.findList(recordItem);
             List<Map<String, Object>> examinationRecordItemList = new ArrayList<Map<String, Object>>();
             Map<String, Object> itemMap = null;
             ExaminationResultDict examinationResultDict = new ExaminationResultDict();
@@ -133,16 +131,17 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                 continue;
             }
             if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(examinationRecordItem.getDelFlag())) {
-                if (StringUtils.isBlank(examinationRecordItem.getId())) {
-                    examinationRecordItem.setRecordId(examinationRecord.getId());
-                    examinationRecordItem.preInsert();
-                    examinationRecordItemDao.insert(examinationRecordItem);
-                } else {
-                    examinationRecordItem.preUpdate();
-                    examinationRecordItemDao.update(examinationRecordItem);
-                }
+//                if (StringUtils.isBlank(examinationRecordItem.getId())) {
+//                    examinationRecordItem.setRecordId(examinationRecord.getId());
+//                    examinationRecordItem.preInsert();
+//                    examinationRecordItemService.save(examinationRecordItem);
+//                } else {
+//                    examinationRecordItem.preUpdate();
+//                    examinationRecordItemService.save(examinationRecordItem);
+//                }
+                examinationRecordItemService.save(examinationRecordItem);
             } else {
-                examinationRecordItemDao.delete(examinationRecordItem);
+                examinationRecordItemService.delete(examinationRecordItem);
             }
         }
     }
@@ -163,7 +162,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         super.delete(examinationRecord);
         ExaminationRecordItem recordItem = new ExaminationRecordItem();
         recordItem.setRecordId(examinationRecord.getId());
-        examinationRecordItemDao.delete(recordItem);
+        examinationRecordItemService.delete(recordItem);
     }
 
     @Transactional(readOnly = false)
@@ -180,7 +179,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         super.delete(examinationRecord);
         ExaminationRecordItem recordItem = new ExaminationRecordItem();
         recordItem.setRecordId(examinationRecord.getId());
-        examinationRecordItemDao.delete(recordItem);
+        examinationRecordItemService.delete(recordItem);
 
         // 返回执行成功
         return ResponseResult.generate("0", "删除成功");
@@ -316,7 +315,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
             // 1 如果不存在，就把当前这条记录删除；2 如果存在，就将要保持的这条记录剔除不做处理
             if(sameItem==null){
-                examinationRecordItemDao.delete(currItem);
+                examinationRecordItemService.delete(currItem);
             }else{
                 savingItems.remove(sameItem);
             }
@@ -407,7 +406,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         ExaminationResultDict resultDict = null;
         ExaminationRecordItem recordItem = null;
         for (int i = 0; i < recordItemIds.length; i++) {
-            recordItem = examinationRecordItemDao.get(recordItemIds[i]);
+            recordItem = examinationRecordItemService.get(recordItemIds[i]);
             if (recordItem == null) {
                 continue;
             }
@@ -415,7 +414,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             if (resultDict == null) {
                 continue;
             }
-            examinationRecordItemDao.saveRecordResult(recordItemIds[i], null, resultDictIds[i], resultDict.getName(), resultDict.getFlag(), remarksArray[i]);
+            examinationRecordItemService.saveRecordResult(recordItemIds[i], null, resultDictIds[i], resultDict.getName(), resultDict.getFlag(), remarksArray[i]);
 
             //如果涉及样本，则同步更新样本的检验结果
             if (StringUtils.isNotBlank(recordItem.getSampleCode())) {
@@ -454,7 +453,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         recordItem.setRecordId(recordId);
         recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
 //                recordItem.setExaminationFlag(examinationFlag);
-        List<ExaminationRecordItem> recordItems = examinationRecordItemDao.findList(recordItem);
+        List<ExaminationRecordItem> recordItems = examinationRecordItemService.findList(recordItem);
         if (recordItems == null) {
             return mapList;
         }
@@ -514,7 +513,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         recordItem.setRecordId(recordId);
         recordItem.setLastFlag("1");
         recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
-        List<ExaminationRecordItem> itemList = examinationRecordItemDao.findList(recordItem);
+        List<ExaminationRecordItem> itemList = examinationRecordItemService.findList(recordItem);
         for (int i = 0; i < itemList.size(); i++) {
             recordItem = itemList.get(i);
             if (StringUtils.isBlank(recordItem.getResultDictId())) {  //未录入项目体检结果
@@ -563,15 +562,15 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         eriTmp.setRecordId(record.getId());
 
         // 还没有体检结果的数量
-        int cntNoResult = examinationRecordItemDao.countNoResult(eriTmp);
+        int cntNoResult = examinationRecordItemService.countNoResult(eriTmp);
 
         // 体检中
         if (cntNoResult > 0) {
             record.setStatus(ExaminationRecordConstant.STATUS10);
         } else {
             // 没通过的数量
-            int cntNotOk = examinationRecordItemDao.countNotOk(eriTmp);
-            int cntExamFlag2 = examinationRecordItemDao.countExamFlag2(eriTmp);
+            int cntNotOk = examinationRecordItemService.countNotOk(eriTmp);
+            int cntExamFlag2 = examinationRecordItemService.countExamFlag2(eriTmp);
 
             if (cntNotOk == 0) {
                 if (cntExamFlag2 == 0) {
