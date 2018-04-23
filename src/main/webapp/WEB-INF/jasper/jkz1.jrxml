@@ -9,8 +9,8 @@
 	<parameter name="currUser" class="java.lang.String"/>
 	<parameter name="imgHost" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT id,`code`,`name`,`head_img_path`,concat($P{imgHost},`head_img_path`) as headImg,`id_number`,case when sex=1 then '男' else '女' end as "strSex"
-		 FROM bj_examination_user WHERE id in ($P!{ids})]]>
+		<![CDATA[SELECT er.id,er.`code`,er.`name`,u.`head_img_path`,CONCAT($P{imgHost},`u.head_img_path`) AS headImg,er.`id_number`,CASE WHEN er.sex=1 THEN '男' ELSE '女' END AS "strSex"
+		 FROM bj_examination_record er JOIN bj_examination_user u ON er.user_id=u.id WHERE er.id IN ($P!{ids})]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
 	<field name="name" class="java.lang.String"/>
