@@ -164,11 +164,11 @@ public class Global {
 		return dir;
 	}
 
-	public static String getSiteHost(){
-		String siteHost = getConfig("site_host");
+	public static String getImgHost(){
+		String siteHost = getConfig("img_host");
 		if (StringUtils.isEmpty(siteHost)) {
 			try {
-				siteHost = "localhost";
+				siteHost = "http://localhost:8080";
 			} catch (Exception e) {
 				return "";
 			}
@@ -176,14 +176,6 @@ public class Global {
 		return siteHost;
 	}
 
-	public static Integer getWebsocketPort(){
-		String port=getConfig("websockt_port");
-		if(StringUtils.isEmpty(port)||!NumberUtils.isNumber(port)){
-			port="5432";
-		}
-
-		return Integer.parseInt(port);
-	}
 
 	/**
 	 * 获取工程路径

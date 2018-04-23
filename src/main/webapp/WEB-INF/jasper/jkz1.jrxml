@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.1.final using JasperReports Library version 6.5.1  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="jkz1" pageWidth="242" pageHeight="153" whenNoDataType="NoPages" columnWidth="240" leftMargin="1" rightMargin="1" topMargin="1" bottomMargin="1" uuid="4794fec0-5760-4c33-bbda-b9c2dd917d4d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="TestDataAdapter1"/>
+	<style name="small1" fontName="宋体" fontSize="8" isBold="false" pdfFontName="宋体"/>
+	<style name="big1" fontName="宋体" fontSize="11" isBold="true" pdfFontName="宋体"/>
+	<parameter name="ids" class="java.lang.String"/>
+	<parameter name="currUser" class="java.lang.String"/>
+	<parameter name="imgHost" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT id,`code`,`name`,`head_img_path`,concat($P{imgHost},`head_img_path`) as headImg,`id_number`,case when sex=1 then '男' else '女' end as strSex
+		 FROM bj_examination_user WHERE id in ($P!{ids})]]>
+	</queryString>
+	<field name="code" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="head_img_path" class="java.lang.String"/>
+	<field name="headImg" class="java.lang.String"/>
+	<field name="id_number" class="java.lang.String"/>
+	<field name="strSex" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="151" splitType="Stretch">
+			<textField>
+				<reportElement style="big1" x="10" y="10" width="100" height="20" uuid="e688c9b1-c990-4c5c-906a-ea1d6f0cbcb0"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="big1" x="10" y="49" width="130" height="20" uuid="0f1635ce-f036-4c32-94de-3d1d422290d1"/>
+				<textFieldExpression><![CDATA[$F{id_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="big1" x="10" y="80" width="130" height="20" uuid="55c30506-a065-4e6e-96e5-3f96f9657c84"/>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy-MM-dd">
+				<reportElement x="40" y="100" width="100" height="15" uuid="997db619-41ce-4cfe-8a76-82b5b17582c5"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="10" width="40" height="20" uuid="df97c2ab-3693-4db9-a07f-24da9c13adea"/>
+				<textFieldExpression><![CDATA[$F{strSex}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="-1" y="115" width="151" height="30" uuid="41a98c2f-2683-43f7-bc3d-c22900cb27c2"/>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(new com.google.zxing.oned.Code128Writer().encode($F{code},com.google.zxing.BarcodeFormat.CODE_128,260,26));]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="140" y="9" width="86" height="101" uuid="01056939-b697-4834-aa83-395756c32c2c"/>
+				<imageExpression><![CDATA[$F{headImg}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="150" y="115" width="80" height="20" uuid="5ec2dad0-5186-4cf3-8439-5827d613c768"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{currUser}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="small1" x="10" y="40" width="100" height="13" uuid="aa635828-7b0a-406d-a5c4-72cc6f6d345b"/>
+				<text><![CDATA[身份证号:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="small1" x="10" y="70" width="100" height="13" uuid="aa635828-7b0a-406d-a5c4-72cc6f6d345b"/>
+				<text><![CDATA[健康证号:]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -120,14 +120,29 @@ public class ExaminationRecordController extends BaseController {
 	 * @return
 	 */
 	@RequiresPermissions("wshbj:examinationRecord:view")
-	@RequestMapping(value = "print")
-	public String print(String id, Model model) {
+	@RequestMapping(value = "print_tjb")
+	public String print_tjb(String id, Model model) {
 
 		String ids="'"+id+"'";
 
 		model.addAttribute("format","pdf");
 		model.addAttribute("ids", ids);
 		return "tjb";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = "print_jkz1")
+	public String print_jkz1(String id, Model model) {
+
+		String ids="'"+id+"'";
+		String currUser=UserUtils.getUser().getName();
+		String imgHost=Global.getImgHost();
+
+		model.addAttribute("format","pdf");
+		model.addAttribute("ids", ids);
+		model.addAttribute("currUser", currUser);
+		model.addAttribute("imgHost", imgHost);
+		return "jkz1";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")

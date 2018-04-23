@@ -152,7 +152,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         }
 
         if(recordItem.getStatus()==10){
-            return RequestResult.generate(110,"由于未知原因，本采集项目状态不正确，不可进行采集操作");
+            return RequestResult.generate(120,"由于未知原因，本采集项目状态不正确，不可进行采集操作");
         }
 
 

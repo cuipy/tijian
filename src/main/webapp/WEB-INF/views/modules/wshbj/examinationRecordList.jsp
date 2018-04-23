@@ -127,7 +127,10 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
-					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print?id=${examinationRecord.id}" target="_blank">打印体检表</a>
+					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print_tjb?id=${examinationRecord.id}" target="_blank">打印体检表</a>
+					<c:if test="${examinationRecord.status >= 40}">
+					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print_jkz1?id=${examinationRecord.id}" target="_blank">打印健康证</a> </c:if>
+
 					<c:if test="${examinationRecord.status < 40}">
 					    <a class="label label-warning" href="${ctx}/wshbj/examinationRecordItem/list_need_sample_nodo?queryExamCode=${examinationRecord.code}">采样</a>
 					    <a class="label label-warning" href="${ctx}/wshbj/examinationRecordItem/list_no_result?queryExamCode=${examinationRecord.code}">填报结果</a></c:if>
