@@ -54,6 +54,9 @@
 	<cache name="examinationPackageCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
 		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
 
+	<cache name="examinationPackageItemCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
 	<cache name="examinationUserCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
 		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
 
