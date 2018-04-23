@@ -9,7 +9,9 @@
 	<parameter name="currUser" class="java.lang.String"/>
 	<parameter name="imgHost" class="java.lang.String"/>
 	<queryString language="SQL">
-		<![CDATA[SELECT er.id,er.`code`,er.`name`,u.`head_img_path`,CONCAT($P{imgHost},`u.head_img_path`) AS headImg,er.`id_number`,CASE WHEN er.sex=1 THEN '男' ELSE '女' END AS "strSex"
+		<![CDATA[SELECT er.id as id,er.`code` as code,er.`name` as name,u.`head_img_path` as head_img_path
+		,CONCAT($P{imgHost},u.`head_img_path`) AS headImg,er.`id_number` as id_number
+		,CASE WHEN er.sex=1 THEN '男' ELSE '女' END AS "strSex"
 		 FROM bj_examination_record er JOIN bj_examination_user u ON er.user_id=u.id WHERE er.id IN ($P!{ids})]]>
 	</queryString>
 	<field name="code" class="java.lang.String"/>
@@ -58,7 +60,7 @@
 			</textField>
 			<staticText>
 				<reportElement style="small1" x="10" y="40" width="100" height="13" uuid="aa635828-7b0a-406d-a5c4-72cc6f6d345b"/>
-				<text><![CDATA[身份证号:]]></text>
+				<text><![CDATA[身份证:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="small1" x="10" y="70" width="100" height="13" uuid="aa635828-7b0a-406d-a5c4-72cc6f6d345b"/>
