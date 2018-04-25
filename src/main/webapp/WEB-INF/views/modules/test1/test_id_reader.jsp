@@ -30,7 +30,7 @@
 
             initWebsocket();
 		});
-
+        WEB_SOCKET_SWF_LOCATION = "${ctxStatic}/websocket/WebSocketMain.swf";
         function initWebsocket(){
             var ws1 = new ReconnectingWebSocket("ws://127.0.0.1:8202/jsclient");
             ws1.onmessage=function(evt){
