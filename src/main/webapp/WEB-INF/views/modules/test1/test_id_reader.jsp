@@ -4,6 +4,9 @@
 <head>
 	<title>测试1管理</title>
 	<meta name="decorator" content="default"/>
+
+    <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#inputForm").validate({
@@ -25,9 +28,20 @@
                 $("#inputForm").print({noPrintSelector:'.no-print',iframe:false});
             });
 
+            initWebsocket();
 		});
 
+        function initWebsocket(){
+            var ws1 = new ReconnectingWebSocket("ws://127.0.0.1:8202/jsclient");
+            ws1.onmessage=function(evt){
+                var msg = evt.data;
+                var jmsg = JSON.parse(msg);
 
+                $("#title").val(jmsg.Name);
+                $("#userPwd").val(jmsg.Code);
+                $("#headImg").attr('src',jmsg.p1base64);
+            }
+         }
 
 	</script>
 
@@ -43,56 +57,25 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">头像：</label>
+			<label class="control-label">身份证：</label>
 			<div class="controls">
-				<sys:cropper mainImgWidth="360" imgName="头像" path="headImg" value="${test1.headImg}"/>
+				<img id="headImg" width="300" >
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">标题：</label>
+			<label class="control-label">姓名：</label>
 			<div class="controls">
 				<form:input path="title" htmlEscape="false" maxlength="128" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">文档密码：</label>
+			<label class="control-label">身份证号：</label>
 			<div class="controls">
-				<form:input type="password" path="userPwd" htmlEscape="false" maxlength="64" class="input-xlarge"/>
+				<form:input type="text" path="userPwd" htmlEscape="false" maxlength="64" class="input-xlarge"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">内容：</label>
-			<div class="controls">
 
-				<script type="text/plain" name="content" id="ueContent">${fns:unescapeHtml(test1.content)}</script>
-				<script type="text/javascript">
-                    var ueContent = UE.getEditor('ueContent');
-                </script>
-
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">作者id：</label>
-			<div class="controls">
-				<sys:treeselect id="auth" name="auth.id" value="${test1.auth.id}" labelName="auth.name" labelValue="${test1.auth.name}"
-					title="作者id" url="/sys/office/treeData?type=3" cssClass="required" allowClear="true" notAllowSelectParent="true"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">发布单位：</label>
-			<div class="controls">
-				<form:input path="danwei" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
-			</div>
-		</div>
 		<div class="form-actions">
 			<shiro:hasPermission name="test1:test1:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<shiro:hasPermission name="test1:test1:view"><input id="btnPrint" class="btn btn-info" type="button" value="打 印"/>&nbsp;</shiro:hasPermission>
