@@ -112,6 +112,11 @@ public class Test1Controller extends BaseController {
 		return "modules/test1/test1Form";
 	}
 
+	@RequestMapping(value = "test_id_reader")
+	public String test_id_reader( Model model) {
+		return "modules/test1/test_id_reader";
+	}
+
 	@RequiresPermissions("test1:test1:edit")
 	@RequestMapping(value = "save")
 	public String save(Test1 test1, Model model, RedirectAttributes redirectAttributes) {
