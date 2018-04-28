@@ -92,7 +92,7 @@
       2. 设置检查项目需要定义<span class="help-inline">单位、价格、所属标本类型等</span><br>
 
       <strong>作用：</strong> <br>
-      1. 检查项目属于检查的细类，上承<span class="help-inline">项目类型(小类) - 检查类别(大类)</span><br>
+      1. 检查项目属于检查的细类，上承<span class="help-inline">项目类型(小类) - 检查大类(大类)</span><br>
 
     </div>
 

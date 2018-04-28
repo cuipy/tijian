@@ -26,7 +26,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemCategory;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemCategoryService;
 
 /**
- * 检查项目分类Controller
+ * 检查小类Controller
  * @author zhxl
  * @version 2018-03-07
  */
@@ -100,7 +100,7 @@ public class ExaminationItemCategoryController extends BaseController {
 		}
 
 		examinationItemCategoryService.save(examinationItemCategory);
-		addMessage(redirectAttributes, "保存检查项目分类成功");
+		addMessage(redirectAttributes, "保存检查小类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/list?repage";
 	}
 	
@@ -108,7 +108,7 @@ public class ExaminationItemCategoryController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(ExaminationItemCategory examinationItemCategory, RedirectAttributes redirectAttributes) {
 		examinationItemCategoryService.delete(examinationItemCategory);
-		addMessage(redirectAttributes, "删除检查项目分类成功");
+		addMessage(redirectAttributes, "删除检查小类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/list?repage";
 	}
 
@@ -137,7 +137,7 @@ public class ExaminationItemCategoryController extends BaseController {
 		}
 		examinationItemCategory.setReferenceFlag("1");
 		examinationItemCategoryService.save(examinationItemCategory);
-		addMessage(redirectAttributes, "保存检查项目分类成功");
+		addMessage(redirectAttributes, "保存检查小类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/listByCenter?repage";
 	}
 
@@ -145,7 +145,7 @@ public class ExaminationItemCategoryController extends BaseController {
 	@RequestMapping(value = "deleteByCenter")
 	public String deleteByCenter(ExaminationItemCategory examinationItemCategory, RedirectAttributes redirectAttributes) {
 		examinationItemCategoryService.delete(examinationItemCategory);
-		addMessage(redirectAttributes, "删除检查项目分类成功");
+		addMessage(redirectAttributes, "删除检查小类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItemCategory/listByCenter?repage";
 	}
 }

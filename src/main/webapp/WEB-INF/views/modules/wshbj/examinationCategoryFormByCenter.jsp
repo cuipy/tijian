@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>检查类别管理</title>
+	<title>检查大类管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationCategory/listByCenter">检查类别列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/examinationCategory/form?id=${examinationCategory.id}">检查类别<shiro:hasPermission name="wshbj:examinationCategory:edit">${not empty examinationCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationCategory:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/wshbj/examinationCategory/listByCenter">检查大类列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationCategory/form?id=${examinationCategory.id}">检查大类<shiro:hasPermission name="wshbj:examinationCategory:edit">${not empty examinationCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationCategory:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationCategory" action="${ctx}/wshbj/examinationCategory/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

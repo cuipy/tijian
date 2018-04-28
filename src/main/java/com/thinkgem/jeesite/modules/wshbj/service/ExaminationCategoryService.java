@@ -19,7 +19,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationCategoryDao;
 
 /**
- * 检查类别Service
+ * 检查大类Service
  * @author zhxl
  * @version 2018-03-07
  */

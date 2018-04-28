@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>检查项目分类管理</title>
+	<title>检查小类管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -18,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/listByCenter">检查项目分类列表</a></li>
-		<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter"><li><a href="${ctx}/wshbj/examinationItemCategory/formByCenter">检查项目分类添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/listByCenter">检查小类列表</a></li>
+		<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter"><li><a href="${ctx}/wshbj/examinationItemCategory/formByCenter">检查小类添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationItemCategory" action="${ctx}/wshbj/examinationItemCategory/listByCenter" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -63,7 +63,7 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter"><td>
     				<a href="${ctx}/wshbj/examinationItemCategory/formByCenter?id=${examinationItemCategory.id}">修改</a>
-					<a href="${ctx}/wshbj/examinationItemCategory/deleteByCenter?id=${examinationItemCategory.id}" onclick="return confirmx('确认要删除该检查项目分类吗？', this.href)">删除</a>
+					<a href="${ctx}/wshbj/examinationItemCategory/deleteByCenter?id=${examinationItemCategory.id}" onclick="return confirmx('确认要删除该检查小类吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

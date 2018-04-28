@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>检查类别管理</title>
+	<title>检查大类管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -48,9 +48,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li ><a href="${ctx}/wshbj/examinationCategory/list">检查类别列表</a></li>
+		<li ><a href="${ctx}/wshbj/examinationCategory/list">检查大类列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationCategory:edit">
-			<li><a href="${ctx}/wshbj/examinationCategory/form">检查类别添加</a></li>
+			<li><a href="${ctx}/wshbj/examinationCategory/form">检查大类添加</a></li>
 			<li class="active"><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li>
 		</shiro:hasPermission>
 	</ul>

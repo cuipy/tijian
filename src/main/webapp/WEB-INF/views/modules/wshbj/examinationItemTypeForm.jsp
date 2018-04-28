@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label"><font color="red">*</font>检查项目分类：</label>
+			<label class="control-label"><font color="red">*</font>检查小类：</label>
 			<div class="controls">
 				<form:select path="itemCategoryId" class="input-medium">
 					<form:option value="">
@@ -98,7 +98,7 @@
       3. 默认，项目类型包括<span class="help-inline"> 采血、采便、内科、眼科、放射科 </span>。<br><br>
 
       <strong>作用：</strong> <br>
-      1. 该属性上承<span class="help-inline">检查类别</span>，下接<span class="help-inline">检查项目</span>。<br>
+      1. 该属性上承<span class="help-inline">检查大类</span>，下接<span class="help-inline">检查项目</span>。<br>
       2. 可以理解为检查细项的大分类。<br>
       3. 对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 </span>
     </div>

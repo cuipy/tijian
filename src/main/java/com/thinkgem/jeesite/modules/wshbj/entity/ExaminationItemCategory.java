@@ -11,7 +11,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 import javax.validation.constraints.NotNull;
 
 /**
- * 检查项目分类Entity
+ * 检查小类Entity
  * @author zhxl
  * @version 2018-03-07
  */
@@ -32,8 +32,8 @@ public class ExaminationItemCategory extends DataEntity<ExaminationItemCategory>
 	}
 
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
-	@NotNull(message = "项目分类编号必须填写")
-	@ExpressSequence(express = "XMFL{YYYY}[3]",describe = "项目分类编号")
+	@NotNull(message = "检查小类编号必须填写")
+	@ExpressSequence(express = "XMFL{YYYY}[3]",describe = "检查小类编号")
 	public String getCode() {
 		return code;
 	}
@@ -43,7 +43,7 @@ public class ExaminationItemCategory extends DataEntity<ExaminationItemCategory>
 	}
 	
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")
-	@NotNull(message = "项目分类名称必须填写")
+	@NotNull(message = "检查小类名称必须填写")
 	public String getName() {
 		return name;
 	}

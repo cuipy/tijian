@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 import javax.validation.constraints.NotNull;
 
 /**
- * 检查类别Entity
+ * 检查大类Entity
  * @author zhxl
  * @version 2018-03-07
  */
@@ -33,7 +33,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 		super(id);
 	}
 
-	@ExpressSequence(express="JCLB{yyyy}[3]",describe = "检查类别编号")
+	@ExpressSequence(express="JCLB{yyyy}[3]",describe = "检查大类编号")
 	@Length(min=1, max=45, message="检查编号长度必须介于 1 和 45 之间")
 	public String getCode() {
 		return code;
@@ -44,7 +44,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 	}
 	
 	@Length(min=1, max=50, message="名称长度必须介于 1 和 50 之间")
-	@NotNull(message = "检查类别名称必须填写")
+	@NotNull(message = "检查大类名称必须填写")
 	public String getName() {
 		return name;
 	}

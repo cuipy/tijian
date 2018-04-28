@@ -81,7 +81,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label"><font color="red">*</font> 检查类别：</label>
+			<label class="control-label"><font color="red">*</font> 检查大类：</label>
 			<div class="controls">
 
 					<c:forEach items="${examinationCategoryList}" var="ec">

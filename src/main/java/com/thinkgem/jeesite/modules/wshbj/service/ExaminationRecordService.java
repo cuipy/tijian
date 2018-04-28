@@ -231,36 +231,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             resultMessages.add("性别与体检用户内记录的信息不一致");
             return ResponseResult.generateFailResult("用户信息错误", resultMessages);
         }
-//            if (!examinationRecord.getBirthday().equals(examinationUser.getBirthday())) {
-//                resultMessages.add("出生日期与系统内信息不一致");
-//                return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-//            }
-
-        /// 崔鹏宇  20180422 注释
-
-//        } else {
-//            //验证是否存在相同身份证用户
-//            examinationUser = examinationUserService.getByIdNumberAndOwner(examinationRecord.getIdNumber(), examinationRecord.getOwner());
-//            if (examinationUser != null) {
-//                resultMessages.add("系统内已存在该身份证信息，请选择用户或进行身份证核实");
-//                return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-//            }
-//
-//            //将用户信息保存至数据库
-//            examinationUser = new ExaminationUser();
-//            examinationUser.setName(examinationRecord.getName());
-//            examinationUser.setIdNumber(examinationRecord.getIdNumber());
-//            examinationUser.setPhoneNumber(examinationRecord.getPhoneNumber());
-//            examinationUser.setSex(examinationRecord.getSex());
-//            examinationUser.setIndustryId(examinationRecord.getIndustryId());
-//            examinationUser.setPostId(examinationRecord.getPostId());
-//            examinationUser.setOrganId(examinationRecord.getOrganId());
-//            examinationUser.setBirthday(examinationRecord.getBirthday());
-//            examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
-//
-//            examinationUserService.save(examinationUser);
-//        }
-
 
         super.save(examinationRecord);
 
@@ -274,7 +244,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         List<ExaminationRecordItem> currRecordItems=examinationRecord.getItems();
 
         // 打算保存的
-        List<ExaminationItem> savingItems=  savingItems = new ArrayList<ExaminationItem>();
+        List<ExaminationItem> savingItems = new ArrayList<ExaminationItem>();
         // 如果是套餐
         if ("1".equals(examinationRecord.getItemType())) {
             savingItems = examinationItemService.findListByPackage(examinationRecord.getPackageId());

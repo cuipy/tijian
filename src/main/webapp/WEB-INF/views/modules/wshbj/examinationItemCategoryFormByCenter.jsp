@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>检查项目分类管理</title>
+	<title>检查小类管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationItemCategory/listByCenter">检查项目分类列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/formByCenter?id=${examinationItemCategory.id}">检查项目分类<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter">${not empty examinationItemCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItemCategory:editByCenter">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/wshbj/examinationItemCategory/listByCenter">检查小类列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/formByCenter?id=${examinationItemCategory.id}">检查小类<shiro:hasPermission name="wshbj:examinationItemCategory:editByCenter">${not empty examinationItemCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItemCategory:editByCenter">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="examinationItemCategory" action="${ctx}/wshbj/examinationItemCategory/saveByCenter" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

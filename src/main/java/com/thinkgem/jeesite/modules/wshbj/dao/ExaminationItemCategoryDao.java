@@ -8,7 +8,7 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemCategory;
 
 /**
- * 检查项目分类DAO接口
+ * 检查小类DAO接口
  * @author zhxl
  * @version 2018-03-07
  */

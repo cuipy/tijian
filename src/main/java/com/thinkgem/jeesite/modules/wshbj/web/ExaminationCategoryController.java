@@ -30,7 +30,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationCategoryService;
 
 /**
- * 检查类别Controller
+ * 检查大类Controller
  * @author zhxl
  * @version 2018-03-07
  */
@@ -107,7 +107,7 @@ public class ExaminationCategoryController extends BaseController {
 		}
 
 		examinationCategoryService.save(examinationCategory);
-		addMessage(redirectAttributes, "保存检查类别成功");
+		addMessage(redirectAttributes, "保存检查大类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationCategory/list?repage";
 	}
 	
@@ -115,7 +115,7 @@ public class ExaminationCategoryController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(ExaminationCategory examinationCategory, RedirectAttributes redirectAttributes) {
 		examinationCategoryService.delete(examinationCategory);
-		addMessage(redirectAttributes, "删除检查类别成功");
+		addMessage(redirectAttributes, "删除检查大类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationCategory/list?repage";
 	}
 
@@ -145,7 +145,7 @@ public class ExaminationCategoryController extends BaseController {
 			return form(examinationCategory, model);
 		}
 		examinationCategoryService.save(examinationCategory);
-		addMessage(redirectAttributes, "保存检查类别成功");
+		addMessage(redirectAttributes, "保存检查大类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationCategory/listByCenter?repage";
 	}
 
@@ -153,7 +153,7 @@ public class ExaminationCategoryController extends BaseController {
 	@RequestMapping(value = "deleteByCenter")
 	public String deleteByCenter(ExaminationCategory examinationCategory, RedirectAttributes redirectAttributes) {
 		examinationCategoryService.delete(examinationCategory);
-		addMessage(redirectAttributes, "删除检查类别成功");
+		addMessage(redirectAttributes, "删除检查大类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationCategory/listByCenter?repage";
 	}
 }

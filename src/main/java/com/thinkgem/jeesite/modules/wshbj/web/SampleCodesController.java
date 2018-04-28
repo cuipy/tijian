@@ -108,7 +108,7 @@ public class SampleCodesController extends BaseController {
 
 
 	@RequiresPermissions("wshbj:sampleCodes:view")
-	@RequestMapping(value = "ajax_get_by_id")
+	@RequestMapping(value = "ajax_for_autocompleter")
 	@ResponseBody
 	public RequestResult ajax_for_autocompleter(SampleCodes sampleCodes, Model model) {
 		// 只能筛选没有用过

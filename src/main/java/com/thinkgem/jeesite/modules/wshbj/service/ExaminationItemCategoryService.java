@@ -18,7 +18,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItemCategory;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemCategoryDao;
 
 /**
- * 检查项目分类Service
+ * 检查小类Service
  * @author zhxl
  * @version 2018-03-07
  */

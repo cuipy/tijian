@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>检查项目分类管理</title>
+	<title>检查小类管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -18,9 +18,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/list">检查项目分类列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationItemCategory/list">检查小类列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationItemCategory:edit">
-			<li><a href="${ctx}/wshbj/examinationItemCategory/form">检查项目分类添加</a></li>
+			<li><a href="${ctx}/wshbj/examinationItemCategory/form">检查小类添加</a></li>
 			<!-- li><a href="${ctx}/wshbj/examinationItemCategory/list4Pull">快速添加</a></li -->
 		</shiro:hasPermission>
 	</ul>
@@ -66,7 +66,7 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationItemCategory:edit"><td>
     				<a href="${ctx}/wshbj/examinationItemCategory/form?id=${examinationItemCategory.id}">修改</a>
-					<a href="${ctx}/wshbj/examinationItemCategory/delete?id=${examinationItemCategory.id}" onclick="return confirmx('确认要删除该检查项目分类吗？', this.href)">删除</a>
+					<a href="${ctx}/wshbj/examinationItemCategory/delete?id=${examinationItemCategory.id}" onclick="return confirmx('确认要删除该检查小类吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
@@ -76,11 +76,11 @@
 
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
-      1. 项目分类属于项目类型下的分类，非必填项目<br><br>
+      1. 检查小类属于项目类型下的分类，非必填项目<br><br>
 
       <strong>作用：</strong> <br>
-      1. 项目分类用于<span class="help-inline">检查项目分类</span>中<br>
-      2. 该属性主要检查项目分类中做分类筛选<br>
+      1. 检查小类用于<span class="help-inline">检查小类</span>中<br>
+      2. 该属性主要检查小类中做分类筛选<br>
       3. 本属性对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 - 分类</span>
 
     </div>

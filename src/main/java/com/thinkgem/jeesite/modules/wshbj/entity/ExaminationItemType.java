@@ -22,7 +22,7 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 	private String name;		// 名称
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
-	private String itemCategoryId;		// 检查项目分类
+	private String itemCategoryId;		// 检查小类
 	private String examinationDeptId;		// 检查部门
 	private String tips;		// 提示信息
 	
@@ -74,8 +74,8 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 		this.owner = owner;
 	}
 	
-	@Length(min=0, max=64, message="检查项目分类长度必须介于 0 和 64 之间")
-	@NotNull(message = "检查项目分类必须选择")
+	@Length(min=0, max=64, message="检查小类长度必须介于 0 和 64 之间")
+	@NotNull(message = "检查小类必须选择")
 	public String getItemCategoryId() {
 		return itemCategoryId;
 	}

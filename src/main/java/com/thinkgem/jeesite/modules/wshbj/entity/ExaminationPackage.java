@@ -23,7 +23,7 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 	private static final long serialVersionUID = 1L;
 	private String name;		// 名称
 	private String price;		// 价格
-	private String categoryId;		// 检查类别
+	private String categoryId;		// 检查大类
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	private List<PackageItem> packageItemList = Lists.newArrayList();		// 子表列表
@@ -54,7 +54,7 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 		this.price = price;
 	}
 	
-	@Length(min=1, max=64, message="检查类别长度必须介于 1 和 64 之间")
+	@Length(min=1, max=64, message="检查大类长度必须介于 1 和 64 之间")
 	public String getCategoryId() {
 		return categoryId;
 	}
