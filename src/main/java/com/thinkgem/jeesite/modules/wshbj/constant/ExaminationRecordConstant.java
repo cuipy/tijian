@@ -29,6 +29,10 @@ public class ExaminationRecordConstant {
      */
     public static final String STATUS30 = "30";
 
+    /**
+     * 35-重启体检
+     */
+    public static final String STATUS35 = "35";
 
     /**
      * 40-初检合格可制证

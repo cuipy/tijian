@@ -53,13 +53,13 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     @Autowired
     private ExaminationRecordItemService examinationRecordItemService;
 
-    @Cacheable(value = "examinationRecordCache",key="'examinationRecord_get_'+#id")
+    //@Cacheable(value = "examinationRecordCache",key="'examinationRecord_get_'+#id")
     public ExaminationRecord get(String id) {
         ExaminationRecord examinationRecord = super.get(id);
         return examinationRecord;
     }
 
-    @Cacheable(value = "examinationRecordCache",key="'examinationRecord_getByCode_'+#examinationRecord.code")
+    //@Cacheable(value = "examinationRecordCache",key="'examinationRecord_getByCode_'+#examinationRecord.code")
     public ExaminationRecord getByCode(ExaminationRecord examinationRecord) {
         examinationRecord = this.dao.getByCode(examinationRecord);
         return examinationRecord;
@@ -123,7 +123,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void save(ExaminationRecord examinationRecord) {
         super.save(examinationRecord);
         for (ExaminationRecordItem examinationRecordItem : examinationRecord.getItems()) {
@@ -147,7 +147,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public int updateRecordStatus(String recordId, String status) {
         if (StringUtils.isBlank(recordId) || StringUtils.isBlank(status)) {
             return 0;
@@ -157,7 +157,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void delete(ExaminationRecord examinationRecord) {
         super.delete(examinationRecord);
         ExaminationRecordItem recordItem = new ExaminationRecordItem();
@@ -166,7 +166,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public ResponseResult delRecord(ExaminationRecord examinationRecord) {
 
 
@@ -186,7 +186,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public ResponseResult saveRecord(ExaminationRecord examinationRecord) {
         //验证用户名、身份证号是否与系统数据一致
 
@@ -367,39 +367,39 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return ResponseResult.generateSuccessResult("保存成功", resultMessages);
     }
 
-    @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
-    public ResponseResult saveResult(String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
-        if (recordItemIds == null || recordItemIds.length < 1) {
-            return ResponseResult.generateFailResult("体检项目数据错误");
-        }
-        ExaminationResultDict resultDict = null;
-        ExaminationRecordItem recordItem = null;
-        for (int i = 0; i < recordItemIds.length; i++) {
-            recordItem = examinationRecordItemService.get(recordItemIds[i]);
-            if (recordItem == null) {
-                continue;
-            }
-            resultDict = resultDictService.get(resultDictIds[i]);
-            if (resultDict == null) {
-                continue;
-            }
-            examinationRecordItemService.saveRecordResult(recordItemIds[i], null, resultDictIds[i], resultDict.getName(), resultDict.getFlag(), remarksArray[i]);
-
-            //如果涉及样本，则同步更新样本的检验结果
-            if (StringUtils.isNotBlank(recordItem.getSampleCode())) {
-                examinationSamplesDao.updateResultByCode(recordItem.getSampleCode(), resultDict.getId(), resultDict.getFlag(), remarksArray[i]);
-            }
-        }
-
-        //刷新体检记录状态
-        if (recordItem != null) {
-            refreshStatus(recordItem.getRecordId());
-        }
-
-        ResponseResult responseResult = ResponseResult.generateSuccessResult("保存成功");
-        return responseResult;
-    }
+//    @Transactional(readOnly = false)
+//    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
+//    public ResponseResult saveResult(String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
+//        if (recordItemIds == null || recordItemIds.length < 1) {
+//            return ResponseResult.generateFailResult("体检项目数据错误");
+//        }
+//        ExaminationResultDict resultDict = null;
+//        ExaminationRecordItem recordItem = null;
+//        for (int i = 0; i < recordItemIds.length; i++) {
+//            recordItem = examinationRecordItemService.get(recordItemIds[i]);
+//            if (recordItem == null) {
+//                continue;
+//            }
+//            resultDict = resultDictService.get(resultDictIds[i]);
+//            if (resultDict == null) {
+//                continue;
+//            }
+//            examinationRecordItemService.saveRecordResult(recordItemIds[i], null, resultDictIds[i], resultDict.getName(), resultDict.getFlag(), remarksArray[i]);
+//
+//            //如果涉及样本，则同步更新样本的检验结果
+//            if (StringUtils.isNotBlank(recordItem.getSampleCode())) {
+//                examinationSamplesDao.updateResultByCode(recordItem.getSampleCode(), resultDict.getId(), resultDict.getFlag(), remarksArray[i]);
+//            }
+//        }
+//
+//        //刷新体检记录状态
+//        if (recordItem != null) {
+//            refreshStatus(recordItem.getRecordId());
+//        }
+//
+//        ResponseResult responseResult = ResponseResult.generateSuccessResult("保存成功");
+//        return responseResult;
+//    }
 
 
     public List<ExaminationRecord> getList4Result(String startDate, String endDate, String examinationCode, String organId) {
@@ -451,7 +451,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void refreshStatus(String recordId) {
         if (StringUtils.isBlank(recordId)) {
             return;
@@ -525,7 +525,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
      * 更新状态，只需要id
      */
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void updateStatus(ExaminationRecord record) {
 
         ExaminationRecordItem eriTmp = new ExaminationRecordItem();

@@ -49,12 +49,12 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     private ExaminationRecordItemDao examinationRecordItemDao;
 
     @Override
-    @Cacheable(value = "examinationPackageItemCache",key="'examinationPageItem_get_'+#id")
+    //@Cacheable(value = "examinationPackageItemCache",key="'examinationPageItem_get_'+#id")
     public ExaminationRecordItem get(String id) {
         return super.get(id);
     }
 
-    @Cacheable(value = "examinationPackageItemCache",key="'examinationPageItem_listByRecordId_'+#recordId")
+    //@Cacheable(value = "examinationPackageItemCache",key="'examinationPageItem_listByRecordId_'+#recordId")
     public List<ExaminationRecordItem> listByRecordId(String recordId){
         if(StringUtils.isBlank(recordId)){
             return new ArrayList<ExaminationRecordItem>();
@@ -119,7 +119,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordItemCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
     public RequestResult saveSamples(ExaminationRecordItem examinationRecordItem) {
         List<String> resultMessages = Lists.newArrayList();
         resultMessages.add("数据验证失败：");
@@ -179,7 +179,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordItemCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
     public RequestResult updateResultFlag(ExaminationRecordItem examinationRecordItem) {
 
         ExaminationRecord record = examinationRecordItem.getRecord();
@@ -231,7 +231,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordItemCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
     public RequestResult cancelSample(ExaminationRecordItem examinationRecordItem) {
 
         ExaminationRecord record = examinationRecordItem.getRecord();
@@ -271,7 +271,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     }
 
     @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordItemCache",allEntries = true)
+    //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
     public RequestResult cancelResult(ExaminationRecordItem examinationRecordItem) {
 
         ExaminationRecord record = examinationRecordItem.getRecord();
@@ -292,8 +292,8 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         }
 
         // 设置样本编号和结果为null
-        examinationRecordItem.setResultFlag(null);
-        super.save(examinationRecordItem);
+        eri.setResultFlag(null);
+        super.save(eri);
 
         // 更新体检记录的状态
         examinationRecordService.updateStatus(record);
@@ -313,11 +313,11 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         return dao.countExamFlag2(eriTmp);
     }
 
-    @Transactional(readOnly = false)
-    @CacheEvict(value = "examinationRecordItemCache",allEntries = true)
-    public void saveRecordResult( String recordItemId, String sampleCode
-            , String resultDictId,String resultDictName
-            ,String resultFlag, String resultRemarks) {
-        dao.saveRecordResult(recordItemId,sampleCode,resultDictId,resultDictName,resultFlag,resultRemarks);
-    }
+//    @Transactional(readOnly = false)
+//    //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
+//    public void saveRecordResult( String recordItemId, String sampleCode
+//            , String resultDictId,String resultDictName
+//            ,String resultFlag, String resultRemarks) {
+//        dao.saveRecordResult(recordItemId,sampleCode,resultDictId,resultDictName,resultFlag,resultRemarks);
+//    }
 }

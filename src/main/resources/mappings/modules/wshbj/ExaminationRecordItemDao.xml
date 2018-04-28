@@ -150,7 +150,7 @@
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and ((a.need_samples = 1 and a.sample_code is not null and a.result_flag is null) or a.result_flagresult_flag = 0)
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and ((a.need_samples = 1 and a.sample_code is not null and a.result_flag is null) or a.result_flag = 0)
 			<include refid="whereif2"/>
 		</where>
 		<choose>
@@ -211,7 +211,7 @@
 		<include refid="examinationRecordItemJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} AND a.sample_code = #{sampleCode}
-
+			<if test="recordId !=null and recordId != ''"> and record_id = #{recordId} </if>
 		</where>
 
 	</select>
@@ -223,6 +223,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} AND a.last_flag = '1'
 			and (a.result_flag is null or a.result_flag = '0' )
+			<if test="recordId !=null and recordId != ''"> and record_id = #{recordId} </if>
 		</where>
 
 	</select>
@@ -234,6 +235,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} AND a.last_flag = '1'
 			and (a.result_flag is null )
+			<if test="recordId !=null and recordId != ''"> and record_id = #{recordId} </if>
 		</where>
 
 	</select>
@@ -245,6 +247,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} AND a.last_flag = '1'
 			and a.result_flag is null and a.sample_code is null
+			<if test="recordId !=null and recordId != ''"> and record_id = #{recordId} </if>
 		</where>
 
 	</select>
@@ -255,7 +258,8 @@
 		FROM bj_examination_record_item a
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} AND a.last_flag = '1'
-			and (a.examination_flag = '2' )
+			and a.examination_flag = '2'
+			<if test="recordId !=null and recordId != ''"> and record_id = #{recordId} </if>
 		</where>
 
 	</select>

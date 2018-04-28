@@ -45,7 +45,7 @@
                     success:function(d1r){
                         showMsgx($('#msg'),d1r);
                         if(d1r.state==1){
-                            $('tr_'+id).remove();
+                            $('#tr_'+id).remove();
                         }
                     },
                     error:function(err){

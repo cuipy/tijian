@@ -269,15 +269,15 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 
-	@RequiresPermissions("wshbj:examinationRecord:inputResult")
-	@RequestMapping(value = "saveResult")
-	@ResponseBody
-	public ResponseResult saveResult(@RequestParam(name="recordItemIdArray[]")String[] recordItemIdArray
-			,@RequestParam(name="resultDictIdArray[]")String[] resultDictIdArray
-			,@RequestParam(name="resultRemarksArray[]")String[] resultRemarksArray) {
-		ResponseResult responseResult = examinationRecordService.saveResult(recordItemIdArray,resultDictIdArray,resultRemarksArray);
-		return responseResult;
-	}
+//	@RequiresPermissions("wshbj:examinationRecord:inputResult")
+//	@RequestMapping(value = "saveResult")
+//	@ResponseBody
+//	public ResponseResult saveResult(@RequestParam(name="recordItemIdArray[]")String[] recordItemIdArray
+//			,@RequestParam(name="resultDictIdArray[]")String[] resultDictIdArray
+//			,@RequestParam(name="resultRemarksArray[]")String[] resultRemarksArray) {
+//		ResponseResult responseResult = examinationRecordService.saveResult(recordItemIdArray,resultDictIdArray,resultRemarksArray);
+//		return responseResult;
+//	}
 
 	/**
 	 * 录入体检结果
