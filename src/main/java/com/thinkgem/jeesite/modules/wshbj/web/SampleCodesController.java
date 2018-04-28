@@ -19,7 +19,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.validation.ConstraintViolationException;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 
@@ -110,14 +114,31 @@ public class SampleCodesController extends BaseController {
 	@RequiresPermissions("wshbj:sampleCodes:view")
 	@RequestMapping(value = "ajax_for_autocompleter")
 	@ResponseBody
-	public RequestResult ajax_for_autocompleter(SampleCodes sampleCodes, Model model) {
-		// 只能筛选没有用过
+	public List<Map<String,String>> ajax_for_autocompleter(SampleCodes sampleCodes, Model model) {
+		// 只能筛选没有用过的编号
 		sampleCodes.setIsUsed("0");
-		SampleCodes sc = sampleCodesService.getByCode(sampleCodes);
-		if(sc==null){
-			return RequestResult.generate(10,"获取样本编号库记录失败。");
-		}
-		return RequestResult.generate(1,"获取成功",sc);
+		List<SampleCodes> lst = sampleCodesService.findList(sampleCodes);
+
+		List<Map<String,String>> maps=new ArrayList();
+
+		if(lst!=null){
+		    for(SampleCodes sc:lst){
+                Map<String,String> map=new HashMap();
+
+                map.put("sampleCode",sc.getSampleCode());
+                map.put("isUsed",sc.getIsUsed());
+                map.put("strIsUsed",sc.getStrIsUsed());
+                map.put("specimenId",sc.getSpecimenId());
+                map.put("specimenName",sc.getSpecimenName());
+
+                map.put("value",sc.getSampleCode());
+                map.put("label",sc.getSampleCode());
+
+                maps.add(map);
+            }
+        }
+
+		return maps;
 	}
 
 

@@ -40,7 +40,7 @@
                 cache:false,
                 empty: false,
                 limit: 10,
-                source:"${ctx}/wshbj/examinationRecordItem/ajax_for_autocompleter?specimenId=${examinationRecordItem.specimenId}",
+                source:"${ctx}/wshbj/sampleCodes/ajax_for_autocompleter?specimenId=${examinationRecordItem.specimenId}",
                 callback: function (value, index, selected) {
                     var u=selected;
                     $("#userId").val(u.id);
@@ -92,30 +92,7 @@
             });
         }
 
-		function submitForm() {
-            $("#msg").html("").hide();
 
-            var url = '${ctx}/wshbj/examinationRecordItem/saveSamples';
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: $("#inputForm").serialize(),//核心代码，form表单序列化
-                dataType: "JSON",
-                success: function(data) {
-                    if(data.sampleCode!='0'){
-                        showMsgx($("#msg"),data);
-                    }else{
-                        showMsgx($("#msg"),data);
-                        setTimeout(function () {
-                            location.href = '${ctx}/wshbj/examinationRecordItem/list_need_sample';
-                        },2000)
-                    }
-                },
-                error:function(err){
-                    showMsgx($("#msg"),err);
-                }
-            });
-        }
 	</script>
 </head>
 <body>
@@ -128,7 +105,7 @@
 	</ul><br/>
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
 	<div class="row">
-	<form:form id="inputForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/saveSamples" method="post" class="form-horizontal">
 		<form:hidden path="recordId"/>
 		<sys:message content="${message}"/>
 
@@ -193,7 +170,7 @@
 		</div>
 		<div class="form-actions  span12">
 			<shiro:hasPermission name="wshbj:examinationRecordItem:edit">
-			<input id="btnSubmit" class="btn btn-primary disabled" type="button" value="保 存" onclick="submitForm();" />&nbsp;</shiro:hasPermission>
+			<input id="btnSubmit" class="btn btn-primary disabled" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		</div>

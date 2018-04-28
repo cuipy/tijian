@@ -17,4 +17,5 @@ public interface SampleCodesDao extends CrudDao<SampleCodes> {
 
     SampleCodes getByCode(SampleCodes sampleCodes);
 
+    void updateUsed(SampleCodes sampleCodes);
 }

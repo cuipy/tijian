@@ -74,7 +74,7 @@ public class SampleCodes extends DataEntity<SampleCodes> {
 		this.sampleCode = sampleCode;
 	}
 	
-	@Length(min=1, max=1, message="是否使用，0未使用 1已使用长度必须介于 1 和 1 之间")
+	@Length(min=1, max=1, message="是否使用，0未使用 1已使用")
 	public String getIsUsed() {
 		return isUsed;
 	}

@@ -126,19 +126,35 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = "saveSamples")
-	@ResponseBody
-	public RequestResult saveSamples(ExaminationRecordItem examinationRecordItem) {
+	public String saveSamples(ExaminationRecordItem examinationRecordItem, RedirectAttributes redirectAttributes, Model model) {
 
 		if(examinationRecordItem==null||StringUtils.isEmpty(examinationRecordItem.getRecordId())){
-			return RequestResult.generate(100,"检查记录为空，无法进行采样数据保存");
+			addMessage(redirectAttributes,"检查记录为空，无法进行采样数据保存");
+			model.addAttribute("examinationRecordItem", examinationRecordItem);
+			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/form?repage";
 		}
 
 		if(StringUtils.isEmpty(examinationRecordItem.getSampleCode())){
-			return RequestResult.generate(120,"样本编号为空，无法进行采样数据保存");
+			addMessage(redirectAttributes,"样本编号为空，无法进行采样数据保存");
+			model.addAttribute("examinationRecordItem", examinationRecordItem);
+			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/form?repage";
 		}
 
 		RequestResult result = examinationRecordItemService.saveSamples(examinationRecordItem);
-		return result;
+		if(1==result.getState()){
+
+			// 更新SampleCodes 中的已使用 状态
+			SampleCodes sc=new SampleCodes();
+			sc.setSampleCode(examinationRecordItem.getSampleCode());
+			sampleCodesService.updateUsed(sc);
+
+			addMessage(redirectAttributes,result.getMsg());
+			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/list_need_sample";
+		}else{
+			addMessage(redirectAttributes,result.getMsg());
+			model.addAttribute("examinationRecordItem", examinationRecordItem);
+			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/form?repage";
+		}
 	}
 
 

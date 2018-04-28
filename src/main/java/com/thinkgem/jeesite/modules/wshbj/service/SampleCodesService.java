@@ -55,8 +55,19 @@ public class SampleCodesService extends CrudService<SampleCodesDao, SampleCodes>
 	public Page<SampleCodes> findPage(Page<SampleCodes> page, SampleCodes sampleCodes) {
 		return super.findPage(page, sampleCodes);
 	}
-	
+
 	@Transactional(readOnly = false)
+	public RequestResult updateUsed(SampleCodes sampleCodes) {
+		if(sampleCodes==null||StringUtils.isEmpty(sampleCodes.getSampleCode())){
+			return RequestResult.generate(10,"没能获得SampleCodes 对象的字段 sample_code ，无法设置状态为已用");
+		}
+
+		sampleCodes.setIsUsed("1");
+		sampleCodesDao.updateUsed(sampleCodes);
+		return RequestResult.generate(1,"SampleCodes 已经设置为 已使用 状态");
+	}
+
+		@Transactional(readOnly = false)
 	public RequestResult createCodes(SampleCodesPack sampleCodesPack) {
 
 		// 获取体检样本类型 对象

@@ -8,7 +8,7 @@
 		a.specimen_name AS "specimenName",
 		a.pack_id AS "packId",
 		a.sample_code AS "sampleCode",
-		(case when eri.sample_code is not null then 1 else 0 end ) AS "isUsed",
+		a.is_used AS "isUsed",
 		a.auth_id AS "authId",
 		a.auth_name AS "authName",
 		a.owner ,
@@ -20,9 +20,7 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="sampleCodesJoins">
-		left join bj_examination_record_item eri on eri.sample_code = a.sample_code
-	</sql>
+	<sql id="sampleCodesJoins"></sql>
     
 	<select id="get" resultType="SampleCodes">
 		SELECT 
@@ -50,8 +48,7 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="specimenId!=null and specimenId!='' ">and a.specimen_id= #{specimenId}</if>
             <if test="packId!=null and packId!='' ">and a.pack_id= #{packId}</if>
-            <if test="isUsed == '0' ">and b.sample_code is null</if>
-            <if test="isUsed == '1' ">and b.sample_code is not null</if>
+            <if test="isUsed!=null and isUsed!=''">and a.is_used = #{isUsed}</if>
 		</where>
         ORDER BY a.sample_code
 	</select>
@@ -75,6 +72,7 @@
 			specimen_name,
 			pack_id,
 			sample_code,
+			is_used,
 			owner,
 			auth_id,
 			auth_name,
@@ -90,6 +88,7 @@
 			#{specimenName},
 			#{packId},
 			#{sampleCode},
+			#{isUsed},
 			#{owner},
 			#{authId},
 			#{authName},
@@ -109,6 +108,7 @@
 				<if test="specimenName !=null and specimenName != '' ">specimen_name = #{specimenName},</if>
 				<if test="packId !=null and packId != '' ">pack_id = #{packId},</if>
 				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
+				<if test="isUsed !=null and isUsed != '' ">is_used = #{isUsed},</if>
 				<if test="owner !=null and owner != '' ">owner = #{owner},</if>
 				<if test="authId !=null and authId != '' ">auth_id = #{authId},</if>
 				<if test="authName !=null and authName != '' ">auth_name = #{authName},</if>
@@ -116,7 +116,14 @@
 				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
 				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
 			</set>
-		WHERE id = #{id}
+		WHERE
+		id = #{id}
+	</update>
+
+	<update id="updateUsed">
+		UPDATE bj_sample_codes set is_used = 1  WHERE
+		<if test="id != null">id = #{id}</if>
+		<if test="id == null and  sampleCode !=null and sampleCode !='' ">sample_code = #{sampleCode}</if>
 	</update>
 	
 	<update id="delete">
