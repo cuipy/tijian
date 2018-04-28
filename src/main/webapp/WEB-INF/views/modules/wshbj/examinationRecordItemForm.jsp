@@ -32,7 +32,22 @@
             $('#sampleCode').on('blur',inputCode);
             $('#sampleCode').on('keypress',enterCode);
 
+            $("#sampleCode").autocompleter({
 
+                highlightMatches: true,
+                template: '{{ label }}',
+                hint: false,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/examinationRecordItem/ajax_for_autocompleter?specimenId=${examinationRecordItem.specimenId}",
+                callback: function (value, index, selected) {
+                    var u=selected;
+                    $("#userId").val(u.id);
+                    $("#name").val(u.name);
+
+                }
+            });
 
 		});
 
@@ -131,8 +146,8 @@
 		<div class="control-group span12">
             <label class="control-label"><font color="red">*</font>样本编号：</label>
             <div class="controls">
-                <input type="text" id="sampleCode" name="sampleCode" value="${examinationRecordItem.sampleCode}" maxlength="50" class="input-large required"
-                 <c:if test="${empty examinationRecordItem.examinationCode }">readonly="true" </c:if> />
+                <div class="autocompleter-box"><input type="text" id="sampleCode" name="sampleCode" value="${examinationRecordItem.sampleCode}" maxlength="50" class="input-large required"
+                 <c:if test="${empty examinationRecordItem.examinationCode }">readonly="true" </c:if> /> </div>
                 <span class="help-inline"> 采样人员领取的样本编号条码贴。 </span>
             </div>
         </div>

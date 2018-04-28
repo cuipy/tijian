@@ -196,7 +196,8 @@
 			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
 			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
 			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo"
-			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if> maxlength="50" class="input-xxlarge" /></div>
+			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if>
+			   maxlength="50" class="input-xxlarge required" /></div>
 
                 <span class="help-inline">选择体检用户 <a href="${ctx}/wshbj/examinationUser/form" target="_blank">添加体检用户</a></span>
 			</div>
@@ -206,7 +207,7 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large required" readonly="true"/>
+				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large" readonly="true"/>
 			</div>
 		</div>
 
@@ -214,7 +215,7 @@
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large required"  readonly="true"/>
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large"  readonly="true"/>
 
 			</div>
 		</div>
@@ -228,14 +229,14 @@
 			<div class="controls">
 
 			    <input type="hidden" id="sex" name="sex"  value="${examinationRecord.sex}">
-				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-large required" readonly="true">
+				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-large" readonly="true">
 
 			</div>
 		</div>
 		<div class="control-group span6">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-large required" readonly="true">
+                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-large" readonly="true">
 
             </div>
         </div>
@@ -244,7 +245,7 @@
 		<label class="control-label">行业：</label>
 		<div class="controls">
 		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
-           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-large required" readonly="true">
+           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-large" readonly="true">
 
 		</div>
 	</div>
@@ -252,7 +253,7 @@
 		<label class="control-label">单位：</label>
 		<div class="controls">
 		    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-large required" readonly="true">
+            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-large" readonly="true">
 
 		</div>
 	</div>
@@ -260,7 +261,7 @@
 		<label class="control-label">岗位：</label>
 		<div class="controls">
 			<input type="hidden" id="postId" name="postId"  value="${examinationRecord.postId}">
-            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-large required" readonly="true">
+            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-large" readonly="true">
 
 		</div>
 	</div>
@@ -276,7 +277,7 @@
 		<div class="control-group span6">
 			<label class="control-label">体检项目方式：</label>
 			<div class="controls">
-				<input type="radio" id="itemType1" name="itemType" value="1" <c:if test="${examinationRecord.itemType eq 1}">checked="checked"</c:if>/><label for="itemType1">体检套餐</label>
+				<input type="radio" id="itemType1" name="itemType" value="1" <c:if test="${examinationRecord.itemType eq null or examinationRecord.itemType eq 1}">checked="checked"</c:if>/><label for="itemType1">体检套餐</label>
 				<input type="radio" id="itemType2" name="itemType" value="2" <c:if test="${examinationRecord.itemType eq 2}">checked="checked"</c:if>/><label for="itemType2">自由选择</label>
 			</div>
 		</div>

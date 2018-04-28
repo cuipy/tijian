@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 import java.util.List;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 import com.thinkgem.jeesite.modules.sys.entity.GlobalSet;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
@@ -92,9 +93,5 @@ public class SampleCodesService extends CrudService<SampleCodesDao, SampleCodes>
 		super.delete(sampleCodes);
 	}
 
-	protected SampleCodes refreshBean(SampleCodes sampleCodes) {
 
-		return sampleCodes;
-	}
-	
 }

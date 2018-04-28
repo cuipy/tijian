@@ -227,6 +227,7 @@
             });
         }
 
+/**
 		function submitForm() {
             $("#msg").html("").hide();
 
@@ -250,7 +251,7 @@
                     $("#msg").html("<pre>"+err.responseText+"</pre>").show();
                 }
             });
-        }
+        }  */
 	</script>
 </head>
 <body>
@@ -263,7 +264,7 @@
 	</ul><br/>
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
 	<div class="row">
-	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/saveSamples" method="post" class="form-horizontal">
 		<form:hidden path="recordId"/>
 		<sys:message content="${message}"/>
 
@@ -272,7 +273,7 @@
 			<label class="control-label"><font color="red">*</font>体检编号：</label>
 			<div class="controls">
 				<form:hidden path="id"/>
-				<div class="autocompleter-box"><form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-large"/></div>
+				<div class="autocompleter-box"><form:input path="examinationCode" htmlEscape="false" maxlength="50" class="input-large required"/></div>
 				<span class="help-inline"> 信息登记时的编号，推荐采用条码扫描枪录入。 </span>
 			</div>
 		</div>
@@ -324,7 +325,7 @@
 			</div>
 		</div>
 		<div class="form-actions  span12">
-			<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保 存" onclick="submitForm();"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		</div>

@@ -116,4 +116,5 @@ public class SampleCodes extends DataEntity<SampleCodes> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
 }

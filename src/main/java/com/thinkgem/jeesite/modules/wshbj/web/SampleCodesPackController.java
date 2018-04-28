@@ -81,8 +81,16 @@ public class SampleCodesPackController extends BaseController {
 	@RequiresPermissions("wshbj:sampleCodes:view")
 	@RequestMapping(value = "view")
 	public String view(SampleCodesPack sampleCodesPack, Model model) {
+
+		// 读取代码列表
+		SampleCodes sc=new SampleCodes();
+		sc.setPackId(sampleCodesPack.getId());
+		List<SampleCodes> sampleCodes = sampleCodesService.findList(sc);
+
 		model.addAttribute("sampleCodesPack", sampleCodesPack);
-		return "modules/wshbj/sampleCodesPackPage";
+		model.addAttribute("sampleCodes", sampleCodes);
+
+		return "modules/wshbj/sampleCodesPackView";
 	}
 
 	@RequiresPermissions("wshbj:sampleCodes:view")

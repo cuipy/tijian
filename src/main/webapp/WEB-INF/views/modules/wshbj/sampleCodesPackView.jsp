@@ -62,6 +62,18 @@
 
 			</div>
 		</div>
+
+		<div class="control-group">
+            <label class="control-label">编号列表：</label>
+            <div class="controls row">
+                <c:forEach items="${sampleCodes}" var="sc">
+               <div class="span4">&nbsp;${sc.sampleCode}&nbsp;&nbsp; <label class="label <c:if test='${sc.isUsed eq 1}'>label-success</c:if>">[${sc.strIsUsed}]</label>&nbsp;</div>
+                </c:forEach>
+
+            </div>
+        </div>
+
+
 		<div class="form-actions">
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>

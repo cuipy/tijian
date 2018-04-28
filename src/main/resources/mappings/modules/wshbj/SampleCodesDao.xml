@@ -8,7 +8,7 @@
 		a.specimen_name AS "specimenName",
 		a.pack_id AS "packId",
 		a.sample_code AS "sampleCode",
-		a.is_used AS "isUsed",
+		(case when eri.sample_code is not null then 1 else 0 end ) AS "isUsed",
 		a.auth_id AS "authId",
 		a.auth_name AS "authName",
 		a.owner ,
@@ -21,6 +21,7 @@
 	</sql>
 	
 	<sql id="sampleCodesJoins">
+		left join bj_examination_record_item eri on eri.sample_code = a.sample_code
 	</sql>
     
 	<select id="get" resultType="SampleCodes">
@@ -47,16 +48,12 @@
 		<include refid="sampleCodesJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="packId!=null and packId != '' ">and a.pack_id= #{packId}</if>
+			<if test="specimenId!=null and specimenId!='' ">and a.specimen_id= #{specimenId}</if>
+            <if test="packId!=null and packId!='' ">and a.pack_id= #{packId}</if>
+            <if test="isUsed == '0' ">and b.sample_code is null</if>
+            <if test="isUsed == '1' ">and b.sample_code is not null</if>
 		</where>
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
+        ORDER BY a.sample_code
 	</select>
 	
 	<select id="findAllList" resultType="SampleCodes">
@@ -67,14 +64,8 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
-		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
-			</when>
-			<otherwise>
-				ORDER BY a.update_date DESC
-			</otherwise>
-		</choose>
+		ORDER BY a.sample_code
+
 	</select>
 	
 	<insert id="insert">
@@ -84,7 +75,6 @@
 			specimen_name,
 			pack_id,
 			sample_code,
-			is_used,
 			owner,
 			auth_id,
 			auth_name,
@@ -100,7 +90,6 @@
 			#{specimenName},
 			#{packId},
 			#{sampleCode},
-			#{isUsed},
 			#{owner},
 			#{authId},
 			#{authName},
@@ -120,7 +109,6 @@
 				<if test="specimenName !=null and specimenName != '' ">specimen_name = #{specimenName},</if>
 				<if test="packId !=null and packId != '' ">pack_id = #{packId},</if>
 				<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
-				<if test="isUsed !=null and isUsed != '' ">is_used = #{isUsed},</if>
 				<if test="owner !=null and owner != '' ">owner = #{owner},</if>
 				<if test="authId !=null and authId != '' ">auth_id = #{authId},</if>
 				<if test="authName !=null and authName != '' ">auth_name = #{authName},</if>

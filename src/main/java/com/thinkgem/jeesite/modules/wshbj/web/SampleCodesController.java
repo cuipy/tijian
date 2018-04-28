@@ -107,6 +107,20 @@ public class SampleCodesController extends BaseController {
 	}
 
 
+	@RequiresPermissions("wshbj:sampleCodes:view")
+	@RequestMapping(value = "ajax_get_by_id")
+	@ResponseBody
+	public RequestResult ajax_for_autocompleter(SampleCodes sampleCodes, Model model) {
+		// 只能筛选没有用过
+		sampleCodes.setIsUsed("0");
+		SampleCodes sc = sampleCodesService.getByCode(sampleCodes);
+		if(sc==null){
+			return RequestResult.generate(10,"获取样本编号库记录失败。");
+		}
+		return RequestResult.generate(1,"获取成功",sc);
+	}
+
+
 
 
 }
