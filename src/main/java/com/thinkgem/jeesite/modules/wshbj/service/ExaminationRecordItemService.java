@@ -169,7 +169,8 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         recordItem.setSampleCode(examinationRecordItem.getSampleCode());
         super.save(recordItem);
 
-        examinationRecordService.updateRecordStatus(recordItem.getRecordId(),ExaminationRecordConstant.STATUS10);
+
+        examinationRecordService.updateStatus(record);
 
         resultMessages.remove(0);
         resultMessages.add("保存成功");

@@ -87,7 +87,7 @@
 				<td>${item.strExaminationFlag}</td>
 				<td> ${item.remarks} </td>
 				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td>
-    				<c:if test="${item.status ==0 }">
+    				<c:if test="${item.status ==0 || item.status == 2 }">
     				<a class="label label-important" href="${ctx}/wshbj/examinationRecordItem/form?id=${item.id}">采集</a> </c:if>
 
     				<c:if test="${item.needSamples == '1' and item.status ==1 }">

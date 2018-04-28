@@ -540,12 +540,16 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         } else {
             // 没通过的数量
             int cntNotOk = examinationRecordItemService.countNotOk(eriTmp);
+            // 进入复检阶段的数量
             int cntExamFlag2 = examinationRecordItemService.countExamFlag2(eriTmp);
 
+            // 全部都通过了
             if (cntNotOk == 0) {
                 if (cntExamFlag2 == 0) {
+                    // 初检合格
                     record.setStatus(ExaminationRecordConstant.STATUS40);
                 } else {
+                    // 复检合格
                     record.setStatus(ExaminationRecordConstant.STATUS45);
                 }
 
@@ -553,8 +557,10 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             // 存在体检不合格的问题
             else {
                 if (cntExamFlag2 == 0) {
+                    // 初检不合格
                     record.setStatus(ExaminationRecordConstant.STATUS20);
                 } else {
+                    // 复检不合格
                     record.setStatus(ExaminationRecordConstant.STATUS30);
                 }
             }

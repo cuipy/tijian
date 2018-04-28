@@ -183,7 +183,7 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = "ajax_cancel_result")
 	@ResponseBody
 	public RequestResult ajax_cancel_result(ExaminationRecordItem examinationRecordItem, Model model){
-		return examinationRecordItemService.cancelSample(examinationRecordItem);
+		return examinationRecordItemService.cancelResult(examinationRecordItem);
 	}
 
 

@@ -176,12 +176,17 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		int res=10;
 		if("1".equals(this.needSamples)&&StringUtils.isEmpty(this.sampleCode)){
 			res=0;
-		}else{
+		}else if("1".equals(this.needSamples)&&StringUtils.isNotEmpty(this.sampleCode)){
 			if(StringUtils.isEmpty(resultFlag)){
 				res=1;
-			}else if("0".equals(resultFlag)){
+			}
+		}
+
+		if(StringUtils.isNotEmpty(this.resultFlag)){
+			if("0".equals(this.resultFlag)){
 				res = 2;
-			}else  if("1".equals(resultFlag)){
+			}
+			if("1".equals(this.resultFlag)){
 				res = 3;
 			}
 		}
