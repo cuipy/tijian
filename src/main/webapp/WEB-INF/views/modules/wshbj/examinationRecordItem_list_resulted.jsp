@@ -58,7 +58,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/wshbj/examinationRecordItem/list_no_result">待录结果项目</a></li>
+		<li><a href="${ctx}/wshbj/examinationRecordItem/list_resulting">待录结果项目</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_resulted">已录结果项目</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_no_result" method="post" class="breadcrumb form-search">

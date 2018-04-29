@@ -62,15 +62,33 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         return this.dao.listByRecordId(recordId);
     }
 
-    public Page<ExaminationRecordItem> pageNodo(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+    public Page<ExaminationRecordItem> pageNeedSampleNodo(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
         entity.setPage(page);
-        page.setList(dao.listNodo(entity));
+        page.setList(dao.listNeedSampleNodo(entity));
         return page;
     }
 
-    public Page<ExaminationRecordItem> pageDone(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+    public Page<ExaminationRecordItem> pageNeedSampleDone(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
         entity.setPage(page);
-        page.setList(dao.listDone(entity));
+        page.setList(dao.listNeedSampleDone(entity));
+        return page;
+    }
+
+    public  Page<ExaminationRecordItem> pageAllNeedSample(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+        entity.setPage(page);
+        page.setList(dao.listAllNeedSample(entity));
+        return page;
+    }
+
+    /**
+     * 需要录入结果的，即或者 采集样本结束的，或者 不需要采集样本的
+     * @param page
+     * @param entity
+     * @return
+     */
+    public Page<ExaminationRecordItem> pageResulting(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
+        entity.setPage(page);
+        page.setList(dao.listResulting(entity));
         return page;
     }
 

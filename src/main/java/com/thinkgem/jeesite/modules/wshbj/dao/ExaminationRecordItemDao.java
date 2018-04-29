@@ -83,9 +83,21 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
      */
     int countNoExam(ExaminationRecordItem item);
 
-    List<ExaminationRecordItem> listNodo(ExaminationRecordItem entity);
+    /**
+     * 列出所有需要采样的，但还没采集样本的
+     * @param entity
+     * @return
+     */
+    List<ExaminationRecordItem> listNeedSampleNodo(ExaminationRecordItem entity);
 
-    List<ExaminationRecordItem> listDone(ExaminationRecordItem entity);
+    /**
+     * 累出所有需要采样的，且已经采集样本的。
+     */
+    List<ExaminationRecordItem> listNeedSampleDone(ExaminationRecordItem entity);
+
+    List<ExaminationRecordItem> listAllNeedSample(ExaminationRecordItem entity);
+
+    List<ExaminationRecordItem> listResulting(ExaminationRecordItem entity);
 
     List<ExaminationRecordItem> listResulted(ExaminationRecordItem entity);
 

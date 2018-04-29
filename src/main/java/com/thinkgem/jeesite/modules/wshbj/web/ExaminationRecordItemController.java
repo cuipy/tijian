@@ -69,7 +69,7 @@ public class ExaminationRecordItemController extends BaseController {
 	public String list_need_sample_nodo(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		examinationRecordItem.setNeedSamples("1");
-		Page<ExaminationRecordItem> page = examinationRecordItemService.pageNodo(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageNeedSampleNodo(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
 		model.addAttribute("where","_nodo");
 		return "modules/wshbj/examinationRecordItem_list_need_sample";
@@ -80,7 +80,7 @@ public class ExaminationRecordItemController extends BaseController {
 	public String list_need_sample_done(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		examinationRecordItem.setNeedSamples("1");
-		Page<ExaminationRecordItem> page = examinationRecordItemService.pageDone(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageNeedSampleDone(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
 		model.addAttribute("where","_done");
 		return "modules/wshbj/examinationRecordItem_list_need_sample";
@@ -91,20 +91,20 @@ public class ExaminationRecordItemController extends BaseController {
 	public String list_need_sample(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		examinationRecordItem.setNeedSamples("1");
-		Page<ExaminationRecordItem> page = examinationRecordItemService.findPage(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageAllNeedSample(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
 		model.addAttribute("where","");
 		return "modules/wshbj/examinationRecordItem_list_need_sample";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
-	@RequestMapping(value = {"list_no_result"})
-	public String list_no_result(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+	@RequestMapping(value = {"list_resulting"})
+	public String list_resulting(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		// 读取已经有采样，但还没有输入结果的项目
-		Page<ExaminationRecordItem> page = examinationRecordItemService.pageDone(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+		Page<ExaminationRecordItem> page = examinationRecordItemService.pageResulting(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
-		return "modules/wshbj/examinationRecordItem_list_no_result";
+		return "modules/wshbj/examinationRecordItem_list_resulting";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:view")

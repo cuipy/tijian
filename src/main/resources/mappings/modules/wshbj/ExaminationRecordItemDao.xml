@@ -125,13 +125,13 @@
 		</choose>
 	</select>
 
-	<select id="listNodo" resultType="ExaminationRecordItem">
+	<select id="listNeedSampleNodo" resultType="ExaminationRecordItem">
 		SELECT
 		<include refid="examinationRecordItemColumns"/>
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and ((a.need_samples =1 and a.sample_code is null ) or a.result_flag = 0)
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.need_samples =1 and a.sample_code is null
 			<include refid="whereif2"/>
 		</where>
 		<choose>
@@ -144,13 +144,13 @@
 		</choose>
 	</select>
 
-	<select id="listDone" resultType="ExaminationRecordItem">
+	<select id="listNeedSampleDone" resultType="ExaminationRecordItem">
 		SELECT
 		<include refid="examinationRecordItemColumns"/>
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and ((a.need_samples = 1 and a.sample_code is not null and a.result_flag is null) or a.result_flag = 0)
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.need_samples = 1 and a.sample_code is not null
 			<include refid="whereif2"/>
 		</where>
 		<choose>
@@ -161,6 +161,36 @@
 				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
+	</select>
+
+	<select id="listAllNeedSample" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.need_samples = 1
+			<include refid="whereif2"/>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.create_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="listResulting" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and  (( a.need_samples = 1 and a.sample_code is not null) or ( a.need_samples = 0)) and a.result_flag is null
+			<include refid="whereif2"/>
+		</where>
 	</select>
 
 	<select id="listResulted" resultType="ExaminationRecordItem">
@@ -169,7 +199,7 @@
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.result_flag = 1 and b.status<![CDATA[ < ]]> 40
+			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.result_flag is not null
 			<include refid="whereif2"/>
 		</where>
 	</select>
