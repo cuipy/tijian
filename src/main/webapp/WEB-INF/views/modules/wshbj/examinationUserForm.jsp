@@ -4,6 +4,9 @@
 <head>
 	<title>体检用户管理</title>
 	<meta name="decorator" content="default"/>
+
+    <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
@@ -26,6 +29,8 @@
 			$("#idNumber").on('blur',refreshBirthday);
 			$("#idNumber").on('change',refreshBirthday);
 
+			initWebsocket();
+
 		});
 
 		function refreshBirthday(){
@@ -36,13 +41,16 @@
 
 		 WEB_SOCKET_SWF_LOCATION = "${ctxStatic}/websocket/WebSocketMain.swf";
         function initWebsocket(){
-            var ws1 = new ReconnectingWebSocket("ws://${siteHost}:${websocketPort}/jsclient");
+            // 初始化身份证读取的websocket，身份证读取插件的websocket 端口为 8202
+            var ws1 = new ReconnectingWebSocket("ws://127.0.0.1:8202/jsclient");
             ws1.onmessage=function(evt){
                 var msg = evt.data;
                 var jmsg = JSON.parse(msg);
 
                 $("#name").val(jmsg.Name);
                 $("#idNumber").val(jmsg.Code);
+
+                refreshBirthday();
 
                 if(jmsg.Sex=='男'){
                     $("#sex option[value='1']").attr("selected",true);
