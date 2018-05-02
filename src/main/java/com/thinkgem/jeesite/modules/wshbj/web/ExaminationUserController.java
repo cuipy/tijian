@@ -107,6 +107,9 @@ public class ExaminationUserController extends BaseController {
 		List<JobPost> postList = jobPostService.findList(jobPost);
 		model.addAttribute("postList", postList);
 
+		model.addAttribute("siteHost",Global.getSiteHost());
+		model.addAttribute("websocketPort",Global.getWebSocketPort());
+
 		return "modules/wshbj/examinationUserForm";
 	}
 

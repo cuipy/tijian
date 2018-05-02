@@ -165,16 +165,37 @@ public class Global {
 	}
 
 	public static String getImgHost(){
-		String siteHost = getConfig("img_host");
+		String imgHost = getConfig("img_host");
+		if (StringUtils.isEmpty(imgHost)) {
+			try {
+				imgHost = "http://localhost:8080";
+			} catch (Exception e) {
+				return "";
+			}
+		}
+		return imgHost;
+	}
+
+	public static String getSiteHost(){
+		String siteHost = getConfig("site_host");
 		if (StringUtils.isEmpty(siteHost)) {
 			try {
-				siteHost = "http://localhost:8080";
+				siteHost = "127.0.0.1";
 			} catch (Exception e) {
 				return "";
 			}
 		}
 		return siteHost;
 	}
+
+	public static Integer getWebSocketPort(){
+		String  websocketPort= getConfig("websocket_port");
+		if(StringUtils.isEmpty(websocketPort)&&!NumberUtils.isNumber(websocketPort)){
+			return 5432;
+		}
+		return Integer.valueOf(websocketPort);
+	}
+
 
 
 	/**

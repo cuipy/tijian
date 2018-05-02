@@ -33,6 +33,24 @@
 		    var dt=getDateFromId(idNumber);
 		    $("#birthday").val(dt);
 		}
+
+		 WEB_SOCKET_SWF_LOCATION = "${ctxStatic}/websocket/WebSocketMain.swf";
+        function initWebsocket(){
+            var ws1 = new ReconnectingWebSocket("ws://${siteHost}:${websocketPort}/jsclient");
+            ws1.onmessage=function(evt){
+                var msg = evt.data;
+                var jmsg = JSON.parse(msg);
+
+                $("#name").val(jmsg.Name);
+                $("#idNumber").val(jmsg.Code);
+
+                if(jmsg.Sex=='男'){
+                    $("#sex option[value='1']").attr("selected",true);
+                }else{
+                    $("#sex option[value='2']").attr("selected",true);
+                }
+            }
+         }
 	</script>
 </head>
 <body>
