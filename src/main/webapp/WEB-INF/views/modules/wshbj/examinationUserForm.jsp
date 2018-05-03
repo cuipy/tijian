@@ -67,6 +67,13 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationUser/form?id=${examinationUser.id}">体检用户<shiro:hasPermission name="wshbj:examinationUser:edit">${not empty examinationUser.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationUser:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 
+	<div class="alert alert-warning">
+          <strong>重要提示，身份证读取服务插件安装说明：</strong> <br>
+          1. 身份证读取需要安装读取服务。 首先<a href="${ctxStatic}/idr200svr1.zip">下载身份证读取程序zip压缩包</a>，然后解压缩到本地计算机任意位置，然后运行 install.bat 命令完成服务注册。<br>
+          2. 身份证读取必须安装 <a href="http://rj.baidu.com/soft/detail/23411.html?ald">微软 Microsoft .NET Framework 3.5</a>，如遇到身份证读取失败的问题，请自行下载安装.NET Framework 3.5
+
+        </div>
+
 	<div class="row">
 	<form:form id="inputForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -167,20 +174,24 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+
+
 	</div>
+
+    <div class="row">
 
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 体检用户是体检人管理，由前台操作录入<br>
-      2. 体检用户身份证是唯一标记，不可重复。
+      2. 体检用户身份证是唯一标记，不可重复。<br>
 
     </div>
 
    <div class="alert alert-danger">
       <strong>重要提示，需要完成的准备工作：</strong> <br>
       1. 体检单位、行业、岗位，需要先录入系统<br>
-      2. 身份证号码不允许重复。
-
+      2. 身份证号码不允许重复。<br>
+    </div>
     </div>
 </body>
 </html>
