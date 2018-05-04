@@ -173,6 +173,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">体检记录<shiro:hasPermission name="wshbj:examinationRecord:edit">${not empty examinationRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationRecord:edit">查看</shiro:lacksPermission></a></li>
         <li><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
+        <li><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
 	</ul><br/>
 
 	<div >

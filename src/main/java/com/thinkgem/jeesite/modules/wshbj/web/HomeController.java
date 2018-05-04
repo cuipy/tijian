@@ -40,5 +40,12 @@ public class HomeController extends BaseController {
 		return "modules/wshbj/home_index";
 	}
 
+	@RequestMapping(value = {"flow1", ""})
+	public String flow1(Model m) {
+		String v=String.valueOf(new java.util.Date().getTime());
+		m.addAttribute("v",v);
+		return "modules/wshbj/home_flow1";
+	}
+
 
 }

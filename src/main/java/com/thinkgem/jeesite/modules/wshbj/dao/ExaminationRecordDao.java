@@ -35,4 +35,6 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
 	List<ExaminationRecord> listBeforeStatus(ExaminationRecord examinationRecord);
 
+	List<ExaminationRecord> listForPrint(ExaminationRecord examinationRecord);
+
 }

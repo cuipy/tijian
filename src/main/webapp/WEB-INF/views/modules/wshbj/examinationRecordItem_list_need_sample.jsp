@@ -65,7 +65,7 @@
 		<thead>
 			<tr>
 				<th width="150">体检编号</th>
-				<th width="150">样本编号</th>
+				<th width="200">样本编号</th>
 				<th width="200">体检人</th>
 				<th width="80">项目</th>
 				<th width="80">状态</th>
@@ -83,7 +83,12 @@
 				<td> ${item.sampleCode} </td>
 				<td> <c:if test="${not empty item.recordOrganName }">${item.recordOrganName} - </c:if> ${item.recordUserName}  </td>
 				<td>${wshbjfns:getEntityName('ExaminationItem',item.itemId,'')} </td>
-				<td>${item.strStatus}</td>
+				<td>
+				<c:if test="${item.status != 2 and item.status !=3 }"> ${item.strStatus} </c:if>
+				<c:if test="${item.status == 3 }"> <span class="label label-success">${item.strStatus}</span> </c:if>
+				<c:if test="${item.status == 2 }"> <span class="label label-warning">${item.strStatus}</span> </c:if>
+
+				 </td>
 				<td>${item.strExaminationFlag}</td>
 				<td> ${item.remarks} </td>
 				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td>

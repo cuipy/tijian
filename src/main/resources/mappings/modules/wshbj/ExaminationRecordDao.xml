@@ -91,7 +91,50 @@
 		<include refid="examinationRecord4MapJoins"/>
 		WHERE a.code = #{code}
 	</select>
-	
+
+	<select id="listForPrint" resultType="ExaminationRecord">
+		SELECT
+		<include refid="examinationRecordColumns"/>
+		FROM bj_examination_record a
+		<include refid="examinationRecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.status >= 40
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.user_id = #{user.id}
+			</if>
+			<if test="idNumber != null and idNumber != ''">
+				AND a.id_number LIKE concat('%',#{idNumber},'%')
+			</if>
+			<if test="code != null and code != ''">
+				AND a.code like concat('%',#{code},'%')
+			</if>
+
+			<if test="organId != null and organId != ''">
+				AND a.organ_id = #{organId}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name LIKE
+				<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+				<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+				<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="phoneNumber != null and phoneNumber != ''">
+				AND a.phone_number = #{phoneNumber}
+			</if>
+			<if test="packageId != null and packageId != ''">
+				AND a.package_id = #{packageId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
 	<select id="findList" resultType="ExaminationRecord">
 		SELECT 
 			<include refid="examinationRecordColumns"/>

@@ -122,6 +122,13 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return super.findPage(page, examinationRecord);
     }
 
+    public Page<ExaminationRecord> pageForPrint(Page<ExaminationRecord> page, ExaminationRecord examinationRecord) {
+
+        examinationRecord.setPage(page);
+        page.setList(dao.listForPrint(examinationRecord));
+        return page;
+    }
+
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void save(ExaminationRecord examinationRecord) {

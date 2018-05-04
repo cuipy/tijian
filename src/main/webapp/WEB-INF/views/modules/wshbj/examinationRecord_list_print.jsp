@@ -28,8 +28,8 @@
 <body>
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
-		<li class="active"><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
-		<li class=""><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
+		<li class=""><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
+		<li class="active"><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -127,16 +127,10 @@
 						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
-					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
-					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print_tjb?id=${examinationRecord.id}" target="_blank">打印体检表</a>
+
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print_jkz1?id=${examinationRecord.id}" target="_blank">打印健康证</a> </c:if>
 
-					<c:if test="${examinationRecord.status < 40}">
-					    <a class="label label-warning" href="${ctx}/wshbj/examinationRecordItem/list_need_sample_nodo?queryExamCode=${examinationRecord.code}">采样</a>
-					    <a class="label label-warning" href="${ctx}/wshbj/examinationRecordItem/list_no_result?queryExamCode=${examinationRecord.code}">填报结果</a></c:if>
-					<c:if test="${examinationRecord.status == '0'}">
-					    <a class="label label-danger"  href="${ctx}/wshbj/examinationRecord/delete?id=${examinationRecord.id}" onclick="return confirmx('确认要删除该体检记录吗？', this.href)">删除</a></c:if>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

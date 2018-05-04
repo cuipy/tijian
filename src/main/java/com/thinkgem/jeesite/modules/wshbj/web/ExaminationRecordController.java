@@ -87,9 +87,12 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		// 获取分页的体检记录
 		Page<ExaminationRecord> page = examinationRecordService.findPage(new Page<ExaminationRecord>(request, response), examinationRecord); 
 		model.addAttribute("page", page);
 
+		// 体检套餐列表
 		ExaminationPackage examinationPackage = new ExaminationPackage();
 		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationPackage.setDelFlag("0");
@@ -97,6 +100,7 @@ public class ExaminationRecordController extends BaseController {
 		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
 		model.addAttribute("packageList", packageList);
 
+		// 单位列表
 		Organ organ = new Organ();
 		organ.setOwner(UserUtils.getUser().getCompany().getId());
 		organ.setDelFlag("0");
@@ -104,6 +108,32 @@ public class ExaminationRecordController extends BaseController {
 		List<Organ> organList = organService.findList(organ);
 		model.addAttribute("organList", organList);
 		return "modules/wshbj/examinationRecordList";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = {"list_print"})
+	public String list_print(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 获取分页的体检记录
+		Page<ExaminationRecord> page = examinationRecordService.pageForPrint(new Page<ExaminationRecord>(request, response), examinationRecord);
+		model.addAttribute("page", page);
+
+		// 体检套餐列表
+		ExaminationPackage examinationPackage = new ExaminationPackage();
+		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationPackage.setDelFlag("0");
+		examinationPackage.setReferenceFlag("0");
+		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
+		model.addAttribute("packageList", packageList);
+
+		// 单位列表
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+
+		return "modules/wshbj/examinationRecord_list_print";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
