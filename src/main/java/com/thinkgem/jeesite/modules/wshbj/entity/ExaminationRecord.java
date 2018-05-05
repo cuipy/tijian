@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
@@ -408,6 +409,24 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		}
 		return res;
 	}
+    @JsonIgnore
+    public String getCreateByName(){
+        SystemService systemService = SpringContextHolder.getBean(SystemService.class);
+        User user = systemService.getUser(createBy.getId());
+        if(user==null){
+            return "";
+        }
+        return user.getName();
+    }
+    @JsonIgnore
+    public String getUpdateByName(){
+        SystemService systemService = SpringContextHolder.getBean(SystemService.class);
+        User user = systemService.getUser(updateBy.getId());
+        if(user==null){
+            return "";
+        }
+        return user.getName();
+    }
 
 	@JsonIgnore
 	public Map<String,String> getMap(){
@@ -443,10 +462,10 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 		m.put("createById",getCreateBy().getId());
 		m.put("createByName",getCreateBy().getName());
-		m.put("createDate", DateUtils.formatDateTime(getCreateDate()));
+		//m.put("createDate", DateUtils.formatDateTime(getCreateDate()));
 		m.put("updateById",getUpdateBy().getId());
 		m.put("updateByName",getUpdateBy().getName());
-		m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
+		//m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
 
 		return m;
 	}

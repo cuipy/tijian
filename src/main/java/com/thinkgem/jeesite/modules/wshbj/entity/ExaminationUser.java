@@ -8,7 +8,9 @@ import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
 import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
@@ -233,6 +235,25 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	}
 
 	@JsonIgnore
+	public String getCreateByName(){
+		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
+		User user = systemService.getUser(createBy.getId());
+		if(user==null){
+			return "";
+		}
+		return user.getName();
+	}
+	@JsonIgnore
+	public String getUpdateByName(){
+		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
+		User user = systemService.getUser(updateBy.getId());
+		if(user==null){
+			return "";
+		}
+		return user.getName();
+	}
+
+	@JsonIgnore
 	public Map<String,String> getMap(){
 		Map<String,String> m=new HashMap();
 		m.put("id",id);
@@ -257,11 +278,11 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("ownerName",this.getOwnerName());
 
 		m.put("createById",getCreateBy().getId());
-		m.put("createByName",getCreateBy().getName());
-		m.put("createDate",DateUtils.formatDateTime(getCreateDate()));
+		m.put("createByName",getCreateByName());
+		//m.put("createDate",DateUtils.formatDateTime(getCreateDate()));
 		m.put("updateById",getUpdateBy().getId());
-		m.put("updateByName",getUpdateBy().getName());
-		m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
+		m.put("updateByName",getUpdateByName());
+		//m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
 
 		m.put("value",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
 		m.put("label",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
