@@ -3,8 +3,13 @@
  */
 package com.thinkgem.jeesite.common.service;
 
+import java.util.Date;
 import java.util.List;
 
+import com.thinkgem.jeesite.common.utils.IdGen;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,6 +83,34 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 			entity.preUpdate();
 			dao.update(entity);
 		}
+	}
+
+	@Transactional(readOnly = false)
+	public void insertOrUpdate(T entity) {
+
+		T dbobj = dao.get(entity.getId());
+
+		User user = UserUtils.getUser();
+		if(null==entity.getCreateBy()){
+			entity.setCreateBy(user);
+			entity.setCreateDate(new Date());
+		}
+
+		if(null==entity.getUpdateBy()){
+			entity.setUpdateBy(user);
+			entity.setUpdateDate(new Date());
+		}
+
+		if(dbobj==null){
+			if(StringUtils.isEmpty(entity.getId())){
+				entity.setId(IdGen.uuid());
+			}
+
+			dao.insert(entity);
+		}else{
+			dao.update(entity);
+		}
+
 	}
 	
 	/**

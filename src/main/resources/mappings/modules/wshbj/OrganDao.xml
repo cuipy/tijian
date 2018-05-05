@@ -76,16 +76,7 @@
 		</choose>
 	</select>
 
-	<select id="listNeedUpload" resultType="Organ">
-		SELECT
-		<include refid="organColumns"/>
-		FROM bj_organ a
-		<include refid="organJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and (a.upload_date is null or a.upload_date <![CDATA[ < ]]> a.update_date )
-		</where>
-		limit 100
-	</select>
+
 	
 	<insert id="insert">
 		INSERT INTO bj_organ(
@@ -133,6 +124,17 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+
+	<select id="listNeedUpload" resultType="Organ">
+		SELECT
+		<include refid="organColumns"/>
+		FROM bj_organ a
+		<include refid="organJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and (a.upload_date is null or a.upload_date <![CDATA[ < ]]> a.update_date )
+		</where>
+		limit 100
+	</select>
 
 	<update id="updateUploadDate">
 		UPDATE bj_organ SET

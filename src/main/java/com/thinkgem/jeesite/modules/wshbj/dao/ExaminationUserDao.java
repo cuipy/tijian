@@ -10,6 +10,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
  * 体检用户DAO接口
  * @author zhxl
@@ -19,4 +21,8 @@ import org.springframework.cache.annotation.Cacheable;
 public interface ExaminationUserDao extends CrudDao<ExaminationUser> {
 
     ExaminationUser getByIdNumberAndOwner(@Param("idNumber")String idNumber, @Param("owner")String owner);
+
+    List<ExaminationUser> listNeedUpload(ExaminationUser examinationUser);
+
+    void updateUploadDate(ExaminationUser examinationUser);
 }

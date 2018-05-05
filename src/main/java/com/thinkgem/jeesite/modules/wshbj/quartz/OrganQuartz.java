@@ -24,6 +24,7 @@ public class OrganQuartz {
         List<Organ> lst = organUploadService.listNeedUpload(new Organ());
 
         for(Organ organ:lst){
+            organ.setUploadDate(null);
             organUploadService.doUpload(organ);
         }
 

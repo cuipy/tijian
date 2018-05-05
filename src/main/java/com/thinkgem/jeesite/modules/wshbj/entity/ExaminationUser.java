@@ -6,16 +6,20 @@ package com.thinkgem.jeesite.modules.wshbj.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
 import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
 import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +43,9 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private String birthday;		// 出生日期
 	private String organId;		// 单位
 	private String owner;		// 所属体检中心
+	private Date uploadDate;
+
+
 	
 	public ExaminationUser() {
 		super();
@@ -201,6 +208,29 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		return DictUtils.getDictLabel(sex,"sex","");
 	}
 
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	/**
+	 * 获取owner的名称
+	 * @return
+	 */
+	@JsonIgnore
+	public String getOwnerName(){
+		OfficeService officeService=SpringContextHolder.getBean(OfficeService.class);
+		Office office = officeService.get(owner);
+
+		if(office==null||StringUtils.isEmpty(office.getName())){
+			return "";
+		}
+		return office.getName();
+	}
+
 	@JsonIgnore
 	public Map<String,String> getMap(){
 		Map<String,String> m=new HashMap();
@@ -214,6 +244,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("industryName",getIndustryName());
 		m.put("postId",postId);
 		m.put("jobPostName",getJobPostName());
+		m.put("postName",getJobPostName());
 		m.put("idNumber",idNumber);
 
 		m.put("phoneNumber",phoneNumber);
@@ -222,6 +253,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("strSex",this.getStrSex());
 		m.put("code",this.code);
 		m.put("owner",this.owner);
+		m.put("ownerName",this.getOwnerName());
 
 		m.put("value",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
 		m.put("label",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");

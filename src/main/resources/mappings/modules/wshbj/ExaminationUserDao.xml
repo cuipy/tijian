@@ -160,5 +160,23 @@
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
+
+	<select id="listNeedUpload" resultType="ExaminationUser">
+		SELECT
+		<include refid="examinationUserColumns"/>
+		FROM bj_examination_user a
+		<include refid="examinationUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and (a.upload_date is null or a.upload_date <![CDATA[ < ]]> a.update_date )
+		</where>
+		limit 100
+	</select>
+
+	<update id="updateUploadDate">
+		UPDATE bj_examination_user SET
+		<if test="uploadDate == null ">upload_date = now() </if>
+		<if test="uploadDate != null ">upload_date = #{uploadDate}</if>
+		WHERE id = #{id}
+	</update>
 	
 </mapper>
