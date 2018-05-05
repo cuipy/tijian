@@ -14,6 +14,8 @@ import javax.validation.constraints.NotNull;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
+import java.util.Date;
+
 /**
  * 体检记录Entity
  * @author zhxl
@@ -38,6 +40,17 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String userName;     // 体检用户姓名
 
 	private String queryExamCode;
+
+	private Date uploadDate;
+
+
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
 	
 	public ExaminationRecordItem() {
 		super();

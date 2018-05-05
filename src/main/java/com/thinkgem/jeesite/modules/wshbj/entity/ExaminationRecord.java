@@ -7,9 +7,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.annotation.SequenceBean;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import javax.validation.constraints.NotNull;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
@@ -49,6 +51,32 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	//体检状态：10-未体检完，20-体检不合格，30-复检合格，40-可制证，50-已制证
 	private String status;
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
+	private Date uploadDate;
+
+
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
+
+	/**
+	 * 获取owner的名称
+	 * @return
+	 */
+	@JsonIgnore
+	public String getOwnerName(){
+		OfficeService officeService=SpringContextHolder.getBean(OfficeService.class);
+		Office office = officeService.get(owner);
+
+		if(office==null||StringUtils.isEmpty(office.getName())){
+			return "";
+		}
+		return office.getName();
+	}
+
 
 	/**
 	 * 获取行业
@@ -380,5 +408,39 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		return res;
 	}
 
+	@JsonIgnore
+	public Map<String,String> getMap(){
+		Map<String,String> m=new HashMap();
+		m.put("id",id);
+		m.put("userId",this.getUser().getId());
+		m.put("name",name);
+		m.put("organId",organId);
+		m.put("organName",getOrganName());
+		m.put("industryId",industryId);
+		m.put("industryName",getIndustryName());
+		m.put("industryId",industryId);
+		m.put("industryName",getIndustryName());
+		m.put("postId",postId);
+		m.put("postName",this.getPostName());
+		m.put("idNumber",idNumber);
+
+		m.put("phoneNumber",phoneNumber);
+		m.put("birthday",this.birthday);
+		m.put("sex",this.sex);
+		m.put("strSex",this.getStrSex());
+		m.put("code",this.code);
+		m.put("owner",this.owner);
+		m.put("ownerName",this.getOwnerName());
+
+		m.put("status",this.getStatus());
+		m.put("strStatus",this.getStrStatus());
+
+		m.put("itemType",this.getItemType());
+		m.put("strItemType",this.getStrItemType());
+
+		m.put("packagePrice",this.getPackagePrice());
+
+		return m;
+	}
 
 }
