@@ -101,4 +101,7 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
 
     List<ExaminationRecordItem> listResulted(ExaminationRecordItem entity);
 
+    List<ExaminationRecordItem> listNeedUpload(ExaminationRecordItem examinationRecordItem);
+
+    void updateUploadDate(ExaminationRecordItem examinationRecordItem);
 }

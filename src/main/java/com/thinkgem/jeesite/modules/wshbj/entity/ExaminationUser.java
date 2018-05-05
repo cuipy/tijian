@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
@@ -254,6 +255,13 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("code",this.code);
 		m.put("owner",this.owner);
 		m.put("ownerName",this.getOwnerName());
+
+		m.put("createById",getCreateBy().getId());
+		m.put("createByName",getCreateBy().getName());
+		m.put("createDate",DateUtils.formatDateTime(getCreateDate()));
+		m.put("updateById",getUpdateBy().getId());
+		m.put("updateByName",getUpdateBy().getName());
+		m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
 
 		m.put("value",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
 		m.put("label",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");

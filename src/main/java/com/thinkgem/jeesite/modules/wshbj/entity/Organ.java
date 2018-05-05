@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
@@ -15,6 +16,8 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 体检单位Entity
@@ -99,5 +102,24 @@ public class Organ extends DataEntity<Organ> {
 
 	public void setUploadDate(Date uploadDate) {
 		this.uploadDate = uploadDate;
+	}
+
+	public Map<String,String> getMap(){
+		Map<String,String> map=new HashMap();
+
+		map.put("id",id);
+		map.put("code",code);
+		map.put("name",name);
+		map.put("owner",owner);
+		map.put("ownerName",getOwnerName());
+		map.put("createById",getCreateBy().getId());
+		map.put("createByName",getCreateBy().getName());
+		map.put("createDate",DateUtils.formatDateTime(getCreateDate()));
+		map.put("updateById",getUpdateBy().getId());
+		map.put("updateByName",getUpdateBy().getName());
+		map.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
+
+
+		return map;
 	}
 }

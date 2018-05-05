@@ -4,9 +4,11 @@
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationRecordService;
+import com.thinkgem.jeesite.modules.wshbj.service.SpecimenService;
 import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -15,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 体检记录Entity
@@ -264,17 +268,25 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return r;
 	}
 
-//	@JsonIgnore
-//	public User getRecordUser(){
-//		ExaminationRecord record = getRecord();
-//
-//		if(record==null){
-//			return null;
-//		}
-//		return record.getUser();
-//	}
+    @JsonIgnore
+    public Specimen getSpecimen(){
+        SpecimenService specimenService=SpringContextHolder.getBean(SpecimenService.class);
+        return  specimenService.get(specimenId);
 
-	public String getRecordUserId(){
+	}
+
+    @JsonIgnore
+	public String getSpecimenName(){
+        Specimen sp = getSpecimen();
+
+        if(sp==null){
+            return "";
+        }
+        return sp.getName();
+    }
+
+
+    public String getRecordUserId(){
 		ExaminationRecord record = getRecord();
 
 		if(record==null){
@@ -320,4 +332,46 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	public void setQueryExamCode(String queryExamCode) {
 		this.queryExamCode = queryExamCode;
 	}
+
+    @JsonIgnore
+    public Map<String,String> getMap(){
+        Map<String,String > m=new HashMap();
+        m.put("id",id);
+
+//        private String recordId;		// 检查记录 父类
+//        private String itemId;		// 检查项目
+//        private String itemName;		// 项目
+//        private String needSamples;		//是否需要样本：0-否，1-是
+//        private String specimenId;		// 体检标本类型ID  最终样本编号的specimenId必须与这个一致
+//        private String sampleCode;		// 样本编号
+//        private String resultDictId;		// 体检结果
+//        private String resultDictName;		// 体检结果
+//        private String resultFlag;		// 体检合格标识：0-否，1-是
+//        private String resultRemarks;		// 体检结果备注
+//        private String examinationFlag;		// 1-初检，2-复检
+//        private String lastFlag; //本次检查记录中同项目最后一次检查标识：0-否，1-是
+//
+//        private String userName;     // 体检用户姓名
+//
+//        private String queryExamCode;
+
+        m.put("recordId",recordId);
+        m.put("itemId",itemId);
+        m.put("itemName",itemName);
+        m.put("needSamples",needSamples);
+        m.put("specimenId",specimenId);m.put("specimenName",getSpecimenName());
+        m.put("sampleCode",sampleCode);
+        m.put("resultFlag",resultFlag);m.put("resultRemarks",resultRemarks);
+        m.put("examinationFlag",examinationFlag);m.put("lastFlag",lastFlag);
+        m.put("userName",userName);
+
+        m.put("createById",getCreateBy().getId());
+        m.put("createByName",getCreateBy().getName());
+        m.put("createDate", DateUtils.formatDateTime(getCreateDate()));
+        m.put("updateById",getUpdateBy().getId());
+        m.put("updateByName",getUpdateBy().getName());
+        m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
+
+        return m;
+    }
 }

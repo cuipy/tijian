@@ -368,7 +368,7 @@
 				sample_code = #{sampleCode},specimen_id = #{specimenId},result_dict_id = #{resultDictId},
 				result_dict_name = #{resultDictName},result_flag = #{resultFlag},
 				result_remarks = #{resultRemarks},update_by = #{updateBy.id},
-				update_date = #{updateDate},remarks = #{remarks},
+				update_date = now() ,remarks = #{remarks},
 			</set>
 		WHERE id = #{id}
 	</update>
@@ -376,7 +376,7 @@
 	<update id="updateSampleCode">
 		UPDATE bj_examination_record_item
 		<set>
-			sample_code = #{sampleCode}
+			sample_code = #{sampleCode},update_date=now(),
 		</set>
 		WHERE id = #{id}
 	</update>
@@ -384,7 +384,7 @@
 	<update id="revokeSampleCode">
 		UPDATE bj_examination_record_item
 		<set>
-			sample_code = #{needSamples},
+			sample_code = #{needSamples},update_date=now(),
 			result_dict_id = null
 		</set>
 		WHERE id = #{id}
@@ -410,10 +410,29 @@
 			result_dict_id = #{resultDictId},
 			result_dict_name = #{resultDictName},
 			result_flag = #{resultFlag},
-			result_remarks = #{resultRemarks},
+			result_remarks = #{resultRemarks}, update_date= now(),
 			<if test="sampleCode !=null and sampleCode != '' ">sample_code = #{sampleCode},</if>
 		</set>
 		WHERE id = #{recordItemId}
 	</update>
-	
+
+	<select id="listNeedUpload" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and (a.upload_date is null or a.upload_date <![CDATA[ < ]]> a.update_date )
+		</where>
+		limit 100
+	</select>
+
+	<update id="updateUploadDate">
+		UPDATE bj_examination_record_item SET
+		<if test="uploadDate == null ">upload_date = now() </if>
+		<if test="uploadDate != null ">upload_date = #{uploadDate}</if>
+		WHERE id = #{id}
+	</update>
+
+
 </mapper>
