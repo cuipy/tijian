@@ -241,4 +241,12 @@ public class Global {
 		return null;
 	}
 
+	public static String getCenterServerUrl(){
+		String  url= getConfig("center_server_url");
+		if(StringUtils.isEmpty(url)){
+			return "http://localhost:8080/tjsvr";
+		}
+		return url;
+	}
+
 }

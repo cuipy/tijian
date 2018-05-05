@@ -13,7 +13,8 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.reference_flag AS "referenceFlag",
-		a.owner AS "owner"
+		a.owner AS "owner",
+		a.upload_date as "uploadDate"
 	</sql>
 	
 	<sql id="organJoins">
@@ -74,6 +75,17 @@
 			</otherwise>
 		</choose>
 	</select>
+
+	<select id="listNeedUpload" resultType="Organ">
+		SELECT
+		<include refid="organColumns"/>
+		FROM bj_organ a
+		<include refid="organJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} and (a.upload_date is null or a.upload_date <![CDATA[ < ]]> a.update_date )
+		</where>
+		limit 100
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO bj_organ(
@@ -86,6 +98,7 @@
 			update_date,
 			remarks,
 			reference_flag,
+			upload_date,
 			owner
 		) VALUES (
 			#{id},
@@ -97,6 +110,7 @@
 			#{updateDate},
 			#{remarks},
 			#{referenceFlag},
+			#{uploadDate},
 			#{owner}
 		)
 	</insert>
@@ -109,6 +123,7 @@
 			update_date = #{updateDate},
 			remarks = #{remarks},
 			reference_flag = #{referenceFlag},
+			upload_date = #{uploadDate},
 			owner = #{owner}
 		WHERE id = #{id}
 	</update>
@@ -116,6 +131,13 @@
 	<update id="delete">
 		UPDATE bj_organ SET 
 			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateUploadDate">
+		UPDATE bj_organ SET
+		<if test="uploadDate is null ">upload_date = now() </if>
+		<if test="uploadDate is not null ">upload_date = #{uploadDate}</if>
 		WHERE id = #{id}
 	</update>
 	

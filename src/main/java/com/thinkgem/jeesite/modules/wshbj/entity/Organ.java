@@ -3,12 +3,18 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 /**
  * 体检单位Entity
@@ -23,6 +29,8 @@ public class Organ extends DataEntity<Organ> {
 	private String name;		// 名称
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
+
+	private Date uploadDate;
 	
 	public Organ() {
 		super();
@@ -32,6 +40,20 @@ public class Organ extends DataEntity<Organ> {
 		super(id);
 	}
 
+	/**
+	 * 获取owner的名称
+	 * @return
+	 */
+	@JsonIgnore
+	public String getOwnerName(){
+		OfficeService officeService=SpringContextHolder.getBean(OfficeService.class);
+		Office office = officeService.get(owner);
+
+		if(office==null||StringUtils.isEmpty(office.getName())){
+			return "";
+		}
+		return office.getName();
+	}
 
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")
 	@NotNull(message = "单位编号不允许为空")
@@ -70,5 +92,12 @@ public class Organ extends DataEntity<Organ> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+	public Date getUploadDate() {
+		return uploadDate;
+	}
+
+	public void setUploadDate(Date uploadDate) {
+		this.uploadDate = uploadDate;
+	}
 }

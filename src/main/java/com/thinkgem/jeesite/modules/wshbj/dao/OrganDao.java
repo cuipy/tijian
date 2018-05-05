@@ -20,5 +20,8 @@ import java.util.List;
 @MyBatisDao
 public interface OrganDao extends CrudDao<Organ> {
 
+    List<Organ> listNeedUpload(Organ organ);
+
+    int updateUploadDate(Organ organ);
 
 }
