@@ -77,11 +77,6 @@ public class GlobalSetController extends BaseController {
 			return form(globalSet, model);
 		}
 
-		if(StringUtils.isEmpty(globalSet.getOwner())){
-			String owner = UserUtils.getUser().getOffice().getId();
-			globalSet.setOwner(owner);
-		}
-
 		globalSetService.save(globalSet);
 		addMessage(redirectAttributes, "保存全局参数配置成功");
 		return "redirect:"+Global.getAdminPath()+"/sys/globalSet/form";

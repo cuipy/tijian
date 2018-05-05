@@ -4,9 +4,8 @@
     
 	<sql id="globalSetColumns">
 		a.id AS "id",
-		a.owner AS "owner",
-		a.code_pre AS "codePre",
-		a.center_name AS "centerName"
+		a.token AS "token",
+		a.code_pre AS "codePre"
 	</sql>
 	
 	<sql id="globalSetJoins">
@@ -58,24 +57,16 @@
 	<insert id="insert">
 		INSERT INTO bj_global_set(
 			id,
-			owner,
-			code_pre,
-			center_name
+			token,
+			code_pre
 		) VALUES (
 			#{id},
-			#{owner},
-			#{codePre},
-			#{centerName}
+			#{token},#{codePre}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE bj_global_set
-			<set>
-				<if test="codePre !=null and codePre != '' ">code_pre = #{codePre},</if>
-				<if test="centerName !=null and centerName != '' ">center_name = #{centerName},</if>
-			</set>
-		WHERE id = #{id}
+		UPDATE bj_global_set set code_pre = #{codePre},token=#{token} WHERE id = #{id}
 	</update>
 	
 	<update id="delete">
