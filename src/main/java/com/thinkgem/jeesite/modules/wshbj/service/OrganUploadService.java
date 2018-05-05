@@ -9,6 +9,7 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.HttpRequestUtils;
 import com.thinkgem.jeesite.common.utils.HttpResponseUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.dao.OrganDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
 import org.springframework.cache.annotation.CacheEvict;
@@ -26,9 +27,9 @@ import java.util.Map;
  * @version 2018-03-12
  */
 @Service
-@Transactional(readOnly = true)
 public class OrganUploadService extends CrudService<OrganDao, Organ> {
 
+	@Transactional(readOnly = false)
 	public int doUpload(Organ organ){
 		String ownerId=GlobalSetUtils.getGlobalSet().getOwner();
 		String token=GlobalSetUtils.getGlobalSet().getToken();
@@ -45,9 +46,12 @@ public class OrganUploadService extends CrudService<OrganDao, Organ> {
 
 		String url = Global.getCenterServerUrl()+"/rest/organ/save";
 
-		String res = HttpRequestUtils.doPost(url,params);
+		RequestResult rr = HttpRequestUtils.doPost(url, params);
+		if(rr!=null&&rr.getState()==1){
+			updateUploadDate(organ);
+		}
 
-		return 0;
+		return 1;
 	}
 
 	public List<Organ> listNeedUpload(Organ organ) {

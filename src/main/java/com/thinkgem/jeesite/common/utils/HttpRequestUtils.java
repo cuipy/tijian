@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.common.utils;
 
+import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -19,7 +20,7 @@ public class HttpRequestUtils {
             .build();
 
 
-    public static String doPost(String url, Map<String,String> params){
+    public static RequestResult doPost(String url, Map<String,String> params){
         FormBody.Builder fbuider = new FormBody.Builder();
         for(String k:params.keySet()){
             fbuider.add(k,params.get(k));
@@ -31,14 +32,23 @@ public class HttpRequestUtils {
                 .post(fbody)
                 .build();
         Response response = null;
+        RequestResult rr=null;
         try {
             response = client.newCall(request).execute();
-            return response.body().string();
+            String res = response.body().string();
+
+
+            JSONObject json = JSONObject.parseObject(res);
+
+            if(json.get("state")!=null){
+                rr=RequestResult.generate(json.getInteger("state"),json.getString("msg"));
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "-1";
+        return rr;
     }
 
 }

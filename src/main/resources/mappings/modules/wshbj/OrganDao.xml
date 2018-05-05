@@ -136,8 +136,8 @@
 
 	<update id="updateUploadDate">
 		UPDATE bj_organ SET
-		<if test="uploadDate is null ">upload_date = now() </if>
-		<if test="uploadDate is not null ">upload_date = #{uploadDate}</if>
+		<if test="uploadDate == null ">upload_date = now() </if>
+		<if test="uploadDate != null ">upload_date = #{uploadDate}</if>
 		WHERE id = #{id}
 	</update>
 	
