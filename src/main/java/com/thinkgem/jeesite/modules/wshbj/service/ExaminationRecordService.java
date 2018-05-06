@@ -129,6 +129,13 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return page;
     }
 
+    public Page<ExaminationRecord> pageForNopass(Page<ExaminationRecord> page, ExaminationRecord examinationRecord) {
+
+        examinationRecord.setPage(page);
+        page.setList(dao.listForNopass(examinationRecord));
+        return page;
+    }
+
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public void save(ExaminationRecord examinationRecord) {

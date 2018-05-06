@@ -37,6 +37,8 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
 	List<ExaminationRecord> listForPrint(ExaminationRecord examinationRecord);
 
+	List<ExaminationRecord> listForNopass(ExaminationRecord examinationRecord);
+
     List<ExaminationRecord> listNeedUpload(ExaminationRecord examinationRecord);
 
 	void updateUploadDate(ExaminationRecord examinationRecord);

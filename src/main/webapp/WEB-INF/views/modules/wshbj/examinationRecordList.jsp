@@ -30,6 +30,7 @@
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 		<li class=""><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
+		<li ><a href="${ctx}/wshbj/examinationRecord/list_nopasss">不合格体检记录</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

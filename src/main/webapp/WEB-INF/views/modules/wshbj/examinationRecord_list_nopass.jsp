@@ -29,8 +29,8 @@
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
 		<li class=""><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
-		<li class="active"><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
-		<li ><a href="${ctx}/wshbj/examinationRecord/list_nopasss">不合格体检记录</a></li>
+		<li><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
+		<li  class="active"><a href="${ctx}/wshbj/examinationRecord/list_nopasss">不合格体检记录</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -129,8 +129,8 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 
-					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
-					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/print_jkz1?id=${examinationRecord.id}" target="_blank">打印健康证</a> </c:if>
+					<c:if test="${examinationRecord.status eq '20' or examinationRecord.status eq '30' }">
+					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/start_fujian?id=${examinationRecord.id}" target="_blank">启动复检</a> </c:if>
 
 				</td></shiro:hasPermission>
 			</tr>

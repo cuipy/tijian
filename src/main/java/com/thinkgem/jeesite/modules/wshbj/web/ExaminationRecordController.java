@@ -137,6 +137,32 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = {"list_nopass"})
+	public String list_nopass(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 获取分页的体检记录
+		Page<ExaminationRecord> page = examinationRecordService.pageForNopass(new Page<ExaminationRecord>(request, response), examinationRecord);
+		model.addAttribute("page", page);
+
+		// 体检套餐列表
+		ExaminationPackage examinationPackage = new ExaminationPackage();
+		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
+		examinationPackage.setDelFlag("0");
+		examinationPackage.setReferenceFlag("0");
+		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
+		model.addAttribute("packageList", packageList);
+
+		// 单位列表
+		Organ organ = new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
+		organ.setDelFlag("0");
+		organ.setReferenceFlag("0");
+		List<Organ> organList = organService.findList(organ);
+		model.addAttribute("organList", organList);
+
+		return "modules/wshbj/examinationRecord_nopass";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "view")
 	public String view(ExaminationRecord examinationRecord, Model model) {
 		model.addAttribute("examinationRecord", examinationRecord);
