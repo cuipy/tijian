@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationRecordService;
 import com.thinkgem.jeesite.modules.wshbj.service.SpecimenService;
 import org.hibernate.validator.constraints.Length;
@@ -41,8 +42,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String resultRemarks;		// 体检结果备注
 	private String examinationFlag;		// 1-初检，2-复检
 	private String lastFlag; //本次检查记录中同项目最后一次检查标识：0-否，1-是
-
-	private String userName;     // 体检用户姓名
+	private String userName;
 
 	private String queryExamCode;
 
@@ -307,23 +307,16 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return recordUserSex;
 	}
 
-	private String recoreUserStrSex;
-	public String getRecordUserStrSex(){
-		if(StringUtils.isEmpty(recoreUserStrSex)) {
-			ExaminationRecord record = getRecord();
-			if (record == null) {
-				recoreUserStrSex=record.getStrSex();
-			}
-		}
-		return recoreUserStrSex;
-	}
-
 	public String getUserName() {
 		return userName;
 	}
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getRecordUserStrSex(){
+		return DictUtils.getDictLabel(getRecordUserSex(),"sex","");
 	}
 
 	public String getQueryExamCode() {

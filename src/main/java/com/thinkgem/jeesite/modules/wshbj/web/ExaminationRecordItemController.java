@@ -149,7 +149,7 @@ public class ExaminationRecordItemController extends BaseController {
 			sampleCodesService.updateUsed(sc);
 
 			addMessage(redirectAttributes,result.getMsg());
-			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/list_need_sample";
+			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/list_need_sample_nodo";
 		}else{
 			addMessage(redirectAttributes,result.getMsg());
 			model.addAttribute("examinationRecordItem", examinationRecordItem);

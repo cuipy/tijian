@@ -103,17 +103,26 @@
         				${examinationRecord.packagePrice } 元
         			</div>
         		</div>
+
+        <div class="control-group span6">
+		<label class="control-label">体检结果：</label>
+            <div class="controls">
+             <label class="label">${examinationRecord.strStatus }</label>
+            </div>
+        </div>
         <div class="cl"></div>
-		<div class="control-group span6" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
-			<label class="control-label">体检套餐：</label>
-			<div class="controls">
-                ${examinationRecord.packageName }
-			</div>
-		</div>
-		<div class="control-group span6" id="itemsDiv">
+		<div class="control-group span12" id="itemsDiv">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
-			   ${examinationRecord.itemNames}
+			   <c:forEach items="${examinationRecord.items}" var="ri"><label class="label"> ${ri.itemName} </label> -
+              			    <label class="label"> <c:if test="${ri.needSamples == 1 }">需要采样 <c:if test="${ri.sampleCode != null && ri.sampleCode != ''}">标本编号：${ri.sampleCode}</c:if> <c:if test="${ri.sampleCode == null || ri.sampleCode == ''}">待采样</c:if>  </c:if>
+              			    <c:if test="${ri.needSamples != 1 }">无需采样</c:if> </label> -
+
+              			     <label class="label">  <c:if test="${ri.resultFlag == null }">无结果</c:if>
+              			     <c:if test="${ri.resultFlag == 0 }">不合格</c:if>
+              			    <c:if test="${ri.resultFlag == 1 }">合格</c:if> </label>
+
+              			    <br> </c:forEach>
 			</div>
 		</div>
 		<div class="cl"></div>

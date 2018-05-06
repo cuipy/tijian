@@ -9,27 +9,27 @@ function cvsInit2(){
     var cvsMain = new fabric.Canvas('cvs-main',opt);
     cvsMain.items={};
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon08.png','体检用户','/wshbj/a/wshbj/examinationUser/list',80,100,120,{'zoom1':true});
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon08.png','体检用户','/tijian/a/wshbj/examinationUser/list',80,100,120,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon07.png','体检单位','/wshbj/a/wshbj/organ/list',80,100,280,{'zoom1':true});
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon07.png','体检单位','/tijian/a/wshbj/organ/list',80,100,280,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon06.png','体检套餐','/wshbj/a/wshbj/examinationPackage/list',80,100,440,{'zoom1':true});
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon06.png','体检套餐','/tijian/a/wshbj/examinationPackage/list',80,100,440,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon04.png','医生',null,100,600,360);
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon04.png','医生',null,100,600,360);
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon12.png','1 信息登记','/wshbj/a/wshbj/examinationRecord/form',70,400,130,{'zoom1':true});
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon12.png','1 信息登记','/tijian/a/wshbj/examinationRecord/form',70,400,130,{'zoom1':true});
 
-    fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon11.png','2 样品采集','/wshbj/a/wshbj/examinationRecordItem/list_need_sample_nodo',80,800,130,{'zoom1':true});
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon11.png','2 样品采集','/tijian/a/wshbj/examinationRecordItem/list_need_sample_nodo',80,800,130,{'zoom1':true});
 
-     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon09.png','3 样本结果录入','/wshbj/a/wshbj/examinationRecordItem/list_resulting',100,470,540,{'zoom1':true});
+     fabricAddButton(cvsMain,'/tijian/static/images/icons/icon09.png','3 样本结果录入','/tijian/a/wshbj/examinationRecordItem/list_resulting',100,470,540,{'zoom1':true});
 
-     fabricAddButton(cvsMain,'/wshbj/static/images/icons/icon13.png','4 制卡','/wshbj/a/wshbj/examinationRecord/',80,740,540,{'zoom1':true});
+     fabricAddButton(cvsMain,'/tijian/static/images/icons/icon13.png','4 制卡','/tijian/a/wshbj/examinationRecord/',80,740,540,{'zoom1':true});
 
     fabricLine(cvsMain,'#666',{'x':200,'y':50},{'x':200,'y':520},6);
 
 
     fabricArraw(cvsMain,'#f60',{x:552,y:307},{x:435,y:190},10,20,40,40);
-    fabricArraw(cvsMain,'#f60',{x:640,y:307},{x:780,y:190},10,20,40,40);
+    fabricArraw(cvsMain,'#f60',{x:640,y:307},{x:770,y:190},10,20,40,40);
     fabricArraw(cvsMain,'#f60',{x:560,y:400},{x:500,y:500},10,20,40,40);
     fabricArraw(cvsMain,'#f60',{x:640,y:400},{x:700,y:500},10,20,40,40);
 
