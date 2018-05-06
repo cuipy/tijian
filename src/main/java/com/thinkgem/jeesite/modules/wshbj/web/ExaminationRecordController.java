@@ -163,6 +163,25 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = "ajax_start_fujian")
+	@ResponseBody
+	public RequestResult ajax_start_fujian(ExaminationRecord examinationRecord, Model model) {
+
+		// 1 获得不合格的，Last的 体检项目；
+
+		// 2 复制每个不合格的体检项目，设置为非last的状态，并保存到 ExaminationRecoredItem中
+
+		// 3 设置每个不合格的项目 sample_code 、result_flag 为 null   examinstaion_flag 为复检 并保存。
+
+		// 4 调用 ExaminationRecordService.updateStatus 的方法，刷新体检记录的状态。
+
+		// 5 ajax返回，并刷新 “不合格的体检记录”列表。
+
+		return null;
+	}
+
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "view")
 	public String view(ExaminationRecord examinationRecord, Model model) {
 		model.addAttribute("examinationRecord", examinationRecord);
