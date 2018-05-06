@@ -159,13 +159,13 @@ public class ExaminationRecordController extends BaseController {
 		List<Organ> organList = organService.findList(organ);
 		model.addAttribute("organList", organList);
 
-		return "modules/wshbj/examinationRecord_nopass";
+		return "modules/wshbj/examinationRecord_list_nopass";
 	}
 
 	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "ajax_start_fujian")
 	@ResponseBody
-	public RequestResult ajax_start_fujian(ExaminationRecord examinationRecord, Model model) {
+	public ResponseResult ajax_start_fujian(ExaminationRecord examinationRecord, Model model) {
 
 		// 1 获得不合格的，Last的 体检项目；
 
@@ -177,7 +177,7 @@ public class ExaminationRecordController extends BaseController {
 
 		// 5 ajax返回，并刷新 “不合格的体检记录”列表。
 
-		return null;
+		return examinationRecordService.startFujian(examinationRecord);
 	}
 
 

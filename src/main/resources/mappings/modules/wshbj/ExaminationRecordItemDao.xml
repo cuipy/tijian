@@ -50,6 +50,9 @@
 		<if test="lastFlag != null and lastFlag != ''">
 			AND a.last_flag = #{lastFlag}
 		</if>
+		<if test="resultFlag != null and resultFlag != ''">
+			AND a.result_flag = #{resultFlag}
+		</if>
 	</sql>
 
 	<sql id="whereif2">
@@ -370,6 +373,14 @@
 				result_remarks = #{resultRemarks},update_by = #{updateBy.id},
 				update_date = now() ,remarks = #{remarks},
 			</set>
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateLastFlag">
+		UPDATE bj_examination_record_item
+		<set>
+			last_flag = #{lastFlag},
+		</set>
 		WHERE id = #{id}
 	</update>
 

@@ -31,6 +31,8 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
 
     public int updateSampleCode(@Param("id") String id,@Param("sampleCode")String sampleCode);
 
+    int updateLastFlag(@Param("id") String id,@Param("lastFlag")String lastFlag);
+
     public int revokeSampleCode(@Param("id") String id);
 
     int countUnCompletedRecordItem(String recordId);

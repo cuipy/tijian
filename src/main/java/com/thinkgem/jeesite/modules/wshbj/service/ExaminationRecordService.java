@@ -582,4 +582,47 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
         save(record);
     }
+
+    @Transactional(readOnly = false)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
+    public ResponseResult startFujian(ExaminationRecord examinationRecord) {
+        if(examinationRecord==null || StringUtils.isBlank(examinationRecord.getId())){
+            return ResponseResult.generateFailResult("复检记录错误");
+        }
+        examinationRecord = get(examinationRecord.getId());
+        if (examinationRecord==null
+                || (!ExaminationRecordConstant.STATUS20.equals(examinationRecord.getStatus())
+                && !ExaminationRecordConstant.STATUS30.equals(examinationRecord.getStatus()))){
+            return ResponseResult.generateFailResult("复检记录错误");
+        }
+        // 1 获得不合格的，Last的 体检项目；
+        ExaminationRecordItem recordItem = new ExaminationRecordItem();
+        recordItem.setRecordId(examinationRecord.getId());
+        recordItem.setLastFlag("1");
+        recordItem.setResultFlag("0");
+        List<ExaminationRecordItem> recordItemList = examinationRecordItemService.findList(recordItem);
+
+        // 2 复制每个不合格的体检项目，设置为非last的状态，并保存到 ExaminationRecoredItem中
+        for (ExaminationRecordItem item:recordItemList) {
+            examinationRecordItemService.updateLastFlag(item.getId(),"0");
+        }
+
+        // 3 设置每个不合格的项目 sample_code 、result_flag 为 null   examinstaion_flag 为复检 并保存。
+        for (ExaminationRecordItem item:recordItemList) {
+            item.setId(null);
+            item.setSampleCode(null);
+            item.setResultDictId(null);
+            item.setResultDictName(null);
+            item.setResultRemarks(null);
+            item.setResultFlag(null);
+            item.setExaminationFlag("2");
+            item.setLastFlag("1");
+            examinationRecordItemService.save(item);
+        }
+
+        // 4 刷新体检记录的状态。
+        this.updateStatus(examinationRecord);
+
+        return ResponseResult.generateSuccessResult("启动复检成功");
+    }
 }

@@ -23,6 +23,25 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+        function startFujian(examinationRecordId) {
+            top.$.jBox.confirm("确认要导出体检记录数据吗？","系统提示",function(v,h,f){
+                if(v=="ok"){
+                    startFujianDo(examinationRecordId);
+                }
+            },{buttonsFocus:1});
+        }
+
+        function startFujianDo(examinationRecordId) {
+			var url = '${ctx}/wshbj/examinationRecord/ajax_start_fujian';
+			$.post(url,{id:examinationRecordId},function (result) {
+				if(result.code!='0'){
+                    showTip(result.msg,"error");
+				}else{
+                    $('#searchForm').submit();
+				}
+            });
+        }
 	</script>
 </head>
 <body>
@@ -30,9 +49,9 @@
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
 		<li class=""><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
 		<li><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
-		<li  class="active"><a href="${ctx}/wshbj/examinationRecord/list_nopasss">不合格体检记录</a></li>
+		<li  class="active"><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/list_nopass" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -54,18 +73,9 @@
 			<li><label>联系电话：</label>
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
 			</li>
-			<li class="cl"></li>
 			<li><label>编号：</label>
                 <form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
             </li>
-			<li><label>状态：</label>
-				<form:select path="status" cssStyle="width: 100px">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${fns:getDictList('examination_record_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</li>
 			<li><label>体检套餐：</label>
 				<form:select path="packageId" class="input-medium">
 					<form:option value="">
@@ -130,7 +140,7 @@
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 
 					<c:if test="${examinationRecord.status eq '20' or examinationRecord.status eq '30' }">
-					<a class="label label-info" href="${ctx}/wshbj/examinationRecord/start_fujian?id=${examinationRecord.id}" target="_blank">启动复检</a> </c:if>
+					<a class="label label-info" href="javascript:void(0);" onclick="startFujian('${examinationRecord.id}');" target="_blank">启动复检</a> </c:if>
 
 				</td></shiro:hasPermission>
 			</tr>

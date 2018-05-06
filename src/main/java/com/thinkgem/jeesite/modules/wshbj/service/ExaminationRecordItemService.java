@@ -16,6 +16,7 @@ import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordDao;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordItemDao;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationSamplesDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -338,4 +339,10 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
 //            ,String resultFlag, String resultRemarks) {
 //        dao.saveRecordResult(recordItemId,sampleCode,resultDictId,resultDictName,resultFlag,resultRemarks);
 //    }
+
+
+    @Transactional(readOnly = false)
+    public int updateLastFlag(String id, String lastFlag){
+        return this.dao.updateLastFlag(id,lastFlag);
+    }
 }
