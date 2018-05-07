@@ -53,68 +53,7 @@
                 }
             });
 
-
-             var lastUserName='';
-             $('#userInfo').autocompleter({
-
-                highlightMatches: true,
-                template: '{{ label }}',
-                hint: false,
-                cache:false,
-                empty: false,
-                limit: 10,
-                source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
-                callback: function (value, index, selected) {
-                    var u=selected;
-                    $("#userId").val(u.id);
-                    $("#name").val(u.name);
-                    $("#idNumber").val(u.idNumber);
-                    $("#birthday").val(u.birthday);
-                    $("#phoneNumber").val(u.phoneNumber);
-                    $("#sex").val(u.sex);
-                    $("#strSex").val(u.strSex);
-                    $("#organId").val(u.organId);
-                    $("#organName").val(u.organName);
-                    $("#industryId").val(u.industryId);
-                    $("#industryName").val(u.industryName);
-                    $("#postId").val(u.postId);
-                    $("#postName").val(u.jobPostName);
-                }
-            });
-
-            setTimeout("$('#userInfo').focus();",1000);
         });
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
 
 
         //选择用户返回
@@ -184,40 +123,18 @@
 
     <div class="row">
 
-		<div class="control-group span12">
-			 <label class="control-label"><font color="red">*</font> 编号：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45"  readonly="true" class="input-large"/>
-                <span class="help-inline">编号无需录入，在保存的时候根据系统配置自动生成。编号格式：全局设置编号前缀+{yyyyMMdd}[4位数字]</span>
-			</div>
-		</div>
-        <div class="cl"></div>
-		<div class="control-group span12">
-			<label class="control-label"><font color="red">*</font>  身份证/手机号：</label>
-			<div class="controls">
-			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
-			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
-			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo"
-			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if>
-			   maxlength="50" class="input-xxlarge required" /></div>
-
-                <span class="help-inline">选择体检用户 <a href="${ctx}/wshbj/examinationUser/form" target="_blank">添加体检用户</a></span>
-			</div>
-		</div>
-        <div class="cl"></div>
-
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large" readonly="true"/>
+				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large"/>
 			</div>
 		</div>
 
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large"  readonly="true"/>
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="20" class="input-large"/>
 
 			</div>
 		</div>
@@ -226,44 +143,45 @@
 
 
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
 
-			    <input type="hidden" id="sex" name="sex"  value="${examinationRecord.sex}">
-				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-large" readonly="true">
+				<input type="radio" id="sex1" name="sex" value="1"><label>男</label> &nbsp;&nbsp;&nbsp;
+				<input type="radio" id="sex2" name="sex" value="2"><label>女</label> &nbsp;&nbsp;&nbsp;
 
 			</div>
 		</div>
-		<div class="control-group span6">
+		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-large" readonly="true">
+                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-large">
 
             </div>
         </div>
 
-	<div class="control-group span6">
+	<div class="control-group span4">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
-           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-large" readonly="true">
+
+            <input type="hidden" id="industryId" name="industryId" >
+            <input type="text" id="industryName" name="industryName" class="input-large">
 
 		</div>
 	</div>
-	<div class="control-group span6" >
+	<div class="control-group span4" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
 		    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-large" readonly="true">
+            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-large">
 
 		</div>
 	</div>
-	<div class="control-group span6">
+	<div class="control-group span4">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
 			<input type="hidden" id="postId" name="postId"  value="${examinationRecord.postId}">
-            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-large" readonly="true">
+            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-large" >
 
 		</div>
 	</div>
@@ -283,12 +201,12 @@
 				<input type="radio" id="itemType2" name="itemType" value="2" <c:if test="${examinationRecord.itemType eq 2}">checked="checked"</c:if>/><label for="itemType2">自由选择</label>
 			</div>
 		</div>
-				<div class="control-group span6">
-        			<label class="control-label">价格：</label>
-        			<div class="controls">
-        				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-large "/>
-        			</div>
-        		</div>
+        <div class="control-group span6">
+            <label class="control-label">价格：</label>
+            <div class="controls">
+                <form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-large "/>
+            </div>
+        </div>
 
 		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
 			<label class="control-label">体检套餐：</label>
@@ -310,7 +228,7 @@
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
 				<input id="ri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
 				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
-				<label for="ri${ri.id}">[${ri.code}] ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="ri${ri.id}">[${ri.code}] ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;
 				</c:forEach>
 				</c:if>
 			</div>

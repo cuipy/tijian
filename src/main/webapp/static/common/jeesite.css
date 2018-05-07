@@ -99,3 +99,11 @@ legend + .control-group {margin-top:6px;}
 .alert .help-inline{
     color:#f30;
 }
+
+.form-horizontal .control-label{
+    width:30%;
+    max-width:160px;
+}
+.form-horizontal .controls {
+    margin-left: 30%;
+}

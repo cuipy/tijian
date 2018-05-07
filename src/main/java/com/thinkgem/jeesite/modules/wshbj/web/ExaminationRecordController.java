@@ -235,19 +235,14 @@ public class ExaminationRecordController extends BaseController {
 
 		model.addAttribute("examinationRecord", examinationRecord);
 
+
 		// 获得体检套餐
 		ExaminationPackage examinationPackage = new ExaminationPackage();
-		examinationPackage.setOwner(UserUtils.getUser().getCompany().getId());
-		examinationPackage.setDelFlag("0");
-		examinationPackage.setReferenceFlag("0");
 		List<ExaminationPackage> packageList = examinationPackageService.findList(examinationPackage);
 		model.addAttribute("packageList", packageList);
 
 		// 获得体检项目类别
 		ExaminationItem examinationItem = new ExaminationItem();
-		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
-		examinationItem.setDelFlag("0");
-		examinationItem.setReferenceFlag("0");
 		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
 		model.addAttribute("examinationItemList", examinationItemList);
 
@@ -342,17 +337,6 @@ public class ExaminationRecordController extends BaseController {
 		ResponseResult result = examinationSamplesService.saveSamplesResult(samplesIdArray,resultDictIdArray,resultRemarksArray);
 		return result;
 	}
-
-
-//	@RequiresPermissions("wshbj:examinationRecord:inputResult")
-//	@RequestMapping(value = "saveResult")
-//	@ResponseBody
-//	public ResponseResult saveResult(@RequestParam(name="recordItemIdArray[]")String[] recordItemIdArray
-//			,@RequestParam(name="resultDictIdArray[]")String[] resultDictIdArray
-//			,@RequestParam(name="resultRemarksArray[]")String[] resultRemarksArray) {
-//		ResponseResult responseResult = examinationRecordService.saveResult(recordItemIdArray,resultDictIdArray,resultRemarksArray);
-//		return responseResult;
-//	}
 
 	/**
 	 * 录入体检结果
