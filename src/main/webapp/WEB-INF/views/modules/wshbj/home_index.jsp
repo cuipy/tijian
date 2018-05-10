@@ -6,6 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script src="${ctxStatic}/canvas/fabric.min.js" type="text/javascript"></script>
 	<script src="${ctxStatic}/canvas/myfabric.js?v=${v}" type="text/javascript"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 
@@ -16,6 +17,7 @@
 </style>
 </head>
 <body>
+
 
 	<canvas id="cvs-main" style="border:1px solid #ccc;width:1000px;height:700px;"></canvas>
 
