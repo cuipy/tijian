@@ -185,7 +185,8 @@
 				<div class="nav-collapse">
 					<ul id="menu" class="nav" style="*white-space:nowrap;float:none;">
 						<c:set var="firstMenu" value="true"/>
-						<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus"><c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}"><li class="menu ${not empty firstMenu && firstMenu ? ' active' : ''}">
+						<c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
+						<c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}"><li class="menu ${not empty firstMenu && firstMenu ? ' active' : ''}">
                             <c:if test="${empty menu.href}">
                                 <a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}"><span>${menu.name}</span></a>
                             </c:if>
@@ -196,23 +197,15 @@
                         <c:if test="${firstMenu}">
                             <c:set var="firstMenuId" value="${menu.id}"/>
                         </c:if><c:set var="firstMenu" value="false"/>
-                        </c:if></c:forEach><%--
-						<shiro:hasPermission name="cms:site:select">
-						<li class="dropdown">
-							<a class="dropdown-toggle" data-toggle="dropdown" href="#">${fnc:getSite(fnc:getCurrentSiteId()).name}<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<c:forEach items="${fnc:getSiteList()}" var="site"><li><a href="${ctx}/cms/site/select?id=${site.id}&flag=1">${site.name}</a></li></c:forEach>
-							</ul>
-						</li>
-						</shiro:hasPermission> --%>
+                        </c:if>
+                        </c:forEach>
 					</ul>
 				</div><!--/.nav-collapse -->
 			</div>
 	    </div>
 	    <div class="container-fluid">
 			<div id="content" class="row-fluid">
-				<div id="left"><%--
-					<iframe id="menuFrame" name="menuFrame" src="" style="overflow:visible;" scrolling="yes" frameborder="no" width="100%" height="650"></iframe> --%>
+				<div id="left">
 				</div>
 				<div id="openClose" class="close">&nbsp;</div>
 				<div id="right">
