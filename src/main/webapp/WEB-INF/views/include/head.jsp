@@ -34,7 +34,7 @@
 <script src="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.js?v=161" type="text/javascript"></script>
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/common/jeesite.css?v=18" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/common/jeesite.css?v=19" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=4" type="text/javascript"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 

@@ -101,9 +101,8 @@ legend + .control-group {margin-top:6px;}
 }
 
 .form-horizontal .control-label{
-    width:30%;
-    max-width:160px;
+    max-width:130px;
 }
 .form-horizontal .controls {
-    margin-left: 30%;
+    margin-left: 130px;
 }
