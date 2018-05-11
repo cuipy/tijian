@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.drew.lang.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -32,7 +34,17 @@ public class Menu extends DataEntity<Menu> {
 	private String permission; // 权限标识
 	
 	private String userId;
-	
+
+	private Boolean actived;
+
+	public Boolean getActived() {
+		return actived;
+	}
+
+	public void setActived(Boolean actived) {
+		this.actived = actived;
+	}
+
 	public Menu(){
 		super();
 		this.sort = 30;
@@ -149,6 +161,11 @@ public class Menu extends DataEntity<Menu> {
 				}
 			}
 		}
+	}
+
+	public Integer getLevel(){
+		String pids=getParentIds();
+		return StringUtils.countMatches(pids,",")-1;
 	}
 
 	@JsonIgnore

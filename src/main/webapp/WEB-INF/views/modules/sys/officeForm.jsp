@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>机构管理</title>
-	<meta name="decorator" content="default"/>
+	<meta name="decorator" content="blank"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#name").focus();

@@ -19,7 +19,8 @@
 <body>
 
 
-	<canvas id="cvs-main" style="border:1px solid #ccc;width:1000px;height:700px;"></canvas>
+<canvas id="cvs-main" style="border:1px solid #ccc;width:1000px;height:700px;"></canvas>
+
 
 <script type="text/javascript">
 

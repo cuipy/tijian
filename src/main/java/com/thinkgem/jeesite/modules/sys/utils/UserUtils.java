@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.sys.utils;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.sys.service.MenuService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
@@ -161,16 +163,40 @@ public class UserUtils {
 		@SuppressWarnings("unchecked")
 		List<Menu> menuList = (List<Menu>)getCache(CACHE_MENU_LIST);
 		if (menuList == null){
-			User user = getUser();
-			if (user.isAdmin()){
-				menuList = menuDao.findAllList(new Menu());
-			}else{
-				Menu m = new Menu();
-				m.setUserId(user.getId());
-				menuList = menuDao.findByUserId(m);
-			}
+
+			MenuService menuService=SpringContextHolder.getBean(MenuService.class);
+			menuList=menuService.findAllMenu(getUser());
+
 			putCache(CACHE_MENU_LIST, menuList);
 		}
+		return menuList;
+	}
+
+	private static String getUri(String uri){
+		int pos=1;
+		pos=StringUtils.indexOf(uri,"/",pos);
+		pos=StringUtils.indexOf(uri,"/",pos+1);
+		uri=StringUtils.substring(uri,pos);
+		return uri;
+	}
+	/**
+	 * 获取当前用户授权菜单
+	 * @return
+	 */
+	public static List<Menu> listTopMenu(String uri){
+
+		String m=getUri(uri);
+
+		MenuService menuService=SpringContextHolder.getBean(MenuService.class);
+		List<Menu> menuList=menuService.listTopMenu(getUser(),m);
+		return menuList;
+	}
+
+	public static List<Menu> listLeftMenu(String uri){
+		String m=getUri(uri);
+
+		MenuService menuService=SpringContextHolder.getBean(MenuService.class);
+		List<Menu> menuList=menuService.listLeftMenu(getUser(),m);
 		return menuList;
 	}
 

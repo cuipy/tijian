@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<%
+    String uri = request.getRequestURI();
+    pageContext.setAttribute("uri",uri);
+%>
 <div id="header" class="navbar navbar-fixed-top">
     <div class="navbar-inner">
         <div class="brand"><span id="productName">${fns:getConfig('productName')}</span></div>
@@ -6,7 +11,8 @@
             <li id="themeSwitch" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" title="主题切换"><i class="icon-th-large"></i></a>
                 <ul class="dropdown-menu">
-                    <c:forEach items="${fns:getDictList('theme')}" var="dict"><li><a href="#" onclick="location='${pageContext.request.contextPath}/theme/${dict.value}?url='+location.href">${dict.label}</a></li></c:forEach>
+                    <c:forEach items="${fns:getDictList('theme')}" var="dict">
+                    <li><a href="#" onclick="location='${pageContext.request.contextPath}/theme/${dict.value}?url='+location.href">${dict.label}</a></li></c:forEach>
                     <li><a href="javascript:cookie('tabmode','${tabmode eq '1' ? '0' : '1'}');location=location.href">${tabmode eq '1' ? '关闭' : '开启'}页签模式</a></li>
                 </ul>
                 <!--[if lte IE 6]><script type="text/javascript">$('#themeSwitch').hide();</script><![endif]-->
@@ -26,14 +32,9 @@
         <div class="nav-collapse">
             <ul id="menu" class="nav" style="*white-space:nowrap;float:none;">
                 <c:set var="firstMenu" value="true"/>
-                <c:forEach items="${fns:getMenuList()}" var="menu" varStatus="idxStatus">
-                <c:if test="${menu.parent.id eq '1'&&menu.isShow eq '1'}"><li class="menu ${not empty firstMenu && firstMenu ? ' active' : ''}">
-                    <c:if test="${empty menu.href}">
-                        <a class="menu" href="javascript:" data-href="${ctx}/sys/menu/tree?parentId=${menu.id}" data-id="${menu.id}"><span>${menu.name}</span></a>
-                    </c:if>
-                    <c:if test="${not empty menu.href}">
-                        <a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame"><span>${menu.name}</span></a>
-                    </c:if>
+                <c:forEach items="${fns:listTopMenu(pageScope.uri)}" var="menu" varStatus="idxStatus">
+                <c:if test="${ menu.isShow eq '1'}"><li class="menu ${menu.actived ? ' active' : ''}">
+                   <a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame"><span>${menu.name}</span></a>
                 </li>
                 <c:if test="${firstMenu}">
                     <c:set var="firstMenuId" value="${menu.id}"/>

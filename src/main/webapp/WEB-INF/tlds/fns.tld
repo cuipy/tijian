@@ -71,7 +71,23 @@
     <function-signature>com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal getPrincipal()</function-signature>
     <example>${fns:getPrincipal()}</example>  
   </function>
-  
+
+  <function>
+    <description>获取当前用户的d顶部菜单对象列表</description>
+    <name>listTopMenu</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.util.List listTopMenu(java.lang.String)</function-signature>
+    <example>${fns:listTopMenu(uri)}</example>
+  </function>
+
+  <function>
+    <description>获取当前用户的左侧菜单对象列表</description>
+    <name>listLeftMenu</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.util.List listLeftMenu(java.lang.String)</function-signature>
+    <example>${fns:listLeftMenu(uri)}</example>
+  </function>
+
   <function>
     <description>获取当前用户的菜单对象列表</description>
     <name>getMenuList</name>

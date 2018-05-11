@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.service.MenuService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -43,7 +44,9 @@ public class RoleController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
-	
+	@Autowired
+	private MenuService menuService;
+
 	@Autowired
 	private OfficeService officeService;
 	
@@ -71,7 +74,7 @@ public class RoleController extends BaseController {
 			role.setOffice(UserUtils.getUser().getOffice());
 		}
 		model.addAttribute("role", role);
-		model.addAttribute("menuList", systemService.findAllMenu());
+		model.addAttribute("menuList", menuService.findAllMenu(UserUtils.getUser()));
 		model.addAttribute("officeList", officeService.findAll());
 		return "modules/sys/roleForm";
 	}
@@ -261,8 +264,6 @@ public class RoleController extends BaseController {
 
 	/**
 	 * 验证角色英文名是否有效
-	 * @param oldName
-	 * @param name
 	 * @return
 	 */
 	@RequiresPermissions("user")

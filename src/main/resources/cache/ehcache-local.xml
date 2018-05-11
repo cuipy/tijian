@@ -71,5 +71,8 @@
 
 	<cache name="officeCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
 		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
+
+	<cache name="menuCache" maxEntriesLocalHeap="10000" eternal="true" overflowToDisk="true"
+		   diskPersistent="true" diskExpiryThreadIntervalSeconds="600" statistics="true"/>
     	
 </ehcache>

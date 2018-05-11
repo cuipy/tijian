@@ -25,7 +25,9 @@
         }
 	</script>
 </head>
+
 <body>
+
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
@@ -160,5 +162,7 @@
       3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
 
     </div>
+
+
 </body>
 </html>

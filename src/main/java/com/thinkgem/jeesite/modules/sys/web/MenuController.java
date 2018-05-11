@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.service.MenuService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,11 +39,15 @@ public class MenuController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
+
+
+	@Autowired
+	private MenuService menuService;
 	
 	@ModelAttribute("menu")
 	public Menu get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
-			return systemService.getMenu(id);
+			return menuService.getMenu(id);
 		}else{
 			return new Menu();
 		}
@@ -52,7 +57,7 @@ public class MenuController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Model model) {
 		List<Menu> list = Lists.newArrayList();
-		List<Menu> sourcelist = systemService.findAllMenu();
+		List<Menu> sourcelist = menuService.findAllMenu(UserUtils.getUser());
 		Menu.sortList(list, sourcelist, Menu.getRootId(), true);
         model.addAttribute("list", list);
 		return "modules/sys/menuList";
@@ -64,11 +69,11 @@ public class MenuController extends BaseController {
 		if (menu.getParent()==null||menu.getParent().getId()==null){
 			menu.setParent(new Menu(Menu.getRootId()));
 		}
-		menu.setParent(systemService.getMenu(menu.getParent().getId()));
+		menu.setParent(menuService.getMenu(menu.getParent().getId()));
 		// 获取排序号，最末节点排序号+30
 		if (StringUtils.isBlank(menu.getId())){
 			List<Menu> list = Lists.newArrayList();
-			List<Menu> sourcelist = systemService.findAllMenu();
+			List<Menu> sourcelist = menuService.findAllMenu(UserUtils.getUser());
 			Menu.sortList(list, sourcelist, menu.getParentId(), false);
 			if (list.size() > 0){
 				menu.setSort(list.get(list.size()-1).getSort() + 30);
@@ -92,7 +97,7 @@ public class MenuController extends BaseController {
 		if (!beanValidator(model, menu)){
 			return form(menu, model);
 		}
-		systemService.saveMenu(menu);
+		menuService.saveMenu(menu);
 		addMessage(redirectAttributes, "保存菜单'" + menu.getName() + "'成功");
 		return "redirect:" + adminPath + "/sys/menu/";
 	}
@@ -107,7 +112,7 @@ public class MenuController extends BaseController {
 //		if (Menu.isRoot(id)){
 //			addMessage(redirectAttributes, "删除菜单失败, 不允许删除顶级菜单或编号为空");
 //		}else{
-			systemService.deleteMenu(menu);
+		menuService.deleteMenu(menu);
 			addMessage(redirectAttributes, "删除菜单成功");
 //		}
 		return "redirect:" + adminPath + "/sys/menu/";
@@ -139,7 +144,7 @@ public class MenuController extends BaseController {
     	for (int i = 0; i < ids.length; i++) {
     		Menu menu = new Menu(ids[i]);
     		menu.setSort(sorts[i]);
-    		systemService.updateMenuSort(menu);
+			menuService.updateMenuSort(menu);
     	}
     	addMessage(redirectAttributes, "保存菜单排序成功!");
 		return "redirect:" + adminPath + "/sys/menu/";
@@ -148,7 +153,6 @@ public class MenuController extends BaseController {
 	/**
 	 * isShowHide是否显示隐藏菜单
 	 * @param extId
-	 * @param isShowHidden
 	 * @param response
 	 * @return
 	 */
@@ -157,7 +161,7 @@ public class MenuController extends BaseController {
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId,@RequestParam(required=false) String isShowHide, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<Menu> list = systemService.findAllMenu();
+		List<Menu> list = menuService.findAllMenu(UserUtils.getUser());
 		for (int i=0; i<list.size(); i++){
 			Menu e = list.get(i);
 			if (StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1)){

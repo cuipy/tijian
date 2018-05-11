@@ -7,6 +7,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
+import com.thinkgem.jeesite.common.utils.CacheUtils;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -110,6 +112,11 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 	@Override
 	protected void issueSuccessRedirect(ServletRequest request,
 			ServletResponse response) throws Exception {
+
+		// 清除用户的必要的缓存
+		CacheUtils.remove("menuCache","menu_findAllMenu_"+UserUtils.getUser().getId());
+		CacheUtils.remove("menuCache","menu_listTopMenu_"+UserUtils.getUser().getId());
+
 //		Principal p = UserUtils.getPrincipal();
 //		if (p != null && !p.isMobileLogin()){
 			 WebUtils.issueRedirect(request, response, getSuccessUrl(), null, true);
@@ -126,7 +133,8 @@ public class FormAuthenticationFilter extends org.apache.shiro.web.filter.authc.
 			AuthenticationException e, ServletRequest request, ServletResponse response) {
 		String className = e.getClass().getName(), message = "";
 		if (IncorrectCredentialsException.class.getName().equals(className)
-				|| UnknownAccountException.class.getName().equals(className)){
+				|| UnknownAccountException.class.getName().equals(className)
+				||AuthenticationException.class.getName().equals(className)){
 			message = "用户或密码错误, 请重试.";
 		}
 		else if (e.getMessage() != null && StringUtils.startsWith(e.getMessage(), "msg:")){

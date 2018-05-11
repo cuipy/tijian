@@ -54,8 +54,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	private UserDao userDao;
 	@Autowired
 	private RoleDao roleDao;
-	@Autowired
-	private MenuDao menuDao;
+
 	@Autowired
 	private SessionDAO sessionDao;
 	@Autowired
@@ -328,72 +327,7 @@ public class SystemService extends BaseService implements InitializingBean {
 
 	//-- Menu Service --//
 	
-	public Menu getMenu(String id) {
-		return menuDao.get(id);
-	}
 
-	public List<Menu> findAllMenu(){
-		return UserUtils.getMenuList();
-	}
-	
-	@Transactional(readOnly = false)
-	public void saveMenu(Menu menu) {
-		
-		// 获取父节点实体
-		menu.setParent(this.getMenu(menu.getParent().getId()));
-		
-		// 获取修改前的parentIds，用于更新子节点的parentIds
-		String oldParentIds = menu.getParentIds(); 
-		
-		// 设置新的父节点串
-		menu.setParentIds(menu.getParent().getParentIds()+menu.getParent().getId()+",");
-
-		// 保存或更新实体
-		if (StringUtils.isBlank(menu.getId())){
-			menu.preInsert();
-			menuDao.insert(menu);
-		}else{
-			menu.preUpdate();
-			menuDao.update(menu);
-		}
-		
-		// 更新子节点 parentIds
-		Menu m = new Menu();
-		m.setParentIds("%,"+menu.getId()+",%");
-		List<Menu> list = menuDao.findByParentIdsLike(m);
-		for (Menu e : list){
-			e.setParentIds(e.getParentIds().replace(oldParentIds, menu.getParentIds()));
-			menuDao.updateParentIds(e);
-		}
-		// 清除用户菜单缓存
-		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
-	}
-
-	@Transactional(readOnly = false)
-	public void updateMenuSort(Menu menu) {
-		menuDao.updateSort(menu);
-		// 清除用户菜单缓存
-		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
-	}
-
-	@Transactional(readOnly = false)
-	public void deleteMenu(Menu menu) {
-		menuDao.delete(menu);
-		// 清除用户菜单缓存
-		UserUtils.removeCache(UserUtils.CACHE_MENU_LIST);
-//		// 清除权限缓存
-//		systemRealm.clearAllCachedAuthorizationInfo();
-		// 清除日志相关缓存
-		CacheUtils.remove(LogUtils.CACHE_MENU_NAME_PATH_MAP);
-	}
 	
 	/**
 	 * 获取Key加载信息

@@ -23,13 +23,13 @@
         <div class="container-fluid">
             <div id="content" class="row-fluid">
                 <div id="left" style="width:160px;min-height:300px;">
+                <%@include file="/WEB-INF/views/include/left_menu.jsp" %>
                 </div>
                 <div id="openClose" class="close" style="min-height:300px;">&nbsp;</div>
-                <div id="right" style="margin-left:306px;">
+                <div id="right" style="float:left">
 	            <sitemesh:body/>
 	            </div>
                 <div class="cl"></div>
-
     		</div>
     		 <div id="footer" class="row-fluid">
                 Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')}
@@ -37,6 +37,42 @@
     	</div>
     </div>
     	<script type="text/javascript">
+    	var leftWidth = 160; // 左侧窗口大小
+    	var tabTitleHeight = 33; // 页签的高度
+        var htmlObj = $("html"), mainObj = $("#main");
+        var headerObj = $("#header"), footerObj = $("#footer");
+        var frameObj = $("#left, #openClose");
+        function wSize(){
+            var minHeight = 500, minWidth = 980;
+            var strs = getWindowSize().toString().split(",");
+            wSizeWidth();
+        }
+        function wSizeWidth(){
+            if (!$("#openClose").is(":hidden")){
+                var leftWidth = ($("#left").width() < 0 ? 0 : $("#left").width());
+                $("#right").width($("#content").width()- leftWidth - $("#openClose").width() -30);
+            }else{
+                $("#right").width("100%");
+            }
+        }
+
+        function wSize2(){
+            if(window.leftWidth2 == undefined){
+                return;
+            }
+            var inHeight= $("#right2 #officeContent").contents().find('html').height();
+            var frameObj = $("#right2 #officeContent");
+            $("#left2").width(leftWidth2);
+            frameObj.width($('#right').width()-$('#left2').width()-30);
+            frameObj.height(inHeight+20);
+            $(".ztree").width(leftWidth - 10).height(frameObj.height() - 46);
+        }
+        $(function(){
+            wSize2();
+            $(window).on("resize",wSize2);
+            $("#right2 #officeContent").on("load",wSize2);
+
+        })
 
     	</script>
     	<script src="${ctxStatic}/common/wsize.min.js" type="text/javascript"></script>
@@ -49,6 +85,7 @@
 				//if ($("#menuContent").html()==""){$.get("${ctx}/sys/menu/treeselect", function(data){$("#menuContent").html(data);});}else{$("#menuContent").toggle(100);}
 			});
 		}//-->
+
 	</script>
 </body>
 </html>
