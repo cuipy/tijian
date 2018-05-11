@@ -148,12 +148,12 @@ public class LoginController extends BaseController{
 				return renderString(response, principal);
 			}
 			if (request.getParameter("index") != null){
-				return "modules/sys/sysIndex";
+				return "redirect:" + adminPath + "/wshbj/home/index";
 			}
 			return "redirect:" + adminPath + "/login";
 		}
 
-		return "modules/sys/sysIndex";
+		return "redirect:" + adminPath + "/wshbj/home/index";
 	}
 	
 	/**

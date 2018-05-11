@@ -27,7 +27,7 @@ public class MenuService {
         return menuDao.get(id);
     }
 
-    //@Cacheable(value = "menuCache",key="'menu_findAllMenu_'+#user.id")
+    @Cacheable(value = "menuCache",key="'menu_findAllMenu_'+#user.id")
     public List<Menu> findAllMenu(User user){
 
         List<Menu> menuList=new ArrayList();
@@ -60,7 +60,7 @@ public class MenuService {
         return menuList;
     }
 
-    //@Cacheable(value = "menuCache",key="'menu_listTopMenu_'+#user.id")
+    //@Cacheable(value = "menuCache",key="'menu_listTopMenu_'+#user.id+#uri")
     public List<Menu> listTopMenu(User user,String uri){
 
         List<Menu> tops=new ArrayList();
@@ -86,7 +86,7 @@ public class MenuService {
         return tops;
     }
 
-    //@Cacheable(value = "menuCache",key="'menu_listLeftMenu_'+#user.id+#model")
+    //@Cacheable(value = "menuCache",key="'menu_listLeftMenu_'+#user.id+#uri")
     public List<Menu> listLeftMenu(User user,String uri){
 
         List<Menu> lefts=new ArrayList();
