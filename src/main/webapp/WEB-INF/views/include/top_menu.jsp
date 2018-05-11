@@ -34,7 +34,7 @@
                 <c:set var="firstMenu" value="true"/>
                 <c:forEach items="${fns:listTopMenu(pageScope.uri)}" var="menu" varStatus="idxStatus">
                 <c:if test="${ menu.isShow eq '1'}"><li class="menu ${menu.actived ? ' active' : ''}">
-                   <a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}" target="mainFrame"><span>${menu.name}</span></a>
+                   <a class="menu" href="${fn:indexOf(menu.href, '://') eq -1 ? ctx : ''}${menu.href}" data-id="${menu.id}"><span>${menu.name}</span></a>
                 </li>
                 <c:if test="${firstMenu}">
                     <c:set var="firstMenuId" value="${menu.id}"/>
