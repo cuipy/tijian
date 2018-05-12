@@ -263,12 +263,11 @@
 		<li><a href="${ctx}/wshbj/examinationRecordItem/list_need_sample">体检样本列表</a></li>
 	</ul><br/>
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="examinationSamples" action="${ctx}/wshbj/examinationSamples/saveSamples" method="post" class="form-horizontal">
 		<form:hidden path="recordId"/>
 		<sys:message content="${message}"/>
 
-		<div class="row">
 		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>体检编号：</label>
 			<div class="controls">
@@ -328,8 +327,8 @@
 			<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
             <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
-		</div>
 
+         <div class="cl"></div>
 	</form:form>
 	</div>
 

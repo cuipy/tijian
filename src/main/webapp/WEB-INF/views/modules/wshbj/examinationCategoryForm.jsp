@@ -31,37 +31,39 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationCategory/form?id=${examinationCategory.id}">检查大类<shiro:hasPermission name="wshbj:examinationCategory:edit">${not empty examinationCategory.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationCategory:edit">查看</shiro:lacksPermission></a></li>
 		<!-- li><a href="${ctx}/wshbj/examinationCategory/list4Pull">快速添加</a></li -->
 	</ul><br/>
-	<div class="row">
+	<div>
 	<form:form id="inputForm" modelAttribute="examinationCategory" action="${ctx}/wshbj/examinationCategory/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-medium" readonly="true"/>
 				<span class="help-inline"> 自动生成</span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font> 名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium required"/>
 				<span class="help-inline"> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:input path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationCategory:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
 	</div>
 
+    <div class="help-div">
 	<div class="alert alert-success">
           <strong>帮助：</strong> <br>
           1. 检查大类可以理解为检查项目的<span class="help-inline">大类</span><br>
@@ -72,6 +74,6 @@
           1. 检查大类用于项目分类和项目类型中，设置是用于何种目的而检查的。<br>
           2. 该功能对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 - 检查大类</span>
         </div>
-
+    </div>
 </body>
 </html>

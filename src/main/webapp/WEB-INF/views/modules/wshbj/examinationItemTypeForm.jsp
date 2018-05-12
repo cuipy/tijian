@@ -32,31 +32,31 @@
 		<!--li><a href="${ctx}/wshbj/examinationItemType/list4Pull">快速添加</a></li-->
 	</ul><br/>
 
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="examinationItemType" action="${ctx}/wshbj/examinationItemType/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-medium" readonly="true"/>
 				<span class="help-inline"> 自动生成 </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium required"/>
 				<span class="help-inline"> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:input path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>检查小类：</label>
 			<div class="controls">
 				<form:select path="itemCategoryId" class="input-medium">
@@ -67,7 +67,7 @@
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">检查部门：</label>
 			<div class="controls">
 				<form:select path="examinationDeptId" class="input-medium">
@@ -78,19 +78,20 @@
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">提示信息：</label>
 			<div class="controls">
-				<form:textarea path="tips" htmlEscape="false" rows="4" maxlength="100" class="input-xxlarge "/>
+				<form:input path="tips" htmlEscape="false"  maxlength="100" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationItemType:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
 	</div>
-
+    <div class="help-div">
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 项目类型可以理解为检查项目的<span class="help-inline">小类</span><br>
@@ -102,7 +103,7 @@
       2. 可以理解为检查细项的大分类。<br>
       3. 对应“医院卫生保健管理系统 2.5”中<span class="help-inline">检查项目 - 项目类型 </span>
     </div>
-
+    </div>
 
 
 </body>

@@ -32,49 +32,44 @@
 		<!--li><a href="${ctx}/wshbj/examinationItem/list4Pull">快速添加</a></li-->
 	</ul><br/>
 
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
+				<form:input path="code" htmlEscape="false" maxlength="45" class="input-medium" readonly="true"/>
 				<span class="help-inline"> 不需填写，保存时自动生成 </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">检查项目类型：</label>
-			<div class="controls">
-				<form:select path="typeId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${examinationItemTypeList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
+			<div class="controls radios-div">
+				<form:radiobuttons path="typeId" items="${examinationItemTypeList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">单位：</label>
 			<div class="controls">
-				<form:input path="unit" htmlEscape="false" maxlength="64" class="input-xlarge"/>
+				<form:input path="unit" htmlEscape="false" maxlength="64" class="input-medium"/>
 				<span class="help-inline"> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">价格：</label>
 			<div class="controls">
-				<form:input path="price" htmlEscape="false" maxlength="45" class="input-xlarge "/>
+				<form:input path="price" htmlEscape="false" maxlength="45" class="input-medium "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">参考范围：</label>
 			<div class="controls">
 				<form:input path="rangeMin" htmlEscape="false" maxlength="45" class="input-small"/>
@@ -83,39 +78,29 @@
 			</div>
 		</div>
 
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">所需标本：</label>
-			<div class="controls">
-				<form:select path="specimenId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${specimenList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
+			<div class="controls radios-div">
+				<span><input id="specimenNo" name="specimenId" type="radio" value="0"><label for="specimenNo">不需要标本</label></span>
+				<form:radiobuttons path="specimenId" items="${specimenList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">是否采样：</label>
-			<div class="controls">
-				<form:select path="needSamples" class="input-medium required">
-					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
+
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:input path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationItem:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
 	</div>
 
+    <div class="help-div">
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 检查项目属于<span class="help-inline">检查细类</span><br>
@@ -124,7 +109,7 @@
       <strong>作用：</strong> <br>
       1. 检查项目属于检查的细类，上承<span class="help-inline">项目类型(小类) - 检查大类(大类)</span><br>
 
-    </div>
+    </div></div>
 
 </body>
 </html>

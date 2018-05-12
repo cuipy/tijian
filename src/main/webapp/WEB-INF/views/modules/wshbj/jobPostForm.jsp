@@ -32,44 +32,45 @@
 		<!--li><a href="${ctx}/wshbj/jobPost/list4Pull">快速添加</a></li-->
 	</ul><br/>
 
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">编号：</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:jobPost:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
 	</div>
-
+<div class="help-div">
 	<div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 岗位管理属于岗位的字典列表<br>
       2. 岗位用于体检人，每个体检人必定属于某种岗位<br>
       3. 不同岗位体检人的检查项目和健康证可以选择不同的设置
 
-    </div>
+    </div></div>
 
 
 </body>

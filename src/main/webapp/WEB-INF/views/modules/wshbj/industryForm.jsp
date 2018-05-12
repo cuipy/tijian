@@ -32,44 +32,45 @@
 		<!--li><a href="${ctx}/wshbj/industry/list4Pull">快速添加</a></li-->
 	</ul><br/>
 
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="industry" action="${ctx}/wshbj/industry/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">编号：</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:industry:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
 	</div>
-
+<div class="help-div">
 	<div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 行业管理可以增删改行业列表，例如：餐饮、医疗等<br>
       2. 在体检人注册的时候，必须选择体检人所属行业<br>
       3. 不同的行业可能健康证模板不同，通过设置不同行业的健康证打印模板<br>
 
-    </div>
+    </div></div>
 
 
 </body>
