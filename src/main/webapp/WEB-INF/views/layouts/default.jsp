@@ -20,21 +20,19 @@
 	<div id="main">
         <%@include file="/WEB-INF/views/include/top_menu.jsp" %>
 
-        <div class="container-fluid">
-            <div id="content" class="row-fluid">
-                <div id="left" style="width:160px;min-height:300px;">
-                <%@include file="/WEB-INF/views/include/left_menu.jsp" %>
-                </div>
-                <div id="openClose" class="close" style="min-height:300px;">&nbsp;</div>
-                <div id="right" style="float:left">
-	            <sitemesh:body/>
-	            </div>
-                <div class="cl"></div>
-    		</div>
-    		 <div id="footer" class="row-fluid">
-                Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')}
-            </div>
-    	</div>
+        <div id="content">
+            <table style="width:100%" border="0" cellspacing="0"  cellpadding="0">
+                <tr><td id="left" style="width:160px;"> <%@include file="/WEB-INF/views/include/left_menu.jsp" %> </td>
+            <td id="openClose" class="close">&nbsp;</td>
+            <td id="right" style="float:left">
+            <sitemesh:body/>
+            </td>
+            </table>
+            <div class="cl"></div>
+        </div>
+         <div id="footer" class="row-fluid">
+            Copyright &copy; 2012-${fns:getConfig('copyrightYear')} ${fns:getConfig('productName')}
+        </div>
     </div>
     	<script type="text/javascript">
     	var leftWidth = 160; // 左侧窗口大小
