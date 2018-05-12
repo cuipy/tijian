@@ -156,7 +156,6 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.owner = owner;
 	}
 
-	@Length(min=0, max=128, message="真实照片图片地址字符长度必须介于 0 和 128 之间")
 	public String getHeadImgPath() {
 		return headImgPath;
 	}

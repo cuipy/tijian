@@ -341,6 +341,7 @@ $(function(){
         var cas=$('#content${path} #tailoringImg').cropper("getCroppedCanvas");
         var base64url = cas.toDataURL('image/png');
         $("#content${path} #img${path}").attr("src",base64url);
+        $("#content${path} #up${path}").val(base64url);
 
         ${path}CropperState=0;
     }
