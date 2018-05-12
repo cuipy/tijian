@@ -194,7 +194,6 @@ public class ExaminationRecordController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "print_tjb")
 	public String print_tjb(String id,String format, Model model) {
 
@@ -211,7 +210,6 @@ public class ExaminationRecordController extends BaseController {
 	/**
 	 * 打印健康证
 	 */
-	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "print_jkz1")
 	public String print_jkz1(String id,String format, Model model) {
 

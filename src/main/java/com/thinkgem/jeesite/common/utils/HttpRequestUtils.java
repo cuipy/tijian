@@ -61,11 +61,22 @@ public class HttpRequestUtils {
     }
 
     public static RequestResult doHttpsPost(String url, Map<String,String> params){
+
+        FormBody.Builder fbuider = new FormBody.Builder();
+        for(String k:params.keySet()){
+            String val=params.get(k);
+            if(val==null){
+                continue;
+            }
+            fbuider.add(k,params.get(k));
+        }
+        FormBody fbody = fbuider.build();
+
         OkHttpClient build = new OkHttpClient.Builder()
                 .sslSocketFactory(createSSLSocketFactory())
                 .hostnameVerifier(new TrustAllHostnameVerifier())
                 .build();
-        final Request request = new Request.Builder().url(url).build();
+        final Request request = new Request.Builder().url(url).post(fbody).build();
         Call call    = build.newCall(request);
 
         Response response = null;

@@ -167,10 +167,16 @@
             })
             $("#packagePrice").val(aprice);
         }
+
+        function dop(){
+            var LODOP = getCLodop();
+            LODOP.PRINT_INIT("");
+            LODOP.ADD_PRINT_URL(0,-200,1024,1000,"http://xn.jiisb.com:8051/tijian/a/wshbj/exam_record_print/print_tjb?id=156856be267948f7b77f81ae3df11e4f&format=html");
+            LODOP.PREVIEW();
+        }
 	</script>
 </head>
 <body>
-
 
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">体检记录<shiro:hasPermission name="wshbj:examinationRecord:edit">${not empty examinationRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationRecord:edit">查看</shiro:lacksPermission></a></li>
@@ -327,6 +333,8 @@
 		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+
+			<input id="btnCancel" class="btn" type="button" value="打印测试" onclick="dop()"/>
 		</div>
 <div class="cl"></div>
 </div>
@@ -349,6 +357,8 @@
 
     </div>
 </div>
+
+
 
 </body>
 </html>
