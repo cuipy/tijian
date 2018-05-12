@@ -26,7 +26,16 @@ public class ExaminationItemType extends DataEntity<ExaminationItemType> {
 	private String itemCategoryId;		// 检查小类
 	private String examinationDeptId;		// 检查部门
 	private String tips;		// 提示信息
-	
+	private Integer orderNumb;
+
+	public Integer getOrderNumb() {
+		return orderNumb;
+	}
+
+	public void setOrderNumb(Integer orderNumb) {
+		this.orderNumb = orderNumb;
+	}
+
 	public ExaminationItemType() {
 		super();
 	}

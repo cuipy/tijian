@@ -5,7 +5,7 @@
 	<sql id="specimenColumns">
 		a.id AS "id",
 		a.code AS "code",
-		a.name AS "name",
+		a.name AS "name", a.name_pinyin as "namePinyin",a.order_numb as "orderNumb",
 		a.prefix ,
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
@@ -53,7 +53,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.order_numb,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -71,7 +71,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.order_numb,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -80,7 +80,7 @@
 		INSERT INTO bj_specimen(
 			id,
 			code,
-			name,
+			name, name_pinyin,order_numb,
 			prefix,
 			del_flag,
 			create_by,
@@ -93,7 +93,7 @@
 		) VALUES (
 			#{id},
 			#{code},
-			#{name},
+			#{name},#{namePinyin},#{orderNumb},
 			#{prefix},
 			#{delFlag},
 			#{createBy.id},
@@ -109,7 +109,7 @@
 	<update id="update">
 		UPDATE bj_specimen SET 	
 			code = #{code},
-			name = #{name},
+			name = #{name}, name_pinyin=#{namePinyin},order_numb=#{orderNumb},
 			prefix = #{prefix},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

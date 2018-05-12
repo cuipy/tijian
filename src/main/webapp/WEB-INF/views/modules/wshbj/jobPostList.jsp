@@ -45,6 +45,7 @@
 				<th>编号</th>
 				<th>名称</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:jobPost:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -59,7 +60,7 @@
 				</td>
 				<td>
 					${jobPost.remarks}
-				</td>
+				</td>  <td> ${jobPost.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:jobPost:edit"><td>
     				<a href="${ctx}/wshbj/jobPost/form?id=${jobPost.id}">修改</a>
 					<a href="${ctx}/wshbj/jobPost/delete?id=${jobPost.id}" onclick="return confirmx('确认要删除该工作岗位管理吗？', this.href)">删除</a>

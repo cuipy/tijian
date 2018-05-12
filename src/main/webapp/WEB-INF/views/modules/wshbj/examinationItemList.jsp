@@ -46,9 +46,9 @@
 				<th width="120">名称</th>
 				<th>单位</th>
 				<th>价格</th>
-				<th>参考范围最大值</th>
-				<th>参考范围最小值</th>
+				<th>参考范围</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:examinationItem:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -68,14 +68,11 @@
 					${examinationItem.price}
 				</td>
 				<td>
-					${examinationItem.rangeMax}
-				</td>
-				<td>
-					${examinationItem.rangeMin}
+					${examinationItem.rangeMax} -- ${examinationItem.rangeMin}
 				</td>
 				<td>
 						${examinationItem.remarks}
-				</td>
+				</td>  <td> ${examinationItem.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:examinationItem:edit"><td>
     				<a href="${ctx}/wshbj/examinationItem/form?id=${examinationItem.id}">修改</a>
 					<a href="${ctx}/wshbj/examinationItem/delete?id=${examinationItem.id}" onclick="return confirmx('确认要删除该检查项目吗？', this.href)">删除</a>

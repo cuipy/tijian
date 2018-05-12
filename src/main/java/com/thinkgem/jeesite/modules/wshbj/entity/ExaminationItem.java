@@ -32,7 +32,17 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String specimenId;		// 所需标本
 	private String permission;
 	private String needSamples;		//是否需要样本：0-否，1-是
-	
+
+	private Integer orderNumb;
+
+	public Integer getOrderNumb() {
+		return orderNumb;
+	}
+
+	public void setOrderNumb(Integer orderNumb) {
+		this.orderNumb = orderNumb;
+	}
+
 	public ExaminationItem() {
 		super();
 	}

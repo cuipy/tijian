@@ -5,7 +5,7 @@
 	<sql id="industryColumns">
 		a.id AS "id",
 		a.code AS "code",
-		a.name AS "name",
+		a.name AS "name", a.name_pinyin as "namePinyin",a.order_numb as "orderNumb",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -58,7 +58,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.order_numb,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -76,7 +76,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.order_numb,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -85,7 +85,7 @@
 		INSERT INTO bj_industry(
 			id,
 			code,
-			name,
+			name, name_pinyin,order_numb,
 			del_flag,
 			create_by,
 			create_date,
@@ -97,7 +97,7 @@
 		) VALUES (
 			#{id},
 			#{code},
-			#{name},
+			#{name},#{namePinyin},#{orderNumb},
 			#{delFlag},
 			#{createBy.id},
 			#{createDate},
@@ -112,7 +112,7 @@
 	<update id="update">
 		UPDATE bj_industry SET 	
 			code = #{code},
-			name = #{name},
+			name = #{name},name_pinyin=#{namePinyin},order_numb=#{orderNumb},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks},

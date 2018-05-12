@@ -4,7 +4,7 @@
     
 	<sql id="examinationPackageColumns">
 		a.id AS "id",
-		a.name AS "name",
+		a.name AS "name", a.name_pinyin as "namePinyin",a.order_numb as "orderNumb",
 		a.price AS "price",
 		a.category_id AS "categoryId",
 		a.del_flag AS "delFlag",
@@ -47,7 +47,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.order_numb,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -65,7 +65,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.order_numb,a.update_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -73,7 +73,7 @@
 	<insert id="insert">
 		INSERT INTO bj_examination_package(
 			id,
-			name,
+			name, name_pinyin,order_numb,
 			price,
 			category_id,
 			del_flag,
@@ -86,7 +86,7 @@
 			owner
 		) VALUES (
 			#{id},
-			#{name},
+			#{name},#{namePinyin},#{orderNumb},
 			#{price},
 			#{categoryId},
 			#{delFlag},
@@ -102,7 +102,7 @@
 	
 	<update id="update">
 		UPDATE bj_examination_package SET 	
-			name = #{name},
+			name = #{name},name_pinyin=#{namePinyin},order_numb=#{orderNumb},
 			price = #{price},
 			category_id = #{categoryId},
 			update_by = #{updateBy.id},

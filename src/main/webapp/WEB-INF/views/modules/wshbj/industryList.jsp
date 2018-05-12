@@ -45,6 +45,7 @@
 				<th>编号</th>
 				<th>名称</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:industry:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -59,7 +60,7 @@
 				</td>
 				<td>
 					${industry.remarks}
-				</td>
+				</td>  <td> ${industry.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:industry:edit"><td>
     				<a href="${ctx}/wshbj/industry/form?id=${industry.id}">修改</a>
 					<a href="${ctx}/wshbj/industry/delete?id=${industry.id}" onclick="return confirmx('确认要删除该行业管理吗？', this.href)">删除</a>

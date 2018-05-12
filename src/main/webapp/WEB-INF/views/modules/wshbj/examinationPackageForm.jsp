@@ -66,14 +66,28 @@
 	<form:form id="inputForm" modelAttribute="examinationPackage" action="${ctx}/wshbj/examinationPackage/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group span6">
 			<label class="control-label">名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group span6">
+            <label class="control-label">全拼：</label>
+            <div class="controls">
+                <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
+            </div>
+        </div>
+        <div class="control-group span6">
+            <label class="control-label">顺序值：</label>
+            <div class="controls">
+                <form:input type="number" step="1" path="orderNumb" htmlEscape="false" maxlength="10" class="input-medium "/>
+            </div>
+        </div>
+
+        <div class="cl"></div>
+		<div class="control-group span12">
 			<label class="control-label">价格：</label>
 			<div class="controls">
 				<form:input path="price" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
@@ -81,13 +95,13 @@
 			</div>
 		</div>
 
-		<div class="control-group">
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-			<div class="control-group">
+			<div class="control-group span12">
 				<label class="control-label">包含检查项目：</label>
 				<div class="controls">
 

@@ -43,6 +43,7 @@
 				<th>名称</th>
 				<th>更新时间</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:specimen:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -60,7 +61,7 @@
 				</td>
 				<td>
 					${specimen.remarks}
-				</td>
+				</td>  <td> ${specimen.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:specimen:edit"><td>
     				<a href="${ctx}/wshbj/specimen/form?id=${specimen.id}">修改</a>
 					<a href="${ctx}/wshbj/specimen/delete?id=${specimen.id}" onclick="return confirmx('确认要删除该检查标本类型吗？', this.href)">删除</a>

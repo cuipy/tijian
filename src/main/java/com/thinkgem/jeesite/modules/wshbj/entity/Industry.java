@@ -27,7 +27,15 @@ public class Industry extends DataEntity<Industry> {
 
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
-	
+	private Integer orderNumb;
+
+	public Integer getOrderNumb() {
+		return orderNumb;
+	}
+
+	public void setOrderNumb(Integer orderNumb) {
+		this.orderNumb = orderNumb;
+	}
 	public Industry() {
 		super();
 	}

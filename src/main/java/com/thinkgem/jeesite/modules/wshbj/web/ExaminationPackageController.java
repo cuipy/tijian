@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
 import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
@@ -109,6 +110,16 @@ public class ExaminationPackageController extends BaseController {
 		if (!beanValidator(model, examinationPackage)){
 			return form(examinationPackage, model);
 		}
+		if(StringUtils.isEmpty(examinationPackage.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(examinationPackage.getName());
+			examinationPackage.setNamePinyin(py);
+		}
+
+		if(null==examinationPackage.getOrderNumb()){
+			examinationPackage.setOrderNumb(100);
+		}
+
+
 		examinationPackageService.save(examinationPackage);
 		addMessage(redirectAttributes, "保存体检套餐成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationPackage/?repage";

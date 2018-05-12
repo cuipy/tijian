@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -98,6 +99,16 @@ public class JobPostController extends BaseController {
 		}
 		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
 		jobPost.setReferenceFlag("0");
+
+		if(StringUtils.isEmpty(jobPost.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(jobPost.getName());
+			jobPost.setNamePinyin(py);
+		}
+
+		if(null==jobPost.getOrderNumb()){
+			jobPost.setOrderNumb(100);
+		}
+
 		jobPostService.save(jobPost);
 		addMessage(redirectAttributes, "保存工作岗位管理成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/jobPost/list?repage";

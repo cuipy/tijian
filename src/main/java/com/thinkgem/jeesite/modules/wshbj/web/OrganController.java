@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
@@ -87,6 +88,17 @@ public class OrganController extends BaseController {
 		}
 		organ.setReferenceFlag("0");
 		organ.setOwner(UserUtils.getUser().getCompany().getId());
+
+		if(StringUtils.isEmpty(organ.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(organ.getName());
+			organ.setNamePinyin(py);
+		}
+
+		if(null==organ.getOrderNumb()){
+			organ.setOrderNumb(100);
+		}
+
+
 		organService.save(organ);
 		addMessage(redirectAttributes, "保存体检单位成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/organ/?repage";

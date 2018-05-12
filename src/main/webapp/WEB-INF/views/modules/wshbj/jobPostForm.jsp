@@ -43,13 +43,29 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span12">
+		<div class="cl"></div>
+		<div class="control-group span6">
 			<label class="control-label">名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		<div class="control-group span6">
+            <label class="control-label">全拼：</label>
+            <div class="controls">
+                <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
+            </div>
+        </div>
+
+        <div class="control-group span6">
+            <label class="control-label">顺序值：</label>
+            <div class="controls">
+                <form:input type="number" step="1" path="orderNumb" htmlEscape="false" maxlength="10" class="input-medium "/>
+            </div>
+        </div>
+
+        <div class="cl"></div>
 		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">

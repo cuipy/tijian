@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -96,6 +97,15 @@ public class SpecimenController extends BaseController {
 
 		if (!beanValidator(model, specimen)){
 			return form(specimen, model);
+		}
+
+		if(StringUtils.isEmpty(specimen.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(specimen.getName());
+			specimen.setNamePinyin(py);
+		}
+
+		if(null==specimen.getOrderNumb()){
+			specimen.setOrderNumb(100);
 		}
 
 		specimenService.save(specimen);

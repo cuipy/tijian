@@ -46,6 +46,7 @@
 				<th>名称</th>
 				<th>更新时间</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:examinationCategory:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -63,7 +64,7 @@
 				</td>
 				<td>
 					${examinationCategory.remarks}
-				</td>
+				</td>  <td> ${examinationCategory.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:examinationCategory:edit"><td>
     				<a href="${ctx}/wshbj/examinationCategory/form?id=${examinationCategory.id}">修改</a>
 					<a href="${ctx}/wshbj/examinationCategory/delete?id=${examinationCategory.id}" onclick="return confirmx('确认要删除该检查大类吗？', this.href)">删除</a>

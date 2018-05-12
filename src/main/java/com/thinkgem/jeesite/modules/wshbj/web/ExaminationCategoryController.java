@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.service.SysSequenceService;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
@@ -88,6 +89,13 @@ public class ExaminationCategoryController extends BaseController {
 			return form(examinationCategory, model);
 		}
 
+		if(StringUtils.isEmpty(examinationCategory.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(examinationCategory.getName());
+			examinationCategory.setNamePinyin(py);
+		}
+		if(null==examinationCategory.getOrderNumb()){
+			examinationCategory.setOrderNumb(100);
+		}
 		examinationCategoryService.save(examinationCategory);
 		addMessage(redirectAttributes, "保存检查大类成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationCategory/list?repage";

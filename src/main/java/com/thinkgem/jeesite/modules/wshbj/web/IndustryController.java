@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -97,6 +98,15 @@ public class IndustryController extends BaseController {
 
 		if (!beanValidator(model, industry)){
 			return form(industry, model);
+		}
+
+		if(StringUtils.isEmpty(industry.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(industry.getName());
+			industry.setNamePinyin(py);
+		}
+
+		if(null==industry.getOrderNumb()){
+			industry.setOrderNumb(100);
 		}
 
 		industryService.save(industry);

@@ -59,6 +59,15 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private Date successTime;    // 体检成功的时间
 	private Date failTime;		// 体检失败的时间
 
+	private Integer orderNumb;
+
+	public Integer getOrderNumb() {
+		return orderNumb;
+	}
+
+	public void setOrderNumb(Integer orderNumb) {
+		this.orderNumb = orderNumb;
+	}
 
 	public String getNamePinyin() {
 		return namePinyin;

@@ -25,7 +25,15 @@ public class Specimen extends DataEntity<Specimen> {
 	private String owner;		// 所属体检中心
 
 	private String prefix;
-	
+	private Integer orderNumb;
+
+	public Integer getOrderNumb() {
+		return orderNumb;
+	}
+
+	public void setOrderNumb(Integer orderNumb) {
+		this.orderNumb = orderNumb;
+	}
 	public Specimen() {
 		super();
 	}

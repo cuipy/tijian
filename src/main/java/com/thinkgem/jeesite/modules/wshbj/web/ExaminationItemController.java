@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
@@ -128,6 +129,15 @@ public class ExaminationItemController extends BaseController {
 
 	    if (!beanValidator(model, examinationItem)){
 			return form(examinationItem, model);
+		}
+
+		if(StringUtils.isEmpty(examinationItem.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(examinationItem.getName());
+			examinationItem.setNamePinyin(py);
+		}
+
+		if(null==examinationItem.getOrderNumb()){
+			examinationItem.setOrderNumb(100);
 		}
 
 		examinationItemService.save(examinationItem);

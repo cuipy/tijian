@@ -38,6 +38,7 @@
 			<tr>
 				<th>名称</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:organ:edit"><th width="120">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -49,7 +50,7 @@
 				</a></td>
 				<td>
 					${organ.remarks}
-				</td>
+				</td>  <td> ${organ.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:organ:edit"><td>
     				<a href="${ctx}/wshbj/organ/form?id=${organ.id}">修改</a>
 					<a href="${ctx}/wshbj/organ/delete?id=${organ.id}" onclick="return confirmx('确认要删除该体检单位吗？', this.href)">删除</a>

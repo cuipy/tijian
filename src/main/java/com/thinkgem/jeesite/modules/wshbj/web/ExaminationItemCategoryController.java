@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.wshbj.web;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -97,6 +98,14 @@ public class ExaminationItemCategoryController extends BaseController {
 
 		if (!beanValidator(model, examinationItemCategory)){
 			return form(examinationItemCategory, model);
+		}
+
+		if(StringUtils.isEmpty(examinationItemCategory.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(examinationItemCategory.getName());
+			examinationItemCategory.setNamePinyin(py);
+		}
+		if(null==examinationItemCategory.getOrderNumb()){
+			examinationItemCategory.setOrderNumb(100);
 		}
 
 		examinationItemCategoryService.save(examinationItemCategory);

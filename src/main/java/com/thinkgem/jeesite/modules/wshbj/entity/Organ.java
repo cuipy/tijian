@@ -37,7 +37,15 @@ public class Organ extends DataEntity<Organ> {
 	private String owner;		// 所属体检中心
 
 	private Date uploadDate;
-	
+	private Integer orderNumb;
+
+	public Integer getOrderNumb() {
+		return orderNumb;
+	}
+
+	public void setOrderNumb(Integer orderNumb) {
+		this.orderNumb = orderNumb;
+	}
 	public Organ() {
 		super();
 	}

@@ -39,6 +39,7 @@
 				<th>名称</th>
 				<th>价格</th>
 				<th>备注</th>
+				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:examinationPackage:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -53,7 +54,7 @@
 				</td>
 				<td>
 					${examinationPackage.remarks}
-				</td>
+				</td>  <td> ${examinationPackage.orderNumb}</td>
 				<shiro:hasPermission name="wshbj:examinationPackage:edit"><td>
     				<a href="${ctx}/wshbj/examinationPackage/form?id=${examinationPackage.id}">修改</a>
 					<a href="${ctx}/wshbj/examinationPackage/delete?id=${examinationPackage.id}" onclick="return confirmx('确认要删除该体检套餐吗？', this.href)">删除</a>
