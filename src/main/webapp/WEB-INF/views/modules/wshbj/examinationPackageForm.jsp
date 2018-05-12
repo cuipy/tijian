@@ -62,7 +62,7 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationPackage/form?id=${examinationPackage.id}">体检套餐<shiro:hasPermission name="wshbj:examinationPackage:edit">${not empty examinationPackage.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationPackage:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="examinationPackage" action="${ctx}/wshbj/examinationPackage/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -80,19 +80,7 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label"><font color="red">*</font> 检查大类：</label>
-			<div class="controls">
 
-					<c:forEach items="${examinationCategoryList}" var="ec">
-					<input type="radio" id="categoryId${ec.id}" name="categoryId" value="${ec.id}" class="required"
-					<c:if test="${ec.id==examinationPackage.categoryId}">checked="checked"</c:if>
-					/>
-					<label for="categoryId${ec.id}">${ec.name}</label>&nbsp;&nbsp;&nbsp;
-					</c:forEach>
-				<span class="help-inline"> </span>
-			</div>
-		</div>
 		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
@@ -114,10 +102,11 @@
 
 				</div>
 			</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationPackage:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
 	</div>
 

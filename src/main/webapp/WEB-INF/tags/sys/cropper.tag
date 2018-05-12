@@ -112,16 +112,16 @@
                 <div class="circular previewImg" style="width:100%;height:100%"></div></div>
         </div>
         </c:if>
-        <div style="clear:both"/>
+        <div class="cl"></div>
     </div>
     <div class="tailoring-content-one">
-        <label id="btn${path}Choose" title="上传${imgName}" for="chooseImg" class="btn btn-warning">
+        <label id="btn${path}Choose" title="上传${imgName}" for="chooseImg" class="btn btn-warning btn-mini">
             <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden">
-            本地选择${imgName}
+            选择图片
         </label>
-        <label id="btn${path}Cam" class="btn btn-warning">开启摄像头</label>
-        <label id="btn${path}Cancel" class="btn btn-info">取消操作</label>
-        <label id="btn${path}OK" class="btn btn-info disabled">保存图片</label>
+        <label id="btn${path}Cam" class="btn btn-warning btn-mini">拍照</label>
+        <label id="btn${path}Cancel" class="btn btn-info btn-mini">取消</label>
+        <label id="btn${path}OK" class="btn btn-info  btn-mini disabled">保存</label>
     </div>
 
     <div id="CamBox">
@@ -139,7 +139,7 @@
     <input type="hidden" name="${path}" id="up${path}" value="${value}"/>
 
 </div>
-<script>
+<script type="text/javascript">
 
 $(function(){
     var ${path}Inited=0;
@@ -163,6 +163,7 @@ $(function(){
         reader.readAsDataURL(evt.target.files[0]);
     });
 
+// 拍照按钮点击
     $("#content${path} #btn${path}Cam").on('click',function(){
 
         var video=$("#content${path} #tailoringVideo")[0];
@@ -229,11 +230,11 @@ $(function(){
           function getUserMediaCatch(err){
               dealCamState(1);
               if(err.message=="Permission denied"){
-                  $.jBox.alert("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
-                  return;
+                  console.warn("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
+              }else{
+                  console.warn("访问webRTC出现异常：name["+err.name+"] - "+err.message);
               }
-
-              $.jBox.alert("访问webRTC出现异常：name["+err.name+"] - "+err.message);
+              doWebcam();
            }
 
     });
@@ -267,7 +268,7 @@ $(function(){
         ${path}CropperState=0;
 
         cutImg();
-        uploadImg();
+        // uploadImg();
 
         $('#content${path} #tailoringImg').cropper("clear");
     });
@@ -286,7 +287,7 @@ $(function(){
 
             $("#content${path} #btn${path}Cam").removeClass("btn-warning");
             $("#content${path} #btn${path}Cam").addClass("btn-danger");
-            $("#content${path} #btn${path}Cam").text(" 拍   照 ");
+            $("#content${path} #btn${path}Cam").text("取图");
 
             ${path}CamState=1;
         }else if(st==1){
@@ -300,7 +301,7 @@ $(function(){
 
             $("#content${path} #btn${path}Cam").addClass("btn-warning");
             $("#content${path} #btn${path}Cam").removeClass("btn-danger");
-            $("#content${path} #btn${path}Cam").text("开启摄像头");
+            $("#content${path} #btn${path}Cam").text("拍照");
 
             ${path}CamState=0;
         }
@@ -351,6 +352,7 @@ $(function(){
             return;
         }
 
+/**
         var url="${ctx}/upfile/upbase64";
         var d1={base64:base64};
         $.post(url,d1,function(d1r){
@@ -363,6 +365,7 @@ $(function(){
                 $("#content${path} #btn${path}OK").removeClass("disabled");
             }
         });
+**/
 
     }
 
@@ -419,8 +422,13 @@ $(function(){
         };
 
         CamOk.onclick=function(){
-            webcam.capture();
-            dealCamState(1);
+            if(webcam.capture){
+                webcam.capture();
+                dealCamState(1);
+            }else{
+                 $.jBox.messager('未能找到摄像头。');
+            }
+
         }
         CamBox.style.display = "block";
         CamBox.style.width = "${mainImgWidth}px";

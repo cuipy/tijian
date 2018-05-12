@@ -31,7 +31,7 @@
 		<li class="active"><a href="${ctx}/wshbj/organ/form?id=${organ.id}">体检单位<shiro:hasPermission name="wshbj:organ:edit">${not empty organ.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:organ:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 
-	<div class="row">
+	<div class="">
 	<form:form id="inputForm" modelAttribute="organ" action="${ctx}/wshbj/organ/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -48,11 +48,13 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions">
+		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:organ:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
+		<div class="cl"></div>
 	</form:form>
+
 	</div>
 
 	    <div class="alert alert-success">
