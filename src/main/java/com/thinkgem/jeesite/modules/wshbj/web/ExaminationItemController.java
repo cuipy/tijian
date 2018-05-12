@@ -78,22 +78,22 @@ public class ExaminationItemController extends BaseController {
 		return "modules/wshbj/examinationItemList";
 	}
 
-	@RequiresPermissions("wshbj:examinationItem:edit")
-	@RequestMapping(value = {"list4Pull", ""})
-	public String list4Pull(ExaminationItem examinationItem, HttpServletRequest request, HttpServletResponse response, Model model) {
-		examinationItem.setOwner(null);
-		examinationItem.setReferenceFlag("1");
-		Page<ExaminationItem> page = examinationItemService.findPage(new Page<ExaminationItem>(request, response), examinationItem);
-		model.addAttribute("page", page);
-		return "modules/wshbj/examinationItemList4Pull";
-	}
-
-	@RequiresPermissions("wshbj:examinationItem:edit")
-	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
-	@ResponseBody
-	public RequestResult saveByPull(HttpServletRequest request, String examinationItemIds) {
-		return examinationItemService.saveByPull(UserUtils.getUser(),examinationItemIds);
-	}
+//	@RequiresPermissions("wshbj:examinationItem:edit")
+//	@RequestMapping(value = {"list4Pull", ""})
+//	public String list4Pull(ExaminationItem examinationItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+//		examinationItem.setOwner(null);
+//		examinationItem.setReferenceFlag("1");
+//		Page<ExaminationItem> page = examinationItemService.findPage(new Page<ExaminationItem>(request, response), examinationItem);
+//		model.addAttribute("page", page);
+//		return "modules/wshbj/examinationItemList4Pull";
+//	}
+//
+//	@RequiresPermissions("wshbj:examinationItem:edit")
+//	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
+//	@ResponseBody
+//	public RequestResult saveByPull(HttpServletRequest request, String examinationItemIds) {
+//		return examinationItemService.saveByPull(UserUtils.getUser(),examinationItemIds);
+//	}
 
 	@RequiresPermissions("wshbj:examinationItem:view")
 	@RequestMapping(value = "form")
@@ -239,43 +239,43 @@ public class ExaminationItemController extends BaseController {
 		return "modules/wshbj/assigningList";
 	}
 
-	@RequiresPermissions("wshbj:examinationItem:viewByCenter")
-	@RequestMapping(value = {"listByCenter", ""})
-	public String listByCenter(ExaminationItem examinationItem, HttpServletRequest request, HttpServletResponse response, Model model) {
-		examinationItem.setOwner(null);
-		examinationItem.setReferenceFlag("1");
-		Page<ExaminationItem> page = examinationItemService.findPage(new Page<ExaminationItem>(request, response), examinationItem);
-		model.addAttribute("page", page);
-		return "modules/wshbj/examinationItemListByCenter";
-	}
-
-	@RequiresPermissions("wshbj:examinationItem:viewByCenter")
-	@RequestMapping(value = "formByCenter")
-	public String formByCenter(ExaminationItem examinationItem, Model model) {
-		model.addAttribute("examinationItem", examinationItem);
-		return "modules/wshbj/examinationItemFormByCenter";
-	}
-
-	@RequiresPermissions("wshbj:examinationItem:editByCenter")
-	@RequestMapping(value = "saveByCenter")
-	public String saveByCenter(ExaminationItem examinationItem, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, examinationItem)){
-			return form(examinationItem, model);
-		}
-		examinationItem.setOwner(null);
-		examinationItem.setReferenceFlag("1");
-		examinationItemService.saveByCenter(examinationItem);
-		addMessage(redirectAttributes, "保存检查项目成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItem/listByCenter?repage";
-	}
-
-	@RequiresPermissions("wshbj:examinationItem:editByCenter")
-	@RequestMapping(value = "deleteByCenter")
-	public String deleteByCenter(ExaminationItem examinationItem, RedirectAttributes redirectAttributes) {
-		examinationItemService.delete(examinationItem);
-		addMessage(redirectAttributes, "删除检查项目成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItem/listByCenter?repage";
-	}
+//	@RequiresPermissions("wshbj:examinationItem:viewByCenter")
+//	@RequestMapping(value = {"listByCenter", ""})
+//	public String listByCenter(ExaminationItem examinationItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+//		examinationItem.setOwner(null);
+//		examinationItem.setReferenceFlag("1");
+//		Page<ExaminationItem> page = examinationItemService.findPage(new Page<ExaminationItem>(request, response), examinationItem);
+//		model.addAttribute("page", page);
+//		return "modules/wshbj/examinationItemListByCenter";
+//	}
+//
+//	@RequiresPermissions("wshbj:examinationItem:viewByCenter")
+//	@RequestMapping(value = "formByCenter")
+//	public String formByCenter(ExaminationItem examinationItem, Model model) {
+//		model.addAttribute("examinationItem", examinationItem);
+//		return "modules/wshbj/examinationItemFormByCenter";
+//	}
+//
+//	@RequiresPermissions("wshbj:examinationItem:editByCenter")
+//	@RequestMapping(value = "saveByCenter")
+//	public String saveByCenter(ExaminationItem examinationItem, Model model, RedirectAttributes redirectAttributes) {
+//		if (!beanValidator(model, examinationItem)){
+//			return form(examinationItem, model);
+//		}
+//		examinationItem.setOwner(null);
+//		examinationItem.setReferenceFlag("1");
+//		examinationItemService.saveByCenter(examinationItem);
+//		addMessage(redirectAttributes, "保存检查项目成功");
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItem/listByCenter?repage";
+//	}
+//
+//	@RequiresPermissions("wshbj:examinationItem:editByCenter")
+//	@RequestMapping(value = "deleteByCenter")
+//	public String deleteByCenter(ExaminationItem examinationItem, RedirectAttributes redirectAttributes) {
+//		examinationItemService.delete(examinationItem);
+//		addMessage(redirectAttributes, "删除检查项目成功");
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItem/listByCenter?repage";
+//	}
 
 
 

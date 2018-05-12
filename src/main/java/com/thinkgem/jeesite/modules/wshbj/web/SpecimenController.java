@@ -59,22 +59,22 @@ public class SpecimenController extends BaseController {
 		return "modules/wshbj/specimenList";
 	}
 
-	@RequiresPermissions("wshbj:specimen:edit")
-	@RequestMapping(value = {"list4Pull", ""})
-	public String list4Pull(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
-		specimen.setOwner(null);
-		specimen.setReferenceFlag("1");
-		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
-		model.addAttribute("page", page);
-		return "modules/wshbj/specimenList4Pull";
-	}
-
-	@RequiresPermissions("wshbj:specimen:edit")
-	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
-	@ResponseBody
-	public RequestResult saveByPull(HttpServletRequest request, String especimenIds) {
-		return specimenService.saveByPull(UserUtils.getUser(),especimenIds);
-	}
+//	@RequiresPermissions("wshbj:specimen:edit")
+//	@RequestMapping(value = {"list4Pull", ""})
+//	public String list4Pull(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
+//		specimen.setOwner(null);
+//		specimen.setReferenceFlag("1");
+//		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
+//		model.addAttribute("page", page);
+//		return "modules/wshbj/specimenList4Pull";
+//	}
+//
+//	@RequiresPermissions("wshbj:specimen:edit")
+//	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
+//	@ResponseBody
+//	public RequestResult saveByPull(HttpServletRequest request, String especimenIds) {
+//		return specimenService.saveByPull(UserUtils.getUser(),especimenIds);
+//	}
 
 	@RequiresPermissions("wshbj:specimen:view")
 	@RequestMapping(value = "form")
@@ -112,41 +112,41 @@ public class SpecimenController extends BaseController {
 	}
 
 
-	@RequiresPermissions("wshbj:specimen:viewByCenter")
-	@RequestMapping(value = {"listByCenter", ""})
-	public String listByCenter(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
-		specimen.setOwner(null);
-		specimen.setReferenceFlag("1");
-		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
-		model.addAttribute("page", page);
-		return "modules/wshbj/specimenListByCenter";
-	}
-
-	@RequiresPermissions("wshbj:specimen:viewByCenter")
-	@RequestMapping(value = "formByCenter")
-	public String formByCenter(Specimen specimen, Model model) {
-		model.addAttribute("specimen", specimen);
-		return "modules/wshbj/specimenFormByCenter";
-	}
-
-	@RequiresPermissions("wshbj:specimen:editByCenter")
-	@RequestMapping(value = "saveByCenter")
-	public String saveByCenter(Specimen specimen, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, specimen)){
-			return form(specimen, model);
-		}
-		specimen.setOwner(null);
-		specimen.setReferenceFlag("1");
-		specimenService.save(specimen);
-		addMessage(redirectAttributes, "保存检查标本类型成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
-	}
-
-	@RequiresPermissions("wshbj:specimen:editByCenter")
-	@RequestMapping(value = "deleteByCenter")
-	public String deleteByCenter(Specimen specimen, RedirectAttributes redirectAttributes) {
-		specimenService.delete(specimen);
-		addMessage(redirectAttributes, "删除检查标本类型成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
-	}
+//	@RequiresPermissions("wshbj:specimen:viewByCenter")
+//	@RequestMapping(value = {"listByCenter", ""})
+//	public String listByCenter(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
+//		specimen.setOwner(null);
+//		specimen.setReferenceFlag("1");
+//		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
+//		model.addAttribute("page", page);
+//		return "modules/wshbj/specimenListByCenter";
+//	}
+//
+//	@RequiresPermissions("wshbj:specimen:viewByCenter")
+//	@RequestMapping(value = "formByCenter")
+//	public String formByCenter(Specimen specimen, Model model) {
+//		model.addAttribute("specimen", specimen);
+//		return "modules/wshbj/specimenFormByCenter";
+//	}
+//
+//	@RequiresPermissions("wshbj:specimen:editByCenter")
+//	@RequestMapping(value = "saveByCenter")
+//	public String saveByCenter(Specimen specimen, Model model, RedirectAttributes redirectAttributes) {
+//		if (!beanValidator(model, specimen)){
+//			return form(specimen, model);
+//		}
+//		specimen.setOwner(null);
+//		specimen.setReferenceFlag("1");
+//		specimenService.save(specimen);
+//		addMessage(redirectAttributes, "保存检查标本类型成功");
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
+//	}
+//
+//	@RequiresPermissions("wshbj:specimen:editByCenter")
+//	@RequestMapping(value = "deleteByCenter")
+//	public String deleteByCenter(Specimen specimen, RedirectAttributes redirectAttributes) {
+//		specimenService.delete(specimen);
+//		addMessage(redirectAttributes, "删除检查标本类型成功");
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
+//	}
 }

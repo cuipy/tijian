@@ -59,22 +59,22 @@ public class IndustryController extends BaseController {
 	}
 
 
-	@RequiresPermissions("wshbj:industry:edit")
-	@RequestMapping(value = {"list4Pull", ""})
-	public String list4Pull(Industry industry, HttpServletRequest request, HttpServletResponse response, Model model) {
-		industry.setOwner(null);
-		industry.setReferenceFlag("1");
-		Page<Industry> page = industryService.findPage(new Page<Industry>(request, response), industry);
-		model.addAttribute("page", page);
-		return "modules/wshbj/industryList4Pull";
-	}
-
-	@RequiresPermissions("wshbj:industry:edit")
-	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
-	@ResponseBody
-	public RequestResult saveByPull(HttpServletRequest request, String industryIds) {
-		return industryService.saveByPull(UserUtils.getUser(),industryIds);
-	}
+//	@RequiresPermissions("wshbj:industry:edit")
+//	@RequestMapping(value = {"list4Pull", ""})
+//	public String list4Pull(Industry industry, HttpServletRequest request, HttpServletResponse response, Model model) {
+//		industry.setOwner(null);
+//		industry.setReferenceFlag("1");
+//		Page<Industry> page = industryService.findPage(new Page<Industry>(request, response), industry);
+//		model.addAttribute("page", page);
+//		return "modules/wshbj/industryList4Pull";
+//	}
+//
+//	@RequiresPermissions("wshbj:industry:edit")
+//	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
+//	@ResponseBody
+//	public RequestResult saveByPull(HttpServletRequest request, String industryIds) {
+//		return industryService.saveByPull(UserUtils.getUser(),industryIds);
+//	}
 
 	@RequiresPermissions("wshbj:industry:view")
 	@RequestMapping(value = "form")
@@ -113,41 +113,41 @@ public class IndustryController extends BaseController {
 	}
 
 
-	@RequiresPermissions("wshbj:industry:viewByCenter")
-	@RequestMapping(value = {"listByCenter", ""})
-	public String listByCenter(Industry industry, HttpServletRequest request, HttpServletResponse response, Model model) {
-		industry.setOwner(null);
-		industry.setReferenceFlag("1");
-		Page<Industry> page = industryService.findPage(new Page<Industry>(request, response), industry);
-		model.addAttribute("page", page);
-		return "modules/wshbj/industryListByCenter";
-	}
-
-	@RequiresPermissions("wshbj:industry:viewByCenter")
-	@RequestMapping(value = "formByCenter")
-	public String formByCenter(Industry industry, Model model) {
-		model.addAttribute("industry", industry);
-		return "modules/wshbj/industryFormByCenter";
-	}
-
-	@RequiresPermissions("wshbj:industry:editByCenter")
-	@RequestMapping(value = "saveByCenter")
-	public String saveByCenter(Industry industry, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, industry)){
-			return form(industry, model);
-		}
-		industry.setOwner(null);
-		industry.setReferenceFlag("1");
-		industryService.save(industry);
-		addMessage(redirectAttributes, "保存行业管理成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/industry/listByCenter?repage";
-	}
-
-	@RequiresPermissions("wshbj:industry:editByCenter")
-	@RequestMapping(value = "deleteByCenter")
-	public String deleteByCenter(Industry industry, RedirectAttributes redirectAttributes) {
-		industryService.delete(industry);
-		addMessage(redirectAttributes, "删除行业管理成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/industry/listByCenter?repage";
-	}
+//	@RequiresPermissions("wshbj:industry:viewByCenter")
+//	@RequestMapping(value = {"listByCenter", ""})
+//	public String listByCenter(Industry industry, HttpServletRequest request, HttpServletResponse response, Model model) {
+//		industry.setOwner(null);
+//		industry.setReferenceFlag("1");
+//		Page<Industry> page = industryService.findPage(new Page<Industry>(request, response), industry);
+//		model.addAttribute("page", page);
+//		return "modules/wshbj/industryListByCenter";
+//	}
+//
+//	@RequiresPermissions("wshbj:industry:viewByCenter")
+//	@RequestMapping(value = "formByCenter")
+//	public String formByCenter(Industry industry, Model model) {
+//		model.addAttribute("industry", industry);
+//		return "modules/wshbj/industryFormByCenter";
+//	}
+//
+//	@RequiresPermissions("wshbj:industry:editByCenter")
+//	@RequestMapping(value = "saveByCenter")
+//	public String saveByCenter(Industry industry, Model model, RedirectAttributes redirectAttributes) {
+//		if (!beanValidator(model, industry)){
+//			return form(industry, model);
+//		}
+//		industry.setOwner(null);
+//		industry.setReferenceFlag("1");
+//		industryService.save(industry);
+//		addMessage(redirectAttributes, "保存行业管理成功");
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/industry/listByCenter?repage";
+//	}
+//
+//	@RequiresPermissions("wshbj:industry:editByCenter")
+//	@RequestMapping(value = "deleteByCenter")
+//	public String deleteByCenter(Industry industry, RedirectAttributes redirectAttributes) {
+//		industryService.delete(industry);
+//		addMessage(redirectAttributes, "删除行业管理成功");
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/industry/listByCenter?repage";
+//	}
 }

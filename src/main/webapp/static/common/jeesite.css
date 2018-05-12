@@ -40,7 +40,7 @@ input.btn:hover {*color:#333333}
 
 .supcan {border:1px #d3d3d3 solid;height:300px;}
 
-.form-horizontal .control-group {padding-bottom:6px;margin-bottom:6px;border-bottom:1px dotted #dddddd;}
+.form-horizontal .control-group {min-height:37px;padding-bottom:6px;margin-bottom:6px;margin-left:0px;border-bottom:1px dotted #dddddd;}
 legend + .control-group {margin-top:6px;}
 .controls .lbl {display:inline-block;padding-top:5px;margin-bottom:0;vertical-align:middle;}
 .measure-input {background:url("../images/ruler.gif") repeat-x scroll 0 bottom transparent;}
@@ -57,7 +57,7 @@ legend + .control-group {margin-top:6px;}
 .form-search .ul-form li.btns{padding-left:10px;}
 .form-search .ul-form li.btns .btn{margin-right:5px;}
 
-.form-horizontal {margin:0 10px;}
+.form-horizontal {margin:0px;}
 
 .form-horizontal .control-label {padding-top:3px;}
 .form-horizontal .controls {text-align:left;}
@@ -100,9 +100,15 @@ legend + .control-group {margin-top:6px;}
     color:#f30;
 }
 
+.form-div{
+    max-width:1440px;
+}
 .form-horizontal .control-label{
     max-width:130px;
 }
 .form-horizontal .controls {
     margin-left: 130px;
+}
+.help-div{
+    padding-left:0px;
 }

@@ -55,7 +55,7 @@
 
 
              var lastUserName='';
-             $('#userInfo').autocompleter({
+             $('#userAuto').autocompleter({
 
                 highlightMatches: true,
                 template: '{{ label }}',
@@ -82,7 +82,7 @@
                 }
             });
 
-            setTimeout("$('#userInfo').focus();",1000);
+            setTimeout("$('#userAuto').focus();",1000);
         });
 		function addRow(list, idx, tpl, row){
 			$(list).append(Mustache.render(tpl, {
@@ -184,13 +184,13 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 
-    <div class="row">
+    <div style="max-width:1024px">
 
 		<div class="control-group span12">
 			 <label class="control-label"><font color="red">*</font> 编号：</label>
 			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45"  readonly="true" class="input-large"/>
-                <span class="help-inline">编号无需录入，在保存的时候根据系统配置自动生成。编号格式：全局设置编号前缀+{yyyyMMdd}[4位数字]</span>
+				<form:input path="code" htmlEscape="false" maxlength="45"  readonly="true" class="input-medium"/>
+                <span class="help-inline">编号无需录入。行业中设置体检编号生成规则</span>
 			</div>
 		</div>
         <div class="cl"></div>
@@ -199,7 +199,7 @@
 			<div class="controls">
 			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
 			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
-			    <div class="autocompleter-box"><input type="text" id="userInfo" name="userInfo"
+			    <div class="autocompleter-box"><input type="text" id="userAuto" name="userInfo"
 			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if>
 			   maxlength="50" class="input-xxlarge required" /></div>
 
@@ -208,73 +208,69 @@
 		</div>
         <div class="cl"></div>
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-large" readonly="true"/>
+				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-medium" readonly="true"/>
 			</div>
 		</div>
 
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-large"  readonly="true"/>
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"  readonly="true"/>
 
 			</div>
 		</div>
 
 
-
-
-
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
 
 			    <input type="hidden" id="sex" name="sex"  value="${examinationRecord.sex}">
-				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-large" readonly="true">
+				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-medium" readonly="true">
 
 			</div>
 		</div>
-		<div class="control-group span6">
+		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-large" readonly="true">
+                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-medium" readonly="true">
 
             </div>
         </div>
 
-	<div class="control-group span6">
+	<div class="control-group span4">
 		<label class="control-label">行业：</label>
 		<div class="controls">
 		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
-           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-large" readonly="true">
+           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-medium" readonly="true">
 
 		</div>
 	</div>
-	<div class="control-group span6" >
+	<div class="control-group span4" >
 		<label class="control-label">单位：</label>
 		<div class="controls">
 		    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-large" readonly="true">
+            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium" readonly="true">
 
 		</div>
 	</div>
-	<div class="control-group span6">
+	<div class="control-group span4">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
 			<input type="hidden" id="postId" name="postId"  value="${examinationRecord.postId}">
-            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-large" readonly="true">
+            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium" readonly="true">
 
 		</div>
 	</div>
 
-		<div class="cl"></div>
-		<div class="control-group span12">
+		<div class="control-group span8">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+				<form:input path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="cl"></div>
@@ -288,11 +284,11 @@
 				<div class="control-group span6">
         			<label class="control-label">价格：</label>
         			<div class="controls">
-        				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-large "/>
+        				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium "/>
         			</div>
         		</div>
 
-		<div class="control-group span12" id="packageIdDiv" style="<c:if test="${examinationRecord.itemType eq 2}">display: none;</c:if>">
+		<div class="control-group span12" id="packageIdDiv">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
 
@@ -305,14 +301,24 @@
 
 			</div>
 		</div>
-		<div class="control-group span12" id="itemsDiv" style="<c:if test="${empty examinationRecord.itemType or examinationRecord.itemType eq 1}">display: none;</c:if>">
-			<label class="control-label">检查项目列表：</label>
+		<div class="control-group span12" id="itemsDiv1" >
+            <label class="control-label">套餐包含项目：</label>
+            <div class="controls">
+                <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
+                <input id="tcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}"
+              checked='checked' disabled>
+                <label for="tcri${ri.id}"> ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                </c:forEach>
+            </div>
+        </div>
+		<div class="control-group span12" id="itemsDiv" >
+			<label class="control-label">补充体检项目：</label>
 			<div class="controls">
 			    <c:if test="${not empty examinationItemList  }">
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
-				<input id="ri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
+				<input id="bcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
 				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
-				<label for="ri${ri.id}">[${ri.code}] ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
+				<label for="bcri${ri.id}"> ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
 				</c:forEach>
 				</c:if>
 			</div>
@@ -322,11 +328,11 @@
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
-
+<div class="cl"></div>
 </div>
 	</form:form>
 	</div>
-
+<div class="help-div">
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 信息登记是在体检前进行登记<br>
@@ -342,7 +348,7 @@
       3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
 
     </div>
-
+</div>
 
 </body>
 </html>
