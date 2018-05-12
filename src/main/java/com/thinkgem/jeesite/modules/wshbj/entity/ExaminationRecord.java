@@ -53,7 +53,10 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	//体检状态：10-未体检完，20-体检不合格，30-复检合格，40-可制证，50-已制证
 	private String status;
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
-	private Date uploadDate;
+	private Date uploadDate;   // 提交到运营服务中心的时间
+
+	private Date successTime;    // 体检成功的时间
+	private Date failTime;		// 体检失败的时间
 
 
 	public Date getUploadDate() {
@@ -62,6 +65,23 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	public void setUploadDate(Date uploadDate) {
 		this.uploadDate = uploadDate;
+	}
+
+
+	public Date getSuccessTime() {
+		return successTime;
+	}
+
+	public void setSuccessTime(Date successTime) {
+		this.successTime = successTime;
+	}
+
+	public Date getFailTime() {
+		return failTime;
+	}
+
+	public void setFailTime(Date failTime) {
+		this.failTime = failTime;
 	}
 
 	/**

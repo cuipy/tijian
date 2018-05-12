@@ -48,6 +48,25 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	private Date uploadDate;
 
+	private Date grabSampleTime;   // 采样时间
+	private Date recordResultTime;			// 录入结果时间
+
+
+	public Date getGrabSampleTime() {
+		return grabSampleTime;
+	}
+
+	public void setGrabSampleTime(Date grabSampleTime) {
+		this.grabSampleTime = grabSampleTime;
+	}
+
+	public Date getRecordResultTime() {
+		return recordResultTime;
+	}
+
+	public void setRecordResultTime(Date recordResultTime) {
+		this.recordResultTime = recordResultTime;
+	}
 
 	public Date getUploadDate() {
 		return uploadDate;
