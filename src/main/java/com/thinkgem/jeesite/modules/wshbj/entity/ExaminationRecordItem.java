@@ -33,6 +33,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String recordId;		// 检查记录 父类
 	private String itemId;		// 检查项目
 	private String itemName;		// 项目
+	private String itemNamePinyin;		// 名字拼音
 	private String needSamples;		//是否需要样本：0-否，1-是
 	private String specimenId;		// 体检标本类型ID  最终样本编号的specimenId必须与这个一致
 	private String sampleCode;		// 样本编号
@@ -51,6 +52,14 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private Date grabSampleTime;   // 采样时间
 	private Date recordResultTime;			// 录入结果时间
 
+
+	public String getItemNamePinyin() {
+		return itemNamePinyin;
+	}
+
+	public void setItemNamePinyin(String itemNamePinyin) {
+		this.itemNamePinyin = itemNamePinyin;
+	}
 
 	public Date getGrabSampleTime() {
 		return grabSampleTime;

@@ -40,6 +40,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private ExaminationUser user;		// 体检用户
 	private String code;		// 编号
 	private String name;		// 姓名
+	private String namePinyin;		// 名字拼音
 	private String phoneNumber;		// 联系电话
 	private String sex;		// 性别
 	private String industryId;		// 行业
@@ -58,6 +59,14 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private Date successTime;    // 体检成功的时间
 	private Date failTime;		// 体检失败的时间
 
+
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
+	}
 
 	public Date getUploadDate() {
 		return uploadDate;

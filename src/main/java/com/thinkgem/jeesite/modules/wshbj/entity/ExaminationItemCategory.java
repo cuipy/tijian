@@ -20,6 +20,7 @@ public class ExaminationItemCategory extends DataEntity<ExaminationItemCategory>
 	private static final long serialVersionUID = 1L;
 	private String code;		// 编号
 	private String name;		// 名称
+	private String namePinyin;		// 名字拼音
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	
@@ -29,6 +30,14 @@ public class ExaminationItemCategory extends DataEntity<ExaminationItemCategory>
 
 	public ExaminationItemCategory(String id){
 		super(id);
+	}
+
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	@Length(min=1, max=45, message="编号长度必须介于 1 和 45 之间")

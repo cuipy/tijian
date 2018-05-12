@@ -22,6 +22,7 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 	private static final long serialVersionUID = 1L;
 	private String code;		// 编号
 	private String name;		// 名称
+	private String namePinyin;    // 名称的拼音
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	
@@ -31,6 +32,14 @@ public class ExaminationCategory extends DataEntity<ExaminationCategory> {
 
 	public ExaminationCategory(String id){
 		super(id);
+	}
+
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	@ExpressSequence(express="JCLB{yyyy}[3]",describe = "检查大类编号")

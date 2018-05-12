@@ -38,7 +38,7 @@ public class ExaminationRecordItemUploadService extends CrudService<ExaminationR
 
 		String url = Global.getCenterServerUrl()+"/rest/examination_record_item/save";
 
-		RequestResult rr = HttpRequestUtils.doPost(url, params);
+		RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
 		if(rr!=null&&rr.getState()==1){
 			updateUploadDate(examinationRecordItem);
 		}

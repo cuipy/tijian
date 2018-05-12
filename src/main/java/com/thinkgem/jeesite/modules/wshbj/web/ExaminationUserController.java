@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -123,6 +124,10 @@ public class ExaminationUserController extends BaseController {
 		if(StringUtils.isEmpty(examinationUser.getCode())){
 			String c=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationUser.class,"code");
 			examinationUser.setCode(c);
+		}
+		if(StringUtils.isEmpty(examinationUser.getNamePinyin())){
+			String py=PinyinUtils.getStringPinYin(examinationUser.getName());
+			examinationUser.setNamePinyin(py);
 		}
 		examinationUserService.save(examinationUser);
 		addMessage(redirectAttributes, "保存体检用户成功");

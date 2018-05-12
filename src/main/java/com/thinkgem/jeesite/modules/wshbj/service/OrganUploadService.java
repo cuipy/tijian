@@ -46,7 +46,7 @@ public class OrganUploadService extends CrudService<OrganDao, Organ> {
 
 		String url = Global.getCenterServerUrl()+"/rest/organ/save";
 
-		RequestResult rr = HttpRequestUtils.doPost(url, params);
+		RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
 		if(rr!=null&&rr.getState()==1){
 			updateUploadDate(organ);
 		}

@@ -36,7 +36,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private static final long serialVersionUID = 1L;
 	private String code;		// 编号
 	private String name;		// 姓名
-
+	private String namePinyin;		// 姓名拼音
 	private String headImgPath;		// 真实照片
 	private String phoneNumber;		// 联系电话
 	private String idNumber;		// 身份证号
@@ -287,5 +287,13 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		m.put("label",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
 
 		return m;
+	}
+
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 }

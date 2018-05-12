@@ -4,7 +4,9 @@
 <head>
 	<title>体检用户管理</title>
 	<meta name="decorator" content="default"/>
-
+    <style type="text/css">
+    .radios-sex>span{min-width:70px;}
+    </style>
     <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
     <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
 	<script type="text/javascript">
@@ -95,6 +97,13 @@
 			</div>
 		</div>
 		<div class="control-group span6">
+            <label class="control-label">姓名全拼：</label>
+            <div class="controls">
+                <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
+            </div>
+        </div>
+
+		<div class="control-group span6">
 			<label class="control-label">身份证号：</label>
 			<div class="controls">
 				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-medium required"/>
@@ -118,11 +127,8 @@
 		</div>
 		<div class="control-group span6">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
-			<div class="controls">
-				<form:select path="sex" cssStyle="width: 100px">
-					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline"> </span>
+			<div class="controls radios-div radios-sex">
+				<form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			</div>
 		</div>
 

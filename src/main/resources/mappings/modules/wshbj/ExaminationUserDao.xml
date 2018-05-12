@@ -6,6 +6,8 @@
 		a.id AS "id",
 		a.code AS "code",
 		a.name AS "name",
+		a.name_pinyin AS "namePinyin",
+
 		a.head_img_path as "headImgPath",
 		a.phone_number AS "phoneNumber",
 		a.id_number AS "idNumber",
@@ -98,7 +100,7 @@
 		INSERT INTO bj_examination_user(
 			id,
 			code,
-			name,
+			name, name_pinyin,
 			<if test="headImgPath != null ">head_img_path,</if>
 			phone_number,
 			sex,
@@ -117,7 +119,7 @@
 		) VALUES (
 			#{id},
 			#{code},
-			#{name},
+			#{name}, #{namePinyin},
 		<if test="headImgPath != null ">#{headImgPath},</if>
 			#{phoneNumber},
 			#{sex},
@@ -139,8 +141,8 @@
 	<update id="update">
 		UPDATE bj_examination_user SET 	
 			code = #{code},
-			name = #{name},
-		<if test="headImgPath != null ">head_img_path=#{headImgPath},</if>
+			name = #{name}, name_pinyin=#{namePinyin},
+		<if test="headImgPath != null and headImgPath != '' ">head_img_path=#{headImgPath},</if>
 			phone_number = #{phoneNumber},
 			sex = #{sex},
 			id_number = #{idNumber},

@@ -20,6 +20,7 @@ public class Industry extends DataEntity<Industry> {
 	private static final long serialVersionUID = 1L;
 	private String code;		// 编号
 	private String name;		// 名称
+	private String namePinyin;		// 名字拼音
 	private String defaultPackageId;    // 缺省套餐Id
 
 	private String expExamCode;				// 行业的体检编号生成规则
@@ -33,6 +34,14 @@ public class Industry extends DataEntity<Industry> {
 
 	public Industry(String id){
 		super(id);
+	}
+
+	public String getNamePinyin() {
+		return namePinyin;
+	}
+
+	public void setNamePinyin(String namePinyin) {
+		this.namePinyin = namePinyin;
 	}
 
 	public String getDefaultPackageId() {

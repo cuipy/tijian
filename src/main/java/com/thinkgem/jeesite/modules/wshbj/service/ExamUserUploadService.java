@@ -38,7 +38,7 @@ public class ExamUserUploadService extends CrudService<ExaminationUserDao, Exami
 
 		String url = Global.getCenterServerUrl()+"/rest/exam_user/save";
 
-		RequestResult rr = HttpRequestUtils.doPost(url, params);
+		RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
 		if(rr!=null&&rr.getState()==1){
 			updateUploadDate(examinationUser);
 		}
