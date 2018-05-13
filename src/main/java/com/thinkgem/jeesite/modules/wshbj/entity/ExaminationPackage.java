@@ -8,7 +8,11 @@ import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.modules.wshbj.dao.PackageItemDao;
 import com.thinkgem.jeesite.modules.wshbj.service.PackageItemService;
 import org.hibernate.validator.constraints.Length;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import com.google.common.collect.Lists;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -120,5 +124,21 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 			return lst;
 		}
 		return null;
+	}
+
+	@JsonIgnore
+	public Map<String,Object> getMap(){
+		Map<String,Object> m=new HashMap();
+		m.put("id",id);
+		m.put("name",name);
+		m.put("namePinyin",this.namePinyin);
+		m.put("price",this.price);
+		m.put("orderNumb",this.orderNumb);
+
+
+		m.put("value",name);
+		m.put("label",name+"["+namePinyin+"]");
+
+		return m;
 	}
 }

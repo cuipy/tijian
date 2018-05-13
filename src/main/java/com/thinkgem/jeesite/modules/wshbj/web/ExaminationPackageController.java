@@ -8,9 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationCategory;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationItem;
-import com.thinkgem.jeesite.modules.wshbj.entity.PackageItem;
+import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationCategoryService;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
 import com.thinkgem.jeesite.modules.wshbj.service.PackageItemService;
@@ -18,19 +16,18 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationPackage;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationPackageService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 体检套餐Controller
@@ -132,5 +129,28 @@ public class ExaminationPackageController extends BaseController {
 		addMessage(redirectAttributes, "删除体检套餐成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationPackage/?repage";
 	}
+
+	@RequiresPermissions("wshbj:examinationPackage:view")
+	@GetMapping(value = {"ajax_for_autocompleter"})
+	@ResponseBody
+	public List<Map<String,Object>> ajax_for_autocompleter(String query,Integer limit) {
+
+		String strQuery=StringUtils.forSuperLikeQuery(query);
+		ExaminationPackage ep=new ExaminationPackage();
+		ep.setLikeField(strQuery);
+
+		Page<ExaminationPackage> page=new Page<ExaminationPackage>();
+		page.setPageNo(1);
+		page.setPageSize(limit);
+		Page<ExaminationPackage> pp = examinationPackageService.pageLike(page,ep);
+		List<Map<String,Object>> lst2=new ArrayList();
+
+		for(ExaminationPackage p:pp.getList()){
+			lst2.add(p.getMap());
+		}
+
+		return lst2;
+	}
+
 
 }

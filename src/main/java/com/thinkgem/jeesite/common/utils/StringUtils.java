@@ -439,7 +439,18 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 		return sb.toString();
 	}
 
-
+	public static String forSuperLikeQuery(String query){
+		String strQuery="%%";
+		if(StringUtils.isNotEmpty(query)){
+			strQuery=query;
+			for(int i=query.length();i>=0;i--){
+				String str1=StringUtils.substring(strQuery,0,i);
+				String str2=StringUtils.substring(strQuery,i,strQuery.length());
+				strQuery=str1+"%"+str2;
+			}
+		}
+		return strQuery;
+	}
 
     
 }

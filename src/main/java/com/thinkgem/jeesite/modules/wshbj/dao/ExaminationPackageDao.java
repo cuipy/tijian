@@ -9,6 +9,8 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationPackage;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 
+import java.util.List;
+
 /**
  * 体检套餐DAO接口
  * @author zhxl
@@ -17,4 +19,5 @@ import org.springframework.cache.annotation.Cacheable;
 @MyBatisDao
 public interface ExaminationPackageDao extends CrudDao<ExaminationPackage> {
 
+    List<ExaminationPackage> listLike(ExaminationPackage ep);
 }

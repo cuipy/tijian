@@ -69,6 +69,24 @@
 			</otherwise>
 		</choose>
 	</select>
+
+	<select id="listLike" resultType="ExaminationPackage">
+		SELECT
+		<include refid="examinationPackageColumns"/>
+		FROM bj_examination_package a
+		<include refid="examinationPackageJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND ( a.name LIKE #{likeField}  or a.name_pinyin like  #{likeField} )
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.order_numb,a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
 	
 	<insert id="insert">
 		INSERT INTO bj_examination_package(

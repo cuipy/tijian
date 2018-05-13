@@ -77,5 +77,10 @@ public class ExaminationPackageService extends CrudService<ExaminationPackageDao
 		super.delete(examinationPackage);
 
 	}
-	
+
+    public Page<ExaminationPackage> pageLike(Page<ExaminationPackage> page,ExaminationPackage ep) {
+		ep.setPage(page);
+		page.setList(dao.listLike(ep));
+		return page;
+	}
 }

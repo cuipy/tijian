@@ -22,6 +22,7 @@
 					}
 				}
 			});
+
 		});
 	</script>
 </head>
@@ -67,8 +68,12 @@
         <div class="control-group span6">
             <label class="control-label">默认套餐：</label>
             <div class="controls">
-                <form:hidden path="defaultPackageId"/>
-              <div class="autocompleter-box"> <form:input path="defaultPackageName" htmlEscape="false" maxlength="100" class="input-medium "/></div>
+               <form:select path="defaultPackageId" class="input-medium">
+                    <form:option value="">
+                        请选择体检套餐
+                    </form:option>
+                    <form:options items="${examinationPackages}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+                </form:select>
             </div>
         </div>
 

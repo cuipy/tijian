@@ -329,9 +329,9 @@
                     data.jqxhr.abort();
                 }
 
-                if(!data.query||data.query.length<3){
-                    return;
-                }
+//                if(!data.query||data.query.length<3){
+//                    return;
+//                }
 
                 var ajaxData = $.extend({
                     limit: data.limit,
