@@ -153,15 +153,50 @@
         }
 
         // 选中某个体检套餐，更新总费用
-        function refreshPackagePrice() {
-            var price=$("input[type='radio'][id*='packageId_']:checked").attr('data-price');
-            $("#packagePrice").val(price);
+        function chkPackage(packageId) {
+            var itemIds=$("#packageId_"+packageId).attr("data-itemIds");
+
+            // 1 显示套餐必选项目
+            $("label[id^='lbl_tcri']").each(function(){
+                var lblId=$(this).attr('id');
+                // 获得对应checkbox
+                var chk=$('#tcri'+lblId.substring(8));
+
+                // 获得要搜索的itemId，最后带 逗号
+                var titemId=lblId.substring(8)+",";
+                if(itemIds.indexOf(titemId)>=0){
+                    $(this).css('display','');
+                    chk.attr('checked','checked');
+                }else{
+                     $(this).css('display','none');
+                     chk.removeAttr('checked');
+                }
+            })
+
+            // 2 隐藏自由选择项目中 的必选项目
+            $("label[id^='lbl_bcri']").each(function(){
+                var lblId=$(this).attr('id');
+                // 获得对应checkbox
+                var chk=$('#bcri'+lblId.substring(8));
+
+                // 获得要搜索的itemId，最后带 逗号
+                var titemId=lblId.substring(8)+",";
+                if(itemIds.indexOf(titemId)<0){
+                    $(this).css('display','');
+                }else{
+                     $(this).css('display','none');
+                     chk.removeAttr('checked');
+                }
+            })
+
+            // 刷新体检费用
+            refreshItemsPrice();
         }
 
         // 当勾选体检项目的时候，刷新体检项目总费用
         function refreshItemsPrice(){
             var aprice=0;
-            $("input[type='checkbox'][id*=ri]:checked").each(function(i){
+            $("input[type='checkbox'][id^=tcri]:checked,input[type='checkbox'][id^=bcri]:checked").each(function(i){
                 var price=$(this).attr("data-price");
                 aprice+= parseInt(price);
             })
@@ -201,11 +236,11 @@
 		</div>
         <div class="cl"></div>
 		<div class="control-group span12">
-			<label class="control-label"><font color="red">*</font>  身份证/手机号：</label>
+			<label class="control-label"><font color="red">*</font> 选择体检人：</label>
 			<div class="controls">
 			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
 			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
-			    <div class="autocompleter-box"><input type="text" id="userAuto" name="userInfo"
+			    <div class="autocompleter-box"><input type="text" id="userAuto" name="userInfo" placeholder="姓名/姓名拼音/身份证/手机号"
 			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if>
 			   maxlength="50" class="input-xxlarge required" /></div>
 
@@ -280,55 +315,50 @@
 			</div>
 		</div>
 		<div class="cl"></div>
-		<div class="control-group span6">
-			<label class="control-label">体检项目方式：</label>
-			<div class="controls">
-				<input type="radio" id="itemType1" name="itemType" value="1" <c:if test="${examinationRecord.itemType eq null or examinationRecord.itemType eq 1}">checked="checked"</c:if>/><label for="itemType1">体检套餐</label>
-				<input type="radio" id="itemType2" name="itemType" value="2" <c:if test="${examinationRecord.itemType eq 2}">checked="checked"</c:if>/><label for="itemType2">自由选择</label>
-			</div>
-		</div>
-				<div class="control-group span6">
-        			<label class="control-label">价格：</label>
-        			<div class="controls">
-        				<form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium "/>
-        			</div>
-        		</div>
 
 		<div class="control-group span12" id="packageIdDiv">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-
+                <label for="packageId_no"> <input type="radio" id="packageId_no" name="packageId" value="" onclick="chkPackage('no')" data-itemIds=''
+                   <c:if test="${examinationRecord.packageId == null || examinationRecord.packageId ==''}">checked='checked'</c:if> />
+                                自由选择体检项目</label>
                 <c:forEach items="${packageList}" var="p">
-                <input type="radio" id="packageId_${p.id}" name="packageId" value="${p.id}"
-                 onclick="refreshPackagePrice()"
-                 data-price="${p.price}" <c:if test="${p.id == examinationRecord.packageId}">checked='checked'</c:if> />
-                <label for="packageId_${p.id}">${p.name}</label>
+                <label for="packageId_${p.id}"> <input type="radio" id="packageId_${p.id}" name="packageId" value="${p.id}" data-itemIds="${p.itemIds}"
+                 onclick="chkPackage('${p.id}')" <c:if test="${p.id == examinationRecord.packageId}">checked='checked'</c:if> />
+                ${p.name}</label>
                 </c:forEach>
 
 			</div>
 		</div>
 		<div class="control-group span12" id="itemsDiv1" >
-            <label class="control-label">套餐包含项目：</label>
-            <div class="controls">
+            <label class="control-label">必选项目：</label>
+            <div class="controls radios-box">
                 <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
-                <input id="tcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}"
-              checked='checked' disabled>
-                <label for="tcri${ri.id}"> ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
+               <label id="lbl_tcri${ri.id}" for="tcri${ri.id}" style="display:none;">
+               <input id="tcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="return false;">
+                 ${ri.name} ${ri.price}元</label>
                 </c:forEach>
             </div>
         </div>
 		<div class="control-group span12" id="itemsDiv" >
-			<label class="control-label">补充体检项目：</label>
-			<div class="controls">
+			<label class="control-label">自由选择项目：</label>
+			<div class="controls radios-box">
 			    <c:if test="${not empty examinationItemList  }">
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
-				<input id="bcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
+				<label id="lbl_bcri${ri.id}" for="bcri${ri.id}"> <input id="bcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
 				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
-				<label for="bcri${ri.id}"> ${ri.name} ${ri.price}元</label>&nbsp;&nbsp;&nbsp;&nbsp;
+				${ri.name} ${ri.price}元</label>
 				</c:forEach>
 				</c:if>
 			</div>
 		</div>
+		<div class="cl"></div>
+		<div class="control-group span6">
+            <label class="control-label">合计价：</label>
+            <div class="controls">
+                <form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium " readonly="true"/>
+            </div>
+        </div>
 		<div class="cl"></div>
 		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>

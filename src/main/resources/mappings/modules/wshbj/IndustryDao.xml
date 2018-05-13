@@ -17,8 +17,7 @@
 		a.owner AS "owner"
 	</sql>
 	
-	<sql id="industryJoins">
-	</sql>
+	<sql id="industryJoins"></sql>
     
 	<select id="get" resultType="Industry">
 		SELECT 

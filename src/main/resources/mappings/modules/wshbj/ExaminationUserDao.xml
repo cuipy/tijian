@@ -7,7 +7,6 @@
 		a.code AS "code",
 		a.name AS "name",
 		a.name_pinyin AS "namePinyin",
-
 		a.head_img_path as "headImgPath",
 		a.phone_number AS "phoneNumber",
 		a.id_number AS "idNumber",
@@ -63,6 +62,7 @@
 					a.id_number LIKE concat('%',#{likeField},'%')
 					or a.code like concat('%',#{likeField},'%')
 					or a.name LIKE concat('%',#{likeField},'%')
+					or a.name_pinyin LIKE concat('%',#{likeField},'%')
 				   	or a.phone_number like concat('%', #{likeField},'%')
 				)
 			</if>

@@ -58,6 +58,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	private Date successTime;    // 体检成功的时间
 	private Date failTime;		// 体检失败的时间
+	private Date zhizhengTime;		// 制证时间
 
 	private Integer orderNumb;
 
@@ -382,10 +383,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	public List<ExaminationRecordItem> getItems() {
 
 		// 调用spring管理的对象，获得列表
-		ExaminationRecordItemDao examinationRecordItemDao=SpringContextHolder.getBean(ExaminationRecordItemDao.class);
-		ExaminationRecordItem eri=new ExaminationRecordItem();
-		eri.setRecordId(id);
-		return  examinationRecordItemDao.findList(eri);
+		ExaminationRecordItemService examinationRecordItemService=SpringContextHolder.getBean(ExaminationRecordItemService.class);
+		return  examinationRecordItemService.listByRecordId(id);
 	}
 
 	public void setExaminationRecordItemList(List<ExaminationRecordItem> examinationRecordItemList) {

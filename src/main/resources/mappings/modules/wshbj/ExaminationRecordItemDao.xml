@@ -29,14 +29,12 @@
 	</sql>
 
 	<sql id="whereif">
+		a.record_id = #{recordId}
 		<if test="userName != null and userName != ''">
 			AND b.name like  concat('%', #{userName},'%')
 		</if>
 		<if test="queryExamCode != null and queryExamCode != ''">
 			AND b.code like  concat('%', #{queryExamCode},'%')
-		</if>
-		<if test="recordId != null and recordId != ''">
-			AND a.record_id = #{recordId}
 		</if>
 		<if test="sampleCode != null and sampleCode != ''">
 			AND a.sample_code like  concat('%', #{sampleCode},'%')
@@ -56,11 +54,9 @@
 	</sql>
 
 	<sql id="whereif2">
+		a.record_id = #{recordId}
 		<if test="userName != null and userName != ''">
 			AND b.name like  concat('%', #{userName},'%')
-		</if>
-		<if test="recordId != null and recordId != ''">
-			AND a.record_id = #{recordId}
 		</if>
 		<if test="needSamples != null and needSamples != ''">
 			AND a.need_samples = #{needSamples}
@@ -231,8 +227,7 @@
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag=#{DEL_FLAG_NORMAL}
-			AND a.record_id = #{recordId}
+			a.del_flag=#{DEL_FLAG_NORMAL} AND a.record_id = #{recordId}
 		</where>
 		ORDER BY a.order_numb,a.create_date ASC
 	</select>

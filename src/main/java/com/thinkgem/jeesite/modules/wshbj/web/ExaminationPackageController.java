@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationCategoryService;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationItemService;
@@ -78,7 +79,6 @@ public class ExaminationPackageController extends BaseController {
         ExaminationItem examinationItem = new ExaminationItem();
         examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
         examinationItem.setDelFlag("0");
-        examinationItem.setReferenceFlag("0");
         List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
         model.addAttribute("examinationItemList", examinationItemList);
 
@@ -86,7 +86,6 @@ public class ExaminationPackageController extends BaseController {
 		ExaminationCategory examinationCategory = new ExaminationCategory();
 		examinationCategory.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationCategory.setDelFlag("0");
-		examinationCategory.setReferenceFlag("0");
 		List<ExaminationCategory> examinationCategoryList = examinationCategoryService.findList(examinationCategory);
 		model.addAttribute("examinationCategoryList", examinationCategoryList);
 
@@ -150,6 +149,14 @@ public class ExaminationPackageController extends BaseController {
 		}
 
 		return lst2;
+	}
+
+	@RequiresPermissions("wshbj:examinationPackage:view")
+	@GetMapping(value = {"ajax_get_items"})
+	@ResponseBody
+	public List<PackageItem> ajax_get_items(ExaminationPackage examinationPackage) {
+		List<PackageItem> items = examinationPackage.getItems();
+		return items;
 	}
 
 

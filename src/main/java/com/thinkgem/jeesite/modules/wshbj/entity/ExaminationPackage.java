@@ -127,6 +127,18 @@ public class ExaminationPackage extends DataEntity<ExaminationPackage> {
 	}
 
 	@JsonIgnore
+	public String getItemIds(){
+		List<PackageItem> items= getItems();
+		String ids="";
+		if(items!=null) {
+			for (PackageItem item : items) {
+				ids += item.getItemId() + ",";
+			}
+		}
+		return ids;
+	}
+
+	@JsonIgnore
 	public Map<String,Object> getMap(){
 		Map<String,Object> m=new HashMap();
 		m.put("id",id);
