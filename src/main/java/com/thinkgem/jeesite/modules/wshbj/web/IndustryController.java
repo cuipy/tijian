@@ -119,6 +119,14 @@ public class IndustryController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/wshbj/industry/list?repage";
 	}
 
+	@RequiresPermissions("wshbj:industry:view")
+	@GetMapping(value = "ajax_get_by_id")
+	@ResponseBody
+	public Industry ajax_get_by_id(Industry industry) {
+		industry=industryService.get(industry.getId());
+		return industry;
+	}
+
 
 //	@RequiresPermissions("wshbj:industry:viewByCenter")
 //	@RequestMapping(value = {"listByCenter", ""})

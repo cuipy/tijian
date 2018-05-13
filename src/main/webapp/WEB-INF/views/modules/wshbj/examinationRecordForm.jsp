@@ -79,6 +79,8 @@
                     $("#industryName").val(u.industryName);
                     $("#postId").val(u.postId);
                     $("#postName").val(u.jobPostName);
+
+                    chgIndustry();
                 }
             });
 
@@ -150,6 +152,21 @@
 
             $("#postId").attr("value", data.postId);
             $("#postId").trigger('change');
+        }
+
+        // 行业更新后
+        function chgIndustry(){
+            var industryId=$('#industryId').val();
+
+            var url='${ctx}/wshbj/industry/ajax_get_by_id';
+            var d1={id:industryId};
+            $.get(url,d1,function(d1r){
+                var pid=d1r.defaultPackageId;
+                var pchkbox=$("#packageId_"+pid);
+                if(pchkbox!=null){
+                    pchkbox.trigger('click');
+                }
+            });
         }
 
         // 选中某个体检套餐，更新总费用
@@ -287,7 +304,7 @@
 		<label class="control-label">行业：</label>
 		<div class="controls">
 		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
-           <input type="text" id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-medium" readonly="true">
+           <input type="text"  onchange="chgIndustry()"  id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-medium" readonly="true">
 
 		</div>
 	</div>

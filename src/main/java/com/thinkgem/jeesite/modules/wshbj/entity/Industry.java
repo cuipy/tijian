@@ -3,7 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationPackageService;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -106,8 +110,17 @@ public class Industry extends DataEntity<Industry> {
 		this.owner = owner;
 	}
 
+	@JsonIgnore
 	public String getDefaultPackageName(){
-		return "默认报名";
+		if(StringUtils.isEmpty(defaultPackageId)){
+			return "";
+		}
+		ExaminationPackageService examinationPackageService=SpringContextHolder.getBean(ExaminationPackageService.class);
+		ExaminationPackage pack = examinationPackageService.get(defaultPackageId);
+		if(pack==null){
+			return "";
+		}
+		return pack.getName();
 	}
 	
 }
