@@ -105,5 +105,9 @@ public class Industry extends DataEntity<Industry> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
+	public String getDefaultPackageName(){
+		return "默认报名";
+	}
 	
 }

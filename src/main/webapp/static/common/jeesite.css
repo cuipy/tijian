@@ -104,10 +104,10 @@ legend + .control-group {margin-top:6px;}
     max-width:1440px;
 }
 .form-horizontal .control-label{
-    max-width:130px;
+    max-width:100px;
 }
 .form-horizontal .controls {
-    margin-left: 130px;
+    margin-left: 100px;
 }
 .help-div{
     padding-left:0px;

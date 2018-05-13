@@ -57,10 +57,18 @@
                 <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
             </div>
         </div>
+        <div class="cl"></div>
         <div class="control-group span6">
             <label class="control-label">顺序值：</label>
             <div class="controls">
                 <form:input type="number" step="1" path="orderNumb" htmlEscape="false" maxlength="10" class="input-medium "/>
+            </div>
+        </div>
+        <div class="control-group span6">
+            <label class="control-label">默认套餐：</label>
+            <div class="controls">
+                <form:hidden path="defaultPackageId"/>
+              <div class="autocompleter-box"> <form:input path="defaultPackageName" htmlEscape="false" maxlength="100" class="input-medium "/></div>
             </div>
         </div>
 
