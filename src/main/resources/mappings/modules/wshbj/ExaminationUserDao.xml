@@ -10,7 +10,7 @@
 		a.head_img_path as "headImgPath",
 		a.phone_number AS "phoneNumber",
 		a.id_number AS "idNumber",
-		a.sex AS "sex",
+		a.sex AS "sex", a.age as "age",
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
 		a.birthday AS "birthday",
@@ -103,7 +103,7 @@
 			name, name_pinyin,
 			<if test="headImgPath != null ">head_img_path,</if>
 			phone_number,
-			sex,
+			sex, age,
 			id_number,
 			industry_id,
 			post_id,
@@ -122,7 +122,7 @@
 			#{name}, #{namePinyin},
 		<if test="headImgPath != null ">#{headImgPath},</if>
 			#{phoneNumber},
-			#{sex},
+			#{sex}, #{age},
 			#{idNumber},
 			#{industryId},
 			#{postId},
@@ -144,7 +144,7 @@
 			name = #{name}, name_pinyin=#{namePinyin},
 		<if test="headImgPath != null and headImgPath != '' ">head_img_path=#{headImgPath},</if>
 			phone_number = #{phoneNumber},
-			sex = #{sex},
+			sex = #{sex}, age=#{age},
 			id_number = #{idNumber},
 			industry_id = #{industryId},
 			post_id = #{postId},

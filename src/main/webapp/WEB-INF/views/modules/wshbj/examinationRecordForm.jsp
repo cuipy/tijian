@@ -71,7 +71,7 @@
                     $("#idNumber").val(u.idNumber);
                     $("#birthday").val(u.birthday);
                     $("#phoneNumber").val(u.phoneNumber);
-                    $("#sex").val(u.sex);
+                    $("#sex").val(u.sex);$("#age").val(u.age);
                     $("#strSex").val(u.strSex);
                     $("#organId").val(u.organId);
                     $("#organName").val(u.organName);
@@ -223,7 +223,7 @@
         function dop(){
             var LODOP = getCLodop();
             LODOP.PRINT_INIT("");
-            LODOP.ADD_PRINT_URL(0,-200,1024,1000,"http://xn.jiisb.com:8051/tijian/a/wshbj/exam_record_print/print_tjb?id=156856be267948f7b77f81ae3df11e4f&format=html");
+            LODOP.ADD_PRINT_URL(0,-200,1024,1000,"http://xn.jiisb.com:8051/tijian/a/wshbj/exam_record_print/tjb_html?id=156856be267948f7b77f81ae3df11e4f&format=html");
             LODOP.PREVIEW();
         }
 	</script>
@@ -292,6 +292,15 @@
 
 			</div>
 		</div>
+
+		<div class="control-group span4">
+            <label class="control-label"><font color="red">*</font> 年龄：</label>
+            <div class="controls">
+                <input type="text" id="age" name="age"  value="${examinationRecord.age}" class="input-medium" readonly="true">
+            </div>
+        </div>
+
+
 		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">

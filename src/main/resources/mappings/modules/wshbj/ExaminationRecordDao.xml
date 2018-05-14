@@ -8,7 +8,7 @@
 		a.code AS "code",
 		a.name AS "name", a.name_pinyin as "namePinyin",
 		a.phone_number AS "phoneNumber",
-		a.sex AS "sex",
+		a.sex AS "sex", a.age as "age",
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
 		a.birthday AS "birthday",
@@ -34,7 +34,7 @@
 		a.code AS "code",
 		a.name AS "name",
 		a.phone_number AS "phoneNumber",
-		a.sex AS "sex",
+		a.sex AS "sex", a.age as "age",
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
 		a.birthday AS "birthday",
@@ -365,7 +365,7 @@
 			code,
 			name, name_pinyin,
 			phone_number,
-			sex,
+			sex, age,
 			industry_id,
 			post_id,
 			birthday,
@@ -388,7 +388,7 @@
 			#{code},
 			#{name},#{namePinyin},
 			#{phoneNumber},
-			#{sex},
+			#{sex}, #{age},
 			#{industryId},
 			#{postId},
 			#{birthday},
@@ -415,7 +415,7 @@
 				<if test="code !=null and code != '' ">code = #{code},</if>
 				<if test="name !=null and name != '' ">name = #{name},name_pinyin=#{namePinyin},</if>
 				<if test="phoneNumber !=null and phoneNumber != '' ">phone_number = #{phoneNumber},</if>
-				<if test="sex !=null and sex != '' ">sex = #{sex},</if>
+				<if test="sex !=null and sex != '' ">sex = #{sex},</if> age = #{age},
 				<if test="industryId !=null and industryId != '' ">industry_id = #{industryId},</if>
 				<if test="postId !=null and postId != '' ">post_id = #{postId},</if>
 				<if test="birthday !=null and birthday != '' ">birthday = #{birthday},</if>

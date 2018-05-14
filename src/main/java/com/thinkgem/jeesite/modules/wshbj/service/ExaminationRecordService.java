@@ -625,4 +625,17 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
         return ResponseResult.generateSuccessResult("启动复检成功");
     }
+
+    public List<ExaminationRecord> listByIds(String[] ids) {
+        List<ExaminationRecord> lst=new ArrayList();
+        if(ids!=null) {
+            for (String id : ids) {
+                ExaminationRecord er = get(id);
+                if (er != null) {
+                    lst.add(er);
+                }
+            }
+        }
+        return lst;
+    }
 }

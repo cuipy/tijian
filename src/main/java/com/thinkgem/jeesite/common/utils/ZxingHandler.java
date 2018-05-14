@@ -2,6 +2,7 @@ package com.thinkgem.jeesite.common.utils;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.Hashtable;
 
 import javax.imageio.ImageIO;
@@ -45,10 +46,26 @@ public class ZxingHandler {
 		codeWidth = Math.max(codeWidth, width);
 		try {
 			BitMatrix bitMatrix = new MultiFormatWriter().encode(contents,
-					BarcodeFormat.EAN_13, codeWidth, height, null);
+					BarcodeFormat.CODE_128, codeWidth, height, null);
 
-			MatrixToImageWriter
-					.writeToFile(bitMatrix, "png", new File(imgPath));
+			MatrixToImageWriter.writeToFile(bitMatrix, "png", new File(imgPath));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void encode(String contents, int width, int height, OutputStream os) {
+		int codeWidth = 3 + // start guard
+				(7 * 6) + // left bars
+				5 + // middle guard
+				(7 * 6) + // right bars
+				3; // end guard
+		codeWidth = Math.max(codeWidth, width);
+		try {
+			BitMatrix bitMatrix = new MultiFormatWriter().encode(contents, BarcodeFormat.CODE_128, codeWidth, height, null);
+
+			MatrixToImageWriter.writeToStream(bitMatrix, "png", os);
 
 		} catch (Exception e) {
 			e.printStackTrace();

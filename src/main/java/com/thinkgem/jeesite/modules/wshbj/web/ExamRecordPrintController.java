@@ -44,35 +44,6 @@ public class ExamRecordPrintController extends BaseController {
 
 	@Autowired
 	private ExaminationRecordService examinationRecordService;
-
-	@Autowired
-	private OrganService organService;
-	@Autowired
-	private IndustryService industryService;
-	@Autowired
-	private JobPostService jobPostService;
-	@Autowired
-	private ExaminationItemService examinationItemService;
-	@Autowired
-	private ExaminationSamplesService examinationSamplesService;
-
-	@Autowired
-	private ExaminationPackageService examinationPackageService;
-
-	@Autowired
-	private ExaminationRecordItemService examinationRecordItemService;
-	
-	@ModelAttribute
-	public ExaminationRecord get(@RequestParam(required=false) String id) {
-		ExaminationRecord entity = null;
-		if (StringUtils.isNotBlank(id)){
-			entity = examinationRecordService.get(id);
-		}
-		if (entity == null){
-			entity = new ExaminationRecord();
-		}
-		return entity;
-	}
 	
 
 	/**
@@ -81,12 +52,12 @@ public class ExamRecordPrintController extends BaseController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value = "print_tjb")
-	public String print_tjb(String id,String format, Model model) {
+	@RequestMapping(value = "tjb_jr")
+	public String tjb_jr(String id,String format, Model model) {
 
 		String ids="'"+id+"'";
 		if(StringUtils.isEmpty(format)){
-			format="html";
+			format="pdf";
 		}
 
 		model.addAttribute("format",format);
@@ -112,6 +83,13 @@ public class ExamRecordPrintController extends BaseController {
 		model.addAttribute("currUser", currUser);
 		model.addAttribute("imgHost", imgHost);
 		return "jkz1";
+	}
+
+	@GetMapping(value = "tjb_html")
+	public String tjb_html(String[] id,Model model) {
+		List<ExaminationRecord> ers=examinationRecordService.listByIds(id);
+		model.addAttribute("lst",ers);
+		return "modules/wshbj/tjb_html";
 	}
 
 

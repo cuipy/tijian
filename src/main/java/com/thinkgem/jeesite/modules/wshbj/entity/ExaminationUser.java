@@ -41,6 +41,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private String phoneNumber;		// 联系电话
 	private String idNumber;		// 身份证号
 	private String sex;		// 性别
+	private String age;
 	private String industryId;		// 行业
 	private String postId;		// 岗位
 	private String birthday;		// 出生日期
@@ -57,7 +58,14 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
         this.orderNumb = orderNumb;
     }
 
-	
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
 	public ExaminationUser() {
 		super();
 	}
@@ -278,6 +286,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 
 		m.put("phoneNumber",phoneNumber);
 		m.put("birthday",this.birthday);
+		m.put("age",this.age);
 		m.put("sex",this.sex);
 		m.put("strSex",this.getStrSex());
 		m.put("code",this.code);

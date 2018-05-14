@@ -43,6 +43,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String namePinyin;		// 名字拼音
 	private String phoneNumber;		// 联系电话
 	private String sex;		// 性别
+	private String age;			// 年龄
 	private String industryId;		// 行业
 	private String postId;		// 岗位
 	private String birthday;		// 出生日期
@@ -101,6 +102,14 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	public void setFailTime(Date failTime) {
 		this.failTime = failTime;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
 	}
 
 	/**
@@ -483,6 +492,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 		m.put("phoneNumber",phoneNumber);
 		m.put("birthday",this.birthday);
+		m.put("age",this.age);
 		m.put("sex",this.sex);
 		m.put("strSex",this.getStrSex());
 		m.put("code",this.code);

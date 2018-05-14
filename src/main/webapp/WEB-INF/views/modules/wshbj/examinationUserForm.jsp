@@ -133,6 +133,14 @@
 		</div>
 
 		<div class="control-group span6">
+            <label class="control-label"><font color="red">*</font> 年龄：</label>
+            <div class="controls radios-div radios-sex">
+                <form:input path="age" type="number" htmlEscape="false"/>
+            </div>
+        </div>
+
+
+		<div class="control-group span6">
 			<label class="control-label">行业：</label>
 			<div class="controls">
 				<form:select path="industryId" class="input-medium">

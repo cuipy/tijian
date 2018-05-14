@@ -60,7 +60,8 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         if(StringUtils.isBlank(recordId)){
             return new ArrayList<ExaminationRecordItem>();
         }
-        return this.dao.listByRecordId(recordId);
+        List<ExaminationRecordItem> lst = this.dao.listByRecordId(recordId);
+        return lst;
     }
 
     public Page<ExaminationRecordItem> pageNeedSampleNodo(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
