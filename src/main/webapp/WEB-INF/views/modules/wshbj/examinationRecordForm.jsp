@@ -223,7 +223,7 @@
         function dop(){
             var LODOP = getCLodop();
             LODOP.PRINT_INIT("");
-            LODOP.ADD_PRINT_URL(0,-200,1024,1000,"http://xn.jiisb.com:8051/tijian/a/wshbj/exam_record_print/tjb_html?id=156856be267948f7b77f81ae3df11e4f&format=html");
+            LODOP.ADD_PRINT_URL(0,0,1024,1000,"${ctxfull}/wshbj/exam_record_print/tjb_html?id=156856be267948f7b77f81ae3df11e4f");
             LODOP.PREVIEW();
         }
 	</script>

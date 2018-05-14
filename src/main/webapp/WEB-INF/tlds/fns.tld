@@ -259,5 +259,14 @@
     <function-signature>java.lang.String toJsonString(java.lang.Object)</function-signature>
     <example>${fns:toJson(object)}</example>  
   </function>
+
+  <!-- JsonMapper -->
+  <function>
+    <description>获取体检本地服务器的全部地址</description>
+    <name>getLocalServerUrl</name>
+    <function-class>com.thinkgem.jeesite.common.config.getLocalServerUrl</function-class>
+    <function-signature>java.lang.String getLocalServerUrl()</function-signature>
+    <example>${fns:getLocalServerUrl()}</example>
+  </function>
   
 </taglib>
