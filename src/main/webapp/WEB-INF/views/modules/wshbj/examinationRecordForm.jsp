@@ -5,6 +5,8 @@
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+
+
 		$(function() {
 
 			$("#inputForm").validate({
@@ -22,37 +24,6 @@
 					}
 				}
 			});
-
-			// 当体检项目方式更改的时候
-            $("input[name='itemType']:radio").change(function() {
-                if($(this).val()=='1'){
-                    $('#packageIdDiv').show();
-                    $('#itemsDiv').hide();
-                    refreshPackagePrice();
-
-				}else {
-                    $('#packageIdDiv').hide();
-                    $('#itemsDiv').show();
-                    refreshItemsPrice();
-				}
-            });
-
-
-            $('#idNumber').bind('keypress',function(event){
-                if(event.keyCode == 13) {
-                    var idNumber = $('#idNumber').val();
-                    var url = '${ctx}/wshbj/examinationUser/getByIdNumber';
-                    $.post(url,{idNumber:idNumber},function (data) {
-                        if(data){
-                            setUserPro(data);
-                        }
-                    });
-
-                    //防止form提交
-                    return false;
-                }
-            });
-
 
              var lastUserName='';
              $('#userAuto').autocompleter({
@@ -84,56 +55,11 @@
                 }
             });
 
-            setTimeout("$('#userAuto').focus();",1000);
+            setTimeout("$('#userAuto').focus();",300);
+             setTimeout("lodop_showPrintName()",300);
         });
-		function addRow(list, idx, tpl, row){
-			$(list).append(Mustache.render(tpl, {
-				idx: idx, delBtn: true, row: row
-			}));
-			$(list+idx).find("select").each(function(){
-				$(this).val($(this).attr("data-value"));
-			});
-			$(list+idx).find("input[type='checkbox'], input[type='radio']").each(function(){
-				var ss = $(this).attr("data-value").split(',');
-				for (var i=0; i<ss.length; i++){
-					if($(this).val() == ss[i]){
-						$(this).attr("checked","checked");
-					}
-				}
-			});
-		}
-		function delRow(obj, prefix){
-			var id = $(prefix+"_id");
-			var delFlag = $(prefix+"_delFlag");
-			if (id.val() == ""){
-				$(obj).parent().parent().remove();
-			}else if(delFlag.val() == "0"){
-				delFlag.val("1");
-				$(obj).html("&divide;").attr("title", "撤销删除");
-				$(obj).parent().parent().addClass("error");
-			}else if(delFlag.val() == "1"){
-				delFlag.val("0");
-				$(obj).html("&times;").attr("title", "删除");
-				$(obj).parent().parent().removeClass("error");
-			}
-		}
 
-
-        //选择用户返回
-        function userTreeselectCallBack(v, h, f) {
-            if('ok'==v){
-                var euserId = $('#userId').val();
-                var url = '${ctx}/wshbj/examinationUser/getById';
-                $.post(url,{id:euserId},function (data) {
-                    if(data){
-                        setUserPro(data);
-                    }
-                },'json');
-            }else if('clear'==v){
-
-            }
-        }
-
+        // 设置用户的属性property
         function setUserPro(data) {
             $('#userName').val(data.name);
             $('#userId').val(data.id);
@@ -220,11 +146,48 @@
             $("#packagePrice").val(aprice);
         }
 
-        function dop(){
-            var LODOP = getCLodop();
-            LODOP.PRINT_INIT("");
-            LODOP.ADD_PRINT_URL(0,0,1024,1000,"${ctxfull}/wshbj/exam_record_print/tjb_html?id=156856be267948f7b77f81ae3df11e4f");
-            LODOP.PREVIEW();
+        // ajax form方式提交保存
+
+
+        // 显示当前打印机的名字
+        function lodop_showPrintName(){
+            var arr=lodop_getPrintNames();
+            for(var i in arr){
+
+                $('#sltPrint').append("<option value='"+i+"'>"+arr[i]+"</option>");
+            }
+            var a4Index= localStorage.getItem('a4-print-index');
+            $("#sltPrint").val(a4Index).trigger('change');
+            $('#sltPrint').change();
+        }
+        // 获得打印机列表
+        function lodop_getPrintNames(){
+            var arr=[];
+            var LODOP = getLodop();
+            var cnt=LODOP.GET_PRINTER_COUNT();
+            for(var i=0;i<cnt;i++){
+                arr.push(LODOP.GET_PRINTER_NAME(i));
+            }
+            return arr;
+        }
+
+        // 设置当前A4的打印用哪个打印机
+        function lodop_setA4PrintIndex(){
+             var ind=$('#sltPrint').val();
+             localStorage.setItem('a4-print-index',ind);
+        }
+
+        function lodop_printA4(title,url){
+            var LODOP = getLodop();
+
+            LODOP.PRINT_INIT(title);
+            LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
+            if(localStorage.getItem('a4-print-index')>=0){
+                LODOP.SET_PRINTER_INDEX(localStorage.getItem('a4-print-index'));
+            }
+            LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
+            LODOP.ADD_PRINT_HTM(0,0,"210mm","297mm","URL:"+url);
+            LODOP.PRINT();
         }
 	</script>
 </head>
@@ -387,10 +350,12 @@
         </div>
 		<div class="cl"></div>
 		<div class="form-actions span12">
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存" />&nbsp;</shiro:hasPermission>
+
+			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" />&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 
-			<input id="btnCancel" class="btn" type="button" value="打印测试" onclick="dop()"/>
+			当前打印机<select id="sltPrint" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
 		</div>
 <div class="cl"></div>
 </div>

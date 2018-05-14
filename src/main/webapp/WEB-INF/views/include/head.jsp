@@ -37,6 +37,6 @@
 <link href="${ctxStatic}/common/jeesite.css?v=31" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=6" type="text/javascript"></script>
 
-<script src="${ctxStatic}/common/CLodopfuncs.js" type="text/javascript"></script>
+<script src="${ctxStatic}/common/LodopFuncs.js" type="text/javascript"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 

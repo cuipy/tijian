@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,17 +25,26 @@ import java.io.IOException;
 @RequestMapping(value = "${adminPath}/zxing")
 public class ZxingController extends BaseController {
 
-	@GetMapping(value = "encode")
+	@GetMapping(value = "encode.jpg")
 	public void encode(String code,Integer width,Integer height, HttpServletRequest req, HttpServletResponse resp, Model model) {
 
 		try {
+			if(code==null){
+				code= "1001-10201805070002";
+			}
 			if(width==null){
-				width=100;
+				width=150;
 			}
 			if(height==null){
 				height=30;
 			}
-			ZxingHandler.encode(code,width,height,resp.getOutputStream());
+
+			resp.setContentType("image/jpeg");
+			ServletOutputStream os = resp.getOutputStream();
+
+			ZxingHandler.encode(code,width,height,os);
+
+			os.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

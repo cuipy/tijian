@@ -4,7 +4,11 @@
 <head>
 	<title>体检记录管理</title>
 	<meta name="decorator" content="print"/>
+
+    <script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
+	<script src="${ctxStatic}/jsbarcode/JsBarcode.all.js" type="text/javascript"></script>
     <style type="text/css">
+    body{margin:0px;}
     div,table{box-sizing:border-box;}
     .cl{clear:both;}
 
@@ -23,11 +27,22 @@
     .tbl-head .title{text-align:center;font-size:22px;font-weight:bold;}
     .t2-left{float:left;height:50px;}
     .t2-right{float:right;height:50px;}
-    .t2-tm-img{width:55mm;height:30px;}
+    .t2-tm-img{height:30px;}
     .t2-tm-code{text-align:center;height:20px;}
 
     .beizhu {padding:20px;}
     </style>
+
+    <script type="text/javascript">
+    $(function(){
+        var code1=$('#dv-code1').text();
+        JsBarcode(".img-code", code1, {
+        			  format:"CODE128",
+        			  displayValue:false,
+        			  height:30,margin:0
+        			});
+    })
+    </script>
 </head>
 <body>
 
@@ -40,7 +55,7 @@
             <div class="title2">
                 <div class="t2-left">体检日期：2018-05-21</div>
                 <div class="t2-right">
-                    <div><img class="t2-tm-img" src="${ctx}/zxing/encode?code=${er.code}&width=150&height=30"></div>
+                    <div><img class="t2-tm-img img-code"></div>
                    <div class="t2-tm-code">${er.code}</div>
                 </div>
                 <div class="cl"></div>
@@ -86,8 +101,8 @@
                 <div class="title2">
                     <div class="t2-left">体检日期：2018-05-21</div>
                     <div class="t2-right">
-                        <div><img class="t2-tm-img" src="${ctx}/zxing/encode?code=${er.code}&width=150&height=30"></div>
-                         <div class="t2-tm-code">${er.code}</div>
+                        <div><img id="img-code1" class="t2-tm-img img-code" ></div>
+                         <div id="dv-code1" class="t2-tm-code">${er.code}</div>
                     </div>
                     <div class="cl"></div>
                 </div>
