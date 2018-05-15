@@ -281,7 +281,17 @@ public class ExaminationRecordController extends BaseController {
 
 		//编号在保存的时候才创建
 		if (StringUtils.isEmpty(examinationRecord.getCode())){
-			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code"));
+
+			// 如果行业上已经设置了编号规则，则按照行业编号规则生成体检编号
+			Industry industry = examinationRecord.getIndustry();
+			String newCode = null;
+			if(industry!=null&&StringUtils.isNotEmpty(industry.getExpExamCode())){
+				newCode=SysSequenceUtils.nextSequence(industry.getExpExamCode());
+			}else{
+				// 否则按照系统默认规则生成。
+				newCode=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code");
+			}
+			examinationRecord.setCode(newCode);
 		}
 
 		// 设置体检类型，无套餐id，则自由选择体检项目； 有套餐id，则套餐体检

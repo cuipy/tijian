@@ -54,6 +54,14 @@ public class SysSequenceService extends CrudService<SysSequenceDao, SysSequence>
 
 		String express=es.express();
 
+		return nextSequence(express);
+
+
+	}
+
+	@Transactional(readOnly = false)
+	public String nextSequence(String express){
+
 		if(StringUtils.isEmpty(express)){
 			return null;
 		}

@@ -25,6 +25,11 @@ public class SysSequenceUtils {
 		return code;
 	}
 
+	public static String nextSequence(String exp){
+		String code=sysSequenceService.nextSequence(exp);
+		return code;
+	}
+
 	/**
 	 * 将表达式中{XXX}部分转换为真实的值
 	 * @param express
