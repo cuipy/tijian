@@ -194,14 +194,6 @@
     <div style="max-width:1024px">
 
 		<div class="control-group span12">
-			 <label class="control-label"><font color="red">*</font> 编号：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="45"  readonly="true" class="input-medium"/>
-                <span class="help-inline">编号无需录入。行业中设置体检编号生成规则</span>
-			</div>
-		</div>
-        <div class="cl"></div>
-		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font> 选择体检人：</label>
 			<div class="controls">
 			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
@@ -283,6 +275,7 @@
 		</div>
 	</div>
 
+<div class="cl"></div>
 		<div class="control-group span8">
 			<label class="control-label">备注：</label>
 			<div class="controls">
@@ -291,6 +284,15 @@
 		</div>
 		<div class="cl"></div>
 
+<div class="control-group span4">
+    		<label class="control-label">体检日期：</label>
+    		<div class="controls">
+                <input type="text" id="examTime" name="examTime" value="<fmt:formatDate pattern='yyyy-MM-dd' value='${examinationRecord.examTime}' />"
+                   class="input-medium Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+
+    		</div>
+    	</div>
+    	<div class="cl"></div>
 		<div class="control-group span12" id="packageIdDiv">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">

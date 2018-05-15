@@ -57,6 +57,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private String itemType; 	//体检项目方式:1-体检套餐，2-自由选择
 	private Date uploadDate;   // 提交到运营服务中心的时间
 
+	private Date examTime;		// 体检时间
 	private Date successTime;    // 体检成功的时间
 	private Date failTime;		// 体检失败的时间
 	private Date zhizhengTime;		// 制证时间
@@ -473,6 +474,22 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
         }
         return user.getName();
     }
+
+	public Date getExamTime() {
+		return examTime;
+	}
+
+	public void setExamTime(Date examTime) {
+		this.examTime = examTime;
+	}
+
+	public Date getZhizhengTime() {
+		return zhizhengTime;
+	}
+
+	public void setZhizhengTime(Date zhizhengTime) {
+		this.zhizhengTime = zhizhengTime;
+	}
 
 	@JsonIgnore
 	public Map<String,String> getMap(){

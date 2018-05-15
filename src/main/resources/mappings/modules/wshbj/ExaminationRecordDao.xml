@@ -12,7 +12,7 @@
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
 		a.birthday AS "birthday",
-		a.organ_id AS "organId",
+		a.organ_id AS "organId", a.exam_time as "examTime", a.success_time as "successTime", a.fail_time as "failTime",a.zhizheng_time as "zhizhengTime",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -38,7 +38,7 @@
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
 		a.birthday AS "birthday",
-		a.organ_id AS "organId",
+		a.organ_id AS "organId",a.exam_time as "examTime", a.success_time as "successTime", a.fail_time as "failTime",a.zhizheng_time as "zhizhengTime",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createById",
 		a.create_date AS "createDate",
@@ -369,7 +369,7 @@
 			industry_id,
 			post_id,
 			birthday,
-			organ_id,
+			organ_id,exam_time,success_time,fail_time,zhizheng_time,
 			del_flag,
 			create_by,
 			create_date,
@@ -392,7 +392,7 @@
 			#{industryId},
 			#{postId},
 			#{birthday},
-			#{organId},
+			#{organId},#{examTime},#{successTime},#{failTime},#{zhizhengTime},
 			#{delFlag},
 			#{createBy.id},
 			#{createDate},
@@ -420,6 +420,10 @@
 				<if test="postId !=null and postId != '' ">post_id = #{postId},</if>
 				<if test="birthday !=null and birthday != '' ">birthday = #{birthday},</if>
 				<if test="organId !=null and organId != '' ">organ_id = #{organId},</if>
+				<if test="examTime !=null ">exam_time = #{examTime},</if>
+				<if test="successTime !=null ">success_time = #{successTime},</if>
+				<if test="failTime !=null ">fail_time = #{failTime},</if>
+				<if test="zhizhengTime !=null ">zhizheng_time = #{zhizhengTime},</if>
 				<if test="updateBy.id !=null and updateBy.id != '' ">update_by = #{updateBy.id},</if>
 				<if test="updateDate !=null and updateDate != '' ">update_date = #{updateDate},</if>
 				<if test="remarks !=null and remarks != '' ">remarks = #{remarks},</if>
