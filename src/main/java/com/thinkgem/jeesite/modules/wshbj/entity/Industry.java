@@ -122,5 +122,7 @@ public class Industry extends DataEntity<Industry> {
 		}
 		return pack.getName();
 	}
+
+
 	
 }

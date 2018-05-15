@@ -76,6 +76,15 @@
                 </form:select>
             </div>
         </div>
+         <div class="cl"></div>
+        <div class="control-group span12">
+            <label class="control-label">体检编号规则：</label>
+            <div class="controls">
+                <form:input path="expExamCode" htmlEscape="false" maxlength="30" class="input-medium "/>
+                <span class="help-inline">体检编号规则：{}内为时间格式， []内为顺序号，只能有一对[]。
+                <br>例如：<span style="color:#f00;">HY-{yyyyMMdd}[4]</span>，意思是固定前缀为HY-，按照yyyyMMdd日期规则，后4位顺序值。最终可生成类似 HY-201805180016格式的编号。 </span>
+            </div>
+        </div>
 
         <div class="cl"></div>
 		<div class="control-group span12">

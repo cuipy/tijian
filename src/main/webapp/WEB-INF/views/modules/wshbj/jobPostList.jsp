@@ -43,7 +43,7 @@
 		<thead>
 			<tr>
 				<th>编号</th>
-				<th>名称</th>
+				<th>名称</th><th> 拼音 </th>
 				<th>备注</th>
 				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:jobPost:edit"><th>操作</th></shiro:hasPermission>
@@ -57,7 +57,7 @@
 				</a></td>
 				<td>
 					${jobPost.name}
-				</td>
+				</td><td>${jobPost.namePinyin} </td>
 				<td>
 					${jobPost.remarks}
 				</td>  <td> ${jobPost.orderNumb}</td>
