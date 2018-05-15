@@ -6,7 +6,7 @@
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(function() {
 			$("#btnExport").click(function(){
 				top.$.jBox.confirm("确认要导出体检记录数据吗？","系统提示",function(v,h,f){
 					if(v=="ok"){
@@ -16,6 +16,9 @@
 				},{buttonsFocus:1});
 				top.$('.jbox-body .jbox-icon').css('top','55px');
 			});
+
+			setTimeout("lodop_check()",300);
+
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -23,6 +26,9 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+
+
 	</script>
 </head>
 
@@ -39,7 +45,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>体检单位：</label>
-				<form:select path="organId" class="input-medium">
+				<form:select path="organId" class="input-mini">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -48,17 +54,16 @@
 			</li>
 
 			<li><label>姓名：</label>
-				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="name" htmlEscape="false" maxlength="50" class="input-mini"/>
 			</li>
 			<li><label>身份证号：</label>
-				<form:input path="idNumber" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="idNumber" htmlEscape="false" maxlength="50" class="input-mini"/>
 			</li>
 			<li><label>联系电话：</label>
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"/>
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-mini"/>
 			</li>
-			<li class="cl"></li>
 			<li><label>编号：</label>
-                <form:input path="code" htmlEscape="false" maxlength="50" class="input-medium"/>
+                <form:input path="code" htmlEscape="false" maxlength="50" class="input-mini"/>
             </li>
 			<li><label>状态：</label>
 				<form:select path="status" cssStyle="width: 100px">
@@ -69,7 +74,7 @@
 				</form:select>
 			</li>
 			<li><label>体检套餐：</label>
-				<form:select path="packageId" class="input-medium">
+				<form:select path="packageId" class="input-mini">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -77,8 +82,14 @@
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
 			</li>
+
+			<li><label>A4打印机：</label>
+                    <select id="sltA4Print" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
+                </li>
+                <li><label>条码打印机：</label>
+                    <select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
+                </li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -131,7 +142,9 @@
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
-					<a class="label label-info" href="${ctx}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}" target="_blank">打印体检表</a>
+					<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">直接打印体检表</a>
+					<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>
+
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-info" href="${ctx}/wshbj/exam_record_print/print_jkz1?id=${examinationRecord.id}" target="_blank">打印健康证</a> </c:if>
 

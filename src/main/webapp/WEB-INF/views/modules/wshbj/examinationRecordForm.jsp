@@ -37,55 +37,39 @@
                 source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
                 callback: function (value, index, selected) {
                     var u=selected;
-                    $("#userId").val(u.id);
-                    $("#name").val(u.name);
-                    $("#idNumber").val(u.idNumber);
-                    $("#birthday").val(u.birthday);
-                    $("#phoneNumber").val(u.phoneNumber);
-                    $("#sex").val(u.sex);
-                    if(u.age!=null&&u.age!=''){
-                        $("#age").val(u.age);
-                    }else{
-                        $("#age").val(getAgeFromId(u.idNumber));
-                    }
-                    $("#strSex").val(u.strSex);
-                    $("#organId").val(u.organId);
-                    $("#organName").val(u.organName);
-                    $("#industryId").val(u.industryId);
-                    $("#industryName").val(u.industryName);
-                    $("#postId").val(u.postId);
-                    $("#postName").val(u.jobPostName);
+                    setUserPro(u);
 
                     chgIndustry();
                 }
             });
 
             setTimeout("$('#userAuto').focus();",300);
-             setTimeout("lodop_showPrintName()",300);
+            setTimeout("lodop_check()",300);
         });
 
         // 设置用户的属性property
-        function setUserPro(data) {
-            $('#userName').val(data.name);
-            $('#userId').val(data.id);
-            $('#idNumber').val(data.idNumber);
-            $('#phoneNumber').val(data.phoneNumber);
-            $('#birthday').val(data.birthday);
-
-            $("#sex").attr("value", data.sex);
-            $("#sex").trigger('change');
-
-            $("#organId").attr("value", data.organId);
-            $("#organId").trigger('change');
-
-            $("#industryId").attr("value", data.industryId);
-            $("#industryId").trigger('change');
-
-            $("#postId").attr("value", data.postId);
-            $("#postId").trigger('change');
+        function setUserPro(u) {
+            $("#userId").val(u.id);
+            $("#name").val(u.name);
+            $("#idNumber").val(u.idNumber);
+            $("#birthday").val(u.birthday);
+            $("#phoneNumber").val(u.phoneNumber);
+            $("#sex").val(u.sex);
+            if(u.age!=null&&u.age!=''){
+                $("#age").val(u.age);
+            }else{
+                $("#age").val(getAgeFromId(u.idNumber));
+            }
+            $("#strSex").val(u.strSex);
+            $("#organId").val(u.organId);
+            $("#organName").val(u.organName);
+            $("#industryId").val(u.industryId);
+            $("#industryName").val(u.industryName);
+            $("#postId").val(u.postId);
+            $("#postName").val(u.jobPostName);
         }
 
-        // 行业更新后
+        // 行业更新后，设置行业默认套餐
         function chgIndustry(){
             var industryId=$('#industryId').val();
 
@@ -168,52 +152,38 @@
                 var id=d1r.data.id;
                 $("#msg").show();
                 $("#msg").html(d1r.msg);
+
+                // 清除必要的字段，继续添加新登记。
+                setUserPro({});
+                $("#userAuto").val('');
+            });
+        }
+        function sumbitAndReturn(){
+             $("#msg").hide().html('');
+            $("#inputForm").ajaxSubmit(function(d1r){
+                if(d1r == null||d1r.state==null){
+                     $("#msg").show();
+                     $("#msg").html('由于未知原因，提交失败\n'+d1r);
+                    return;
+                }
+                if(d1r.state != 1){
+                    $("#msg").show();
+                    $("#msg").html(d1r.msg);
+                    return;
+                }
+                var id=d1r.data.id;
+                $("#msg").show();
+                $("#msg").html(d1r.msg);
                 lodop_printA4('流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id='+id);
 
                 // 清除必要的字段，继续添加新登记。
+                setUserPro({});
+                $("#userAuto").val('');
+                setTimeout("location.href='${ctx}/wshbj/examinationRecord/list'",1000);
             });
         }
 
-        // 显示当前打印机的名字
-        function lodop_showPrintName(){
-            var arr=lodop_getPrintNames();
-            for(var i in arr){
 
-                $('#sltPrint').append("<option value='"+i+"'>"+arr[i]+"</option>");
-            }
-            var a4Index= localStorage.getItem('a4-print-index');
-            $("#sltPrint").val(a4Index).trigger('change');
-            $('#sltPrint').change();
-        }
-        // 获得打印机列表
-        function lodop_getPrintNames(){
-            var arr=[];
-            var LODOP = getLodop();
-            var cnt=LODOP.GET_PRINTER_COUNT();
-            for(var i=0;i<cnt;i++){
-                arr.push(LODOP.GET_PRINTER_NAME(i));
-            }
-            return arr;
-        }
-
-        // 设置当前A4的打印用哪个打印机
-        function lodop_setA4PrintIndex(){
-             var ind=$('#sltPrint').val();
-             localStorage.setItem('a4-print-index',ind);
-        }
-
-        function lodop_printA4(title,url){
-            var LODOP = getLodop();
-
-            LODOP.PRINT_INIT(title);
-            LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
-            if(localStorage.getItem('a4-print-index')>=0){
-                LODOP.SET_PRINTER_INDEX(localStorage.getItem('a4-print-index'));
-            }
-            LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
-            LODOP.ADD_PRINT_HTM(0,0,"210mm","297mm","URL:"+url);
-            LODOP.PRINT();
-        }
 	</script>
 </head>
 <body>
@@ -224,6 +194,11 @@
         <li><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
         <li ><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul><br/>
+
+    <div id="lodop_check" class="alert alert-danger" style="display:none" >
+        1 您可能还未安装Lodop打印驱动，请<a href="${ctxStatic}/lodop/CLodop_Setup_for_Win32NT.exe" target="_blank">下载</a>并安装Lodop。<br>
+        2 您如果已经安装Lodop打印驱动，但没有启动服务。请运行 <span style="color:#000;"> 开始 > 所有程序 > C-Lodop(HTM-WEB-PRINT)32bit > C-Lodop Setup</span> ，并启动CLodop服务。
+    </div>
 
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
 
@@ -380,10 +355,10 @@
 		<div class="form-actions span12">
 
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" onclick="sumbitAndPrint()" />&nbsp;</shiro:hasPermission>
-            <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" />&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" onclick="sumbitAndReturn()" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 
-			当前打印机<select id="sltPrint" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
+			当前A4打印机<select id="sltA4Print" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
 		</div>
 <div class="cl"></div>
 </div>
