@@ -42,7 +42,12 @@
                     $("#idNumber").val(u.idNumber);
                     $("#birthday").val(u.birthday);
                     $("#phoneNumber").val(u.phoneNumber);
-                    $("#sex").val(u.sex);$("#age").val(u.age);
+                    $("#sex").val(u.sex);
+                    if(u.age!=null&&u.age!=''){
+                        $("#age").val(u.age);
+                    }else{
+                        $("#age").val(getAgeFromId(u.idNumber));
+                    }
                     $("#strSex").val(u.strSex);
                     $("#organId").val(u.organId);
                     $("#organName").val(u.organName);
@@ -147,7 +152,27 @@
         }
 
         // ajax form方式提交保存
+        function sumbitAndPrint(){
+             $("#msg").hide().html('');
+            $("#inputForm").ajaxSubmit(function(d1r){
+                if(d1r == null||d1r.state==null){
+                     $("#msg").show();
+                     $("#msg").html('由于未知原因，提交失败\n'+d1r);
+                    return;
+                }
+                if(d1r.state != 1){
+                    $("#msg").show();
+                    $("#msg").html(d1r.msg);
+                    return;
+                }
+                var id=d1r.data.id;
+                $("#msg").show();
+                $("#msg").html(d1r.msg);
+                lodop_printA4('流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id='+id);
 
+                // 清除必要的字段，继续添加新登记。
+            });
+        }
 
         // 显示当前打印机的名字
         function lodop_showPrintName(){
@@ -200,8 +225,11 @@
         <li ><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul><br/>
 
+    <div id="msg" class="alert alert-danger" style="display:none" ></div>
+
+
 	<div >
-	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 
@@ -351,7 +379,7 @@
 		<div class="cl"></div>
 		<div class="form-actions span12">
 
-			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" />&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" onclick="sumbitAndPrint()" />&nbsp;</shiro:hasPermission>
             <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 

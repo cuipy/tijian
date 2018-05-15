@@ -42,6 +42,7 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import sun.misc.Request;
 
 /**
  * 体检记录Controller
@@ -247,17 +248,53 @@ public class ExaminationRecordController extends BaseController {
 		return "modules/wshbj/examinationRecordForm";
 	}
 
+//	@RequiresPermissions("wshbj:examinationRecord:edit")
+//	@RequestMapping(value = "save")
+//	public String save(ExaminationRecord examinationRecord, Model model, RedirectAttributes redirectAttributes) {
+//
+//		//编号在保存的时候才创建
+//		if (StringUtils.isEmpty(examinationRecord.getCode())){
+//			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code"));
+//		}
+//
+//		if (!beanValidator(model, examinationRecord)){
+//			return RequestResult.generate(102,model.);
+//		}
+//
+//		//如果是新创建而不是编辑的时候，则设置状态为 未检查状态
+//		if(StringUtils.isBlank(examinationRecord.getId())){
+//			examinationRecord.setStatus(ExaminationRecordConstant.STATUS0);
+//			examinationRecord.setName(examinationRecord.getName());
+//			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
+//		}
+//
+//		RequestResult result = examinationRecordService.saveRecord(examinationRecord);
+//		List<String> resultMessages = (List<String>) result.getData();
+//		addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
+//		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
+//	}
+
 	@RequiresPermissions("wshbj:examinationRecord:edit")
-	@RequestMapping(value = "save")
-	public String save(ExaminationRecord examinationRecord, Model model, RedirectAttributes redirectAttributes) {
+	@RequestMapping(value = "ajax_save")
+	@ResponseBody
+	public RequestResult ajax_save(ExaminationRecord examinationRecord, Model model) {
 
 		//编号在保存的时候才创建
 		if (StringUtils.isEmpty(examinationRecord.getCode())){
 			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code"));
 		}
 
+		// 设置体检类型，无套餐id，则自由选择体检项目； 有套餐id，则套餐体检
+		if(StringUtils.isEmpty(examinationRecord.getPackageId())){
+			examinationRecord.setItemType("2");
+		}else{
+			examinationRecord.setItemType("1");
+		}
+
+		// 验证数据是否合法
 		if (!beanValidator(model, examinationRecord)){
-			return form(examinationRecord, model);
+			Object msg = model.asMap().get("message");
+			return RequestResult.generate(102,msg.toString());
 		}
 
 		//如果是新创建而不是编辑的时候，则设置状态为 未检查状态
@@ -267,10 +304,8 @@ public class ExaminationRecordController extends BaseController {
 			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}
 
-		ResponseResult result = examinationRecordService.saveRecord(examinationRecord);
-		List<String> resultMessages = (List<String>) result.getData();
-		addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
-		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
+		RequestResult result = examinationRecordService.saveRecord(examinationRecord);
+		return result;
 	}
 
 

@@ -33,9 +33,11 @@
 <link href="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.css?v=22" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/jquery-autocomplete/jquery.autocompleter.js?v=163" type="text/javascript"></script>
 
+<script src="${ctxStatic}/jquery-plugin/jquery.form.js" type="text/javascript"></script>
+
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/common/jeesite.css?v=31" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/common/jeesite.js?v=6" type="text/javascript"></script>
+<link href="${ctxStatic}/common/jeesite.css?v=32" type="text/css" rel="stylesheet" />
+<script src="${ctxStatic}/common/jeesite.js?v=7" type="text/javascript"></script>
 
 <script src="${ctxStatic}/common/LodopFuncs.js" type="text/javascript"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>

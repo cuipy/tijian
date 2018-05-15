@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationSamplesDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
@@ -28,6 +29,7 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationRecordDao;
 import org.springframework.web.bind.annotation.RequestParam;
+import sun.misc.Request;
 
 /**
  * 体检记录Service
@@ -201,50 +203,43 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)
-    public ResponseResult saveRecord(ExaminationRecord examinationRecord) {
+    public RequestResult saveRecord(ExaminationRecord examinationRecord) {
         //验证用户名、身份证号是否与系统数据一致
 
-        List<String> resultMessages = Lists.newArrayList();
-        resultMessages.add("数据验证失败：");
-
         if (StringUtils.isNotBlank(examinationRecord.getId())) {
-            ExaminationRecord record = get(examinationRecord.getId());
-            if (record == null || "1".equals(record.getDelFlag())) {
-                resultMessages.add("体检记录错误");
-                return ResponseResult.generateFailResult("体检记录错误", resultMessages);
+            if (examinationRecord == null || "1".equals(examinationRecord.getDelFlag())) {
+                return RequestResult.generate(210,"该体检记录已经删除，不可执行修改操作。");
             }
 
             //未体检状态才允许修改
-            if (!ExaminationRecordConstant.STATUS0.equals(record.getStatus())) {
-                resultMessages.add("未体检状态才可以修改，该体检记录不允许修改");
-                return ResponseResult.generateFailResult("未体检状态才可以修改，该体检记录不允许修改", resultMessages);
+            if (!ExaminationRecordConstant.STATUS0.equals(examinationRecord.getStatus())) {
+                return RequestResult.generate(220,"未体检状态才可以修改，该体检记录不允许修改");
             }
         }
 
-        // 根据等级信息，获取体检用户
+        // 根据登记信息，获取体检用户，5月15日前，用户先创建，后进行信息登记，之后需要增加登记的同时创建用户的功能。
         ExaminationUser examinationUser = null;
         if (StringUtils.isNotBlank(examinationRecord.getUser().getId())) {
             examinationUser = examinationUserService.get(examinationRecord.getUser().getId());
             if (examinationUser == null) {
-                resultMessages.add("由于未知原因，未能获取该体检用户的信息");
-                return ResponseResult.generateFailResult("用户信息错误", resultMessages);
+                return RequestResult.generate(230,"您当前选择的用户信息，未能获得该用户的信息");
             }
         }
 
-        //
-        //if (examinationUser != null) {
-        if (!examinationRecord.getIdNumber().equals(examinationUser.getIdNumber())) {
-            resultMessages.add("身份证与体检用户内记录信息不一致");
-            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-        }
-        if (!examinationRecord.getName().equals(examinationUser.getName())) {
-            resultMessages.add("名称与体检用户内记录信息不一致");
-            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-        }
-        if (!examinationRecord.getSex().equals(examinationUser.getSex())) {
-            resultMessages.add("性别与体检用户内记录的信息不一致");
-            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-        }
+        // 无意义，登记的信息允许修改
+//        //if (examinationUser != null) {
+//        if (!examinationRecord.getIdNumber().equals(examinationUser.getIdNumber())) {
+//            resultMessages.add("身份证与体检用户内记录信息不一致");
+//            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
+//        }
+//        if (!examinationRecord.getName().equals(examinationUser.getName())) {
+//            resultMessages.add("名称与体检用户内记录信息不一致");
+//            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
+//        }
+//        if (!examinationRecord.getSex().equals(examinationUser.getSex())) {
+//            resultMessages.add("性别与体检用户内记录的信息不一致");
+//            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
+//        }
 
         super.save(examinationRecord);
 
@@ -258,19 +253,14 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         List<ExaminationRecordItem> currRecordItems=examinationRecord.getItems();
 
         // 打算保存的
-        List<ExaminationItem> savingItems = new ArrayList<ExaminationItem>();
-        // 如果是套餐
-        if ("1".equals(examinationRecord.getItemType())) {
-            savingItems = examinationItemService.findListByPackage(examinationRecord.getPackageId());
-        }else{
-            // 如果自由選擇
-            List<ExaminationRecordItem> lst = examinationRecord.getExaminationRecordItemList();
+        List<ExaminationItem> savingItems = new ArrayList();
 
-            for(ExaminationRecordItem savingItem:lst){
-                ExaminationItem item = examinationItemService.get(savingItem.getItemId());
-                if(item!=null){
-                    savingItems.add(item);
-                }
+        List<ExaminationRecordItem> lst = examinationRecord.getExaminationRecordItemList();
+
+        for(ExaminationRecordItem savingItem:lst){
+            ExaminationItem item = examinationItemService.get(savingItem.getItemId());
+            if(item!=null){
+                savingItems.add(item);
             }
         }
 
@@ -376,9 +366,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 //        }
 
 
-        resultMessages.remove(0);
-        resultMessages.add("保存成功");
-        return ResponseResult.generateSuccessResult("保存成功", resultMessages);
+        return RequestResult.generate(1,"保存成功",examinationRecord);
     }
 
 //    @Transactional(readOnly = false)

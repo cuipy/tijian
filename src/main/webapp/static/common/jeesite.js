@@ -342,6 +342,7 @@ function abbr(name, maxLength){
  return nameSub;  
 }
 
+/// 从身份证中获取年月日的时间
 function getDateFromId(idNumber){
     if(idNumber==null||idNumber.length<15){
         return "";
@@ -351,4 +352,18 @@ function getDateFromId(idNumber){
     var m=idNumber.substr(10,2);
     var d=idNumber.substr(12,2);
     return y+"-"+m+"-"+d;
+}
+
+// 根据身份证获取年龄
+function getAgeFromId(idNumber){
+    var birthday= getDateFromId(idNumber);
+    if(birthday==''){
+        return 0;
+    }
+
+    var dtBirthday=strToDate(birthday);
+    var dtNow= new Date();
+
+    var dtYear = parseInt((dtNow.getTime()-dtBirthday.getTime())/1000/60/60/24/365);
+    return dtYear;
 }
