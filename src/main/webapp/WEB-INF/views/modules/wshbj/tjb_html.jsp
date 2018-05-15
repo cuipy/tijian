@@ -53,7 +53,7 @@
         <div class="tbl-head">
             <div class="title">石家庄市食品从业人员健康检查流程表</div>
             <div class="title2">
-                <div class="t2-left">体检日期：2018-05-21</div>
+                <div class="t2-left">体检日期：<fmt:formatDate pattern='yyyy-MM-dd' value='${er.examTime}' /></div>
                 <div class="t2-right">
                     <div><img class="t2-tm-img img-code"></div>
                    <div class="t2-tm-code">${er.code}</div>
@@ -99,7 +99,7 @@
             <div class="tbl-head">
                 <div class="title">石家庄市食品从业人员健康证领取凭证</div>
                 <div class="title2">
-                    <div class="t2-left">体检日期：2018-05-21</div>
+                    <div class="t2-left">体检日期：<fmt:formatDate pattern='yyyy-MM-dd' value='${er.examTime}' /></div>
                     <div class="t2-right">
                         <div><img id="img-code1" class="t2-tm-img img-code" ></div>
                          <div id="dv-code1" class="t2-tm-code">${er.code}</div>
