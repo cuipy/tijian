@@ -573,15 +573,15 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)
-    public ResponseResult startFujian(ExaminationRecord examinationRecord) {
+    public RequestResult startFujian(ExaminationRecord examinationRecord) {
         if(examinationRecord==null || StringUtils.isBlank(examinationRecord.getId())){
-            return ResponseResult.generateFailResult("复检记录错误");
+            return RequestResult.generateFailResult("复检记录错误");
         }
         examinationRecord = get(examinationRecord.getId());
         if (examinationRecord==null
                 || (!ExaminationRecordConstant.STATUS20.equals(examinationRecord.getStatus())
                 && !ExaminationRecordConstant.STATUS30.equals(examinationRecord.getStatus()))){
-            return ResponseResult.generateFailResult("复检记录错误");
+            return RequestResult.generateFailResult("复检记录错误");
         }
         // 1 获得不合格的，Last的 体检项目；
         ExaminationRecordItem recordItem = new ExaminationRecordItem();
@@ -611,7 +611,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         // 4 刷新体检记录的状态。
         this.updateStatus(examinationRecord);
 
-        return ResponseResult.generateSuccessResult("启动复检成功");
+        return RequestResult.generateSuccessResult("启动复检成功");
     }
 
     public List<ExaminationRecord> listByIds(String[] ids) {

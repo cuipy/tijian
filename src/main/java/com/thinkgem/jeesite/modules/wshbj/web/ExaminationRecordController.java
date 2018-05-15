@@ -166,7 +166,7 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:view")
 	@RequestMapping(value = "ajax_start_fujian")
 	@ResponseBody
-	public ResponseResult ajax_start_fujian(ExaminationRecord examinationRecord, Model model) {
+	public RequestResult ajax_start_fujian(ExaminationRecord examinationRecord, Model model) {
 
 		// 1 获得不合格的，Last的 体检项目；
 
@@ -292,6 +292,11 @@ public class ExaminationRecordController extends BaseController {
 				newCode=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code");
 			}
 			examinationRecord.setCode(newCode);
+		}
+
+		// 体检时间
+		if(examinationRecord.getExamTime()==null){
+			examinationRecord.setExamTime(new java.util.Date());
 		}
 
 		// 设置体检类型，无套餐id，则自由选择体检项目； 有套餐id，则套餐体检

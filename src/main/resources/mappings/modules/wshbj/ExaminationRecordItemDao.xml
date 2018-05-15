@@ -12,7 +12,7 @@
 		a.result_dict_id AS "resultDictId",
 		a.result_dict_name AS "resultDictName",
 		a.result_flag AS "resultFlag",
-		a.result_remarks AS "resultRemarks",
+		a.result_remarks AS "resultRemarks", a.grab_sample_time as "grabSampleTime",a.record_result_time as "recordResultTime",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -29,7 +29,9 @@
 	</sql>
 
 	<sql id="whereif">
-		a.record_id = #{recordId}
+		<if test="recordId != null and recordId != ''">
+			and a.record_id = #{recordId ,jdbcType=VARCHAR }
+		</if>
 		<if test="userName != null and userName != ''">
 			AND b.name like  concat('%', #{userName},'%')
 		</if>
@@ -54,7 +56,9 @@
 	</sql>
 
 	<sql id="whereif2">
-		a.record_id = #{recordId}
+		<if test="recordId != null and recordId != ''">
+			and a.record_id = #{recordId ,jdbcType=VARCHAR }
+		</if>
 		<if test="userName != null and userName != ''">
 			AND b.name like  concat('%', #{userName},'%')
 		</if>
@@ -119,7 +123,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.order_numb,a.create_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -138,7 +142,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.order_numb,a.create_date DESC
+				ORDER BY a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -157,7 +161,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.order_numb,a.create_date DESC
+				ORDER BY  a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -176,7 +180,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.order_numb,a.create_date DESC
+				ORDER BY  a.create_date DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -216,7 +220,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.order_numb,a.create_date ASC
+				ORDER BY  a.create_date ASC
 			</otherwise>
 		</choose>
 	</select>
@@ -229,7 +233,7 @@
 		<where>
 			a.del_flag=0 AND a.record_id = #{recordId}
 		</where>
-		ORDER BY a.order_numb,a.create_date ASC
+		ORDER BY  a.create_date ASC
 	</select>
 
 	<select id="countSampleCode" resultType="java.lang.Integer">

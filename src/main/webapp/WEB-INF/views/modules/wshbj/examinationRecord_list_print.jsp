@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
-		<li class=""><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
+		<li class=""><a href="${ctx}/wshbj/examinationRecord/list">体检记录列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
 		<li ><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul>
@@ -130,7 +130,7 @@
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
-					<a class="label label-info" href="${ctx}/wshbj/exam_record_print/print_jkz1?id=${examinationRecord.id}" target="_blank">打印健康证</a> </c:if>
+					<a class="label label-success" href="${ctx}/wshbj/exam_record_print/print_jkz1?id=${examinationRecord.id}" target="_blank">打印健康证</a> </c:if>
 
 				</td></shiro:hasPermission>
 			</tr>

@@ -25,8 +25,9 @@
         }
 
         function startFujian(examinationRecordId) {
-            top.$.jBox.confirm("确认要导出体检记录数据吗？","系统提示",function(v,h,f){
+            top.$.jBox.confirm("确认要启动复检吗？","系统提示",function(v,h,f){
                 if(v=="ok"){
+                    $('#msg').hide().html('');
                     startFujianDo(examinationRecordId);
                 }
             },{buttonsFocus:1});
@@ -35,22 +36,27 @@
         function startFujianDo(examinationRecordId) {
 			var url = '${ctx}/wshbj/examinationRecord/ajax_start_fujian';
 			$.post(url,{id:examinationRecordId},function (result) {
-				if(result.code!='0'){
+				if(result.state!='1'){
                     showTip(result.msg,"error");
 				}else{
                     $('#searchForm').submit();
 				}
-            });
+            }).error(function(xhr,status,info){
+                $('#msg').show().html(xhr.responseText.replace(/\n/g,"<br>"));
+             });
         }
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>
-		<li class=""><a href="${ctx}/wshbj/examinationRecord/">体检记录列表</a></li>
+		<li class=""><a href="${ctx}/wshbj/examinationRecord/list">体检记录列表</a></li>
 		<li><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
 		<li  class="active"><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul>
+
+	<div id="msg" class="alert alert-danger" style="display:none" ></div>
+
 	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/list_nopass" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
