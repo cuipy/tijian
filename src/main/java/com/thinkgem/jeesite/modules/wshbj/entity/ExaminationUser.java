@@ -304,6 +304,17 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		return m;
 	}
 
+	@JsonIgnore
+	public Map<String,String> getMapForAutoCompleter(){
+		Map<String,String> m=new HashMap();
+		m.put("id",id);
+
+		m.put("value",idNumber);
+		m.put("label",idNumber+"/"+phoneNumber+"("+getName()+")");
+
+		return m;
+	}
+
 	public String getNamePinyin() {
 		return namePinyin;
 	}

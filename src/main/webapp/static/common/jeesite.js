@@ -348,14 +348,27 @@ function getDateFromId(idNumber){
         return "";
     }
 
-    var y=idNumber.substr(6,4);
-    var m=idNumber.substr(10,2);
-    var d=idNumber.substr(12,2);
-    return y+"-"+m+"-"+d;
+    if(idNumber.length==18){
+        var y=idNumber.substr(6,4);
+        var m=idNumber.substr(10,2);
+        var d=idNumber.substr(12,2);
+        return y+"-"+m+"-"+d;
+    }
+
+    if(idNumber.length==15){
+        var y='19'+idNumber.substr(6,2);
+        var m=idNumber.substr(8,2);
+        var d=idNumber.substr(10,2);
+        return y+"-"+m+"-"+d;
+    }
 }
 
 // 根据身份证获取年龄
 function getAgeFromId(idNumber){
+    if(idNumber==null||idNumber.length<15){
+        return "";
+    }
+
     var birthday= getDateFromId(idNumber);
     if(birthday==''){
         return 0;
@@ -366,4 +379,23 @@ function getAgeFromId(idNumber){
 
     var dtYear = parseInt((dtNow.getTime()-dtBirthday.getTime())/1000/60/60/24/365);
     return dtYear;
+}
+
+function getSexFromId(idNumber){
+    if(idNumber==null||idNumber.length<15){
+        return "";
+    }
+
+    var sex='';
+
+    if(idNumber.length==15){
+        sex=idNumber.substring(13);
+    }else if(idNumber.length==18){
+        sex=idNumber.substr(16,1);
+    }
+    if(sex=='1'||sex=='3'||sex=='5'||sex=='7'||sex=='9'){
+        return "男";
+    }else{
+        return "女";
+    }
 }

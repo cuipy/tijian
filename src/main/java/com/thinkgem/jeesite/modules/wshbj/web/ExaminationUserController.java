@@ -88,13 +88,6 @@ public class ExaminationUserController extends BaseController {
 	public String form(ExaminationUser examinationUser, Model model) {
 		model.addAttribute("examinationUser", examinationUser);
 
-		Organ organ = new Organ();
-		organ.setOwner(UserUtils.getUser().getCompany().getId());
-		organ.setDelFlag("0");
-		organ.setReferenceFlag("0");
-		List<Organ> organList = organService.findList(organ);
-		model.addAttribute("organList", organList);
-
 		Industry industry = new Industry();
 		industry.setOwner(UserUtils.getUser().getCompany().getId());
 		industry.setDelFlag("0");
@@ -216,10 +209,35 @@ public class ExaminationUserController extends BaseController {
 		List<Map<String,String>> lst2=new ArrayList();
 
 		for(ExaminationUser u:p.getList()){
-			lst2.add(u.getMap());
+			lst2.add(u.getMapForAutoCompleter());
 		}
 
 		return lst2;
+	}
+
+	@ResponseBody
+	@GetMapping(value = "ajax_get_by_id")
+	public RequestResult ajax_for_autocompleter(ExaminationUser examinationUser){
+
+		ExaminationUser examinationUser1 = examinationUserService.get(examinationUser.getId());
+		if(examinationUser1==null){
+			return RequestResult.generate(2,"未 获得用户。");
+		}
+
+		Map<String, String> map = examinationUser1.getMap();
+		return RequestResult.generate(1,"获取用户成功",map);
+	}
+
+	@ResponseBody
+	@GetMapping(value = "ajax_get_by_idnumber")
+	public RequestResult ajax_get_by_idnumber(ExaminationUser examinationUser){
+		ExaminationUser examinationUser1 = examinationUserService.getByIdNumberAndOwner(examinationUser.getIdNumber(),UserUtils.getUser().getCompany().getId());
+		if(examinationUser1==null){
+			return RequestResult.generate(2,"未获得用户。");
+		}
+
+		Map<String, String> map = examinationUser1.getMap();
+		return RequestResult.generate(1,"获取用户成功",map);
 	}
 
 }

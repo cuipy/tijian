@@ -48,7 +48,7 @@
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
 			<if test="likeField != null and likeField != ''">
-				and (a.name like #{likeField} or a.name_pinyin like #{likeField});
+				and (a.name like #{likeField} or a.name_pinyin like #{likeField})
 			</if>
 		</where>
 		<choose>

@@ -234,6 +234,19 @@ public class ExaminationRecordController extends BaseController {
 
 		model.addAttribute("examinationRecord", examinationRecord);
 
+		Industry industry = new Industry();
+		industry.setOwner(UserUtils.getUser().getCompany().getId());
+		industry.setDelFlag("0");
+		industry.setReferenceFlag("0");
+		List<Industry> industryList = industryService.findList(industry);
+		model.addAttribute("industryList", industryList);
+
+		JobPost jobPost = new JobPost();
+		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
+		jobPost.setDelFlag("0");
+		jobPost.setReferenceFlag("0");
+		List<JobPost> postList = jobPostService.findList(jobPost);
+		model.addAttribute("postList", postList);
 
 		// 获得体检套餐
 		ExaminationPackage examinationPackage = new ExaminationPackage();

@@ -29,12 +29,12 @@ public class OrganService extends CrudService<OrganDao, Organ> {
 		return super.get(id);
 	}
 
-	@Cacheable(value = "organCache",key="'organ_findList_'+#organ.name+#organ.owner")
+	@Cacheable(value = "organCache",key="'organ_findList_'+#organ.name+#organ.likeField+#organ.owner")
 	public List<Organ> findList(Organ organ) {
 		return super.findList(organ);
 	}
 
-	@Cacheable(value = "organCache",key="'organ_findPage_'+#page.pageNo+#page.pageSize+#organ.name+#organ.owner")
+	@Cacheable(value = "organCache",key="'organ_findPage_'+#page.pageNo+#page.pageSize+#organ.likeField+#organ.name+#organ.owner")
 	public Page<Organ> findPage(Page<Organ> page, Organ organ) {
 		return super.findPage(page, organ);
 	}

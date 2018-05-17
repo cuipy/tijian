@@ -10,7 +10,7 @@
     <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
     <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
 	<script type="text/javascript">
-		$(document).ready(function() {
+		$(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -31,7 +31,7 @@
 			$("#organName").autocompleter({
 			    highlightMatches: true,
                 template: '{{ label }}',
-                hint: false,
+                hint: false, focusOpen:true,
                 cache:false,
                 empty: false,
                 limit: 10,
@@ -40,21 +40,31 @@
                     var o=selected;
                     $('#organId').val(o.id);
                     $('#organName').val(o.name);
-                    chgIndustry();
                 }
 			});
 
-			$("#idNumber").on('blur',refreshBirthday);
-			$("#idNumber").on('change',refreshBirthday);
+			$("#idNumber").on('blur',parseIdNumber);
+			$("#idNumber").on('change',parseIdNumber);
 
 			initWebsocket();
 
 		});
 
-		function refreshBirthday(){
+		function parseIdNumber(){
 		    var idNumber=$("#idNumber").val();
+
+		    // 生日
 		    var dt=getDateFromId(idNumber);
 		    $("#birthday").val(dt);
+		    $("#age").val(getAgeFromId(idNumber));
+		    var strSex=getSexFromId(idNumber);
+
+		    if(strSex=='男'){
+		        $("#sex1").attr('checked',true);
+		    }else if(strSex=='女'){
+		        $("#sex2").attr('checked',true);
+		    }
+
 		}
 
 		 WEB_SOCKET_SWF_LOCATION = "${ctxStatic}/websocket/WebSocketMain.swf";
@@ -69,7 +79,7 @@
                 $("#name").val(jmsg.Name);
                 $("#idNumber").val(jmsg.Code);
 
-                refreshBirthday();
+                parseIdNumber();
 
                 if(jmsg.Sex=='男'){
                     $("#sex option[value='1']").attr("selected",true);
@@ -93,7 +103,7 @@
 
         </div>
 
-	<div class="">
+	<div style="max-width:1200px;">
 	<form:form id="inputForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
@@ -105,35 +115,36 @@
             </div>
         </div>
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label">姓名：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span6">
+		<div class="control-group span4">
             <label class="control-label">姓名全拼：</label>
             <div class="controls">
                 <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
             </div>
         </div>
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label">身份证号：</label>
 			<div class="controls">
 				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label">联系电话：</label>
 			<div class="controls">
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span6">
+
+		<div class="control-group span4">
 			<label class="control-label">出生日期：</label>
 			<div class="controls">
 				<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
@@ -141,22 +152,32 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls radios-div radios-sex">
 				<form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			</div>
 		</div>
 
-		<div class="control-group span6">
+		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 年龄：</label>
             <div class="controls radios-div radios-sex">
-                <form:input path="age" type="number" htmlEscape="false"/>
+                <form:input path="age" type="number" htmlEscape="false" class="input-medium required"/>
             </div>
         </div>
 
+<div class="cl"></div>
+<div class="control-group span4">
+    <label class="control-label">体检单位：</label>
+    <div class="controls">
+        <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
+                    <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
+        <span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
+        </div>
+    </div>
+</div>
 
-		<div class="control-group span6">
+		<div class="control-group span4">
 			<label class="control-label">行业：</label>
 			<div class="controls">
 				<form:select path="industryId" class="input-medium">
@@ -168,16 +189,8 @@
 				<span class="help-inline">  <a href="${ctx}/wshbj/industry/form" target="_blank">新增行业</a> </span>
 			</div>
 		</div>
-		<div class="control-group span6">
-			<label class="control-label">体检单位：</label>
-			<div class="controls">
-				<div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-                            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
-				<span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
-				</div>
-			</div>
-		</div>
-		<div class="control-group span6">
+
+		<div class="control-group span4">
 			<label class="control-label">岗位：</label>
 			<div class="controls">
 				<form:select path="postId" class="input-medium">
@@ -190,8 +203,8 @@
 			</div>
 		</div>
 
-
-		<div class="control-group span6">
+        <div class="cl"></div>
+		<div class="control-group span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>

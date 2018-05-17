@@ -25,73 +25,130 @@
 				}
 			});
 
-             var lastUserName='';
-             $('#userAuto').autocompleter({
-
-                highlightMatches: true,
-                template: '{{ label }}',
-                hint: false,
-                cache:false,
-                empty: false,
-                limit: 10,
-                source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
-                callback: function (value, index, selected) {
-                    var u=selected;
-                    setUserPro(u);
-
-                    chgIndustry();
-                }
-            });
 
              $('#showIdNumber').autocompleter({
 
                 highlightMatches: true,
                 template: '{{ label }}',
                 hint: false,
-                cache:false,
+                cache:false, focusOpen:true,
                 empty: false,
                 limit: 10,
                 source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
                 callback: function (value, index, selected) {
                     var u=selected;
-                    setUserPro(u);
-
-                    chgIndustry();
                 }
             });
 
+			$("#organName").autocompleter({
+			    highlightMatches: true,
+                template: '{{ label }}',
+                hint: false, focusOpen:true,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/organ/ajax_for_autocompleter",
+                callback: function (value, index, selected) {
+                    var o=selected;
+                    $('#organId').val(o.id);
+                    $('#organName').val(o.name);
+                }
+			});
+
             // 身份证输入文本框失去焦点的时候
              $('#showIdNumber').blur(function(){
-
+                loadUserByIdNumber();
              })
 
-            setTimeout("$('#userAuto').focus();",300);
             setTimeout("lodop_check()",300);
         });
 
+        function loadUserByIdNumber(){
+            $("#msg").hide();
+
+            $("#idNumber").val($("#showIdNumber").val());
+
+            if($("#showIdNumber").val() =='' ||$("#showIdNumber").val() .length<15){
+                return;
+            }
+
+            var url="${ctx}/wshbj/examinationUser/ajax_get_by_idnumber";
+            var d1={idNumber: $("#showIdNumber").val() };
+
+            $.get(url,d1,function(d1r){
+                if(d1r.state==1){
+                    setUserPro(d1r.data);
+                    $("#idNumberInfo").show().html("系统内的体检用户。");
+                }else if(d1r.state==2){
+                    setUserPro({});
+                    parseIdNumber();
+                    $("#idNumberInfo").show().html("新用户，将创建新的体检用户。");
+                }
+            }).error(function(xhr){
+                 $("#msg").show().html(xhr.responseText.replace(/\n/g,"<br>"));
+            });
+         }
+
+        function parseIdNumber(){
+            var idNumber=$("#showIdNumber").val();
+
+            // 生日
+            var dt=getDateFromId(idNumber);
+            $("#birthday").val(dt);
+            $("#age").val(getAgeFromId(idNumber));
+            var strSex=getSexFromId(idNumber);
+
+            if(strSex=='男'){
+                $("#sex1").attr('checked',true);
+            }else if(strSex=='女'){
+                $("#sex2").attr('checked',true);
+            }
+
+        }
+
+
+
         // 设置用户的属性property
         function setUserPro(u) {
+            if(u.id==null&&$("#userId").val()==''){
+                return;
+            }
+
             $("#userId").val(u.id);
             $("#name").val(u.name);
             $("#idNumber").val(u.idNumber);
             $("#birthday").val(u.birthday);
             $("#phoneNumber").val(u.phoneNumber);
-            $("#sex").val(u.sex);
+
             if(u.age!=null&&u.age!=''){
                 $("#age").val(u.age);
             }else{
                 $("#age").val(getAgeFromId(u.idNumber));
             }
-            $("#strSex").val(u.strSex);
-            $("#organId").val(u.organId);
-            $("#organName").val(u.organName);
-            $("#industryId").val(u.industryId);
-            $("#industryName").val(u.industryName);
-            $("#postId").val(u.postId);
-            $("#postName").val(u.jobPostName);
+            if(u.sex=='1'){
+                $("#sex1").attr("checked",true);
+            }
+            if(u.sex=='2'){
+                $("#sex2").attr("checked",true);
+            }
 
-            $("#headImgImg").attr("src",u.headImgPath);
-            $("#upheadImg").val(u.headImgPath);
+            if(u.organId!=null&&u.organId!=''){
+                $("#organId").val(u.organId);
+                $("#organName").val(u.organName);
+            }
+
+             if(u.industryId!=null&&u.industryId!=''){
+                $("#industryId").attr("value", u.industryId);
+                $("#industryId").trigger('change');
+             }
+
+             if(u.postId!=null&&u.postId!=''){
+                $("#postId").attr("value", u.postId);
+                $("#postId").trigger('change');
+             }
+
+            $("#headImgImg").attr("src",u.headImgPath==null?'':u.headImgPath);
+            $("#upheadImg").val(u.headImgPath==null?'':u.headImgPath);
 
         }
 
@@ -183,7 +240,6 @@
                 }
                 // 清除必要的字段，继续添加新登记。
                 setUserPro({});
-                $("#userAuto").val('');
 
                 if(status.indexOf('return')>=0){
                     setTimeout("location.href='${ctx}/wshbj/examinationRecord/list'",1000);
@@ -212,14 +268,14 @@
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
 
 
-	<div >
+	<div  style="max-width:1200px" >
 	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
-    <div style="max-width:1024px">
+    <div>
 
 		<div class="control-group span12">
 			<label class="control-label"><font color="red">*</font>  身份证号：</label>
@@ -234,7 +290,7 @@
         <div class="control-group span6">
             <label class="control-label"><font color="red">*</font>  用户头像：</label>
             <div class="controls">
-                 <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="真人照片" path="headImg" value="${examinationUser.headImg}"/>
+                 <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="真人照片" path="headImg" value="${examinationRecord.headImg}"/>
             </div>
         </div>
 
@@ -254,9 +310,7 @@
 		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
-
-			    <input type="hidden" id="sex" name="sex"  value="${examinationRecord.sex}">
-				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-medium">
+                <form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 
 			</div>
 		</div>
@@ -276,29 +330,38 @@
 
             </div>
         </div>
-
+        <div class="control-group span4">
+            <label class="control-label">体检单位：</label>
+            <div class="controls">
+                <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
+                            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
+                <span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
+                </div>
+            </div>
+        </div>
 	<div class="control-group span4">
 		<label class="control-label">行业：</label>
 		<div class="controls">
-		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
-           <input type="text"  onchange="chgIndustry()"  id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-medium required">
-
+				<form:select path="industryId" class="input-medium">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline">  <a href="${ctx}/wshbj/industry/form" target="_blank">新增行业</a> </span>
 		</div>
 	</div>
-	<div class="control-group span4" >
-		<label class="control-label">单位：</label>
-		<div class="controls">
-		    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
 
-		</div>
-	</div>
 	<div class="control-group span4">
 		<label class="control-label">岗位：</label>
 		<div class="controls">
-			<input type="hidden" id="postId" name="postId"  value="${examinationRecord.postId}">
-            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
-
+		   <form:select path="postId" class="input-medium">
+                <form:option value="">
+                    请选择
+                </form:option>
+                <form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+            </form:select>
+            <span class="help-inline">  <a href="${ctx}/wshbj/jobPost/form" target="_blank">新增岗位</a> </span>
 		</div>
 	</div>
 

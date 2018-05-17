@@ -154,6 +154,10 @@ public class Organ extends DataEntity<Organ> {
 		map.put("updateById",getUpdateBy().getId());
 		map.put("updateByName",getUpdateByName());
 
+		map.put("value",name);
+		map.put("label",name+"("+namePinyin+")");
+
+
 		return map;
 	}
 }
