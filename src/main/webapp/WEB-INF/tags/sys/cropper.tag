@@ -5,7 +5,6 @@
 <%@ attribute name="value" type="java.lang.String" required="false" description="图片的路径地址"%>
 <%@ attribute name="mainImgWidth" type="java.lang.String" required="true" description="主图片的宽度"%>
 <%@ attribute name="mainImgHeight" type="java.lang.String" required="false" description="主图片的高度"%>
-<%@ attribute name="showPreview" type="java.lang.Boolean" required="false" description="是否显示预览图"%>
 <c:if test="${mainImgHeight == null }">
     <c:set var="mainImgHeight" value="${mainImgWidth}"/>
 </c:if>
@@ -100,18 +99,10 @@
 
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
-        <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
-            <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}"/>
+        <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;">
+            <img id="tailoringImg" width="100%" src="${value}"/>
             <video id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
         </div>
-        <c:if test="${showPreview}">
-        <div class="preview-box-parcel" style="width:${mainImgWidth/2}px;height:${mainImgHeight}px">
-            <div style="padding:5px;width:100%;height:50%">
-                <div class="square previewImg" style="width:100%;height:100%"></div></div>
-            <div style="padding:5px;width:100%;height:50%">
-                <div class="circular previewImg" style="width:100%;height:100%"></div></div>
-        </div>
-        </c:if>
         <div class="cl"></div>
     </div>
     <div class="tailoring-content-one">
@@ -353,21 +344,6 @@ $(function(){
             return;
         }
 
-/**
-        var url="${ctx}/upfile/upbase64";
-        var d1={base64:base64};
-        $.post(url,d1,function(d1r){
-            if(d1r.code=='0'){
-                $("#up${path}").val(d1r.data.saveUrl);
-                $.jBox.messager('${imgName}上传成功');
-            }else{
-                // 提交失败
-                $.jBox.messager('${imgName}上传失败:'+d1r.code+" - "+d1r.msg);
-                $("#content${path} #btn${path}OK").removeClass("disabled");
-            }
-        });
-**/
-
     }
 
     function camPhoto(){
@@ -412,7 +388,7 @@ $(function(){
         img.onload = function() {
             ctx.drawImage(img, ${mainImgWidth}, ${mainImgHeight});
         }
-        var image = ctx.getImageData(0, 0, ${mainImgWidth}, ${mainImgHeight});
+        var img1 = null;
 
 
         camClose.onclick = function() { //拍照点关闭后
@@ -442,7 +418,7 @@ $(function(){
             width: ${mainImgWidth},
             height: ${mainImgHeight},
             mode: "callback",
-            swffile: "${ctxStatic}/jquery-webcam/jscam_canvas_only.swf", // canvas only doesn't implement a jpeg encoder, so the file is much smaller
+            swffile: "${ctxStatic}/jquery-webcam/jscam.swf", // canvas only doesn't implement a jpeg encoder, so the file is much smaller
 
             onTick: function(remain) {
 
@@ -456,9 +432,11 @@ $(function(){
             onSave: function(data) {
 
                 var col = data.split(";");
-                var img1=image;
+                if(img1==null){
+                    img1=ctx.getImageData(0, 0, col.length, ${mainImgHeight});
+                }
 
-                for(var i = 0; i < ${mainImgWidth}; i++) {
+                for(var i = 0; i < col.length; i++) {
                     var tmp = parseInt(col[i]);
                     img1.data[pos + 0] = (tmp >> 16) & 0xff;
                     img1.data[pos + 1] = (tmp >> 8) & 0xff;
@@ -467,11 +445,9 @@ $(function(){
                     pos += 4;
                 }
 
-                if(pos >= 4 * ${mainImgWidth} * 240) {
+                if(pos >= 4 * col.length * ${mainImgHeight}) {
 
-                    var x=(${mainImgWidth}-320)/2;
-                    var y=(${mainImgHeight}-240)/2;
-                    ctx.putImageData(img1, x,y,0,0,320,240);
+                    ctx.putImageData(img1, 0,0);
 
                     // 取得图片的base64码
                     var base64 = canvas.toDataURL("image/png");
@@ -479,6 +455,8 @@ $(function(){
                     // 将图片base64码设置给img
                     init${path}Cropper();
                     $('#content${path} #tailoringImg').cropper("replace",base64,false);
+
+                    $('#content${path} #tailoringImg').attr('src',base64);
 
                     pos = 0;
                     camClose.onclick();
