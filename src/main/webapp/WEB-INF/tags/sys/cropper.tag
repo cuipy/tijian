@@ -100,7 +100,9 @@
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
         <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;">
-            <img id="tailoringImg" width="100%" src="${value}"/>
+            <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}" style="display:none"/>
+            <img id="tailoringCropper" width="${mainImgWidth-2}" height="${mainImgHeight-2}"  style="display:none"/>
+            <div id="tailoringJqcam"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></div>
             <video id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
         </div>
         <div class="cl"></div>
@@ -111,191 +113,207 @@
             选择图片
         </label>
         <label id="btn${path}Cam" class="btn btn-warning btn-mini">拍照</label>
+        <label id="btn${path}Capture" class="btn btn-warning btn-mini">取像</label>
         <label id="btn${path}Cancel" class="btn btn-info btn-mini">取消</label>
-        <label id="btn${path}OK" class="btn btn-info  btn-mini disabled">保存</label>
+        <label id="btn${path}OK" class="btn btn-info  btn-mini">保存</label>
     </div>
 
-    <div id="CamBox">
-        <p class="lens"></p>
-        <div id="CamFlash"></div>
-        <p class="cambar">
-            <a href="javascript:;" id="CamOk">拍照</a>
-            <a href="javascript:;" id="camClose">关闭</a>
-            <span style="clear:both;"></span>
-        </p>
-        <div id="timing"></div>
-    </div>
-
-    <img name="img${path}" id="img${path}" style="width:100px;height:100px;display:none">
     <input type="hidden" name="${path}" id="up${path}" value=""/>
 
 </div>
 <script type="text/javascript">
-
+/**
+状态说明：
+1  init  初始状态 。 本地选择、拍照 。可以选择本地图片、可以拍照，没有取消和保存；
+2  croppering  Cropper状态。取消、保存。  进入cropper切图状态，可以取消，可以保存；没有选择图片，和拍照；
+3  jqcaming   jqcam拍照状态。 截图、取消。  进入拍照状态
+4  webrtcing   webrtc 拍照状态。 截图、取消。
+*/
 $(function(){
     var ${path}Inited=0;
-    var ${path}CropperState=0;
-    var ${path}CamState=0;
+    var ${path}State=0;
     var ${path}Track=null;
 
+    dealState('init');
+
+    // 选择本地图片
     $("#content${path} #chooseImg").on("change",function(evt) {
         if (!evt.target.files || !evt.target.files[0]){
             return;
         }
+
+        // 初始cropper控件
         init${path}Cropper();
-        ${path}CropperState=1;
+        // 状态为croppering
+        dealState("croppering");
 
         var reader = new FileReader();
         reader.onload = function (evt2) {
             var replaceSrc = evt2.target.result;
             //更换cropper的图片
-            $('#content${path} #tailoringImg').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+            $('#content${path} #tailoringCropper').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
         }
         reader.readAsDataURL(evt.target.files[0]);
     });
 
-// 拍照按钮点击
+    // 拍照按钮点击
     $("#content${path} #btn${path}Cam").on('click',function(){
 
         var video=$("#content${path} #tailoringVideo")[0];
 
-        if(${path}CamState==1){
+        // 初始状态
+        if(${path}State=="init"){
 
-            // 设置为非拍照状态
-            dealCamState(1);
+            var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
 
-            // 取照片
-            camPhoto();
-
-            if(${path}Track!=null){
-                ${path}Track.stop();
-                ${path}Track=null;
+            //  支持浏览器  谷歌,火狐,360,欧朋
+            if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+                navigator.mediaDevices.getUserMedia(videoObj)
+                .then(getUserMediaThen)
+                .catch(getUserMediaCatch);
+            }else if(navigator.mediaDevices&&navigator.mediaDevices.webkitGetUserMedia){
+                navigator.mediaDevices.webkitGetUserMedia(videoObj)
+                .then(getUserMediaThen)
+                .catch(getUserMediaCatch);
+            }else if(navigator.mediaDevices&&navigator.mediaDevices.mozGetUserMedia){
+                navigator.mediaDevices.mozGetUserMedia(videoObj)
+                .then(getUserMediaThen)
+                .catch(getUserMediaCatch);
+            }else if(navigator.getUserMedia){
+              navigator.getUserMedia(videoObj)
+              .then(getUserMediaThen)
+              .catch(getUserMediaCatch);
+            }else if(navigator.webkitGetUserMedia){
+              navigator.webkitGetUserMedia(videoObj)
+              .then(getUserMediaThen)
+              .catch(getUserMediaCatch);
+            }else if(navigator.mozGetUserMedia){
+              navigator.mozGetUserMedia(videoObj)
+              .then(getUserMediaThen)
+              .catch(getUserMediaCatch);
+            }else{
+               doWebcam();
             }
 
-            return;
-        }
+            function getUserMediaThen(stream){
+                ${path}Track=stream.getTracks()[0];
+                video.srcObject=stream;
+                video.onloadedmetadata = function(e) {
+                    video.play();
 
-        var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
+                    // 设置拍照状态
+                    dealState("webrtcing");
+                };
+            }
 
-        //  支持浏览器  谷歌,火狐,360,欧朋
-        if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-            navigator.mediaDevices.getUserMedia(videoObj)
-            .then(getUserMediaThen)
-            .catch(getUserMediaCatch);
-        }else if(navigator.mediaDevices&&navigator.mediaDevices.webkitGetUserMedia){
-            navigator.mediaDevices.webkitGetUserMedia(videoObj)
-            .then(getUserMediaThen)
-            .catch(getUserMediaCatch);
-        }else if(navigator.mediaDevices&&navigator.mediaDevices.mozGetUserMedia){
-            navigator.mediaDevices.mozGetUserMedia(videoObj)
-            .then(getUserMediaThen)
-            .catch(getUserMediaCatch);
-        }else if(navigator.getUserMedia){
-          navigator.getUserMedia(videoObj)
-          .then(getUserMediaThen)
-          .catch(getUserMediaCatch);
-        }else if(navigator.webkitGetUserMedia){
-          navigator.webkitGetUserMedia(videoObj)
-          .then(getUserMediaThen)
-          .catch(getUserMediaCatch);
-        }else if(navigator.mozGetUserMedia){
-          navigator.mozGetUserMedia(videoObj)
-          .then(getUserMediaThen)
-          .catch(getUserMediaCatch);
-        }else{
-           doWebcam();
-        }
-
-
-         function getUserMediaThen(stream){
-             ${path}Track=stream.getTracks()[0];
-             video.srcObject=stream;
-             video.onloadedmetadata = function(e) {
-                 video.play();
-
-                 // 设置拍照状态
-                 dealCamState(0);
-             };
-          }
-
-          function getUserMediaCatch(err){
-              dealCamState(1);
-              if(err.message=="Permission denied"){
+            function getUserMediaCatch(err){
+                if(err.message=="Permission denied"){
                   console.warn("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
-              }else{
+                }else{
                   console.warn("访问webRTC出现异常：name["+err.name+"] - "+err.message);
-              }
-              doWebcam();
-           }
+                }
+                doWebcam();
+            }
+        }
 
     });
 
+    // 取消按钮，将拍照状态取消。
     $("#content${path} #btn${path}Cancel").on('click',function(){
 
-
-        // 保存按钮禁用
-        $("#content${path} #btn${path}OK").addClass("disabled");
-        if(${path}CropperState){
-            $('#content${path} #tailoringImg').cropper("clear");
-            ${path}CropperState=0;
-
+        // 如果当前在切图
+        if(${path}State=="croppering"){
+            $('#content${path} #tailoringCropper').cropper("clear");
         }
 
-        if(${path}CamState){
+        // 如果当前在 webrtc 取像
+        if(${path}State=="webrtcing"){
             if(${path}Track!=null){
                 ${path}Track.stop();
                 ${path}Track=null;
             }
-            ${path}CamState=0;
+            $('#content${path} #tailoringVideo').empty();
         }
 
-        dealCamState(1);
+        // 如果当前在 jqcaming 取像
+        if(${path}State=="jqcaming"){
+            $('#content${path} #tailoringJqcam').empty();
+        }
+
+        dealState("init");
 
     });
 
     $("#content${path} #btn${path}OK").on('click',function(){
-        // 保存按钮禁用
-        $("#content${path} #btn${path}OK").addClass("disabled");
-        ${path}CropperState=0;
+        // 执行切图
+        var cas=$('#content${path} #tailoringCropper').cropper("getCroppedCanvas");
+        var base64url = cas.toDataURL('image/png');
+        $("#content${path} #tailoringImg").attr("src",base64url);
+        $("#content${path} #up${path}").val(base64url);
 
-        cutImg();
-        // uploadImg();
-
-        $('#content${path} #tailoringImg').cropper("clear");
+        dealState("init");
     });
 
-    function dealCamState(st){
+    function dealState(st){
 
-        if(st==0){
-            $("#content${path} #chooseImg").attr("disabled","disabled");
-            $("#content${path}  #btn${path}Choose").addClass("disabled");
-            $("#content${path}  #btn${path}OK").addClass("disabled");
-
-            $("#content${path} #tailoringImg").hide();
-            $("#content${path} .cropper-container").hide();
-
-            $("#content${path} #tailoringVideo").show();
-
-            $("#content${path} #btn${path}Cam").removeClass("btn-warning");
-            $("#content${path} #btn${path}Cam").addClass("btn-danger");
-            $("#content${path} #btn${path}Cam").text("取图");
-
-            ${path}CamState=1;
-        }else if(st==1){
-            $("#content${path} #chooseImg").removeAttr("disabled");
-            $("#content${path}  #btn${path}Choose").removeClass("disabled");
-            $("#content${path}  #btn${path}OK").removeClass("disabled");
-
+        if(st=='init'){
             $("#content${path} #tailoringImg").show();
-            $("#content${path} .cropper-container").show();
+            $("#content${path} #tailoringCropper").hide();
+            $("#content${path} .cropper-container").hide();
             $("#content${path} #tailoringVideo").hide();
+            $("#content${path} #tailoringJqcam").hide();
 
-            $("#content${path} #btn${path}Cam").addClass("btn-warning");
-            $("#content${path} #btn${path}Cam").removeClass("btn-danger");
+            $("#content${path}  #btn${path}Choose").show();
+            $("#content${path}  #btn${path}Capture").hide();
+            $("#content${path}  #btn${path}Cam").show();
+            $("#content${path}  #btn${path}Cancel").hide();
+            $("#content${path}  #btn${path}OK").hide();
+
             $("#content${path} #btn${path}Cam").text("拍照");
 
-            ${path}CamState=0;
+        }else if(st=='croppering'){
+             $("#content${path} #tailoringImg").hide();
+             $("#content${path} #tailoringCropper").show();
+             $("#content${path} .cropper-container").show();
+             $("#content${path} #tailoringVideo").hide();
+             $("#content${path} #tailoringJqcam").hide();
+
+             $("#content${path}  #btn${path}Choose").hide();
+             $("#content${path}  #btn${path}Capture").hide();
+             $("#content${path}  #btn${path}Cam").hide();
+             $("#content${path}  #btn${path}Cancel").show();
+             $("#content${path}  #btn${path}OK").show();
+
+        }else if(st=='webrtcing'){
+             $("#content${path} #tailoringImg").hide();
+             $("#content${path} .cropper-container").hide();
+             $("#content${path} #tailoringCropper").hide();
+             $("#content${path} #tailoringVideo").show();
+             $("#content${path} #tailoringJqcam").hide();
+
+             $("#content${path}  #btn${path}Choose").hide();
+             $("#content${path}  #btn${path}Capture").show();
+             $("#content${path}  #btn${path}Cam").hide();
+             $("#content${path}  #btn${path}Cancel").show();
+             $("#content${path}  #btn${path}OK").hide();
+            $("#content${path} #btn${path}Cam").text("取像");
+        }else if(st=='jqcaming'){
+             $("#content${path} #tailoringImg").hide();
+             $("#content${path} .cropper-container").hide();
+             $("#content${path} #tailoringCropper").hide();
+             $("#content${path} #tailoringVideo").hide();
+             $("#content${path} #tailoringJqcam").show();
+
+             $("#content${path}  #btn${path}Choose").hide();
+             $("#content${path}  #btn${path}Capture").show();
+             $("#content${path}  #btn${path}Cam").hide();
+             $("#content${path}  #btn${path}Cancel").show();
+             $("#content${path}  #btn${path}OK").hide();
+            $("#content${path} #btn${path}Cam").text("取像");
         }
+
+        ${path}State=st;
+
     }
 
 
@@ -306,7 +324,8 @@ $(function(){
         }else{
             return;
         }
-        $('#content${path} #tailoringImg').cropper({
+        $('#content${path} #tailoringCropper').cropper({
+            minContainerWidth:${mainImgWidth},minContainerHeight:${mainImgHeight},
             aspectRatio: ${mainImgWidth}/${mainImgHeight},//默认比例
             preview: '#content${path} .previewImg',//预览视图
             guides: false,  //裁剪框的虚线(九宫格)
@@ -326,57 +345,9 @@ $(function(){
 
     };
 
-    // 执行切图
-    function cutImg(){
-
-        var cas=$('#content${path} #tailoringImg').cropper("getCroppedCanvas");
-        var base64url = cas.toDataURL('image/png');
-        $("#content${path} #img${path}").attr("src",base64url);
-        $("#content${path} #up${path}").val(base64url);
-
-        ${path}CropperState=0;
-    }
-
-    function uploadImg(){
-        var base64=$("#content${path} #img${path}").attr("src");
-        if(!base64){
-            $.jBox.alert("没有获得${imgName}图片数据，无法上传");
-            return;
-        }
-
-    }
-
-    function camPhoto(){
-
-        init${path}Cropper();
-
-        ${path}CropperState=1;
-
-        var canvas = document.createElement('canvas');
-        var canvasContext = canvas.getContext('2d');
-        var video=$("#content${path} #tailoringVideo")[0];
-
-        canvas.width=video.width;
-        canvas.height=video.height;
-
-        canvasContext.drawImage(video,0,0,video.width,video.height);
-        var base64url = canvas.toDataURL('image/png');
-
-        $('#content${path} #tailoringImg').cropper("replace",base64url,false);
-
-    }
-
     function doWebcam(){
-        dealCamState(0);
 
-        var CamFlash = document.getElementById("CamFlash");
-        var timing = document.getElementById("timing");
-        var CamOk = document.getElementById("CamOk");
-        var CamBox = document.getElementById("CamBox");
-        var camerasImage = document.getElementById("camerasImage");
-        var camClose = document.getElementById("camClose");
-        var setCam = document.getElementById("setCam");
-
+        dealState("jqcaming");
         var canvas=document.createElement("canvas");
         var ctx=canvas.getContext("2d");
         canvas.width=${mainImgWidth};
@@ -384,44 +355,24 @@ $(function(){
 
         var pos=0;
 
-        var img = new Image();
-        img.onload = function() {
-            ctx.drawImage(img, ${mainImgWidth}, ${mainImgHeight});
-        }
         var img1 = null;
 
-
-        camClose.onclick = function() { //拍照点关闭后
-            CamBox.style.display = "none";
-            $("#CamFlash").empty();
-
-            dealCamState(1);
-        };
-
-        CamOk.onclick=function(){
-            if(webcam.capture){
+        // 正在 jqCam 拍照状态
+        $("#content${path}  #btn${path}Capture").click(function(){
+            if(${path}State=="jqcaming"){
                 webcam.capture();
-                dealCamState(1);
-            }else{
-                 $.jBox.messager('未能找到摄像头。');
+
             }
+        });
 
-        }
-        CamBox.style.display = "block";
-        CamBox.style.width = "${mainImgWidth}px";
-        CamBox.style.height = "${mainImgHeight+100}px";
-        CamBox.style.margin = "-${mainImgWidth/2}px 0 0 -${mainImgHeight/2}px";
 
-        CamFlash.style.height="${mainImgHeight}px";
-
-        $("#CamFlash").webcam({
+        $("#tailoringJqcam").webcam({
             width: ${mainImgWidth},
             height: ${mainImgHeight},
             mode: "callback",
             swffile: "${ctxStatic}/jquery-webcam/jscam.swf", // canvas only doesn't implement a jpeg encoder, so the file is much smaller
 
             onTick: function(remain) {
-
                 if (0 == remain) {
                     console.log("Cheese!");
                 } else {
@@ -454,12 +405,10 @@ $(function(){
 
                     // 将图片base64码设置给img
                     init${path}Cropper();
-                    $('#content${path} #tailoringImg').cropper("replace",base64,false);
+                    $('#content${path} #tailoringCropper').cropper("replace",base64,false);
 
-                    $('#content${path} #tailoringImg').attr('src',base64);
-
-                    pos = 0;
-                    camClose.onclick();
+                    $('#content${path} #tailoringJqcam').empty();
+                    dealState("croppering");
 
                 }
             },

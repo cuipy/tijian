@@ -85,7 +85,7 @@
 		<div class="control-group span6">
             <label class="control-label">真人照片采集：</label>
             <div class="controls">
-                <sys:cropper mainImgWidth="220" imgName="真人照片" path="headImgPath" value="${examinationUser.headImgPath}"/>
+                <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="真人照片" path="headImgPath" value="${examinationUser.headImgPath}"/>
             </div>
         </div>
 

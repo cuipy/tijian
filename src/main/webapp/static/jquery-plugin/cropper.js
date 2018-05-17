@@ -43,6 +43,7 @@
       CLASS_CROP = 'cropper-crop',
       CLASS_DISABLED = 'cropper-disabled',
       CLASS_BG = 'cropper-bg',
+      CLASS_BG = 'cropper-bg',
 
       // Events
       EVENT_MOUSE_DOWN = 'mousedown touchstart',
