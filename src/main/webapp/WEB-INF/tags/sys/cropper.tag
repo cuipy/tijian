@@ -5,7 +5,7 @@
 <%@ attribute name="value" type="java.lang.String" required="false" description="图片的路径地址"%>
 <%@ attribute name="mainImgWidth" type="java.lang.String" required="true" description="主图片的宽度"%>
 <%@ attribute name="mainImgHeight" type="java.lang.String" required="false" description="主图片的高度"%>
-<%@ attribute name="showPreview" type="java.lang.Boolean" required="false" description="是否显示预览图"%>
+
 <c:if test="${mainImgHeight == null }">
     <c:set var="mainImgHeight" value="${mainImgWidth}"/>
 </c:if>
@@ -102,16 +102,8 @@
     <div class="tailoring-content-two">
         <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
             <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}"/>
-            <video id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
+            <div id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></div>
         </div>
-        <c:if test="${showPreview}">
-        <div class="preview-box-parcel" style="width:${mainImgWidth/2}px;height:${mainImgHeight}px">
-            <div style="padding:5px;width:100%;height:50%">
-                <div class="square previewImg" style="width:100%;height:100%"></div></div>
-            <div style="padding:5px;width:100%;height:50%">
-                <div class="circular previewImg" style="width:100%;height:100%"></div></div>
-        </div>
-        </c:if>
         <div class="cl"></div>
     </div>
     <div class="tailoring-content-one">
@@ -145,8 +137,8 @@ $(function(){
     var ${path}Inited=0;
     var ${path}CropperState=0;
     var ${path}CamState=0;
-    var ${path}Track=null;
 
+    // 从本地文件选择图片上传
     $("#content${path} #chooseImg").on("change",function(evt) {
         if (!evt.target.files || !evt.target.files[0]){
             return;
@@ -154,93 +146,44 @@ $(function(){
         init${path}Cropper();
         ${path}CropperState=1;
 
+        // H5的文件加载方法
         var reader = new FileReader();
         reader.onload = function (evt2) {
             var replaceSrc = evt2.target.result;
             //更换cropper的图片
-            $('#content${path} #tailoringImg').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+            $('#content${path} #tailoringImg').show().cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+            $("#content${path} #tailoringVideo").hide();
         }
         reader.readAsDataURL(evt.target.files[0]);
     });
 
-// 拍照按钮点击
+    // 拍照按钮点击
     $("#content${path} #btn${path}Cam").on('click',function(){
-
-        var video=$("#content${path} #tailoringVideo")[0];
-
-        if(${path}CamState==1){
-
-            // 设置为非拍照状态
-            dealCamState(1);
-
-            // 取照片
-            camPhoto();
-
-            if(${path}Track!=null){
-                ${path}Track.stop();
-                ${path}Track=null;
-            }
-
-            return;
-        }
-
-        var videoObj = { "video": {width:${mainImgWidth-2},height:${mainImgHeight-2}},"audio":false };
-
-        //  支持浏览器  谷歌,火狐,360,欧朋
-        if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
-            navigator.mediaDevices.getUserMedia(videoObj)
-            .then(getUserMediaThen)
-            .catch(getUserMediaCatch);
-        }else if(navigator.mediaDevices&&navigator.mediaDevices.webkitGetUserMedia){
-            navigator.mediaDevices.webkitGetUserMedia(videoObj)
-            .then(getUserMediaThen)
-            .catch(getUserMediaCatch);
-        }else if(navigator.mediaDevices&&navigator.mediaDevices.mozGetUserMedia){
-            navigator.mediaDevices.mozGetUserMedia(videoObj)
-            .then(getUserMediaThen)
-            .catch(getUserMediaCatch);
-        }else if(navigator.getUserMedia){
-          navigator.getUserMedia(videoObj)
-          .then(getUserMediaThen)
-          .catch(getUserMediaCatch);
-        }else if(navigator.webkitGetUserMedia){
-          navigator.webkitGetUserMedia(videoObj)
-          .then(getUserMediaThen)
-          .catch(getUserMediaCatch);
-        }else if(navigator.mozGetUserMedia){
-          navigator.mozGetUserMedia(videoObj)
-          .then(getUserMediaThen)
-          .catch(getUserMediaCatch);
+        if(${path}CropperState==2){
+            ${path}CropperState=0;
+            webcam.save();
         }else{
-           doWebcam();
-        }
+            // 开始拍照状态
+            ${path}CropperState=2;
 
+            $("#content${path} #tailoringImg").hide();
 
-         function getUserMediaThen(stream){
-             ${path}Track=stream.getTracks()[0];
-             video.srcObject=stream;
-             video.onloadedmetadata = function(e) {
-                 video.play();
+            // 获得video div对象
+            $("#content${path} #tailoringVideo").show().webcam({
+                width:${mainImgWidth-2},height:${mainImgHeight-2},mode:'callback',swffile: "${ctxStatic}/jquery-webcam/jscam.swf",
+                onTick:function(remain){},
+                onSave:function(data){},
+                onCapture:function(){},
+                debug:function(type,str){},
+                onLoad:function(){}
 
-                 // 设置拍照状态
-                 dealCamState(0);
-             };
-          }
-
-          function getUserMediaCatch(err){
-              dealCamState(1);
-              if(err.message=="Permission denied"){
-                  console.warn("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
-              }else{
-                  console.warn("访问webRTC出现异常：name["+err.name+"] - "+err.message);
-              }
-              doWebcam();
-           }
+            });
+         }
 
     });
 
+    // 点击取消按钮
     $("#content${path} #btn${path}Cancel").on('click',function(){
-
 
         // 保存按钮禁用
         $("#content${path} #btn${path}OK").addClass("disabled");
@@ -262,13 +205,13 @@ $(function(){
 
     });
 
+
     $("#content${path} #btn${path}OK").on('click',function(){
         // 保存按钮禁用
         $("#content${path} #btn${path}OK").addClass("disabled");
         ${path}CropperState=0;
 
         cutImg();
-        // uploadImg();
 
         $('#content${path} #tailoringImg').cropper("clear");
     });
@@ -317,7 +260,6 @@ $(function(){
         }
         $('#content${path} #tailoringImg').cropper({
             aspectRatio: ${mainImgWidth}/${mainImgHeight},//默认比例
-            preview: '#content${path} .previewImg',//预览视图
             guides: false,  //裁剪框的虚线(九宫格)
             autoCropArea: 0.9,  //0-1之间的数值，定义自动剪裁区域的大小，默认0.8
             movable: true, //是否允许移动剪裁框
@@ -352,21 +294,6 @@ $(function(){
             $.jBox.alert("没有获得${imgName}图片数据，无法上传");
             return;
         }
-
-/**
-        var url="${ctx}/upfile/upbase64";
-        var d1={base64:base64};
-        $.post(url,d1,function(d1r){
-            if(d1r.code=='0'){
-                $("#up${path}").val(d1r.data.saveUrl);
-                $.jBox.messager('${imgName}上传成功');
-            }else{
-                // 提交失败
-                $.jBox.messager('${imgName}上传失败:'+d1r.code+" - "+d1r.msg);
-                $("#content${path} #btn${path}OK").removeClass("disabled");
-            }
-        });
-**/
 
     }
 
