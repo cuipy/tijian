@@ -38,6 +38,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	
 	private static final long serialVersionUID = 1L;
 	private ExaminationUser user;		// 体检用户
+	private String headImg;			// 头像图片
 	private String code;		// 编号
 	private String name;		// 姓名
 	private String namePinyin;		// 名字拼音
@@ -128,6 +129,13 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		return office.getName();
 	}
 
+	public String getHeadImg() {
+		return headImg;
+	}
+
+	public void setHeadImg(String headImg) {
+		this.headImg = headImg;
+	}
 
 	/**
 	 * 获取行业

@@ -272,7 +272,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	public Map<String,String> getMap(){
 		Map<String,String> m=new HashMap();
 		m.put("id",id);
-		m.put("name",name);
+		m.put("name",name); m.put("headImgPath",headImgPath);
 		m.put("organId",organId);
 		m.put("organName",getOrganName());
 		m.put("industryId",industryId);
@@ -295,13 +295,11 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 
 		m.put("createById",getCreateBy().getId());
 		m.put("createByName",getCreateByName());
-		//m.put("createDate",DateUtils.formatDateTime(getCreateDate()));
 		m.put("updateById",getUpdateBy().getId());
 		m.put("updateByName",getUpdateByName());
-		//m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
 
-		m.put("value",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
-		m.put("label",getOrganName()+" "+getName()+"("+idNumber+"/"+phoneNumber+")");
+		m.put("value",idNumber);
+		m.put("label",idNumber+"/"+phoneNumber+"("+getName()+")");
 
 		return m;
 	}

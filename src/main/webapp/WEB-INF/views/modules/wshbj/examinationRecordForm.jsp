@@ -43,6 +43,28 @@
                 }
             });
 
+             $('#showIdNumber').autocompleter({
+
+                highlightMatches: true,
+                template: '{{ label }}',
+                hint: false,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/examinationUser/ajax_for_autocompleter",
+                callback: function (value, index, selected) {
+                    var u=selected;
+                    setUserPro(u);
+
+                    chgIndustry();
+                }
+            });
+
+            // 身份证输入文本框失去焦点的时候
+             $('#showIdNumber').blur(function(){
+
+             })
+
             setTimeout("$('#userAuto').focus();",300);
             setTimeout("lodop_check()",300);
         });
@@ -67,6 +89,10 @@
             $("#industryName").val(u.industryName);
             $("#postId").val(u.postId);
             $("#postName").val(u.jobPostName);
+
+            $("#headImgImg").attr("src",u.headImgPath);
+            $("#upheadImg").val(u.headImgPath);
+
         }
 
         // 行业更新后，设置行业默认套餐
@@ -191,45 +217,46 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 
+        <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
+        <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
     <div style="max-width:1024px">
 
 		<div class="control-group span12">
-			<label class="control-label"><font color="red">*</font> 选择体检人：</label>
+			<label class="control-label"><font color="red">*</font>  身份证号：</label>
 			<div class="controls">
-			     <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
-			     <input type="hidden" id="name" name="name" value="${examinationRecord.name}" >
-			    <div class="autocompleter-box"><input type="text" id="userAuto" name="userInfo" placeholder="姓名/姓名拼音/身份证/手机号"
-			   <c:if test="${examinationRecord.user != null}"> value="${examinationRecord.organName} ${examinationRecord.name} (${examinationRecord.idNumber}/${examinationRecord.phoneNumber})"</c:if>
-			   maxlength="50" class="input-xxlarge required" /></div>
-
-                <span class="help-inline">选择体检用户 <a href="${ctx}/wshbj/examinationUser/form" target="_blank">添加体检用户</a></span>
+				<div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-large required"/>
+				<span id="idNumberInfo" class="help-inline">通过身份证获取用户信息</span>
+				</div>
 			</div>
 		</div>
         <div class="cl"></div>
 
-		<div class="control-group span4">
-			<label class="control-label"><font color="red">*</font>  身份证号：</label>
-			<div class="controls">
-				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-medium" readonly="true"/>
-			</div>
-		</div>
+        <div class="control-group span6">
+            <label class="control-label"><font color="red">*</font>  用户头像：</label>
+            <div class="controls">
+                 <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="真人照片" path="headImg" value="${examinationUser.headImg}"/>
+            </div>
+        </div>
 
-
+        <div class="control-group span4">
+            <label class="control-label"><font color="red">*</font> 真实姓名：</label>
+            <div class="controls">
+                <form:input path="name" htmlEscape="false" maxlength="32" class="input-medium  required"/>
+            </div>
+        </div>
 		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium"  readonly="true"/>
-
+				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium  required"/>
 			</div>
 		</div>
-
 
 		<div class="control-group span4">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
 
 			    <input type="hidden" id="sex" name="sex"  value="${examinationRecord.sex}">
-				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-medium" readonly="true">
+				<input type="text" id="strSex" name="strSex"  value="${examinationRecord.strSex}" class="input-medium">
 
 			</div>
 		</div>
@@ -237,7 +264,7 @@
 		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 年龄：</label>
             <div class="controls">
-                <input type="text" id="age" name="age"  value="${examinationRecord.age}" class="input-medium" readonly="true">
+                <input type="number" id="age" name="age"  value="${examinationRecord.age}" class="input-medium required">
             </div>
         </div>
 
@@ -245,7 +272,7 @@
 		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-medium" readonly="true">
+                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-medium required">
 
             </div>
         </div>
@@ -254,7 +281,7 @@
 		<label class="control-label">行业：</label>
 		<div class="controls">
 		   <input type="hidden" id="industryId" name="industryId" value="${examinationRecord.industryId}" >
-           <input type="text"  onchange="chgIndustry()"  id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-medium" readonly="true">
+           <input type="text"  onchange="chgIndustry()"  id="industryName" name="industryName" value="${examinationRecord.industryName}" class="input-medium required">
 
 		</div>
 	</div>
@@ -262,7 +289,7 @@
 		<label class="control-label">单位：</label>
 		<div class="controls">
 		    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium" readonly="true">
+            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
 
 		</div>
 	</div>
@@ -270,7 +297,7 @@
 		<label class="control-label">岗位：</label>
 		<div class="controls">
 			<input type="hidden" id="postId" name="postId"  value="${examinationRecord.postId}">
-            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium" readonly="true">
+            <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
 
 		</div>
 	</div>

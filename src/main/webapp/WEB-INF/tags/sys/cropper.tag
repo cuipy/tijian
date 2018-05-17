@@ -99,11 +99,11 @@
 
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
-        <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;">
-            <img id="tailoringImg" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}" style="display:none"/>
-            <img id="tailoringCropper" width="${mainImgWidth-2}" height="${mainImgHeight-2}"  style="display:none"/>
-            <div id="tailoringJqcam"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></div>
-            <video id="tailoringVideo"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
+        <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
+            <img id="${path}Img" width="${mainImgWidth-2}" height="${mainImgHeight-2}" src="${value}" style="display:none"/>
+            <img id="${path}Cropper" width="${mainImgWidth-2}" height="${mainImgHeight-2}"  style="display:none"/>
+            <div id="${path}Jqcam"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></div>
+            <video id="${path}Video"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>
         </div>
         <div class="cl"></div>
     </div>
@@ -117,8 +117,7 @@
         <label id="btn${path}Cancel" class="btn btn-info btn-mini">取消</label>
         <label id="btn${path}OK" class="btn btn-info  btn-mini">保存</label>
     </div>
-
-    <input type="hidden" name="${path}" id="up${path}" value=""/>
+    <input type="hidden" name="${path}" id="up${path}" value="${value}"/>
 
 </div>
 <script type="text/javascript">
@@ -151,7 +150,7 @@ $(function(){
         reader.onload = function (evt2) {
             var replaceSrc = evt2.target.result;
             //更换cropper的图片
-            $('#content${path} #tailoringCropper').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
+            $('#content${path} #${path}Cropper').cropper('replace', replaceSrc,false);//默认false，适应高度，不失真
         }
         reader.readAsDataURL(evt.target.files[0]);
     });
@@ -159,7 +158,7 @@ $(function(){
     // 拍照按钮点击
     $("#content${path} #btn${path}Cam").on('click',function(){
 
-        var video=$("#content${path} #tailoringVideo")[0];
+        var video=$("#content${path} #${path}Video")[0];
 
         // 初始状态
         if(${path}State=="init"){
@@ -223,7 +222,7 @@ $(function(){
 
         // 如果当前在切图
         if(${path}State=="croppering"){
-            $('#content${path} #tailoringCropper').cropper("clear");
+            $('#content${path} #${path}Cropper').cropper("clear");
         }
 
         // 如果当前在 webrtc 取像
@@ -232,12 +231,12 @@ $(function(){
                 ${path}Track.stop();
                 ${path}Track=null;
             }
-            $('#content${path} #tailoringVideo').empty();
+            $('#content${path} #${path}Video').empty();
         }
 
         // 如果当前在 jqcaming 取像
         if(${path}State=="jqcaming"){
-            $('#content${path} #tailoringJqcam').empty();
+            $('#content${path} #${path}Jqcam').empty();
         }
 
         dealState("init");
@@ -246,9 +245,9 @@ $(function(){
 
     $("#content${path} #btn${path}OK").on('click',function(){
         // 执行切图
-        var cas=$('#content${path} #tailoringCropper').cropper("getCroppedCanvas");
+        var cas=$('#content${path} #${path}Cropper').cropper("getCroppedCanvas");
         var base64url = cas.toDataURL('image/png');
-        $("#content${path} #tailoringImg").attr("src",base64url);
+        $("#content${path} #${path}Img").attr("src",base64url);
         $("#content${path} #up${path}").val(base64url);
 
         dealState("init");
@@ -257,11 +256,11 @@ $(function(){
     function dealState(st){
 
         if(st=='init'){
-            $("#content${path} #tailoringImg").show();
-            $("#content${path} #tailoringCropper").hide();
+            $("#content${path} #${path}Img").show();
+            $("#content${path} #${path}Cropper").hide();
             $("#content${path} .cropper-container").hide();
-            $("#content${path} #tailoringVideo").hide();
-            $("#content${path} #tailoringJqcam").hide();
+            $("#content${path} #${path}Video").hide();
+            $("#content${path} #${path}Jqcam").hide();
 
             $("#content${path}  #btn${path}Choose").show();
             $("#content${path}  #btn${path}Capture").hide();
@@ -272,11 +271,11 @@ $(function(){
             $("#content${path} #btn${path}Cam").text("拍照");
 
         }else if(st=='croppering'){
-             $("#content${path} #tailoringImg").hide();
-             $("#content${path} #tailoringCropper").show();
+             $("#content${path} #${path}Img").hide();
+             $("#content${path} #${path}Cropper").show();
              $("#content${path} .cropper-container").show();
-             $("#content${path} #tailoringVideo").hide();
-             $("#content${path} #tailoringJqcam").hide();
+             $("#content${path} #${path}Video").hide();
+             $("#content${path} #${path}Jqcam").hide();
 
              $("#content${path}  #btn${path}Choose").hide();
              $("#content${path}  #btn${path}Capture").hide();
@@ -285,11 +284,11 @@ $(function(){
              $("#content${path}  #btn${path}OK").show();
 
         }else if(st=='webrtcing'){
-             $("#content${path} #tailoringImg").hide();
+             $("#content${path} #${path}Img").hide();
              $("#content${path} .cropper-container").hide();
-             $("#content${path} #tailoringCropper").hide();
-             $("#content${path} #tailoringVideo").show();
-             $("#content${path} #tailoringJqcam").hide();
+             $("#content${path} #${path}Cropper").hide();
+             $("#content${path} #${path}Video").show();
+             $("#content${path} #${path}Jqcam").hide();
 
              $("#content${path}  #btn${path}Choose").hide();
              $("#content${path}  #btn${path}Capture").show();
@@ -298,11 +297,11 @@ $(function(){
              $("#content${path}  #btn${path}OK").hide();
             $("#content${path} #btn${path}Cam").text("取像");
         }else if(st=='jqcaming'){
-             $("#content${path} #tailoringImg").hide();
+             $("#content${path} #${path}Img").hide();
              $("#content${path} .cropper-container").hide();
-             $("#content${path} #tailoringCropper").hide();
-             $("#content${path} #tailoringVideo").hide();
-             $("#content${path} #tailoringJqcam").show();
+             $("#content${path} #${path}Cropper").hide();
+             $("#content${path} #${path}Video").hide();
+             $("#content${path} #${path}Jqcam").show();
 
              $("#content${path}  #btn${path}Choose").hide();
              $("#content${path}  #btn${path}Capture").show();
@@ -324,7 +323,7 @@ $(function(){
         }else{
             return;
         }
-        $('#content${path} #tailoringCropper').cropper({
+        $('#content${path} #${path}Cropper').cropper({
             minContainerWidth:${mainImgWidth},minContainerHeight:${mainImgHeight},
             aspectRatio: ${mainImgWidth}/${mainImgHeight},//默认比例
             preview: '#content${path} .previewImg',//预览视图
@@ -366,7 +365,7 @@ $(function(){
         });
 
 
-        $("#tailoringJqcam").webcam({
+        $("#${path}Jqcam").webcam({
             width: ${mainImgWidth},
             height: ${mainImgHeight},
             mode: "callback",
@@ -405,9 +404,9 @@ $(function(){
 
                     // 将图片base64码设置给img
                     init${path}Cropper();
-                    $('#content${path} #tailoringCropper').cropper("replace",base64,false);
+                    $('#content${path} #${path}Cropper').cropper("replace",base64,false);
 
-                    $('#content${path} #tailoringJqcam').empty();
+                    $('#content${path} #${path}Jqcam').empty();
                     dealState("croppering");
 
                 }

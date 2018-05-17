@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
 import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;

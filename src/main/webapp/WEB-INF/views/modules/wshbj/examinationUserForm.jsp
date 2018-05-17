@@ -28,6 +28,22 @@
 				}
 			});
 
+			$("#organName").autocompleter({
+			    highlightMatches: true,
+                template: '{{ label }}',
+                hint: false,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/organ/ajax_for_autocompleter",
+                callback: function (value, index, selected) {
+                    var o=selected;
+                    $('#organId').val(o.id);
+                    $('#organName').val(o.name);
+                    chgIndustry();
+                }
+			});
+
 			$("#idNumber").on('blur',refreshBirthday);
 			$("#idNumber").on('change',refreshBirthday);
 
@@ -155,13 +171,10 @@
 		<div class="control-group span6">
 			<label class="control-label">体检单位：</label>
 			<div class="controls">
-				<form:select path="organId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
+				<div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
+                            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
 				<span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
+				</div>
 			</div>
 		</div>
 		<div class="control-group span6">

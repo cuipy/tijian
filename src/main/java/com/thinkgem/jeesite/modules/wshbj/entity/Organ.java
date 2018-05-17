@@ -151,11 +151,8 @@ public class Organ extends DataEntity<Organ> {
 		map.put("ownerName",getOwnerName());
 		map.put("createById",getCreateBy().getId());
 		map.put("createByName",getCreateByName());
-		//map.put("createDate",DateUtils.formatDateTime(getCreateDate()));
 		map.put("updateById",getUpdateBy().getId());
 		map.put("updateByName",getUpdateByName());
-		//map.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
-
 
 		return map;
 	}

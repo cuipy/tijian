@@ -13,15 +13,13 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationUser;
 import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -31,6 +29,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
 import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -140,5 +139,24 @@ public class OrganController extends BaseController {
 		}
 
 		return mapList;
+	}
+
+	@ResponseBody
+	@GetMapping(value = "ajax_for_autocompleter")
+	public List<Map<String,String>> ajax_for_autocompleter(String query,Integer limit){
+		Organ organ=new Organ();
+		organ.setLikeField(StringUtils.forSuperLikeQuery(query));
+
+		Page<Organ> page=new Page();
+		page.setPageNo(1);
+		page.setPageSize(limit);
+		Page<Organ> p = organService.findPage(page,organ);
+		List<Map<String,String>> lst2=new ArrayList();
+
+		for(Organ o:p.getList()){
+			lst2.add(o.getMap());
+		}
+
+		return lst2;
 	}
 }
