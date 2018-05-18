@@ -186,5 +186,13 @@ public class ExaminationRecordItemController extends BaseController {
 		return examinationRecordItemService.cancelResult(examinationRecordItem);
 	}
 
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
+	@RequestMapping(value = {"grab_sample"})
+	public String grab_sample(ExaminationRecordItem examinationRecordItem,  Model model) {
+
+
+		return "modules/wshbj/examinationRecordItem_grab_sample";
+	}
+
 
 }
