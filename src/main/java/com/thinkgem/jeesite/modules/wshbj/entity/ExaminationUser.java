@@ -36,6 +36,10 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private static final long serialVersionUID = 1L;
 	private String code;		// 编号
 	private String name;		// 姓名
+	private String idNumberPicHead;
+	private String idNumberPicFore;
+	private String idNumberPicBack;
+
 	private String namePinyin;		// 姓名拼音
 	private String headImgPath;		// 真实照片
 	private String phoneNumber;		// 联系电话
@@ -72,6 +76,30 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 
 	public ExaminationUser(String id){
 		super(id);
+	}
+
+	public String getIdNumberPicHead() {
+		return idNumberPicHead;
+	}
+
+	public void setIdNumberPicHead(String idNumberPicHead) {
+		this.idNumberPicHead = idNumberPicHead;
+	}
+
+	public String getIdNumberPicFore() {
+		return idNumberPicFore;
+	}
+
+	public void setIdNumberPicFore(String idNumberPicFore) {
+		this.idNumberPicFore = idNumberPicFore;
+	}
+
+	public String getIdNumberPicBack() {
+		return idNumberPicBack;
+	}
+
+	public void setIdNumberPicBack(String idNumberPicBack) {
+		this.idNumberPicBack = idNumberPicBack;
 	}
 
 	@Length(min=0, max=50, message="编号长度必须介于 1 和 50 之间")

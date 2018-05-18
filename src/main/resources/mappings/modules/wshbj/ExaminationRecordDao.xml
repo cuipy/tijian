@@ -22,7 +22,8 @@
 		a.owner AS "owner",
 		a.package_id AS "packageId",
 		a.package_price AS "packagePrice",
-		a.id_number AS "idNumber",
+		a.id_number AS "idNumber", a.id_number_pic_head as "idNumberPicHead", a.id_number_pic_fore as "idNumberPicFore",
+		a.id_number_pic_back as "idNumberPicBack",
 		a.status AS "status",
 		a.item_type AS "itemType",
 		u2.name AS "user.name"
@@ -48,7 +49,8 @@
 		a.owner AS "owner",
 		a.package_id AS "packageId",
 		a.package_price AS "packagePrice",
-		a.id_number AS "idNumber",
+		a.id_number AS "idNumber",a.id_number_pic_head as "idNumberPicHead", a.id_number_pic_fore as "idNumberPicFore",
+		a.id_number_pic_back as "idNumberPicBack",
 		a.status AS "status",
 		a.item_type AS "itemType",
 		u2.name AS "userName",
@@ -379,7 +381,7 @@
 			owner,
 			package_id,
 			package_price,
-			id_number,
+			id_number,id_number_pic_head, id_number_pic_fore, id_number_pic_back,
 			status,
 			item_type
 		) VALUES (
@@ -402,7 +404,7 @@
 			#{owner},
 			#{packageId},
 			#{packagePrice},
-			#{idNumber},
+			#{idNumber},#{idNumberPicHead},#{idNumberPicFore},#{idNumberPicBack},
 			#{status},
 			#{itemType}
 		)
@@ -432,6 +434,9 @@
 				<if test="packageId !=null and packageId != '' ">package_id = #{packageId},</if>
 				<if test="packagePrice !=null and packagePrice != '' ">package_price = #{packagePrice},</if>
 				<if test="idNumber !=null and idNumber != '' ">id_number = #{idNumber},</if>
+				<if test="idNumberPicHead!=null and idNumberPicHead !='' ">id_number_pic_head = #{idNumberPicHead},</if>
+				<if test="idNumberPicFore!=null and idNumberPicFore !='' ">id_number_pic_fore = #{idNumberPicFore},</if>
+				<if test="idNumberPicBack!=null and idNumberPicBack !='' ">id_number_pic_back = #{idNumberPicBack},</if>
 				<if test="status !=null and status != '' ">status = #{status},</if>
 				<if test="itemType !=null and itemType != '' ">item_type = #{itemType},</if>
 			</set>

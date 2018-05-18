@@ -9,7 +9,8 @@
 		a.name_pinyin AS "namePinyin",
 		a.head_img_path as "headImgPath",
 		a.phone_number AS "phoneNumber",
-		a.id_number AS "idNumber",
+		a.id_number AS "idNumber", a.id_number_pic_head as "idNumberPicHead", a.id_number_pic_fore as "idNumberPicFore",
+		a.id_number_pic_back as "idNumberPicBack",
 		a.sex AS "sex", a.age as "age",
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
@@ -104,7 +105,7 @@
 			<if test="headImgPath != null ">head_img_path,</if>
 			phone_number,
 			sex, age,
-			id_number,
+			id_number, id_number_pic_head, id_number_pic_fore, id_number_pic_back,
 			industry_id,
 			post_id,
 			birthday,
@@ -123,7 +124,7 @@
 		<if test="headImgPath != null ">#{headImgPath},</if>
 			#{phoneNumber},
 			#{sex}, #{age},
-			#{idNumber},
+			#{idNumber},#{idNumberPicHead},#{idNumberPicFore},#{idNumberPicBack},
 			#{industryId},
 			#{postId},
 			#{birthday},
@@ -146,6 +147,9 @@
 			phone_number = #{phoneNumber},
 			sex = #{sex}, age=#{age},
 			id_number = #{idNumber},
+		<if test="idNumberPicHead!=null and idNumberPicHead !='' ">id_number_pic_head = #{idNumberPicHead},</if>
+		<if test="idNumberPicFore!=null and idNumberPicFore !='' ">id_number_pic_fore = #{idNumberPicFore},</if>
+		<if test="idNumberPicBack!=null and idNumberPicBack !='' ">id_number_pic_back = #{idNumberPicBack},</if>
 			industry_id = #{industryId},
 			post_id = #{postId},
 			birthday = #{birthday},

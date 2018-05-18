@@ -10,6 +10,21 @@
     <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
     <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
 	<script type="text/javascript">
+
+	    /**
+	    1 读身份证，直接通过身份证阅读器实现；
+	    2 身份证读卡器，可以读到身份证号、姓名、性别、年龄；头像图片、正反面图片，存了，但没显示。
+	    3 身份证的其他信息目前没有保留，例如发证日期、到期时间、民族、地址等；
+	    4 直接输入身份证号，首先通过autocompleter 验证身份证号是否在 examinationUser 中存在，如果存在，则读出；如果不存在，则是创建新用户；
+	    5 手动输入身份证，离开身份证文本框的时候，会解析身份证号，得到生日、性别、年龄；
+	    6 头像可以通过2种方式获得；一 本地图片文件；二 摄像头取像；
+	    7 摄像头取像可以通过webRTC 和  Flash两种方式，问题是： webRTC必须是HTTPS协议；而Flash方式总提问是否允许使用摄像头；
+	    8 行业、岗位、单位、体检日期、套餐、体检项目，等数据，都保存在LocalStorage中。
+	    9 默认打印机存储在LocalStorage中
+
+
+	    **/
+
 		$(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
@@ -76,15 +91,35 @@
                 var msg = evt.data;
                 var jmsg = JSON.parse(msg);
 
+                // 判断是否扫描的是新的身份证
+                var bIdNumberChanged=false;
+                if($("#idNumber").val()!=''&&$("#idNumber").val()!=jmsg.Code){
+                    bIdNumberChanged=true;
+                }
+
                 $("#name").val(jmsg.Name);
                 $("#idNumber").val(jmsg.Code);
+                $("#idNumberPicHead").val(jmsg.p4base64);
+                $("#idNumberPicFore").val(jmsg.p1base64);
+                $("#idNumberPicBack").val(jmsg.p2base64);
 
-                parseIdNumber();
+                // 头像默认采用身份证头像
+                if($("#upheadImgPath").val()==''||bIdNumberChanged){
+                    $("#upheadImgPath").val(jmsg.p4base64);
+                    $("#headImgPathImg").attr("src",jmsg.p4base64);
+                }
 
-                if(jmsg.Sex=='男'){
-                    $("#sex option[value='1']").attr("selected",true);
-                }else{
-                    $("#sex option[value='2']").attr("selected",true);
+                var srcBirthday=jmsg.BirthDay;
+                var birthday=srcBirthday.substr(0,4)+"-"+srcBirthday.substr(4,2)+"-"+srcBirthday.substr(6,2);
+                $("#birthday").val(birthday);
+
+                var age=getAgeFromId(jmsg.Code);
+                $("#age").val(age);
+
+                if(jmsg.Gender=='男'){
+                    $("#sex1").attr("checked",true);
+                }else if(jmsg.Gender=='女'){
+                    $("#sex2").attr("checked",true);
                 }
             }
          }
@@ -107,6 +142,8 @@
 	<form:form id="inputForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
+
+		<form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
 
 		<div class="control-group span6">
             <label class="control-label">真人照片采集：</label>

@@ -4,10 +4,15 @@
 <head>
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
+    <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
+    <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
+
 	<script type="text/javascript">
 
 
 		$(function() {
+
+            initWebsocket();
 
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -247,6 +252,49 @@
             });
         }
 
+        WEB_SOCKET_SWF_LOCATION = "${ctxStatic}/websocket/WebSocketMain.swf";
+        function initWebsocket(){
+            // 初始化身份证读取的websocket，身份证读取插件的websocket 端口为 8202
+            var ws1 = new ReconnectingWebSocket("ws://127.0.0.1:8202/jsclient");
+            ws1.onopen=function(evt){$('#dlalert').hide();}
+            ws1.onmessage=function(evt){
+                var msg = evt.data;
+                var jmsg = JSON.parse(msg);
+
+                // 判断是否扫描的是新的身份证
+                var bIdNumberChanged=false;
+                if($("#idNumber").val()!=''&&$("#idNumber").val()!=jmsg.Code){
+                    bIdNumberChanged=true;
+                }
+
+                $("#name").val(jmsg.Name);
+                $("#showIdNumber").val(jmsg.Code);
+                $("#idNumber").val(jmsg.Code);
+                $("#idNumberPicHead").val(jmsg.p4base64);
+                $("#idNumberPicFore").val(jmsg.p1base64);
+                $("#idNumberPicBack").val(jmsg.p2base64);
+
+                // 头像默认采用身份证头像
+                if($("#upheadImg").val()==''||bIdNumberChanged){
+                    $("#upheadImg").val(jmsg.p4base64);
+                    $("#headImgImg").attr("src",jmsg.p4base64);
+                }
+
+                var srcBirthday=jmsg.BirthDay;
+                var birthday=srcBirthday.substr(0,4)+"-"+srcBirthday.substr(4,2)+"-"+srcBirthday.substr(6,2);
+                $("#birthday").val(birthday);
+
+                var age=getAgeFromId(jmsg.Code);
+                $("#age").val(age);
+
+                if(jmsg.Gender=='男'){
+                    $("#sex1").attr("checked",true);
+                }else if(jmsg.Gender=='女'){
+                    $("#sex2").attr("checked",true);
+                }
+            }
+         }
+
 
 
 	</script>
@@ -264,6 +312,12 @@
         1 您可能还未安装Lodop打印驱动，请<a href="${ctxStatic}/lodop/CLodop_Setup_for_Win32NT.exe" target="_blank">下载</a>并安装Lodop。<br>
         2 您如果已经安装Lodop打印驱动，但没有启动服务。请运行 <span style="color:#000;"> 开始 > 所有程序 > C-Lodop(HTM-WEB-PRINT)32bit > C-Lodop Setup</span> ，并启动CLodop服务。
     </div>
+    <div id="dlalert" class="alert alert-warning">
+      <strong>重要提示，身份证读取服务插件安装说明：</strong> <br>
+      1. 身份证读取需要安装读取服务。 首先<a href="${ctxStatic}/idr200svr1.zip">下载身份证读取程序zip压缩包</a>，然后解压缩到本地计算机任意位置，然后运行 install.bat 命令完成服务注册。<br>
+      2. 身份证读取必须安装 <a href="http://rj.baidu.com/soft/detail/23411.html?ald">微软 Microsoft .NET Framework 3.5</a>，如遇到身份证读取失败的问题，请自行下载安装.NET Framework 3.5
+
+    </div>
 
     <div id="msg" class="alert alert-danger" style="display:none" ></div>
 
@@ -275,6 +329,8 @@
 
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
+        <form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
+
     <div>
 
 		<div class="control-group span12">
@@ -326,7 +382,8 @@
 		<div class="control-group span4">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
-                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}" class="input-medium required">
+                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}"  readonly="true"
+                 class="input-medium Wdate required" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
 
             </div>
         </div>
