@@ -540,7 +540,7 @@ public class ExaminationRecordController extends BaseController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "ajax_get_by_record_code")
+	@RequestMapping(value = "ajax_check_exam_record_code_can_grab_sample")
 	public RequestResult ajax_check_exam_record_code_can_grab_sample(String examRecordCode ,String examItemId) {
 		ExaminationRecord er=new ExaminationRecord();
 		er.setCode(examRecordCode);

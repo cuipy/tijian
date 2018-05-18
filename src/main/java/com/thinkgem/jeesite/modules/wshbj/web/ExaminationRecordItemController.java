@@ -49,6 +49,8 @@ public class ExaminationRecordItemController extends BaseController {
 	@Autowired
 	private ExaminationRecordItemService examinationRecordItemService;
 	@Autowired
+	private ExaminationRecordService examinationRecordService;
+	@Autowired
 	private ExaminationItemService examinationItemService;
 	@Autowired
 	private SampleCodesService sampleCodesService;
@@ -189,7 +191,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})
-	public String grab_sample(String sampleExamItemId,ExaminationRecordItem examinationRecordItem,  Model model) {
+	public String grab_sample(String sampleExamItemId,String examRecordCode , Model model) {
 
 		// 加载需要采集样本的类型列表
 		ExaminationItem ei=new ExaminationItem();
@@ -204,7 +206,23 @@ public class ExaminationRecordItemController extends BaseController {
 
 		model.addAttribute("sampleExamItemId",sampleExamItemId);
 
+		// 获取 采样记录Code
+		if(StringUtils.isNotEmpty(examRecordCode)){
+			ExaminationRecord er=new ExaminationRecord();
+			er.setCode(examRecordCode);
+			ExaminationRecord record = examinationRecordService.getByCode(er);
 
+			if(record!=null) {
+				List<ExaminationRecordItem> recordItems = record.getItems();
+				if (recordItems != null) {
+					for (ExaminationRecordItem eri : recordItems) {
+						if (eri.getItemId().equals(sampleExamItemId) && "1".equals(eri.getLastFlag())) {
+							model.addAttribute("examRecordItem",eri);
+						}
+					}
+				}
+			}
+		}
 
 		return "modules/wshbj/examinationRecordItem_grab_sample";
 	}
