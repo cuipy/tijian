@@ -217,7 +217,8 @@ public class ExaminationRecordItemController extends BaseController {
 				if (recordItems != null) {
 					for (ExaminationRecordItem eri : recordItems) {
 						if (eri.getItemId().equals(sampleExamItemId) && "1".equals(eri.getLastFlag())) {
-							model.addAttribute("examRecordItem",eri);
+							model.addAttribute("examRecord",record);
+							break;
 						}
 					}
 				}

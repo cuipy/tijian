@@ -10,7 +10,7 @@
 
 needSampleItems   需要采集样本的 ExaminationItem 的列表
 sampleExamItemId  当前选中的 体检项目类型 id
-examRecordItem    当前要采样的 体检记录-项目 对象
+examRecord    当前要采样的 体检记录 对象
 
 
   -->
@@ -22,7 +22,7 @@ examRecordItem    当前要采样的 体检记录-项目 对象
 	<script type="text/javascript">
 		$(function() {
 
-		    <c:if test="${not empty sampleExamItemId and empty examRecordItem }">
+		    <c:if test="${not empty sampleExamItemId and empty examRecord }">
 		    // 当前要录入体检记录 编号的时候
 		    $("#examRecordCode").focus();
 		    $("#examRecordCode").on("blur keypress",function(){
@@ -65,7 +65,7 @@ examRecordItem    当前要采样的 体检记录-项目 对象
     <div id="msg" class="alert alert-danger" >
     <c:if test="${empty sampleExamItemId }">第一步：请选择采集样本类型</c:if>
     <c:if test="${not empty sampleExamItemId}">
-        <c:if test="${empty examRecordItem}">
+        <c:if test="${empty examRecord}">
             第二步：请录入体检记录编号，或扫描体检人身份证
         </c:if>
     </c:if>
@@ -74,20 +74,20 @@ examRecordItem    当前要采样的 体检记录-项目 对象
     <c:if test="${not empty sampleExamItemId }">
 	<div  style="max-width:1200px" class="form-horizontal">
 
-	    <input type="hidden" id="examRecordItemId" name="id" value="${examRecordItem.id}"/>
+	    <input type="hidden" id="examRecordId" name="id" value="${examRecord.id}"/>
 	    <input type="hidden" id="sampleExamItemId" name="sampleExamItemId" value="${sampleExamItemId}"/>
 
         <div class="control-group span12">
             <label class="control-label">体检编号：</label>
             <div class="controls">
                 <input type="text" id="examRecordCode" name="examRecordCode" maxlength="50" class="input-large"
-                <c:if test="${not empty examRecordItem}">onchange="chgExamRecordCode()" readonly="readonly"</c:if> />
+                <c:if test="${not empty examRecord}">onchange="chgExamRecordCode()" readonly="readonly"</c:if> />
                 <span class="help-inline"> 手动录入或条码扫描体检编号。 </span>
             </div>
         </div>
         <div class="cl"></div>
 
-        <c:if test="${not empty examRecordItem}">
+        <c:if test="${not empty examRecord}">
         <div class="control-group span12">
             <label class="control-label">录入样本编号：</label>
             <div class="controls">
@@ -161,7 +161,7 @@ examRecordItem    当前要采样的 体检记录-项目 对象
         </div>
 <div class="cl"></div>
 		<div class="form-actions span12">
-            <c:if test="${not empty examRecordItem }">
+            <c:if test="${not empty examRecord }">
 			<input class="btn btn-primary" type="button" value="保存采集样本(10秒后自动保存)" onclick="do2()"/>&nbsp;
             <input class="btn btn-primary" type="button" value="重新录入体检项目" onclick="do2()" />&nbsp;
             </c:if>
