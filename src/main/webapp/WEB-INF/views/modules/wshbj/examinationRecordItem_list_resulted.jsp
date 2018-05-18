@@ -87,7 +87,7 @@
 		<thead>
 			<tr>
 				<th width="150">体检编号</th>
-				<th width="150">样本编号</th>
+				<th width="200">样本编号</th>
 				<th width="200">体检人</th>
 				<th width="80">项目</th>
 				<th width="80">状态</th>

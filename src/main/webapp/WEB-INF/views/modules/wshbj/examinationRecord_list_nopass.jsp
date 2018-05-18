@@ -101,13 +101,12 @@
 		<thead>
 			<tr>
 				<th width="150">编号</th>
-				<th width="100">体检人</th>
+				<th width="180">体检人</th>
 				<th width="180">身份证号</th>
 				<th width="100">联系电话</th>
 				<th width="40">性别</th>
 				<th >体检套餐/项目</th>
 				<th width="120">填报时间</th>
-				<th width="80">状态</th>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="400">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -139,9 +138,6 @@
 				</td>
 				<td>
 					<fmt:formatDate value="${examinationRecord.updateDate}" pattern="yyyy-MM-dd HH:mm"/>
-				</td>
-				<td>
-						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}
 				</td>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 
