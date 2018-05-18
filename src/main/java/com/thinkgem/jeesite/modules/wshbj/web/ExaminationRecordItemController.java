@@ -194,5 +194,13 @@ public class ExaminationRecordItemController extends BaseController {
 		return "modules/wshbj/examinationRecordItem_grab_sample";
 	}
 
+    @RequiresPermissions("wshbj:examinationRecordItem:edit")
+    @RequestMapping(value = {"set_result"})
+    public String set_result(ExaminationRecordItem examinationRecordItem,  Model model) {
+
+
+        return "modules/wshbj/examinationRecordItem_set_result";
+    }
+
 
 }
