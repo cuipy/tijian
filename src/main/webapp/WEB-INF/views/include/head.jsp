@@ -18,7 +18,7 @@
 <script src="${ctxStatic}/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
 
 <link href="${ctxStatic}/jquery-plugin/cropper.min.css" rel="stylesheet" />
-<link href="${ctxStatic}/jquery-plugin/ImgCropping.css" rel="stylesheet" />
+<link href="${ctxStatic}/jquery-plugin/ImgCropping.css?v=1" rel="stylesheet" />
 <script src="${ctxStatic}/jquery-plugin/cropper.min.js" type="text/javascript"></script>
 
 <script type="text/javascript" src="${ctxStatic}/jquery-webcam/jquery.webcam.min.js"></script>

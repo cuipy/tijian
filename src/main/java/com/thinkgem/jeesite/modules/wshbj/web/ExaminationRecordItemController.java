@@ -48,7 +48,8 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@Autowired
 	private ExaminationRecordItemService examinationRecordItemService;
-
+	@Autowired
+	private ExaminationItemService examinationItemService;
 	@Autowired
 	private SampleCodesService sampleCodesService;
 	
@@ -188,7 +189,21 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})
-	public String grab_sample(ExaminationRecordItem examinationRecordItem,  Model model) {
+	public String grab_sample(String sampleExamItemId,ExaminationRecordItem examinationRecordItem,  Model model) {
+
+		// 加载需要采集样本的类型列表
+		ExaminationItem ei=new ExaminationItem();
+		ei.setNeedSamples("1");
+		List<ExaminationItem> needSampleItems = examinationItemService.findList(ei);
+		model.addAttribute("needSampleItems",needSampleItems);
+
+		// 如果没有设置 sampleExamItemId 参数
+		if(StringUtils.isEmpty(sampleExamItemId)){
+			return "modules/wshbj/examinationRecordItem_grab_sample";
+		}
+
+		model.addAttribute("sampleExamItemId",sampleExamItemId);
+
 
 
 		return "modules/wshbj/examinationRecordItem_grab_sample";

@@ -535,4 +535,38 @@ public class ExaminationRecordController extends BaseController {
 		return RequestResult.generate(RequestResult.SUCCESS,"获取体检记录成功",er);
 	}
 
+	/**
+	 * 检查体检记录是否 有合法的 采样 类型
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "ajax_get_by_record_code")
+	public RequestResult ajax_check_exam_record_code_can_grab_sample(String examRecordCode ,String examItemId) {
+		ExaminationRecord er=new ExaminationRecord();
+		er.setCode(examRecordCode);
+		ExaminationRecord record = examinationRecordService.getByCode(er);
+
+		if(record==null){
+			return RequestResult.generate(10,"未能获得体检记录");
+		}
+
+		List<ExaminationRecordItem> recordItems = record.getItems();
+		if(recordItems==null){
+			return RequestResult.generate(2,"体检记录下没有体检记录");
+		}
+
+		for(ExaminationRecordItem eri:recordItems){
+			if(eri.getItemId().equals(examItemId) && "1".equals(eri.getLastFlag())){
+				// 该体检记录 对应的体检项目，已经采样
+				if(StringUtils.isNotEmpty(eri.getSampleCode())){
+					return RequestResult.generate(3,"该体检记录已经采样，采样编号为："+eri.getSampleCode());
+				}
+
+				return RequestResult.generate(1,"该体检记录可以采样");
+			}
+		}
+
+		return RequestResult.generate(4,"该体检人不需要进行该类型的采样");
+	}
+
 }
