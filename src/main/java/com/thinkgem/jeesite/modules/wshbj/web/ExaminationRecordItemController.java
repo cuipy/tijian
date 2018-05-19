@@ -137,8 +137,8 @@ public class ExaminationRecordItemController extends BaseController {
 			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/form?repage";
 		}
 
-		if(StringUtils.isEmpty(examinationRecordItem.getSampleCode())){
-			addMessage(redirectAttributes,"样本编号为空，无法进行采样数据保存");
+		if(!examinationRecordItem.getGrabSample()){
+			addMessage(redirectAttributes,"未完成采样，无法进行采样数据保存");
 			model.addAttribute("examinationRecordItem", examinationRecordItem);
 			return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecordItem/form?repage";
 		}
@@ -217,7 +217,7 @@ public class ExaminationRecordItemController extends BaseController {
 				if (recordItems != null) {
 					for (ExaminationRecordItem eri : recordItems) {
 						// 1类型与当前类型 currExamItemId 相同， 2 最新的体检记录项目  3 未采样
-						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && StringUtils.isEmpty(eri.getSampleCode())) {
+						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
 							model.addAttribute("examRecord",record);
 							break;
 						}

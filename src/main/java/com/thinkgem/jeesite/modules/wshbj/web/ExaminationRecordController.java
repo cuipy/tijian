@@ -608,7 +608,7 @@ public class ExaminationRecordController extends BaseController {
 		for(ExaminationRecordItem eri:recordItems){
 			if(eri.getItemId().equals(examItemId) && "1".equals(eri.getLastFlag())){
 				// 该体检记录 对应的体检项目，已经采样
-				if(StringUtils.isNotEmpty(eri.getSampleCode())){
+				if(eri.getGrabSample()){
 					return RequestResult.generate(3,"该体检记录已经采样，采样编号为："+eri.getSampleCode());
 				}
 
@@ -673,7 +673,7 @@ public class ExaminationRecordController extends BaseController {
 		for(ExaminationRecordItem eri:recordItems){
 			if(eri.getItemId().equals(examItemId) && "1".equals(eri.getLastFlag())){
 				// 该体检记录 对应的体检项目，已经采样
-				if("1".equals(eri.getNeedSamples())&&StringUtils.isEmpty(eri.getSampleCode())){
+				if("1".equals(eri.getNeedSamples())&&!eri.getGrabSample()){
 					return RequestResult.generate(4,"该体检记录需要先采样，然后才可以录入体检结果。");
 				}
 

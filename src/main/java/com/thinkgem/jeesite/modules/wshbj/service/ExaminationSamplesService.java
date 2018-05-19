@@ -132,7 +132,7 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
 			examinationRecordService.updateRecordStatus(newRecordItem.getRecordId(),ExaminationRecordConstant.STATUS10);
 		}else{
 			//判断体检项目是否已采集样本
-			if(StringUtils.isNotBlank(recordItem.getSampleCode())){
+			if(recordItem.getGrabSample()){
 				resultMessages.add("该项目已采集样本，不能重复采样");
 				return ResponseResult.generateFailResult("保存样本失败", resultMessages);
 			}
