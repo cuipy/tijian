@@ -8,7 +8,9 @@
 2 进入本页面，首先选择采样项目；
 3 页面显示当前采集项目类型，提示：请扫描体检项目条码或读取体检人身份证
 
-4 采样编号生成阶段：
+4 采样编号如果是在 体检记录创建的时候生成，且在创建的时候打印，则此时不需要打印 样本编号；
+5 采样编号如果是在 体检记录创建的时候生成，但在采用的时候打印，则此时需要打印 样本编号；
+6 采样编号如果在这个时候生成，则需要 自动生成体检编号，则需要打印 样本编号。
 
 needSampleItems   需要采集样本的 ExaminationItem 的列表
 currExamItemId  当前选中的 体检项目类型 id
@@ -24,7 +26,8 @@ examRecord    当前要采样的 体检记录 对象
 	<script type="text/javascript">
 		$(function() {
 
-		    <c:if test="${not empty currExamItemId and empty examRecord }">
+		    setTimeout("lodop_check()",300);
+
 		    // 当前要录入体检记录 编号的时候
 		    $("#examRecordCode").focus();
 		    $("#examRecordCode").on("blur keypress",function(){
@@ -49,15 +52,24 @@ examRecord    当前要采样的 体检记录 对象
 		        });
 
 		    });
-		    </c:if>
 
 		    <c:if test="${not empty currExamItemId and not empty examRecord }">
 		    // 获得体检记录对象，准备录入采样编号
 
+		    </c:if>
 
+		    <c:if test="${ not empty examRecordItem && examRecordItem.sampleCodePrintCount<=3 && sampleCodePrintPoint==2}">
+		    setTimeout("do_sample_code_print()",1000);
 		    </c:if>
 
         });
+
+        <c:if test="${sampleCodePrintPoint==2}">
+        // 执行 样本编号打印
+        function do_sample_code_print(){
+            lodop_printBarcode('样本编号','${ctxfull}/wshbj/exam_record_print/barcode_html?barcode='+$('#examRecordItemSampleCode').val() );
+        }
+        </c:if>
 
 
 	</script>
@@ -81,32 +93,45 @@ examRecord    当前要采样的 体检记录 对象
     </c:if>
     </div>
 
+    <div class="breadcrumb form-search">
+    <ul class="ul-form">
+        <li><label>条码打印机：</label>
+            <select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
+        </li>
+    </ul>
+    </div>
+
     <c:if test="${not empty currExamItemId }">
 	<div  style="max-width:1200px" class="form-horizontal">
 
 	    <input type="hidden" id="examRecordId" name="id" value="${examRecord.id}"/>
 	    <input type="hidden" id="currExamItemId" name="currExamItemId" value="${currExamItemId}"/>
 
+	    <input type="hidden" id="examRecordItemId" name="examRecordItemId" value="${examRecordItem.id}"/>
+        <input type="hidden" id="examRecordItemSampleCode" name="examRecordItemSampleCode" value="${examRecordItem.sampleCode}"/>
+
         <div class="control-group span12">
-            <label class="control-label">体检编号：</label>
+            <label class="control-label">编号：</label>
             <div class="controls">
-                <input type="text" id="examRecordCode" name="examRecordCode" maxlength="50" class="input-large"
-                <c:if test="${not empty examRecord}">value="${examRecord.code}" readonly="readonly"</c:if> />
+                <input type="text" id="examRecordCode" name="examRecordCode" maxlength="50" class="input-large"/>
                 <span id="msg_examRecordCode" class="help-inline"> <c:if test="${empty examRecord}">手动录入或条码扫描体检编号。</c:if> </span>
             </div>
         </div>
         <div class="cl"></div>
 
         <c:if test="${not empty examRecord}">
-        <div class="control-group span12">
-            <label class="control-label">录入样本编号：</label>
+        <div class="control-group span6">
+            <label class="control-label">体检编号：</label>
             <div class="controls">
-                <input type="text" id="sampleCode" name="sampleCode" maxlength="50" class="input-large" onchange=""/>
-                <span class="help-inline"> 手动录入或条码扫描样本编号。 </span>
+                ${examRecord.code}
             </div>
         </div>
-        <div class="cl"></div>
+        <div class="control-group span6">
+            <label class="control-label">样本编号：</label>
 
+            <div class="controls"> ${examRecordItem.sampleCode}  打印次数：${examRecordItem.sampleCodePrintCount}   </div>
+        </div>
+        <div class="cl"></div>
 
         <div class="control-group span6">
             <label class="control-label"> 用户头像：</label>
@@ -175,6 +200,7 @@ examRecord    当前要采样的 体检记录 对象
             <label class="control-label">全部体检项目：</label>
             <div class="controls">
                 <c:forEach items="${examRecord.items}" var="vo">
+                <c:if test="${vo.lastFlag=='1'}">
                 <label class="label"> ${vo.itemName} </label> -
                 <label class="label"> <c:if test="${vo.needSamples == 1 }">需要采样 <c:if test="${vo.grabSample == true}">已采样</c:if>
                 <c:if test="${vo.grabSample == false }">待采样</c:if>  </c:if>
@@ -184,21 +210,18 @@ examRecord    当前要采样的 体检记录 对象
                  <c:if test="${vo.resultFlag == 0 }">不合格</c:if>
                 <c:if test="${vo.resultFlag == 1 }">合格</c:if> </label>
 
-                <br>
+                <br></c:if>
                 </c:forEach>
             </div>
         </div>
         <div class="cl"></div>
-
-        </c:if>
 		<div class="form-actions span12">
-            <c:if test="${not empty examRecord }">
-			<input class="btn btn-primary" type="button" value="保存采集样本(10秒后自动保存)" onclick="do2()"/>&nbsp;
-            <input class="btn btn-primary" type="button" value="重新录入体检项目" onclick="do2()" />&nbsp;
-            </c:if>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+            <c:if test="${examRecordItem.sampleCodePrintCount>3}">
+            <input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="do_sample_code_print()" />&nbsp;</c:if>
 
 		</div>
+        </c:if>
+
 <div class="cl"></div>
 
 	</div>

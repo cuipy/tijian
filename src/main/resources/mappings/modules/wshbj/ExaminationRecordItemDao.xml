@@ -7,7 +7,7 @@
 		a.record_id AS "recordId",
 		a.item_id AS "itemId",
 		a.item_name AS "itemName", a.item_name_pinyin as "itemNamePinyin",
-		a.need_samples AS "needSamples", a.grab_sample as "grabSample",
+		a.need_samples AS "needSamples", a.grab_sample as "grabSample", a.sample_code_print_count as "sampleCodePrintCount",
 		a.sample_code AS "sampleCode",
 		a.result_dict_id AS "resultDictId",
 		a.result_dict_name AS "resultDictName",
@@ -442,6 +442,10 @@
 		<if test="uploadDate == null ">upload_date = now() </if>
 		<if test="uploadDate != null ">upload_date = #{uploadDate}</if>
 		WHERE id = #{id}
+	</update>
+
+	<update id="updateSampleCodePrintCount">
+		UPDATE bj_examination_record_item SET sample_code_print_count = sample_code_print_count+1 WHERE id = #{id}
 	</update>
 
 

@@ -346,4 +346,10 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     public int updateLastFlag(String id, String lastFlag){
         return this.dao.updateLastFlag(id,lastFlag);
     }
+
+    @Transactional(readOnly = false)
+    public int updateSampleCodePrintCount(String id ){
+        return this.dao.updateSampleCodePrintCount(id);
+    }
+
 }

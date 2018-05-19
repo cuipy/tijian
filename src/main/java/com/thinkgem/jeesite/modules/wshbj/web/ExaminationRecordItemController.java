@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.web;
 
+import com.drew.lang.StringUtil;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
@@ -30,10 +31,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 体检记录Controller
@@ -182,7 +180,7 @@ public class ExaminationRecordItemController extends BaseController {
 		return examinationRecordItemService.cancelSample(examinationRecordItem);
 	}
 
-	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = "ajax_cancel_result")
 	@ResponseBody
 	public RequestResult ajax_cancel_result(ExaminationRecordItem examinationRecordItem, Model model){
@@ -190,8 +188,24 @@ public class ExaminationRecordItemController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
+	@RequestMapping(value = "ajax_update_sample_code_print_count")
+	@ResponseBody
+	public RequestResult ajax_update_sample_code_print_count(ExaminationRecordItem examinationRecordItem, Model model){
+		Integer count = examinationRecordItemService.updateSampleCodePrintCount(examinationRecordItem.getId());
+		return RequestResult.generate(1,"更新成功");
+	}
+
+
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})
 	public String grab_sample(String currExamItemId,String examRecordCode , Model model) {
+
+		// 获取 什么阶段生成 样本编号 ；获取 什么阶段打印 样本编号
+		Integer sampleCodeCreatePoint =GlobalSetUtils.getGlobalSet().getSampleCodeCreatePoint();
+		Integer sampleCodePrintPoint= GlobalSetUtils.getGlobalSet().getSampleCodePrintPoint();
+
+		model.addAttribute("sampleCodeCreatePoint",sampleCodeCreatePoint);
+		model.addAttribute("sampleCodePrintPoint",sampleCodePrintPoint);
 
 		// 加载需要采集样本的类型列表
 		ExaminationItem ei=new ExaminationItem();
@@ -219,6 +233,28 @@ public class ExaminationRecordItemController extends BaseController {
 						// 1类型与当前类型 currExamItemId 相同， 2 最新的体检记录项目  3 未采样
 						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
 							model.addAttribute("examRecord",record);
+
+							// 如果没有样本编号，则生成样本编号
+							String sampleCode = eri.getSampleCode();
+							if(StringUtils.isEmpty(sampleCode)) {
+								String itemId = eri.getItemId();
+								ExaminationItem examItem = examinationItemService.get(itemId);
+
+								// 样本编号前缀
+								String prefixSampleCode = examItem.getPrefixSampleCode();
+								sampleCode = SysSequenceUtils.nextSequence(prefixSampleCode + "{yyMMdd}[4]");
+								eri.setSampleCode(sampleCode);
+
+							}
+							// 设置真实采样
+							if(!eri.getGrabSample()) {
+								eri.setGrabSample(true);
+								eri.setGrabSampleTime(new Date());
+							}
+
+							examinationRecordItemService.save(eri);
+
+							model.addAttribute("examRecordItem",eri);
 							break;
 						}
 					}
