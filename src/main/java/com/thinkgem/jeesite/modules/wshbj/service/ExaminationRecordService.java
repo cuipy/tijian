@@ -61,6 +61,10 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return examinationRecord;
     }
 
+    public String getHeadImg(String id) {
+        return dao.getHeadImg(id);
+    }
+
     //@Cacheable(value = "examinationRecordCache",key="'examinationRecord_getByCode_'+#examinationRecord.code")
     public ExaminationRecord getByCode(ExaminationRecord examinationRecord) {
         examinationRecord = this.dao.getByCode(examinationRecord);

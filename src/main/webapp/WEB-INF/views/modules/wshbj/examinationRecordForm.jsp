@@ -346,7 +346,7 @@
         <div class="control-group span6">
             <label class="control-label"><font color="red">*</font>  用户头像：</label>
             <div class="controls">
-                 <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="真人照片" path="headImg" value="${examinationRecord.headImg}"/>
+                 <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="真人照片" path="headImg"  value="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"/>
             </div>
         </div>
 

@@ -31,6 +31,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,7 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import sun.misc.BASE64Decoder;
 import sun.misc.Request;
 
 /**
@@ -567,6 +569,37 @@ public class ExaminationRecordController extends BaseController {
 		}
 
 		return RequestResult.generate(8,"该体检人不需要进行该项目的采样");
+	}
+
+	@RequestMapping(value = "getHeadImg")
+	public void getHeadImg(String id, HttpServletResponse response) {
+		response.setContentType("image/jpeg");
+		//发头控制浏览器不要缓存
+		response.setDateHeader("expries", -1);
+		response.setHeader("Cache-Control", "no-cache");
+		response.setHeader("Pragma", "no-cache");
+
+		String imgStr = examinationRecordService.getHeadImg(id).substring(22);
+
+		BASE64Decoder decoder = new BASE64Decoder();
+		try {
+			// 解密
+			byte[] b = decoder.decodeBuffer(imgStr);
+			// 处理数据
+			for (int i = 0; i < b.length; ++i) {
+				if (b[i] < 0) {
+					b[i] += 256;
+				}
+			}
+			OutputStream out = response.getOutputStream();
+			out.write(b);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+
+		}
+
+
 	}
 
 	/**

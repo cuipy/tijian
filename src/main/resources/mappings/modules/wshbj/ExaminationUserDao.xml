@@ -7,7 +7,6 @@
 		a.code AS "code",
 		a.name AS "name",
 		a.name_pinyin AS "namePinyin",
-		a.head_img_path as "headImgPath",
 		a.phone_number AS "phoneNumber",
 		a.id_number AS "idNumber", a.id_number_pic_head as "idNumberPicHead", a.id_number_pic_fore as "idNumberPicFore",
 		a.id_number_pic_back as "idNumberPicBack",
@@ -176,6 +175,10 @@
 			a.del_flag = #{DEL_FLAG_NORMAL} and (a.upload_date is null or a.upload_date <![CDATA[ < ]]> a.update_date )
 		</where>
 		limit 100
+	</select>
+
+	<select id="getHeadImg" resultType="java.lang.String">
+		SELECT head_img_path from bj_examination_user where id=#{id}
 	</select>
 
 	<update id="updateUploadDate">

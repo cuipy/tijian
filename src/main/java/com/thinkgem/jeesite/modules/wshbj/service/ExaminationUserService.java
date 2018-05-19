@@ -31,6 +31,11 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 		return super.get(id);
 	}
 
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_getHeadImg_'+#id")
+	public String getHeadImg(String id) {
+		return dao.getHeadImg(id);
+	}
+
 	/**
 	 * 根据身份证与体检中心查询体检用户
 	 * @param idNumber

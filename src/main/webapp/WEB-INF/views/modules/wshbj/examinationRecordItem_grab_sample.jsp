@@ -107,7 +107,7 @@ examRecord    当前要采样的 体检记录 对象
         <div class="control-group span6">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
-                 <img id="imgHeadImg" style="width:320px;min-height:220px" src=""/>
+                 <img id="imgHeadImg" style="width:320px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
             </div>
         </div>
 
@@ -185,9 +185,6 @@ examRecord    当前要采样的 体检记录 对象
             </div>
         </div>
         <div class="cl"></div>
-
-<div id="hidHeadImg" style="display:none" >${examRecord.headImg}</div>
-
 
         </c:if>
 		<div class="form-actions span12">
