@@ -491,7 +491,8 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 
 			<br>当前A4打印机<select id="sltA4Print" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
-			<br>当前条码打印机<select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
+
+			&nbsp;&nbsp;当前条码打印机<select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
 		</div>
 <div class="cl"></div>
 </div>

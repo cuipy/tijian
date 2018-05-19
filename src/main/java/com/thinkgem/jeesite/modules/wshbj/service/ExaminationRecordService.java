@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
@@ -247,6 +248,11 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
         super.save(examinationRecord);
 
+        // 获取条码生成 和 打印 阶段
+        Integer sampleCodeCreatePoint = GlobalSetUtils.getGlobalSet().getSampleCodeCreatePoint();
+        Integer sampleCodePrintPoint = GlobalSetUtils.getGlobalSet().getSampleCodePrintPoint();
+
+
         /**
          * 保存检查项目
          * 1 读取现有的项目，
@@ -310,6 +316,11 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             item.setNeedSamples(savingItem.getNeedSamples());
             item.setSpecimenId(savingItem.getSpecimenId());
             item.setLastFlag("1");
+
+            // 如果在 体检编号 在 创建体检记录的时候 生成
+            if(sampleCodeCreatePoint==1&&"1".equals(savingItem.getNeedSamples())){
+
+            }
 
             examinationRecordItemService.save(item);
         }

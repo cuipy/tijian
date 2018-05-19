@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
+import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
@@ -66,6 +67,8 @@ public class ExaminationRecordController extends BaseController {
 	private JobPostService jobPostService;
 	@Autowired
 	private ExaminationItemService examinationItemService;
+	@Autowired
+	private ExaminationUserService examinationUserService;
 	@Autowired
 	private ExaminationSamplesService examinationSamplesService;
 
@@ -236,6 +239,7 @@ public class ExaminationRecordController extends BaseController {
 
 		model.addAttribute("examinationRecord", examinationRecord);
 
+		// 获取行业列表
 		Industry industry = new Industry();
 		industry.setOwner(UserUtils.getUser().getCompany().getId());
 		industry.setDelFlag("0");
@@ -243,6 +247,7 @@ public class ExaminationRecordController extends BaseController {
 		List<Industry> industryList = industryService.findList(industry);
 		model.addAttribute("industryList", industryList);
 
+		// 岗位类别
 		JobPost jobPost = new JobPost();
 		jobPost.setOwner(UserUtils.getUser().getCompany().getId());
 		jobPost.setDelFlag("0");
@@ -259,6 +264,13 @@ public class ExaminationRecordController extends BaseController {
 		ExaminationItem examinationItem = new ExaminationItem();
 		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
 		model.addAttribute("examinationItemList", examinationItemList);
+
+		// 获取条码生成 和 打印 阶段
+		Integer sampleCodeCreatePoint = GlobalSetUtils.getGlobalSet().getSampleCodeCreatePoint();
+		Integer sampleCodePrintPoint = GlobalSetUtils.getGlobalSet().getSampleCodePrintPoint();
+
+		model.addAttribute("sampleCodeCreatePoint",sampleCodeCreatePoint);
+		model.addAttribute("sampleCodePrintPoint",sampleCodePrintPoint);
 
 		return "modules/wshbj/examinationRecordForm";
 	}
@@ -289,6 +301,12 @@ public class ExaminationRecordController extends BaseController {
 //		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
 //	}
 
+	/**
+	 * ajax方式保存体检记录
+	 * @param examinationRecord
+	 * @param model
+	 * @return
+	 */
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = "ajax_save")
 	@ResponseBody
@@ -334,10 +352,40 @@ public class ExaminationRecordController extends BaseController {
 			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
 		}
 
+		// 检验用户身份证号码
+		ExaminationUser examUser = examinationUserService.getByIdNumberAndOwner(examinationRecord.getIdNumber(), UserUtils.getUser().getCompany().getId());
+		if(examUser==null){
+			// 用户不存在，则创建用户
+			examUser=new ExaminationUser();
+			examUser.setOwner(UserUtils.getUser().getCompany().getId());
+			examUser.setIdNumber(examinationRecord.getIdNumber());
+			examUser.setName(examinationRecord.getName());
+			examUser.setNamePinyin(PinyinUtils.getStringPinYin(examUser.getName()));
+			examUser.setPhoneNumber(examinationRecord.getPhoneNumber());
+			examUser.setBirthday(examinationRecord.getBirthday());
+			examUser.setAge(examinationRecord.getAge());
+			examUser.setIndustryId(examinationRecord.getIndustryId());
+			examUser.setOrganId(examinationRecord.getOrganId());
+			examUser.setPostId(examinationRecord.getPostId());
+			examUser.setCode(SysSequenceUtils.nextSequence(ExaminationUser.class,"code"));
+
+			examUser.setHeadImgPath(examinationRecord.getHeadImg());
+			examUser.setIdNumberPicHead(examinationRecord.getIdNumberPicHead());
+			examUser.setIdNumberPicFore(examinationRecord.getIdNumberPicFore());
+			examUser.setIdNumberPicBack(examinationRecord.getIdNumberPicBack());
+
+			examinationUserService.save(examUser);
+
+			if(examinationRecord.getUser()==null){
+				examinationRecord.setUser(examUser);
+			}else{
+				examinationRecord.getUser().setId(examUser.getId());
+			}
+		}
+
 		RequestResult result = examinationRecordService.saveRecord(examinationRecord);
 		return result;
 	}
-
 
 	
 	@RequiresPermissions("wshbj:examinationRecord:edit")
@@ -423,62 +471,62 @@ public class ExaminationRecordController extends BaseController {
 
 
 
-	/**
-	* @author zhxl
-	* @Description 
-	* @Date 2018/4/16 00:30:12
-	* @Param [examinationRecord, request, response, model, redirectAttributes]
-	* @return java.lang.String 
-	*/
-	@RequiresPermissions("wshbj:certRecord:edit")
-	@RequestMapping(value = "recordResultDetailPop")
-	public String recordResultDetailPop(String recordId,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
-		ExaminationRecord record = examinationRecordService.get(recordId);
-		model.addAttribute("record", record);
-
-		/**
-		 * 获取体检记录所有体检项目
-		 */
-		List<ExaminationRecordItem> recordItemList = examinationRecordItemService.listByRecordId(recordId);
-		model.addAttribute("recordItemList", recordItemList);
-
-		return "modules/wshbj/recordResultDetailPop";
-	}
-
-
-
-
-	@ResponseBody
-	@RequestMapping(value = "getMapByCode4Result")
-	public Map getMapByCode4Result(@RequestParam(required=true) String code,@RequestParam()String examinationFlag, HttpServletResponse response) {
-		if (org.apache.commons.lang3.StringUtils.isBlank(code)){
-			return new HashedMap();
-		}
-		return examinationRecordService.getMapByCode4Result(code,examinationFlag);
-	}
-
-
-	@ResponseBody
-	@RequestMapping(value = "getListMap4Result")
-	public List<ExaminationRecord> getListMap4Result(String startDate,String endDate,String examinationCode,String organId) {
-
-		return examinationRecordService.getList4Result(startDate,endDate,examinationCode,organId);
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "getItemListMap4Result")
-	public List<Map> getItemListMap4Result(String recordId) {
-
-		return examinationRecordService.getItemListMap4Result(recordId);
-	}
-
-
-	@ResponseBody
-	@RequestMapping(value = "getList4CertForm")
-	public List<Map> getList4CertForm(String startDate,String endDate,String examinationCode
-			,String organId, String userName, String status) {
-		return examinationRecordService.getList4CertForm(startDate,endDate,examinationCode,organId,userName,status);
-	}
+//	/**
+//	* @author zhxl
+//	* @Description
+//	* @Date 2018/4/16 00:30:12
+//	* @Param [examinationRecord, request, response, model, redirectAttributes]
+//	* @return java.lang.String
+//	*/
+//	@RequiresPermissions("wshbj:certRecord:edit")
+//	@RequestMapping(value = "recordResultDetailPop")
+//	public String recordResultDetailPop(String recordId,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+//		ExaminationRecord record = examinationRecordService.get(recordId);
+//		model.addAttribute("record", record);
+//
+//		/**
+//		 * 获取体检记录所有体检项目
+//		 */
+//		List<ExaminationRecordItem> recordItemList = examinationRecordItemService.listByRecordId(recordId);
+//		model.addAttribute("recordItemList", recordItemList);
+//
+//		return "modules/wshbj/recordResultDetailPop";
+//	}
+//
+//
+//
+//
+//	@ResponseBody
+//	@RequestMapping(value = "getMapByCode4Result")
+//	public Map getMapByCode4Result(@RequestParam(required=true) String code,@RequestParam()String examinationFlag, HttpServletResponse response) {
+//		if (org.apache.commons.lang3.StringUtils.isBlank(code)){
+//			return new HashedMap();
+//		}
+//		return examinationRecordService.getMapByCode4Result(code,examinationFlag);
+//	}
+//
+//
+//	@ResponseBody
+//	@RequestMapping(value = "getListMap4Result")
+//	public List<ExaminationRecord> getListMap4Result(String startDate,String endDate,String examinationCode,String organId) {
+//
+//		return examinationRecordService.getList4Result(startDate,endDate,examinationCode,organId);
+//	}
+//
+//	@ResponseBody
+//	@RequestMapping(value = "getItemListMap4Result")
+//	public List<Map> getItemListMap4Result(String recordId) {
+//
+//		return examinationRecordService.getItemListMap4Result(recordId);
+//	}
+//
+//
+//	@ResponseBody
+//	@RequestMapping(value = "getList4CertForm")
+//	public List<Map> getList4CertForm(String startDate,String endDate,String examinationCode
+//			,String organId, String userName, String status) {
+//		return examinationRecordService.getList4CertForm(startDate,endDate,examinationCode,organId,userName,status);
+//	}
 
 	/**
 	 * ajax方式获取未完成的体检记录列表，用于autocomplete

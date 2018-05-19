@@ -44,6 +44,7 @@
 			<tr>
 				<th>编号</th>
 				<th width="120">名称</th>
+				<th>样本编号前缀</th>
 				<th>单位</th>
 				<th>价格</th>
 				<th>参考范围</th>
@@ -61,6 +62,9 @@
 				<td>
 					${examinationItem.name}
 				</td>
+				<td>
+                    ${examinationItem.prefixSampleCode}
+                </td>
 				<td>
 					${examinationItem.unit}
 				</td>

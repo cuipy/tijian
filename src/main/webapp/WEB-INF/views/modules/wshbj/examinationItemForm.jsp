@@ -32,7 +32,7 @@
 		<!--li><a href="${ctx}/wshbj/examinationItem/list4Pull">快速添加</a></li-->
 	</ul><br/>
 
-	<div class="">
+	<div class="max-width:1200px;">
 	<form:form id="inputForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -51,19 +51,15 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+
 		<div class="control-group span6">
             <label class="control-label">全拼：</label>
             <div class="controls">
                 <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
             </div>
         </div>
-        <div class="control-group span6">
-            <label class="control-label">顺序值：</label>
-            <div class="controls">
-                <form:input type="number" step="1" path="orderNumb" htmlEscape="false" maxlength="10" class="input-medium "/>
-            </div>
-        </div>
         <div class="cl"></div>
+
 		<div class="control-group span12">
 			<label class="control-label">检查项目类型：</label>
 			<div class="controls radios-div">
@@ -99,6 +95,20 @@
 				<form:radiobuttons path="specimenId" items="${specimenList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 			</div>
 		</div>
+		 <div class="cl"></div>
+        <div class="control-group span6">
+            <label class="control-label">样本编号前缀：</label>
+            <div class="controls">
+                <form:input path="prefixSampleCode" htmlEscape="false" maxlength="16" class="input-medium"/>
+            </div>
+        </div>
+        <div class="control-group span6">
+            <label class="control-label">顺序值：</label>
+            <div class="controls">
+                <form:input type="number" step="1" path="orderNumb" htmlEscape="false" maxlength="10" class="input-medium "/>
+            </div>
+        </div>
+        <div class="cl"></div>
 
 		<div class="control-group span12">
 			<label class="control-label">备注：</label>

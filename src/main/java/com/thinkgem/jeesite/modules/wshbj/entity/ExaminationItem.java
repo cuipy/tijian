@@ -25,6 +25,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	private String typeId;		// 检查项目类型
+	private String prefixSampleCode ;
 	private String unit;		// 单位
 	private String price;		// 价格
 	private String rangeMax;		// 参考范围最大值
@@ -34,6 +35,15 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String needSamples;		//是否需要样本：0-否，1-是
 
 	private Integer orderNumb;
+
+
+	public String getPrefixSampleCode() {
+		return prefixSampleCode;
+	}
+
+	public void setPrefixSampleCode(String prefixSampleCode) {
+		this.prefixSampleCode = prefixSampleCode;
+	}
 
 	public Integer getOrderNumb() {
 		return orderNumb;

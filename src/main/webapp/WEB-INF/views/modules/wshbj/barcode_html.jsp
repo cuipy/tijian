@@ -12,9 +12,6 @@
     div,table{box-sizing:border-box;}
     .cl{clear:both;}
 
-    .tbl-barcode{width:50px;border:0px;}
-
-
     </style>
 
     <script type="text/javascript">
@@ -23,15 +20,15 @@
         JsBarcode(".img-code", code1, {
         			  format:"CODE128",
         			  displayValue:false,
-        			  height:50,margin:0
+        			  width:1,height:30,margin:0
         			});
     })
     </script>
 </head>
 <body>
 <table class="tbl-barcode" cellspacing="0" cellpadding="0">
-<tr><td><img style="" class="t2-tm-img img-code"></td></tr>
-<tr><td id="dv-code1" class="t2-tm-code">${barcode}</td></tr>
+<tr><td><img style="width:50mm;height:7mm;" class="t2-tm-img img-code"></td></tr>
+<tr><td id="dv-code1" class="t2-tm-code" style="text-align:center;font-size:9px;line-height:10px;">${barcode}</td></tr>
 </table>
 
 

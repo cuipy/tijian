@@ -68,7 +68,7 @@ function lodop_printBarcode(title,url){
     var LODOP = getLodop();
 
     LODOP.PRINT_INIT(title);
-    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
+    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "50mm","10mm");
     if(localStorage.getItem('a4-print-index')>=0){
         LODOP.SET_PRINTER_INDEX(localStorage.getItem('a4-print-index'));
     }
