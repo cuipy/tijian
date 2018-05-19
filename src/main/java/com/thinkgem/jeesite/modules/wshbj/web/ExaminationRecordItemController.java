@@ -191,7 +191,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})
-	public String grab_sample(String sampleExamItemId,String examRecordCode , Model model) {
+	public String grab_sample(String currExamItemId,String examRecordCode , Model model) {
 
 		// 加载需要采集样本的类型列表
 		ExaminationItem ei=new ExaminationItem();
@@ -199,12 +199,12 @@ public class ExaminationRecordItemController extends BaseController {
 		List<ExaminationItem> needSampleItems = examinationItemService.findList(ei);
 		model.addAttribute("needSampleItems",needSampleItems);
 
-		// 如果没有设置 sampleExamItemId 参数
-		if(StringUtils.isEmpty(sampleExamItemId)){
+		// 如果没有设置 currExamItemId 参数
+		if(StringUtils.isEmpty(currExamItemId)){
 			return "modules/wshbj/examinationRecordItem_grab_sample";
 		}
 
-		model.addAttribute("sampleExamItemId",sampleExamItemId);
+		model.addAttribute("currExamItemId",currExamItemId);
 
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){
@@ -216,7 +216,8 @@ public class ExaminationRecordItemController extends BaseController {
 				List<ExaminationRecordItem> recordItems = record.getItems();
 				if (recordItems != null) {
 					for (ExaminationRecordItem eri : recordItems) {
-						if (eri.getItemId().equals(sampleExamItemId) && "1".equals(eri.getLastFlag())) {
+						// 1类型与当前类型 currExamItemId 相同， 2 最新的体检记录项目  3 未采样
+						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && StringUtils.isEmpty(eri.getSampleCode())) {
 							model.addAttribute("examRecord",record);
 							break;
 						}
@@ -228,13 +229,43 @@ public class ExaminationRecordItemController extends BaseController {
 		return "modules/wshbj/examinationRecordItem_grab_sample";
 	}
 
-    @RequiresPermissions("wshbj:examinationRecordItem:edit")
-    @RequestMapping(value = {"set_result"})
-    public String set_result(ExaminationRecordItem examinationRecordItem,  Model model) {
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
+	@RequestMapping(value = {"set_result"})
+	public String set_result(String currExamItemId, String examRecordCode,  Model model) {
+		// 加载 所有体检项目 ExaminationItem 列表
+		ExaminationItem ei=new ExaminationItem();
+		List<ExaminationItem> examItems = examinationItemService.findList(ei);
+		model.addAttribute("examItems",examItems);
 
+		// 如果没有设置 currExamItemId 参数
+		if(StringUtils.isEmpty(currExamItemId)){
+			return "modules/wshbj/examinationRecordItem_set_result";
+		}
 
-        return "modules/wshbj/examinationRecordItem_set_result";
-    }
+		model.addAttribute("currExamItemId",currExamItemId);
 
+		// 获取 采样记录Code
+		if(StringUtils.isNotEmpty(examRecordCode)){
+			ExaminationRecord er=new ExaminationRecord();
+			er.setCode(examRecordCode);
+			ExaminationRecord record = examinationRecordService.getByCode(er);
+
+			if(record!=null) {
+				List<ExaminationRecordItem> recordItems = record.getItems();
+				if (recordItems != null) {
+					for (ExaminationRecordItem eri : recordItems) {
+
+						// 1 类型正确  2 是最新的体检记录项目  3 没有结果
+						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && StringUtils.isEmpty(eri.getResultFlag()) ) {
+							model.addAttribute("examRecord",record);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		return "modules/wshbj/examinationRecordItem_set_result";
+	}
 
 }

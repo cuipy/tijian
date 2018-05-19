@@ -165,6 +165,16 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		this.resultDictName = resultDictName;
 	}
 
+	public  String getStrResultFlag(){
+		if("0".equals(resultFlag)){
+			return "不合格";
+		}
+		if("1".equals(resultFlag)){
+			return "合格";
+		}
+		return "无结果";
+	}
+
 	public String getResultFlag() {
 		return resultFlag;
 	}
