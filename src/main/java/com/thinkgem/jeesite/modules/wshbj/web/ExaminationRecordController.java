@@ -689,5 +689,23 @@ public class ExaminationRecordController extends BaseController {
 		return RequestResult.generate(8,"该体检人不需要进行该项目的检查");
 	}
 
+	@RequiresPermissions("wshbj:examinationRecord:edit")
+	@RequestMapping(value = {"print_card"})
+	public String print_card(String examRecordCode,  Model model) {
+
+		// 获取 采样记录Code
+		if(StringUtils.isNotEmpty(examRecordCode)){
+			ExaminationRecord er=new ExaminationRecord();
+			er.setCode(examRecordCode);
+			ExaminationRecord record = examinationRecordService.getByCode(er);
+
+			if(record!=null) {
+				model.addAttribute("examRecord",record);
+			}
+		}
+
+		return "modules/wshbj/examinationRecordItem_print_card";
+	}
+
 
 }

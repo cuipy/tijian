@@ -14,17 +14,24 @@ function lodop_check(){
     for(var i in arr){
         $('#sltA4Print').append("<option value='"+i+"'>"+arr[i]+"</option>");
         $('#sltBarcodePrint').append("<option value='"+i+"'>"+arr[i]+"</option>");
+        $('#sltCardPrint').append("<option value='"+i+"'>"+arr[i]+"</option>");
     }
 
     // A4打印机索引
     var a4Index= localStorage.getItem('a4-print-index');
-    $("#sltA4Print").val(a4Index).trigger('change');
-    $('#sltA4Print').change();
-
+    if(a4Index.length>0){
+        $("#sltA4Print").val(a4Index).trigger('change');
+        $('#sltA4Print').change();
+    }
     // 条码打印机索引
     var barcodeIndex= localStorage.getItem('barcode-print-index');
     $("#sltBarcodePrint").val(barcodeIndex).trigger('change');
     $('#sltBarcodePrint').change();
+
+    // 制卡打印机索引
+    var cardIndex= localStorage.getItem('card-print-index');
+    $("#sltCardPrint").val(cardIndex).trigger('change');
+    $('#sltCardPrint').change();
 }
 // 获得打印机列表
 function lodop_getPrintNames(){
@@ -49,6 +56,12 @@ function lodop_setBarcodePrintIndex(){
      localStorage.setItem('barcode-print-index',ind);
 }
 
+// 设置条码打印机
+function lodop_setCardPrintIndex(){
+     var ind=$('#sltCardPrint').val();
+     localStorage.setItem('card-print-index',ind);
+}
+
 // 直接A4打印，单页打印
 function lodop_printA4(title,url){
     var LODOP = getLodop();
@@ -69,11 +82,25 @@ function lodop_printBarcode(title,url){
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "50mm","10mm");
-    if(localStorage.getItem('a4-print-index')>=0){
-        LODOP.SET_PRINTER_INDEX(localStorage.getItem('a4-print-index'));
+    if(localStorage.getItem('barcode-print-index')>=0){
+        LODOP.SET_PRINTER_INDEX(localStorage.getItem('barcode-print-index'));
     }
     LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
-    LODOP.ADD_PRINT_HTM(0,0,"210mm","297mm","URL:"+url);
+    LODOP.ADD_PRINT_HTM(0,0,"50mm","10mm","URL:"+url);
+    LODOP.PRINT();
+}
+
+// 直接Barcode打印，单页打印
+function lodop_printCard(title,url){
+    var LODOP = getLodop();
+
+    LODOP.PRINT_INIT(title);
+    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "85.6mm","54mm");
+    if(localStorage.getItem('card-print-index')>=0){
+        LODOP.SET_PRINTER_INDEX(localStorage.getItem('card-print-index'));
+    }
+    LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
+    LODOP.ADD_PRINT_HTM(0,0,"85.6mm","54mm","URL:"+url);
     LODOP.PRINT();
 }
 
