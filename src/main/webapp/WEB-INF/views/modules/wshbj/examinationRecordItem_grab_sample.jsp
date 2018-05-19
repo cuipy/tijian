@@ -14,7 +14,7 @@ examRecord    当前要采样的 体检记录 对象
 
 
   -->
-	<title>体检记录管理</title>
+	<title>快速采集体检样本</title>
 	<meta name="decorator" content="default"/>
     <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
     <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
@@ -61,7 +61,7 @@ examRecord    当前要采样的 体检记录 对象
 <body>
 
 	<ul class="nav nav-tabs">
-        <li><a href="${ctx}/wshbj/examinationRecordItem/grab_sample" style="color:#666;">请选择采集类型</a></li>
+        <li><a href="${ctx}/wshbj/examinationRecordItem/grab_sample" style="color:#666;">快速采样：选择采集类型</a></li>
         <c:forEach items="${needSampleItems}" var="vo">
         <c:if test="${vo.id==currExamItemId}"><li class="active"></c:if>
         <c:if test="${vo.id!=currExamItemId}"><li></c:if>
@@ -167,7 +167,7 @@ examRecord    当前要采样的 体检记录 对象
         </div>
         <div class="cl"></div>
 
-        <div class="control-group span4">
+        <div class="control-group span12">
             <label class="control-label">全部体检项目：</label>
             <div class="controls">
                 <c:forEach items="${examRecord.items}" var="vo">

@@ -15,7 +15,7 @@ examRecord    当前要采样的 体检记录 对象
 
 
   -->
-	<title>体检记录管理</title>
+	<title>快速录入体检结果</title>
 	<meta name="decorator" content="default"/>
     <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
     <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
@@ -31,7 +31,7 @@ examRecord    当前要采样的 体检记录 对象
 		        var recordCode =$("#examRecordCode").val();
 		        var currExamItemId = $("#currExamItemId").val();
 
-		        var url="${ctx}/wshbj/examinationRecord/ajax_check_exam_record_code_can_grab_sample";
+		        var url="${ctx}/wshbj/examinationRecord/ajax_check_exam_record_code_can_set_result";
 		        var d1={"examRecordCode":recordCode,"examItemId":currExamItemId};
 		        $.get(url,d1,function(d1r){
                     if(d1r.state>1){
@@ -58,7 +58,7 @@ examRecord    当前要采样的 体检记录 对象
 <body>
 
 	<ul class="nav nav-tabs">
-        <li><a href="${ctx}/wshbj/examinationRecordItem/set_result" style="color:#666;">请选择体检项目</a></li>
+        <li><a href="${ctx}/wshbj/examinationRecordItem/set_result" style="color:#666;">快速录入结果：选择体检项目</a></li>
         <c:forEach items="${examItems}" var="vo">
         <c:if test="${vo.id==currExamItemId}"><li class="active"></c:if>
         <c:if test="${vo.id!=currExamItemId}"><li></c:if>
@@ -155,7 +155,7 @@ examRecord    当前要采样的 体检记录 对象
         </div>
         <div class="cl"></div>
 
-        <div class="control-group span4">
+        <div class="control-group span12">
             <label class="control-label">全部体检项目：</label>
             <div class="controls">
                 <c:forEach items="${examRecord.items}" var="vo">
