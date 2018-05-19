@@ -38,7 +38,7 @@
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/common/jeesite.css?v=32" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/common/jeesite.css?v=33" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
 <script src="${ctxStatic}/lodop/LodopFuncs.js" type="text/javascript"></script>

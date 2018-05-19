@@ -23,7 +23,6 @@ examRecord    当前要采样的 体检记录 对象
 	<script type="text/javascript">
 		$(function() {
 
-		    <c:if test="${not empty currExamItemId and empty examRecord }">
 		    // 当前要录入体检记录 编号的时候
 		    $("#examRecordCode").focus();
 		    $("#examRecordCode").on("blur keypress",function(){
@@ -44,13 +43,43 @@ examRecord    当前要采样的 体检记录 对象
 		        });
 
 		    });
-		    </c:if>
 
-		    <c:if test="${not empty currExamItemId and not empty examRecord }">
-		    $("#imgHeadImg").attr("src",$("#hidHeadImg").html());
-		    </c:if>
+		    <c:if test="${ not empty examRecordItem and ((examRecordItem.needSamples=='1' and examRecordItem.grabSample) || examRecordItem.needSamples=='0') }">
+            setTimeout("daojishiSetResultFlag()",1000);
+            </c:if>
 
         });
+
+        <c:if test="${ not empty examRecordItem and ((examRecordItem.needSamples=='1' and examRecordItem.grabSample) || examRecordItem.needSamples=='0') }">
+        function daojishiSetResultFlag(){
+            var second=$("#btnUpdateResultFlag").attr("data-second");
+            var isecond=parseInt(second);
+
+            if(isecond<=0){
+                $("#btnUpdateResultFlag").hide();
+                doUpdateResultFlag();
+            }else{
+                $("#btnUpdateResultFlag").attr("data-second",isecond-1);
+                $("#btnUpdateResultFlag").val("提交体检项目结果("+isecond+"秒后自动提交)");
+                setTimeout("daojishiSetResultFlag()",1000);
+            }
+
+        }
+
+        // 可以录入体检记录结果
+        function doUpdateResultFlag(){
+            var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
+            var resultFlag = $("#resultFlag0:checked").val();
+            if( !resultFlag ){
+                resultFlag="1";
+            }
+            var d1={"id": $("#examRecordItemId").val() ,"resultFlag": resultFlag };
+            $.get(url,d1,function(d1r){
+                $("#msg").show().html(d1r.msg);
+            });
+        }
+
+        </c:if>
 
 
 	</script>
@@ -80,11 +109,13 @@ examRecord    当前要采样的 体检记录 对象
 	    <input type="hidden" id="examRecordId" name="id" value="${examRecord.id}"/>
 	    <input type="hidden" id="currExamItemId" name="currExamItemId" value="${currExamItemId}"/>
 
+	    <input type="hidden" id="examRecordItemId" name="examRecordItemId" value="${examRecordItem.id}"/>
+        <input type="hidden" id="examRecordItemSampleCode" name="examRecordItemSampleCode" value="${examRecordItem.sampleCode}"/>
+
         <div class="control-group span12">
             <label class="control-label">体检编号：</label>
             <div class="controls">
-                <input type="text" id="examRecordCode" name="examRecordCode" maxlength="50" class="input-large"
-                <c:if test="${not empty examRecord}">value="${examRecord.code}" readonly="readonly"</c:if> />
+                <input type="text" id="examRecordCode" name="examRecordCode" maxlength="50" class="input-large" />
                 <span id="msg_examRecordCode" class="help-inline"> <c:if test="${empty examRecord}">手动录入或条码扫描体检编号。</c:if> </span>
             </div>
         </div>
@@ -173,18 +204,23 @@ examRecord    当前要采样的 体检记录 对象
             </div>
         </div>
         <div class="cl"></div>
+            <div class="control-group span12">
+                <label class="control-label">是否合格：</label>
+                <div class="controls radios-div" >
+                    <label for="resultFlag1"><input id="resultFlag1" value="1" name="resultFlag" type="radio" checked="checked">合格</label>
+                    <label for="resultFlag0"><input id="resultFlag0" value="0" name="resultFlag" type="radio">不合格</label>
+                </div>
+            </div>
+            <div class="cl"></div>
+          <div class="form-actions span12">
+                  <c:if test="${not empty examRecord }">
+                <input id="btnUpdateResultFlag" class="btn btn-primary" type="button" value="提交体检项目结果(10秒后自动提交)" data-second="10" onclick="do_update_result_flag()"/>&nbsp;
+                  </c:if>
+
+            </div>
 
         </c:if>
-		<div class="form-actions span12">
-            <c:if test="${not empty examRecord }">
-			<input class="btn btn-primary" type="button" value="保存采集样本(10秒后自动保存)" onclick="do2()"/>&nbsp;
-            <input class="btn btn-primary" type="button" value="重新录入体检项目" onclick="do2()" />&nbsp;
-            </c:if>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
-
-		</div>
-<div class="cl"></div>
-
+		       <div class="cl"></div>
 	</div>
 
 	</c:if>

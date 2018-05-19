@@ -112,7 +112,7 @@ legend + .control-group {margin-top:6px;}
 .help-div{
     padding-left:0px;
 }
-.radios-div>span;.checkboxs-div>span{
+.radios-div>span,.checkboxs-div>span,.radios-div>label{
     display:inline-block;
     min-width:120px;
 }

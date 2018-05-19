@@ -293,8 +293,11 @@ public class ExaminationRecordItemController extends BaseController {
 					for (ExaminationRecordItem eri : recordItems) {
 
 						// 1 类型正确  2 是最新的体检记录项目  3 没有结果
-						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && StringUtils.isEmpty(eri.getResultFlag()) ) {
+						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag())
+								&& ("0".equals (eri.getNeedSamples()) || ("1".equals(eri.getNeedSamples())&&eri.getGrabSample() ))
+								&& StringUtils.isEmpty(eri.getResultFlag()) ) {
 							model.addAttribute("examRecord",record);
+							model.addAttribute("examRecordItem",eri);
 							break;
 						}
 					}
