@@ -39,8 +39,8 @@
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/jeesite.css?v=32" type="text/css" rel="stylesheet" />
-<script src="${ctxStatic}/common/jeesite.js?v=9" type="text/javascript"></script>
+<script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
 <script src="${ctxStatic}/lodop/LodopFuncs.js" type="text/javascript"></script>
-<script src="${ctxStatic}/lodop/my_lodop.js?v=4" type="text/javascript"></script>
+<script src="${ctxStatic}/lodop/my_lodop.js?v=5" type="text/javascript"></script>
 

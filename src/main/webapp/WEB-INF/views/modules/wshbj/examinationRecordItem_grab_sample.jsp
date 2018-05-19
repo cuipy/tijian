@@ -8,6 +8,8 @@
 2 进入本页面，首先选择采样项目；
 3 页面显示当前采集项目类型，提示：请扫描体检项目条码或读取体检人身份证
 
+4 采样编号生成阶段：
+
 needSampleItems   需要采集样本的 ExaminationItem 的列表
 currExamItemId  当前选中的 体检项目类型 id
 examRecord    当前要采样的 体检记录 对象
@@ -50,7 +52,9 @@ examRecord    当前要采样的 体检记录 对象
 		    </c:if>
 
 		    <c:if test="${not empty currExamItemId and not empty examRecord }">
-		    $("#imgHeadImg").attr("src",$("#hidHeadImg").html());
+		    // 获得体检记录对象，准备录入采样编号
+
+
 		    </c:if>
 
         });

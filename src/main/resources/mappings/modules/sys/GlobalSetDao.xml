@@ -5,7 +5,7 @@
 	<sql id="globalSetColumns">
 		a.id AS "id",
 		a.token AS "token",
-		a.code_pre AS "codePre"
+		a.code_pre AS "codePre",a.sample_code_create_point as "sampleCodeCreatePoint",a.sample_code_print_point as "sampleCodePrintPoint"
 	</sql>
 	
 	<sql id="globalSetJoins">
@@ -58,15 +58,17 @@
 		INSERT INTO bj_global_set(
 			id,
 			token,
-			code_pre
+			code_pre,sample_code_create_point,sample_code_print_point
 		) VALUES (
 			#{id},
-			#{token},#{codePre}
+			#{token},#{codePre},#{sampleCodeCreatePoint},#{sampleCodePrintPoint}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE bj_global_set set code_pre = #{codePre},token=#{token} WHERE id = #{id}
+		UPDATE bj_global_set set code_pre = #{codePre},token=#{token}
+		,sample_code_create_point=#{sampleCodeCreatePoint},sample_code_print_point=#{sampleCodePrintPoint}
+		WHERE id = #{id}
 	</update>
 	
 	<update id="delete">

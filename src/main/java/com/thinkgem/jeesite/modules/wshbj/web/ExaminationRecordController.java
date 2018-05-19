@@ -300,8 +300,8 @@ public class ExaminationRecordController extends BaseController {
 			// 如果行业上已经设置了编号规则，则按照行业编号规则生成体检编号
 			Industry industry = examinationRecord.getIndustry();
 			String newCode = null;
-			if(industry!=null&&StringUtils.isNotEmpty(industry.getExpExamCode())){
-				newCode=SysSequenceUtils.nextSequence(industry.getExpExamCode());
+			if(industry!=null&&StringUtils.isNotEmpty(industry.getPrefixExamCode())){
+				newCode=SysSequenceUtils.nextSequence(industry.getPrefixExamCode()+"{yyMMdd}[4]");
 			}else{
 				// 否则按照系统默认规则生成。
 				newCode=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code");

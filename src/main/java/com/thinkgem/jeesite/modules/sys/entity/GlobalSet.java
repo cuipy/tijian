@@ -23,12 +23,34 @@ public class GlobalSet extends DataEntity<GlobalSet> {
 	private String codePre;		// 当前体检中心编号前缀
 	private String token;		// 体检中心token
 
+	private Integer sampleCodeCreatePoint;			// 样本编号生成阶段  1 创建体检记录时生成体检编号；2 在取样的时候生成样本编号
+
+	private Integer sampleCodePrintPoint;			// 样本编号打印阶段  sampleCodeCreatePoint == 1 的时候生效  1 创建体检记录阶段打印  2 取样的时候打印
+
+
+
 	public GlobalSet() {
 		super();
 	}
 
 	public GlobalSet(String id){
 		super(id);
+	}
+
+	public Integer getSampleCodeCreatePoint() {
+		return sampleCodeCreatePoint;
+	}
+
+	public void setSampleCodeCreatePoint(Integer sampleCodeCreatePoint) {
+		this.sampleCodeCreatePoint = sampleCodeCreatePoint;
+	}
+
+	public Integer getSampleCodePrintPoint() {
+		return sampleCodePrintPoint;
+	}
+
+	public void setSampleCodePrintPoint(Integer sampleCodePrintPoint) {
+		this.sampleCodePrintPoint = sampleCodePrintPoint;
 	}
 
 	public String getOwner() {

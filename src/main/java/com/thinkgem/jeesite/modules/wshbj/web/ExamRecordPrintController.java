@@ -92,6 +92,12 @@ public class ExamRecordPrintController extends BaseController {
 		return "modules/wshbj/tjb_html";
 	}
 
+	@GetMapping(value = "barcode_html")
+	public String barcode_html(String barcode,Model model) {
+		model.addAttribute("barcode",barcode);
+		return "modules/wshbj/barcode_html";
+	}
+
 
 
 }
