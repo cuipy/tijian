@@ -91,7 +91,8 @@
 		<div class="control-group span12">
 			<label class="control-label">所需标本：</label>
 			<div class="controls radios-div">
-				<span><input id="specimenNo" name="specimenId" type="radio" value="0"><label for="specimenNo">不需要标本</label></span>
+				<span><input id="specimenNo" name="specimenId" type="radio" value="0" <c:if test="${examinationItem.needSamples=='0'}">checked='checked'</c:if> >
+				<label for="specimenNo">不需要标本</label></span>
 				<form:radiobuttons path="specimenId" items="${specimenList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 			</div>
 		</div>

@@ -63,13 +63,22 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 	@Transactional(readOnly = false)
 	@CacheEvict(value="examinationItemCache",allEntries=true)
 	public void save(ExaminationItem examinationItem) {
-		String permission = null;
-		if (com.thinkgem.jeesite.common.utils.StringUtils.isBlank(examinationItem.getPermission())){
-			permission = genSeqNumberService.genSeqNumber1(UserUtils.getUser().getCompany().getCode()+"ITEM_",1);
-			examinationItem.setPermission(permission);
-			examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
-			examinationItem.setReferenceFlag("0");
+//		String permission = null;
+//		if (com.thinkgem.jeesite.common.utils.StringUtils.isBlank(examinationItem.getPermission())){
+//			permission = genSeqNumberService.genSeqNumber1(UserUtils.getUser().getCompany().getCode()+"ITEM_",1);
+//			examinationItem.setPermission(permission);
+//			examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
+//			examinationItem.setReferenceFlag("0");
+//		}
+
+		// 不需要  样本
+		if("0".equals(examinationItem.getSpecimenId())){
+			examinationItem.setNeedSamples("0");
+			examinationItem.setPrefixSampleCode("");
+		}else{
+			examinationItem.setNeedSamples("1");
 		}
+
 		super.save(examinationItem);
 
 		//创建或修改项目菜单
