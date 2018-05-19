@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
@@ -55,6 +56,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     private ExaminationSamplesDao examinationSamplesDao;
     @Autowired
     private ExaminationRecordItemService examinationRecordItemService;
+
 
     //@Cacheable(value = "examinationRecordCache",key="'examinationRecord_get_'+#id")
     public ExaminationRecord get(String id) {
@@ -319,7 +321,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
             // 如果在 体检编号 在 创建体检记录的时候 生成
             if(sampleCodeCreatePoint==1&&"1".equals(savingItem.getNeedSamples())){
-
+                String exp = savingItem.getPrefixSampleCode()+"{yyMMdd}[4]";
+                String sampleCode = SysSequenceUtils.nextSequence(exp);
+                item.setSampleCode(sampleCode);
             }
 
             examinationRecordItemService.save(item);

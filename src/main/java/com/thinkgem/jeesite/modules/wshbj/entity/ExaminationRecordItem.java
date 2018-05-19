@@ -37,6 +37,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String needSamples;		//是否需要样本：0-否，1-是
 	private String specimenId;		// 体检标本类型ID  最终样本编号的specimenId必须与这个一致
 	private String sampleCode;		// 样本编号
+	private Boolean grabSample;		// 是否真的取样了
 	private String resultDictId;		// 体检结果
 	private String resultDictName;		// 体检结果
 	private String resultFlag;		// 体检合格标识：0-否，1-是
@@ -93,6 +94,13 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		super(id);
 	}
 
+	public Boolean getGrabSample() {
+		return grabSample;
+	}
+
+	public void setGrabSample(Boolean grabSample) {
+		this.grabSample = grabSample;
+	}
 
 	@Length(min=1, max=64, message="检查记录长度必须介于 1 和 64 之间")
 	@ExcelField(value="recordId",title="检查记录",type=0,sort=20)
