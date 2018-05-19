@@ -53,9 +53,9 @@ examRecord    当前要采样的 体检记录 对象
 
 		    });
 
-		    <c:if test="${not empty currExamItemId and not empty examRecord }">
-		    // 获得体检记录对象，准备录入采样编号
-
+		    <c:if test="${not empty currExamItemId and not empty examRecord and !examRecordItem.grabSample}">
+		    // 体检记录项目还没有真正采样
+            setTimeout("daojishiGrabSample()",1000);
 		    </c:if>
 
 		    <c:if test="${ not empty examRecordItem && examRecordItem.sampleCodePrintCount<=3 && sampleCodePrintPoint==2}">
@@ -64,11 +64,42 @@ examRecord    当前要采样的 体检记录 对象
 
         });
 
-        <c:if test="${sampleCodePrintPoint==2}">
+        <c:if test="${not empty examRecordItem and sampleCodePrintPoint==2}">
         // 执行 样本编号打印
         function do_sample_code_print(){
+            var url="${ctx}/wshbj/examinationRecordItem/ajax_update_sample_code_print_count";
+            var d1={"id":'${examRecordItem.id}'};
+            $.get(url,d1);
+
             lodop_printBarcode('样本编号','${ctxfull}/wshbj/exam_record_print/barcode_html?barcode='+$('#examRecordItemSampleCode').val() );
         }
+        </c:if>
+
+        <c:if test="${not empty currExamItemId and not empty examRecord and !examRecordItem.grabSample}">
+
+        function daojishiGrabSample(){
+            var second=$("#btnUpdateGrabSample").attr("data-second");
+            var isecond=parseInt(second);
+
+            if(isecond<=0){
+                $("#btnUpdateGrabSample").hide();
+                do_update_grab_sample();
+            }else{
+                $("#btnUpdateGrabSample").attr("data-second",isecond-1);
+                $("#btnUpdateGrabSample").val("设置取样成功("+isecond+"秒后自动提交)");
+                setTimeout("daojishiGrabSample()",1000);
+            }
+
+        }
+        // 体检记录项目还没有真正采样
+        function do_update_grab_sample(){
+            var url="${ctx}/wshbj/examinationRecordItem/ajax_update_grab_sample";
+            var d1={"id":'${examRecordItem.id}'};
+            $.get(url,d1,function(d1r){
+                $("#msg").show().html("体检记录项目采集成功。");
+            });
+        }
+
         </c:if>
 
 
@@ -216,9 +247,10 @@ examRecord    当前要采样的 体检记录 对象
         </div>
         <div class="cl"></div>
 		<div class="form-actions span12">
-            <c:if test="${examRecordItem.sampleCodePrintCount>3}">
-            <input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="do_sample_code_print()" />&nbsp;</c:if>
 
+            <input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="do_sample_code_print()" />&nbsp;&nbsp;
+            <c:if test="${!examRecordItem.grabSample}">
+            <input id="btnUpdateGrabSample" class="btn btn-primary" type="button" value="设置取样成功" data-second="10" onclick="do_update_grab_sample()" />&nbsp;</c:if>
 		</div>
         </c:if>
 

@@ -195,6 +195,14 @@ public class ExaminationRecordItemController extends BaseController {
 		return RequestResult.generate(1,"更新成功");
 	}
 
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
+	@RequestMapping(value = "ajax_update_grab_sample")
+	@ResponseBody
+	public RequestResult ajax_update_grab_sample(ExaminationRecordItem examinationRecordItem, Model model){
+		Integer count = examinationRecordItemService.updateGrabSample(examinationRecordItem.getId());
+		return RequestResult.generate(1,"更新成功");
+	}
+
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})
@@ -244,15 +252,8 @@ public class ExaminationRecordItemController extends BaseController {
 								String prefixSampleCode = examItem.getPrefixSampleCode();
 								sampleCode = SysSequenceUtils.nextSequence(prefixSampleCode + "{yyMMdd}[4]");
 								eri.setSampleCode(sampleCode);
-
+								examinationRecordItemService.save(eri);
 							}
-							// 设置真实采样
-							if(!eri.getGrabSample()) {
-								eri.setGrabSample(true);
-								eri.setGrabSampleTime(new Date());
-							}
-
-							examinationRecordItemService.save(eri);
 
 							model.addAttribute("examRecordItem",eri);
 							break;

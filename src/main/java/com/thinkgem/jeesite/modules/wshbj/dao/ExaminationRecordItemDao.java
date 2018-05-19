@@ -108,4 +108,6 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
     void updateUploadDate(ExaminationRecordItem examinationRecordItem);
 
     Integer updateSampleCodePrintCount(@Param("id")String id);
+
+    Integer updateGrabSample(@Param("id")String id);
 }

@@ -352,4 +352,8 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         return this.dao.updateSampleCodePrintCount(id);
     }
 
+    @Transactional(readOnly = false)
+    public Integer updateGrabSample(String id) {
+        return dao.updateGrabSample(id);
+    }
 }

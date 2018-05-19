@@ -448,5 +448,9 @@
 		UPDATE bj_examination_record_item SET sample_code_print_count = sample_code_print_count+1 WHERE id = #{id}
 	</update>
 
+	<update id="updateGrabSample">
+		UPDATE bj_examination_record_item SET grab_sample = 1 WHERE id = #{id}
+	</update>
+
 
 </mapper>
