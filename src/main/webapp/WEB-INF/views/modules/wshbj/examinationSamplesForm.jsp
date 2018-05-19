@@ -102,7 +102,7 @@
                     var resultFlatDetail='';
 
 
-                    if(item.sampleCode==null){
+                    if(!item.grabSample){
                         hasSampleCode=false;
                         resultFlatDetail='未取样';
 
