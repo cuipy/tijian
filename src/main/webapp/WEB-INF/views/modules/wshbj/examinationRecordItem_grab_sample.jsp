@@ -31,8 +31,8 @@ examRecord    当前要采样的 体检记录 对象
 		        $("#msg_examRecordCode").html("开始分析体检记录编号");
 
 		        // 输入体检记录编号后，开始检测体检编号，如果编号合法，则可以采集编号
-		        var recordCode =$("#examRecordCode").val();
-		        var currExamItemId = $("#currExamItemId").val();
+		        var recordCode =$.trim($("#examRecordCode").val());
+		        var currExamItemId = $.trim($("#currExamItemId").val());
 
 		        var url="${ctx}/wshbj/examinationRecord/ajax_check_exam_record_code_can_grab_sample";
 		        var d1={"examRecordCode":recordCode,"examItemId":currExamItemId};
@@ -176,8 +176,8 @@ examRecord    当前要采样的 体检记录 对象
             <div class="controls">
                 <c:forEach items="${examRecord.items}" var="vo">
                 <label class="label"> ${vo.itemName} </label> -
-                <label class="label"> <c:if test="${vo.needSamples == 1 }">需要采样 <c:if test="${vo.sampleCode != null && vo.sampleCode != ''}">标本编号：${vo.sampleCode}</c:if>
-                <c:if test="${vo.sampleCode == null || vo.sampleCode == ''}">待采样</c:if>  </c:if>
+                <label class="label"> <c:if test="${vo.needSamples == 1 }">需要采样 <c:if test="${vo.grabSample == true}">已采样</c:if>
+                <c:if test="${vo.grabSample == false }">待采样</c:if>  </c:if>
                 <c:if test="${vo.needSamples != 1 }">无需采样</c:if> </label> -
 
                  <label class="label">  <c:if test="${vo.resultFlag == null }">无结果</c:if>

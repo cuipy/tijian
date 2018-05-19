@@ -7,7 +7,7 @@
 		a.record_id AS "recordId",
 		a.item_id AS "itemId",
 		a.item_name AS "itemName", a.item_name_pinyin as "itemNamePinyin",
-		a.need_samples AS "needSamples",
+		a.need_samples AS "needSamples", a.grab_sample as "grabSample",
 		a.sample_code AS "sampleCode",
 		a.result_dict_id AS "resultDictId",
 		a.result_dict_name AS "resultDictName",
@@ -325,7 +325,7 @@
 			record_id,
 			item_id,
 			item_name, item_name_pinyin,
-			need_samples,
+			need_samples, grab_sample,
 			sample_code,
 			specimen_id,
 			result_dict_id,
@@ -345,7 +345,7 @@
 			#{recordId},
 			#{itemId},
 			#{itemName},#{itemNamePinyin},
-			#{needSamples},
+			#{needSamples}, #{grabSample},
 			#{sampleCode},
 			#{specimenId},
 			#{resultDictId},
@@ -366,7 +366,7 @@
 	<update id="update">
 		UPDATE bj_examination_record_item
 			<set>
-				record_id = #{recordId},item_id = #{itemId},need_samples = #{needSamples},
+				record_id = #{recordId},item_id = #{itemId},need_samples = #{needSamples}, grab_sample = #{grabSample},
 				sample_code = #{sampleCode},specimen_id = #{specimenId},result_dict_id = #{resultDictId},
 				result_dict_name = #{resultDictName},result_flag = #{resultFlag},
 				result_remarks = #{resultRemarks},update_by = #{updateBy.id},
