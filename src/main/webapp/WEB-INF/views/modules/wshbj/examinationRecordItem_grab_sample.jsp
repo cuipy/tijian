@@ -76,10 +76,14 @@ examRecord    当前要采样的 体检记录 对象
         </c:if>
 
         <c:if test="${not empty currExamItemId and not empty examRecord and !examRecordItem.grabSample}">
-
+        var submited=false;
         function daojishiGrabSample(){
             var second=$("#btnUpdateGrabSample").attr("data-second");
             var isecond=parseInt(second);
+
+            if(submited){
+                return;
+            }
 
             if(isecond<=0){
                 $("#btnUpdateGrabSample").hide();
@@ -96,6 +100,8 @@ examRecord    当前要采样的 体检记录 对象
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_grab_sample";
             var d1={"id":'${examRecordItem.id}'};
             $.get(url,d1,function(d1r){
+                submited=true;
+                $("#btnUpdateGrabSample").hide();
                 $("#msg").show().html("体检记录项目采集成功。");
             });
         }

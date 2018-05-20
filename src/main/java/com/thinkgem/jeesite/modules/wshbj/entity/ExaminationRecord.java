@@ -388,7 +388,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.idNumber = idNumber;
 	}
 	
-	@Length(min=0, max=64, message="体检状态，对应examination_record_status字典长度必须介于 0 和 64 之间")
+	@Length(min=1, max=5, message="体检状态，对应examination_record_status字典长度必须介于 1 和 5 之间")
 	public String getStatus() {
 		return status;
 	}

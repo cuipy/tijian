@@ -51,9 +51,13 @@ examRecord    当前要采样的 体检记录 对象
         });
 
         <c:if test="${ not empty examRecordItem and ((examRecordItem.needSamples=='1' and examRecordItem.grabSample) || examRecordItem.needSamples=='0') }">
+        var submited=false;
         function daojishiSetResultFlag(){
             var second=$("#btnUpdateResultFlag").attr("data-second");
             var isecond=parseInt(second);
+            if(submited){
+                return;
+            }
 
             if(isecond<=0){
                 $("#btnUpdateResultFlag").hide();
@@ -75,6 +79,8 @@ examRecord    当前要采样的 体检记录 对象
             }
             var d1={"id": $("#examRecordItemId").val() ,"resultFlag": resultFlag };
             $.get(url,d1,function(d1r){
+                submited=true;
+                $("#btnUpdateResultFlag").hide();
                 $("#msg").show().html(d1r.msg);
             });
         }
@@ -214,7 +220,7 @@ examRecord    当前要采样的 体检记录 对象
             <div class="cl"></div>
           <div class="form-actions span12">
                   <c:if test="${not empty examRecord }">
-                <input id="btnUpdateResultFlag" class="btn btn-primary" type="button" value="提交体检项目结果(10秒后自动提交)" data-second="10" onclick="do_update_result_flag()"/>&nbsp;
+                <input id="btnUpdateResultFlag" class="btn btn-primary" type="button" value="提交体检项目结果(10秒后自动提交)" data-second="10" onclick="doUpdateResultFlag()"/>&nbsp;
                   </c:if>
 
             </div>

@@ -633,16 +633,18 @@ public class ExaminationRecordController extends BaseController {
 		try {
 			// 解密
 			byte[] b = decoder.decodeBuffer(imgStr);
-			// 处理数据
-			for (int i = 0; i < b.length; ++i) {
-				if (b[i] < 0) {
-					b[i] += 256;
+			if(b!=null) {
+				// 处理数据
+				for (int i = 0; i < b.length; ++i) {
+					if (b[i] < 0) {
+						b[i] += 256;
+					}
 				}
+				OutputStream out = response.getOutputStream();
+				out.write(b);
+				out.flush();
+				out.close();
 			}
-			OutputStream out = response.getOutputStream();
-			out.write(b);
-			out.flush();
-			out.close();
 		} catch (Exception e) {
 
 		}
@@ -689,6 +691,29 @@ public class ExaminationRecordController extends BaseController {
 		return RequestResult.generate(8,"该体检人不需要进行该项目的检查");
 	}
 
+	/**
+	 * 检查体检记录是否可制卡
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "ajax_check_exam_record_code_can_print_card")
+	public RequestResult ajax_check_exam_record_code_can_print_card(String examRecordCode ) {
+		ExaminationRecord er=new ExaminationRecord();
+		er.setCode(examRecordCode);
+		ExaminationRecord record = examinationRecordService.getByCode(er);
+
+		if(record==null){
+			return RequestResult.generate(10,"未能获得体检记录");
+		}
+
+		if("40".equals(record.getStatus())||"45".equals(record.getStatus())||"50".equals(record.getStatus())){
+			return RequestResult.generate(1,"体检记录可以制卡");
+		}else{
+			return RequestResult.generate(Integer.parseInt(record.getStatus()),record.getStrStatus());
+		}
+
+	}
+
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = {"print_card"})
 	public String print_card(String examRecordCode,  Model model) {
@@ -700,7 +725,10 @@ public class ExaminationRecordController extends BaseController {
 			ExaminationRecord record = examinationRecordService.getByCode(er);
 
 			if(record!=null) {
-				model.addAttribute("examRecord",record);
+				// 如果是允许 制卡 则返回体检记录对象
+				if("40".equals(record.getStatus())||"45".equals(record.getStatus())||"50".equals(record.getStatus())) {
+					model.addAttribute("examRecord", record);
+				}
 			}
 		}
 

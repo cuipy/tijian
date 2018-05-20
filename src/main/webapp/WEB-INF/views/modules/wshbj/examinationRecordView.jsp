@@ -17,7 +17,14 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 
-    <div class="">
+    <div style="max-width:1200px;">
+
+        <div class="control-group span6">
+            <label class="control-label"> 用户头像：</label>
+            <div class="controls">
+                 <img id="imgHeadImg" style="width:320px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"/>
+            </div>
+        </div>
 
 		<div class="control-group span4">
 			 <label class="control-label"><font color="red">*</font> 编号：</label>
@@ -114,7 +121,9 @@
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
 			   <c:forEach items="${examinationRecord.items}" var="ri"><label class="label"> ${ri.itemName} </label> -
-                <label class="label"> <c:if test="${ri.needSamples == 1 }">需要采样 <c:if test="${ri.sampleCode != null && ri.sampleCode != ''}">标本编号：${ri.sampleCode}</c:if> <c:if test="${ri.sampleCode == null || ri.sampleCode == ''}">待采样</c:if>  </c:if>
+                <label class="label"> <c:if test="${ri.needSamples == 1 }">需要采样
+                <c:if test="${ri.grabSample == true}">标本编号：${ri.sampleCode}</c:if>
+                <c:if test="${ri.grabSample == false}">待采样</c:if>  </c:if>
                 <c:if test="${ri.needSamples != 1 }">无需采样</c:if> </label> -
 
                  <label class="label">  <c:if test="${ri.resultFlag == null }">无结果</c:if>
