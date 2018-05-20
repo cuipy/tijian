@@ -42,5 +42,5 @@
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
 <script src="${ctxStatic}/lodop/LodopFuncs.js" type="text/javascript"></script>
-<script src="${ctxStatic}/lodop/my_lodop.js?v=10" type="text/javascript"></script>
+<script src="${ctxStatic}/lodop/my_lodop.js?v=11" type="text/javascript"></script>
 

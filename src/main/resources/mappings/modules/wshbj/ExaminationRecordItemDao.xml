@@ -325,7 +325,8 @@
 			record_id,
 			item_id,
 			item_name, item_name_pinyin,
-			need_samples, grab_sample,
+			need_samples,
+		<if test="grabSample!=null ">grab_sample,</if>
 			sample_code,
 			specimen_id,
 			result_dict_id,
@@ -345,7 +346,8 @@
 			#{recordId},
 			#{itemId},
 			#{itemName},#{itemNamePinyin},
-			#{needSamples}, #{grabSample},
+			#{needSamples},
+			<if test="grabSample!=null  ">#{grabSample},</if>
 			#{sampleCode},
 			#{specimenId},
 			#{resultDictId},
@@ -366,7 +368,8 @@
 	<update id="update">
 		UPDATE bj_examination_record_item
 			<set>
-				record_id = #{recordId},item_id = #{itemId},need_samples = #{needSamples}, grab_sample = #{grabSample},
+				record_id = #{recordId},item_id = #{itemId},need_samples = #{needSamples},
+				<if test="grabSample!=null ">grab_sample = #{grabSample},</if>
 				sample_code = #{sampleCode},specimen_id = #{specimenId},result_dict_id = #{resultDictId},
 				result_dict_name = #{resultDictName},result_flag = #{resultFlag},
 				result_remarks = #{resultRemarks},update_by = #{updateBy.id},

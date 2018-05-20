@@ -59,8 +59,8 @@
 				<td><a href="${ctx}/wshbj/industry/form?id=${industry.id}">
 					${industry.code}
 				</a></td>
-				<td>${industry.name}</td><td>${industry.defaultPackageName}</td> <td>${industry.expExamCode}</td>
-				<td> ${industry.remarks} </td>  <td> ${industry.orderNumb}</td>
+				<td>${industry.name}</td><td>${industry.defaultPackageName}</td> <td> ${industry.prefixExamCode} </td>
+				<td> ${industry.remarks} </td>  <td> ${industry.orderNumb} </td>
 				<shiro:hasPermission name="wshbj:industry:edit"><td>
     				<a href="${ctx}/wshbj/industry/form?id=${industry.id}">修改</a>
 					<a href="${ctx}/wshbj/industry/delete?id=${industry.id}" onclick="return confirmx('确认要删除该行业管理吗？', this.href)">删除</a>

@@ -117,3 +117,32 @@ function lodop_view_printA4(title,url){
     LODOP.ADD_PRINT_HTM(0,0,"210mm","297mm","URL:"+url);
     LODOP.PREVIEW();
 }
+
+
+// 直接Barcode打印，单页打印
+function lodop_view_printBarcode(title,url){
+    var LODOP = getLodop();
+
+    LODOP.PRINT_INIT(title);
+    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "50mm","10mm");
+    if(localStorage.getItem('barcode-print-index')>=0){
+        LODOP.SET_PRINTER_INDEX(localStorage.getItem('barcode-print-index'));
+    }
+    LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
+    LODOP.ADD_PRINT_HTM(0,0,"50mm","10mm","URL:"+url);
+    LODOP.PREVIEW();
+}
+
+// 直接Barcode打印，单页打印
+function lodop_view_printCard(title,url){
+    var LODOP = getLodop();
+
+    LODOP.PRINT_INIT(title);
+    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "90mm","57mm");
+    if(localStorage.getItem('card-print-index')>=0){
+        LODOP.SET_PRINTER_INDEX(localStorage.getItem('card-print-index'));
+    }
+    LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
+    LODOP.ADD_PRINT_HTM(0,0,"90mm","57mm","URL:"+url);
+    LODOP.PREVIEW();
+}

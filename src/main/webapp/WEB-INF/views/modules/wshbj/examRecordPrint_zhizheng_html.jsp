@@ -57,7 +57,7 @@
                     <td class="td-label"  style="width:14mm;">性&nbsp;&nbsp;别:</td><td class="td-content">${examRecord.strSex}</td>
                     <td rowspan="3" class="td-barcard2" style="width:14mm;"> <div id="barcode2"></div> </td>
                     <td rowspan="5" class="td-headimg" style="width:16mm;">
-                    <img style="width:100%;height:100%" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"></td>
+                    <img style="width:100%;" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"></td>
                 </tr>
                 <tr>
                     <td class="td-label">从业类别:</td><td colspan="3" class="td-content">${examRecord.industryName}&nbsp;</td>
