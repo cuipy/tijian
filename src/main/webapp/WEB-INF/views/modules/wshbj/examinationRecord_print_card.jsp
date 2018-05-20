@@ -52,7 +52,7 @@
 <body>
 
 	<ul class="nav nav-tabs">
-        <li>快速制卡</li>
+        <li><a href="javascript:void(0)">快速制卡</a></li>
 	</ul>
 
     <div id="msg" class="alert alert-danger" >

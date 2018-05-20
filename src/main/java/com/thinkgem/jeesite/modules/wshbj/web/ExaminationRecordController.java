@@ -704,7 +704,7 @@ public class ExaminationRecordController extends BaseController {
 			}
 		}
 
-		return "modules/wshbj/examinationRecordItem_print_card";
+		return "modules/wshbj/examinationRecord_print_card";
 	}
 
 
