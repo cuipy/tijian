@@ -47,16 +47,15 @@
 <body>
 
 	<div class="a4">
-    <c:forEach items="${lst}" var="er">
     <div class="content-div">
         <div class="tbl-top">
         <div class="tbl-head">
             <div class="title">石家庄市食品从业人员健康检查流程表</div>
             <div class="title2">
-                <div class="t2-left">体检日期：<fmt:formatDate pattern='yyyy-MM-dd' value='${er.examTime}' /></div>
+                <div class="t2-left">体检日期：<fmt:formatDate pattern='yyyy-MM-dd' value='${examRecord.examTime}' /></div>
                 <div class="t2-right">
                     <div><img class="t2-tm-img img-code"></div>
-                   <div class="t2-tm-code">${er.code}</div>
+                   <div class="t2-tm-code">${examRecord.code}</div>
                 </div>
                 <div class="cl"></div>
             </div>
@@ -64,17 +63,17 @@
 
         <table class="tbl" cellspacing="0" cellpadding="0">
             <tr>
-                <td class="td-label"> 姓名</td><td class="td-content">${er.name}</td><td class="td-label">性别</td><td class="td-content">${er.strSex}</td>
-                <td class="td-label"> 年龄</td><td class="td-content">${er.age}&nbsp;</td>
+                <td class="td-label"> 姓名</td><td class="td-content">${examRecord.name}</td><td class="td-label">性别</td><td class="td-content">${examRecord.strSex}</td>
+                <td class="td-label"> 年龄</td><td class="td-content">${examRecord.age}&nbsp;</td>
              </tr>
              <tr>
-                <td> 行业</td><td>${er.industryName}</td><td>岗位</td><td>${er.postName}</td>
-                <td> 联系电话</td><td>${er.phoneNumber}&nbsp;</td>
+                <td> 行业</td><td>${examRecord.industryName}</td><td>岗位</td><td>${examRecord.postName}</td>
+                <td> 联系电话</td><td>${examRecord.phoneNumber}&nbsp;</td>
              </tr>
-              <tr> <td> 单位</td><td colspan="5" style="text-align:left;padding-left:10px;">${er.organName}</td> </tr>
+              <tr> <td> 单位</td><td colspan="5" style="text-align:left;padding-left:10px;">${examRecord.organName}</td> </tr>
 
               <tr> <td> 序号</td> <td>检查项目</td><td colspan="3" >检查结果</td>  <td> 医师签名</td></tr>
-              <c:forEach items="${er.items}" var="it" varStatus="stat">
+              <c:forEach items="${examRecord.items}" var="it" varStatus="stat">
               <tr> <td> ${stat.count} </td> <td>${it.itemName}</td><td colspan="3" ></td>  <td> </td></tr>
               </c:forEach>
               <tr><td colspan="6" >
@@ -83,7 +82,7 @@
 
                  <div style="padding-right:50px;line-height:40px;text-align:right;">由服务台工作人员负责问询填写</div>
 
-              </td>
+              </td></tr>
         </table>
         <div class="beizhu">
             <div style="display:inline-block;width:50px;height:60px;vertical-align:top;">注意：</div>
@@ -99,10 +98,10 @@
             <div class="tbl-head">
                 <div class="title">石家庄市食品从业人员健康证领取凭证</div>
                 <div class="title2">
-                    <div class="t2-left">体检日期：<fmt:formatDate pattern='yyyy-MM-dd' value='${er.examTime}' /></div>
+                    <div class="t2-left">体检日期：<fmt:formatDate pattern='yyyy-MM-dd' value='${examRecord.examTime}' /></div>
                     <div class="t2-right">
                         <div><img id="img-code1" class="t2-tm-img img-code" ></div>
-                         <div id="dv-code1" class="t2-tm-code">${er.code}</div>
+                         <div id="dv-code1" class="t2-tm-code">${examRecord.code}</div>
                     </div>
                     <div class="cl"></div>
                 </div>
@@ -110,14 +109,14 @@
 
             <table class="tbl" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td class="td-label"> 姓名</td><td class="td-content">${er.name}</td><td class="td-label">性别</td><td class="td-content">${er.strSex}</td>
-                    <td class="td-label"> 年龄</td><td class="td-content">${er.age}&nbsp;</td>
+                    <td class="td-label"> 姓名</td><td class="td-content">${examRecord.name}</td><td class="td-label">性别</td><td class="td-content">${examRecord.strSex}</td>
+                    <td class="td-label"> 年龄</td><td class="td-content">${examRecord.age}&nbsp;</td>
                  </tr>
                  <tr>
-                    <td> 行业</td><td>${er.industryName}</td><td>岗位</td><td>${er.postName}</td>
-                    <td> 联系电话</td><td>${er.phoneNumber}&nbsp;</td>
+                    <td> 行业</td><td>${examRecord.industryName}</td><td>岗位</td><td>${examRecord.postName}</td>
+                    <td> 联系电话</td><td>${examRecord.phoneNumber}&nbsp;</td>
                  </tr>
-                  <tr> <td> 单位</td><td colspan="5" style="text-align:left;padding-left:10px;">${er.organName}</td> </tr>
+                  <tr> <td> 单位</td><td colspan="5" style="text-align:left;padding-left:10px;">${examRecord.organName}</td> </tr>
                   <tr> <td> 注意<br>事项</td><td colspan="5" style="text-align:left;padding-left:10px;">
                   1、凭此证领取健康合格证。<br>
                   2、健康合格证需由本人领取，单位组织体检领取健康合格证需出示代领人的有效证件。<br>
@@ -129,10 +128,6 @@
         </div>
 
    	</div>
-
-
-
-</c:forEach>
 
 
 

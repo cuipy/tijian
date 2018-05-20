@@ -25,6 +25,10 @@
 
 		        // 输入体检记录编号后，开始检测体检编号，如果编号合法，则可以采集编号
 		        var recordCode = $.trim($("#examRecordCode").val());
+		        // 如果体检记录编号为 空
+		        if(recordCode == ''){
+		            return;
+		        }
 
 		        var url="${ctx}/wshbj/examinationRecord/ajax_check_exam_record_code_can_print_card";
 		        var d1={"examRecordCode":recordCode };
@@ -42,10 +46,69 @@
 
 		    });
 
+		    <c:if test="${not empty examRecord and examRecord.status != '50'}">
+		    // 如果已经选中体检记录对象，可以进行制卡
+		    setTimeout("daojishiPrintCard()",1000);
+		    </c:if>
+
         });
 
+        <c:if test="${not empty examRecord}">
+        <c:if test="${examRecord.status != '50'}">
+        var submited=false;
+        function daojishiPrintCard(){
+            if(submited){
+                return;
+            }
 
+            var strSecond=$("#btnPrintCard").attr("data-second");
+            var isecond=parseInt(strSecond);
+            if(isecond<=0){
+                do_update_print_card();
+            }else{
+                isecond--;
+                $("#btnPrintCard").attr("data-second",isecond);
+                $("#btnPrintCard").val("制卡("+isecond+"秒钟后自动制证)");
+                setTimeout("daojishiPrintCard()",1000);
+            }
+        }
+        </c:if>
 
+        // 如果已经选中体检记录对象，可以进行制卡
+        function do_update_print_card(){
+            <c:if test="${examRecord.status != '50'}">
+            if(submited){
+                return;
+            }
+            </c:if>
+
+            if($("#examRecordId").val()==''){
+                $("#msg").show().html("未能获取体检记录对象的id，无法制卡。");
+                return;
+            }
+
+            var url="${ctx}/wshbj/examinationRecord/ajax_print_card";
+            var d1={"id":$("#examRecordId").val()};
+            $.get(url,d1,function(d1r){
+                if(d1r.state==1){
+                    $("#btnPrintCard").hide();
+                    $("#msg").show().html("体检记录制卡成功。");
+                    do_print_card();
+                }else  if(d1r.state==2){
+                    $("#msg").show().html("本次并非第一次打印制卡");
+                    do_print_card();
+                }else{
+                     $("#msg").show().html(d1r.msg);
+                }
+            });
+
+        }
+
+        // 执行打印制卡
+        function do_print_card(){
+            lodop_printCard("制证","${ctxfull}/wshbj/exam_record_print/zhizheng_html?id="+$("#examRecordId").val());
+        }
+        </c:if>
 
 	</script>
 </head>
@@ -72,6 +135,7 @@
 	<div  style="max-width:1200px" class="form-horizontal">
 
         <input type="hidden" id="examRecordId" name="examRecordId" value="${examRecord.id}"/>
+        <input type="hidden" id="examRecordStatus" name="examRecordStatus" value="${examRecord.status}"/>
 
         <div class="control-group span12">
             <label class="control-label">编号：</label>
@@ -89,11 +153,7 @@
                 ${examRecord.code}
             </div>
         </div>
-        <div class="control-group span6">
-            <label class="control-label">样本编号：</label>
 
-            <div class="controls"> ${examRecordItem.sampleCode}  打印次数：${examRecordItem.sampleCodePrintCount}   </div>
-        </div>
         <div class="cl"></div>
 
         <div class="control-group span6">
@@ -179,7 +239,7 @@
         </div>
         <div class="cl"></div>
 		<div class="form-actions span12">
-            <input id="btnPrintCard" class="btn btn-primary" type="button" value="制卡" data-second="10" onclick="do_print_card()" />&nbsp;
+            <input id="btnPrintCard" class="btn btn-primary" type="button" value="制卡打印" data-second="10" onclick="do_update_print_card()" />&nbsp;
 		</div>
         </c:if>
 

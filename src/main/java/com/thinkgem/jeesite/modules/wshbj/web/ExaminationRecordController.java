@@ -391,7 +391,7 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = "delete")
 	public String delete(ExaminationRecord examinationRecord, RedirectAttributes redirectAttributes) {
-		ResponseResult rr = examinationRecordService.delRecord(examinationRecord);
+		RequestResult rr = examinationRecordService.delRecord(examinationRecord);
 		addMessage(redirectAttributes, rr.getMsg());
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
 	}
@@ -733,6 +733,12 @@ public class ExaminationRecordController extends BaseController {
 		}
 
 		return "modules/wshbj/examinationRecord_print_card";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "ajax_print_card")
+	public RequestResult ajax_print_card(ExaminationRecord examinationRecord ) {
+		return examinationRecordService.updatePrintCard(examinationRecord);
 	}
 
 

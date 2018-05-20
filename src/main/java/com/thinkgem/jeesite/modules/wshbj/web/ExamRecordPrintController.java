@@ -86,16 +86,23 @@ public class ExamRecordPrintController extends BaseController {
 	}
 
 	@GetMapping(value = "tjb_html")
-	public String tjb_html(String[] id,Model model) {
-		List<ExaminationRecord> ers=examinationRecordService.listByIds(id);
-		model.addAttribute("lst",ers);
-		return "modules/wshbj/tjb_html";
+	public String tjb_html(String id,Model model) {
+		ExaminationRecord er = examinationRecordService.get(id);
+		model.addAttribute("examRecord",er);
+		return "modules/wshbj/examRecordPrint_tjb_html";
 	}
 
 	@GetMapping(value = "barcode_html")
 	public String barcode_html(String barcode,Model model) {
 		model.addAttribute("barcode",barcode);
-		return "modules/wshbj/barcode_html";
+		return "modules/wshbj/examRecordPrint_barcode_html";
+	}
+
+	@GetMapping(value = "zhizheng_html")
+	public String zhizheng_html(String id,Model model) {
+		ExaminationRecord er=examinationRecordService.get(id);
+		model.addAttribute("examRecord",er);
+		return "modules/wshbj/examRecordPrint_zhizheng_html";
 	}
 
 

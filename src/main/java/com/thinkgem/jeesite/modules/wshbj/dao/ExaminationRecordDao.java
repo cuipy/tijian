@@ -41,7 +41,9 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 
     List<ExaminationRecord> listNeedUpload(ExaminationRecord examinationRecord);
 
-	void updateUploadDate(ExaminationRecord examinationRecord);
+	Integer updateUploadDate(ExaminationRecord examinationRecord);
+
+	Integer updatePrintCard(@Param("id")String id);
 
 	String getHeadImg(String id);
 }

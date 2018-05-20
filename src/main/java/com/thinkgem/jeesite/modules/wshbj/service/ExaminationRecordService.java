@@ -190,13 +190,13 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)
-    public ResponseResult delRecord(ExaminationRecord examinationRecord) {
+    public RequestResult delRecord(ExaminationRecord examinationRecord) {
 
 
         ExaminationRecord record = get(examinationRecord.getId());
         //未体检状态才允许修改
         if (!ExaminationRecordConstant.STATUS0.equals(record.getStatus())) {
-            return ResponseResult.generate("10", "未体检状态才可以删除，该体检记录不允许删除");
+            return RequestResult.generate(10, "未体检状态才可以删除，该体检记录不允许删除");
         }
 
         super.delete(examinationRecord);
@@ -205,7 +205,29 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         examinationRecordItemService.delete(recordItem);
 
         // 返回执行成功
-        return ResponseResult.generate("0", "删除成功");
+        return RequestResult.generate(1, "删除成功");
+    }
+
+    @Transactional(readOnly = false)
+    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
+    public RequestResult updatePrintCard(ExaminationRecord examinationRecord) {
+
+
+        ExaminationRecord record = get(examinationRecord.getId());
+
+        if (ExaminationRecordConstant.STATUS50.equals(record.getStatus())) {
+            return RequestResult.generate(2, "体检记录已经制证状态，无需重复设置。");
+        }
+
+        //未体检状态才允许修改
+        if (!ExaminationRecordConstant.STATUS40.equals(record.getStatus())&&!ExaminationRecordConstant.STATUS45.equals(record.getStatus())) {
+            return RequestResult.generate(10, "体检记录的状态必须是合格才允许制证。");
+        }
+
+        dao.updatePrintCard(examinationRecord.getId());
+
+        // 返回执行成功
+        return RequestResult.generate(1, "体检记录制证成功");
     }
 
     @Transactional(readOnly = false)
@@ -423,52 +445,52 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 //    }
 
 
-    public List<ExaminationRecord> getList4Result(String startDate, String endDate, String examinationCode, String organId) {
-        List<ExaminationRecord> recordList = this.dao.getList4Result(startDate, endDate, examinationCode, organId);
-        return recordList;
-    }
-
-
-    public List<Map> getList4CertForm(String startDate, String endDate
-            , String code, String organId, String name, String status) {
-        List<Map> recordList = this.dao.getList4CertForm(startDate, endDate, code, organId, name, status);
-        return recordList;
-    }
-
-    public List<Map> getItemListMap4Result(String recordId) {
-        List<Map> mapList = new ArrayList<Map>();
-        if (StringUtils.isBlank(recordId)) {
-            return mapList;
-        }
-        ExaminationRecordItem recordItem = new ExaminationRecordItem();
-        recordItem.setRecordId(recordId);
-        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
-//                recordItem.setExaminationFlag(examinationFlag);
-        List<ExaminationRecordItem> recordItems = examinationRecordItemService.findList(recordItem);
-        if (recordItems == null) {
-            return mapList;
-        }
-        Map itemMap = null;
-        ExaminationResultDict examinationResultDict = new ExaminationResultDict();
-        for (ExaminationRecordItem recordItem1 : recordItems) {
-            itemMap = new HashMap();
-            itemMap.put("recordItem", recordItem1);
-
-            //项目结果字典
-            examinationResultDict.setItemId(recordItem1.getItemId());
-            examinationResultDict.setDelFlag(ExaminationResultDict.DEL_FLAG_NORMAL);
-            List<ExaminationResultDict> dictList = resultDictService.findList(examinationResultDict);
-
-            itemMap.put("resultDictList", dictList);
-
-            itemMap.put("recordId", recordId);
-
-            mapList.add(itemMap);
-
-        }
-
-        return mapList;
-    }
+//    public List<ExaminationRecord> getList4Result(String startDate, String endDate, String examinationCode, String organId) {
+//        List<ExaminationRecord> recordList = this.dao.getList4Result(startDate, endDate, examinationCode, organId);
+//        return recordList;
+//    }
+//
+//
+//    public List<Map> getList4CertForm(String startDate, String endDate
+//            , String code, String organId, String name, String status) {
+//        List<Map> recordList = this.dao.getList4CertForm(startDate, endDate, code, organId, name, status);
+//        return recordList;
+//    }
+//
+//    public List<Map> getItemListMap4Result(String recordId) {
+//        List<Map> mapList = new ArrayList<Map>();
+//        if (StringUtils.isBlank(recordId)) {
+//            return mapList;
+//        }
+//        ExaminationRecordItem recordItem = new ExaminationRecordItem();
+//        recordItem.setRecordId(recordId);
+//        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
+////                recordItem.setExaminationFlag(examinationFlag);
+//        List<ExaminationRecordItem> recordItems = examinationRecordItemService.findList(recordItem);
+//        if (recordItems == null) {
+//            return mapList;
+//        }
+//        Map itemMap = null;
+//        ExaminationResultDict examinationResultDict = new ExaminationResultDict();
+//        for (ExaminationRecordItem recordItem1 : recordItems) {
+//            itemMap = new HashMap();
+//            itemMap.put("recordItem", recordItem1);
+//
+//            //项目结果字典
+//            examinationResultDict.setItemId(recordItem1.getItemId());
+//            examinationResultDict.setDelFlag(ExaminationResultDict.DEL_FLAG_NORMAL);
+//            List<ExaminationResultDict> dictList = resultDictService.findList(examinationResultDict);
+//
+//            itemMap.put("resultDictList", dictList);
+//
+//            itemMap.put("recordId", recordId);
+//
+//            mapList.add(itemMap);
+//
+//        }
+//
+//        return mapList;
+//    }
 
 
     @Transactional(readOnly = false)

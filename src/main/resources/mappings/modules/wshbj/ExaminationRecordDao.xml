@@ -390,6 +390,10 @@
 		WHERE id = #{id}
 	</update>
 
+	<update id="updatePrintCard">
+		UPDATE bj_examination_record SET status = 50,zhizheng_time=now() WHERE id = #{id} and ( status = 40 or status=45 )
+	</update>
+
 	<select id="listNeedUpload" resultType="ExaminationRecord">
 		SELECT
 		<include refid="examinationRecordColumns"/>

@@ -95,12 +95,12 @@ function lodop_printCard(title,url){
     var LODOP = getLodop();
 
     LODOP.PRINT_INIT(title);
-    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "85.6mm","54mm");
+    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "90mm","57mm");
     if(localStorage.getItem('card-print-index')>=0){
         LODOP.SET_PRINTER_INDEX(localStorage.getItem('card-print-index'));
     }
     LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
-    LODOP.ADD_PRINT_HTM(0,0,"85.6mm","54mm","URL:"+url);
+    LODOP.ADD_PRINT_HTM(0,0,"90mm","57mm","URL:"+url);
     LODOP.PRINT();
 }
 

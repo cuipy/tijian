@@ -67,7 +67,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private Date examTime;		// 体检时间
 	private Date successTime;    // 体检成功的时间
 	private Date failTime;		// 体检失败的时间
-	private Date zhizhengTime;		// 制证时间
+	private Date zhizhengTime;	// 制证时间
 
 	private Integer orderNumb;
 
@@ -563,10 +563,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 		m.put("createById",getCreateBy().getId());
 		m.put("createByName",getCreateBy().getName());
-		//m.put("createDate", DateUtils.formatDateTime(getCreateDate()));
 		m.put("updateById",getUpdateBy().getId());
 		m.put("updateByName",getUpdateBy().getName());
-		//m.put("updateDate",DateUtils.formatDateTime(getUploadDate()));
 
 		return m;
 	}
