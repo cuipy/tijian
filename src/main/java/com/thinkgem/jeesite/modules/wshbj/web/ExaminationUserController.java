@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
+import com.thinkgem.jeesite.common.utils.ImageUtils;
 import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
@@ -158,32 +159,9 @@ public class ExaminationUserController extends BaseController {
 
     @RequestMapping(value = "getHeadImg")
     public void getHeadImg(String id, HttpServletResponse response) {
-        response.setContentType("image/jpeg");
-        //发头控制浏览器不要缓存
-        response.setDateHeader("expries", -1);
-        response.setHeader("Cache-Control", "no-cache");
-        response.setHeader("Pragma", "no-cache");
 
         String imgStr = examinationUserService.getHeadImg(id).substring(22);
-
-        BASE64Decoder decoder = new BASE64Decoder();
-        try {
-            // 解密
-            byte[] b = decoder.decodeBuffer(imgStr);
-            // 处理数据
-            for (int i = 0; i < b.length; ++i) {
-                if (b[i] < 0) {
-                    b[i] += 256;
-                }
-            }
-            OutputStream out = response.getOutputStream();
-            out.write(b);
-            out.flush();
-            out.close();
-        } catch (Exception e) {
-
-        }
-
+        ImageUtils.base64OutResponse(imgStr,"jpg",response);
 
     }
 

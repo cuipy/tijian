@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
 import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
@@ -279,8 +280,8 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 
 	@JsonIgnore
 	public String getCreateByName(){
-		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-		User user = systemService.getUser(createBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+		User user = userService.getUser(createBy.getId());
 		if(user==null){
 			return "";
 		}
@@ -288,8 +289,8 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	}
 	@JsonIgnore
 	public String getUpdateByName(){
-		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-		User user = systemService.getUser(updateBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+		User user = userService.getUser(updateBy.getId());
 		if(user==null){
 			return "";
 		}

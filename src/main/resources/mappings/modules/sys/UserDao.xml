@@ -67,7 +67,6 @@
     	a.no,
 		a.name,
 		a.email,
-		a.phone,
 		a.mobile,
 		a.user_type,
 		a.login_ip,
@@ -224,6 +223,14 @@
 		FROM sys_user a
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
+
+	<select id="getPhotoImg" resultType="java.lang.String">
+		select photo FROM sys_user a WHERE a.del_flag = 0 and id=#{id}
+	</select>
+
+	<select id="getQianmingImg" resultType="java.lang.String">
+		select qianming FROM sys_user a WHERE a.del_flag = 0 and id=#{id}
+	</select>
 	
 	<!-- 插入用户 -->
 	<insert id="insert">
@@ -236,7 +243,7 @@
 			no, 
 			name, 
 			email, 
-			phone, 
+			phone,
 			mobile, 
 			user_type, 
 			create_by, 
@@ -245,7 +252,7 @@
 			update_date, 
 			remarks, 
 			login_flag, 
-			photo,
+			photo,qianming,
 			<if test="defaultRecord != null ">default_record,</if>
 			del_flag
 		) VALUES (
@@ -257,7 +264,7 @@
 			#{no}, 
 			#{name}, 
 			#{email}, 
-			#{phone}, 
+			#{phone},
 			#{mobile}, 
 			#{userType}, 
 			#{createBy.id}, 
@@ -266,7 +273,7 @@
 			#{updateDate}, 
 			#{remarks}, 
 			#{loginFlag}, 
-			#{photo},
+			#{photo},#{qianming},
 		<if test="defaultRecord != null ">defaultRecord,</if>
 			#{delFlag}
 		)
@@ -282,15 +289,17 @@
 			no = #{no}, 
 			name = #{name}, 
 			email = #{email}, 
-			phone = #{phone}, 
+			phone = #{phone},
 			mobile = #{mobile}, 
 			user_type = #{userType}, 
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
-			login_flag = #{loginFlag},
+
 		<if test="defaultRecord != null ">default_record=#{defaultRecord},</if>
-			photo = #{photo}
+		<if test="photo !=null and photo!='' ">photo = #{photo}, </if>
+		<if test="qianming !=null and qianming!='' ">qianming=#{qianming},</if>
+		login_flag = #{loginFlag},
 		WHERE id = #{id}
 	</update>
 	

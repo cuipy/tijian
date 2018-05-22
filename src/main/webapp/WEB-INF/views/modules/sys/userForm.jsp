@@ -46,16 +46,13 @@
 		<div class="control-group span6" style="min-height:100px;">
 			<label class="control-label">头像:</label>
 			<div class="controls">
-			    <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="头像" path="photo"  value="${ctx}/sys/user/getHeadImg?id=${user.id}"/>
-				<form:hidden id="nameImage" path="photo" htmlEscape="false"/>
-				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
+			    <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="头像" path="photo"  value="${ctx}/sys/user/getPhotoImg?id=${user.id}"/>
 			</div>
 		</div>
 		<div class="control-group span6" style="min-height:100px;">
             <label class="control-label">签名图片:</label>
             <div class="controls">
-                <form:hidden path="qianming" htmlEscape="false"/>
-                <sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
+                <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="签名" path="qianming"  value="${ctx}/sys/user/getQianmingImg?id=${user.id}"/>
             </div>
         </div>
 

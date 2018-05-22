@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationRecordService;
 import com.thinkgem.jeesite.modules.wshbj.service.SpecimenService;
@@ -384,8 +385,8 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	@JsonIgnore
 	public String getCreateByName(){
-		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-		User user = systemService.getUser(createBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+		User user = userService.getUser(createBy.getId());
 		if(user==null){
 			return "";
 		}
@@ -394,8 +395,8 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	@JsonIgnore
 	public String getUpdateByName(){
-		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-		User user = systemService.getUser(updateBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+		User user = userService.getUser(updateBy.getId());
 		if(user==null){
 			return "";
 		}

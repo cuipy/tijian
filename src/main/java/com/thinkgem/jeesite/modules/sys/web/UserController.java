@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import com.thinkgem.jeesite.common.utils.ImageUtils;
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -49,11 +51,14 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
+
+	@Autowired
+	private UserService userService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
-			return systemService.getUser(id);
+			return userService.getUser(id);
 		}else{
 			return new User();
 		}
@@ -68,7 +73,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+		Page<User> page = userService.findUser(new Page<User>(request, response), user);
         model.addAttribute("page", page);
 		return "modules/sys/userList";
 	}
@@ -77,7 +82,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"listData"})
 	public Page<User> listData(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<User> page = systemService.findUser(new Page<User>(request, response), user);
+		Page<User> page = userService.findUser(new Page<User>(request, response), user);
 		return page;
 	}
 
@@ -107,7 +112,7 @@ public class UserController extends BaseController {
 		user.setOffice(new Office(request.getParameter("office.id")));
 		// 如果新密码为空，则不更换密码
 		if (StringUtils.isNotBlank(user.getNewPassword())) {
-			user.setPassword(SystemService.entryptPassword(user.getNewPassword()));
+			user.setPassword(userService.entryptPassword(user.getNewPassword()));
 		}
 		if (!beanValidator(model, user)){
 			return form(user, model);
@@ -126,7 +131,7 @@ public class UserController extends BaseController {
 		}
 		user.setRoleList(roleList);
 		// 保存用户信息
-		systemService.saveUser(user);
+		userService.saveUser(user);
 		// 清除当前用户缓存
 		if (user.getLoginName().equals(UserUtils.getUser().getLoginName())){
 			UserUtils.clearCache();
@@ -148,7 +153,7 @@ public class UserController extends BaseController {
 		}else if (User.isAdmin(user.getId())){
 			addMessage(redirectAttributes, "删除用户失败, 不允许删除超级管理员用户");
 		}else{
-			systemService.deleteUser(user);
+			userService.deleteUser(user);
 			addMessage(redirectAttributes, "删除用户成功");
 		}
 		return "redirect:" + adminPath + "/sys/user/list?repage";
@@ -167,7 +172,7 @@ public class UserController extends BaseController {
     public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
             String fileName = "用户数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-            Page<User> page = systemService.findUser(new Page<User>(request, response, -1), user);
+            Page<User> page = userService.findUser(new Page<User>(request, response, -1), user);
     		new ExportExcel("用户数据", User.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
@@ -198,9 +203,9 @@ public class UserController extends BaseController {
 			for (User user : list){
 				try{
 					if ("true".equals(checkLoginName("", user.getLoginName()))){
-						user.setPassword(SystemService.entryptPassword("123456"));
+						user.setPassword(userService.entryptPassword("123456"));
 						BeanValidators.validateWithException(validator, user);
-						systemService.saveUser(user);
+						userService.saveUser(user);
 						successNum++;
 					}else{
 						failureMsg.append("<br/>登录名 "+user.getLoginName()+" 已存在; ");
@@ -259,7 +264,7 @@ public class UserController extends BaseController {
 	public String checkLoginName(String oldLoginName, String loginName) {
 		if (loginName !=null && loginName.equals(oldLoginName)) {
 			return "true";
-		} else if (loginName !=null && systemService.getUserByLoginName(loginName) == null) {
+		} else if (loginName !=null && userService.getUserByLoginName(loginName) == null) {
 			return "true";
 		}
 		return "false";
@@ -285,7 +290,7 @@ public class UserController extends BaseController {
 			currentUser.setMobile(user.getMobile());
 			currentUser.setRemarks(user.getRemarks());
 			currentUser.setPhoto(user.getPhoto());
-			systemService.updateUserInfo(currentUser);
+			userService.updateUserInfo(currentUser);
 			model.addAttribute("message", "保存用户信息成功");
 		}
 		model.addAttribute("user", currentUser);
@@ -321,8 +326,8 @@ public class UserController extends BaseController {
 				model.addAttribute("message", "演示模式，不允许操作！");
 				return "modules/sys/userModifyPwd";
 			}
-			if (SystemService.validatePassword(oldPassword, user.getPassword())){
-				systemService.updatePasswordById(user.getId(), user.getLoginName(), newPassword);
+			if (userService.validatePassword(oldPassword, user.getPassword())){
+				userService.updatePasswordById(user.getId(), user.getLoginName(), newPassword);
 				model.addAttribute("message", "修改密码成功");
 			}else{
 				model.addAttribute("message", "修改密码失败，旧密码错误");
@@ -337,7 +342,7 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String officeId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<User> list = systemService.findUserByOfficeId(officeId);
+		List<User> list = userService.findUserByOfficeId(officeId);
 		for (int i=0; i<list.size(); i++){
 			User e = list.get(i);
 			Map<String, Object> map = Maps.newHashMap();
@@ -347,6 +352,18 @@ public class UserController extends BaseController {
 			mapList.add(map);
 		}
 		return mapList;
+	}
+
+	@RequestMapping(value = "getPhotoImg")
+	public void getPhotoImg(String id, HttpServletResponse response) {
+
+		String imgStr = userService.getPhotoImg(id).substring(22);
+		ImageUtils.base64OutResponse(imgStr,"jpg",response);
+	}
+	@RequestMapping(value = "getQianmingImg")
+	public void getQianmingImg(String id, HttpServletResponse response) {
+		String imgStr = userService.getQianmingImg(id).substring(22);
+		ImageUtils.base64OutResponse(imgStr,"jpg",response);
 	}
     
 //	@InitBinder

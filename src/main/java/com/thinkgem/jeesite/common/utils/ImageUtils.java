@@ -25,20 +25,23 @@ public class ImageUtils {
         BASE64Decoder decoder = new BASE64Decoder();
         try {
             // 解密
-            byte[] b = decoder.decodeBuffer(base64Img);
-            if(b!=null) {
+            byte[] bs = decoder.decodeBuffer(base64Img);
+            if(bs!=null) {
                 // 处理数据
-                for (int i = 0; i < b.length; ++i) {
-                    if (b[i] < 0) {
-                        b[i] += 256;
-                    }
-                }
+//                for (int i = 0; i < bs.length; ++i) {
+//                    if (bs[i] < 0) {
+//                        bs[i] += 256;
+//                    }
+//                }
 
-                ByteArrayInputStream bis=new ByteArrayInputStream(b);
-                BufferedImage bi=ImageIO.read(bis);
+//                ByteArrayInputStream bis=new ByteArrayInputStream(bs);
+//                BufferedImage bi=ImageIO.read(bis);
 
                 OutputStream out = resp.getOutputStream();
-                ImageIO.write(bi,format,out);
+                //ImageIO.write(bi,format,out);
+                out.write(bs);
+                out.flush();
+                out.close();
             }
         } catch (Exception e) {
 

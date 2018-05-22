@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.modules.sys.service.MenuService;
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,10 @@ public class RoleController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
+
+	@Autowired
+	private UserService userService;
+
 	@Autowired
 	private MenuService menuService;
 
@@ -138,7 +143,7 @@ public class RoleController extends BaseController {
 	@RequestMapping(value = "assign")
 	public String assign(Role role, Model model) {
 		logger.error("ask等级分:"+role);
-		List<User> userList = systemService.findUser(new User(new Role(role.getId())));
+		List<User> userList = userService.findUser(new User(new Role(role.getId())));
 		model.addAttribute("userList", userList);
 		return "modules/sys/roleAssign";
 	}
@@ -152,7 +157,7 @@ public class RoleController extends BaseController {
 	@RequiresPermissions("sys:role:view")
 	@RequestMapping(value = "usertorole")
 	public String selectUserToRole(Role role, Model model) {
-		List<User> userList = systemService.findUser(new User(new Role(role.getId())));
+		List<User> userList = userService.findUser(new User(new Role(role.getId())));
 		model.addAttribute("role", role);
 		model.addAttribute("userList", userList);
 		model.addAttribute("selectIds", Collections3.extractToString(userList, "name", ","));
@@ -173,7 +178,7 @@ public class RoleController extends BaseController {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		User user = new User();
 		user.setOffice(new Office(officeId));
-		Page<User> page = systemService.findUser(new Page<User>(1, -1), user);
+		Page<User> page = userService.findUser(new Page<User>(1, -1), user);
 		for (User e : page.getList()) {
 			Map<String, Object> map = Maps.newHashMap();
 			map.put("id", e.getId());
@@ -199,7 +204,7 @@ public class RoleController extends BaseController {
 			return "redirect:" + adminPath + "/sys/role/assign?id="+roleId;
 		}
 		Role role = systemService.getRole(roleId);
-		User user = systemService.getUser(userId);
+		User user = userService.getUser(userId);
 		if (UserUtils.getUser().getId().equals(userId)) {
 			addMessage(redirectAttributes, "无法从角色【" + role.getName() + "】中移除用户【" + user.getName() + "】自己！");
 		}else {
@@ -234,7 +239,7 @@ public class RoleController extends BaseController {
 		StringBuilder msg = new StringBuilder();
 		int newNum = 0;
 		for (int i = 0; i < idsArr.length; i++) {
-			User user = systemService.assignUserToRole(role, systemService.getUser(idsArr[i]));
+			User user = systemService.assignUserToRole(role, userService.getUser(idsArr[i]));
 			if (null != user) {
 				msg.append("<br/>新增用户【" + user.getName() + "】到角色【" + role.getName() + "】！");
 				newNum++;

@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.act.service.ext;
 import java.util.List;
 import java.util.Map;
 
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.User;
 import org.activiti.engine.identity.UserQuery;
@@ -32,11 +33,20 @@ public class ActUserEntityService extends UserEntityManager {
 
 	private SystemService systemService;
 
+	private UserService userService;
+
 	public SystemService getSystemService() {
 		if (systemService == null){
 			systemService = SpringContextHolder.getBean(SystemService.class);
 		}
 		return systemService;
+	}
+
+	public UserService getUserService() {
+		if (userService == null){
+			userService = SpringContextHolder.getBean(UserService.class);
+		}
+		return userService;
 	}
 
 	public User createNewUser(String userId) {
@@ -57,7 +67,7 @@ public class ActUserEntityService extends UserEntityManager {
 
 	public UserEntity findUserById(String userId) {
 //		return (UserEntity) getDbSqlSession().selectOne("selectUserById", userId);
-		return ActUtils.toActivitiUser(getSystemService().getUserByLoginName(userId));
+		return ActUtils.toActivitiUser(getUserService().getUserByLoginName(userId));
 	}
 
 	public void deleteUser(String userId) {
@@ -72,7 +82,7 @@ public class ActUserEntityService extends UserEntityManager {
 //		}
 		User user = findUserById(userId);
 		if (user != null) {
-			getSystemService().deleteUser(new com.thinkgem.jeesite.modules.sys.entity.User(user.getId()));
+			getUserService().deleteUser(new com.thinkgem.jeesite.modules.sys.entity.User(user.getId()));
 		}
 	}
 

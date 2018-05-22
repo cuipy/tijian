@@ -207,8 +207,8 @@
 <div class="control-group span4">
     <label class="control-label">体检单位：</label>
     <div class="controls">
-        <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-                    <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
+        <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationUser.organId}" >
+                    <input type="text" id="organName" name="organName" value="${examinationUser.organName}" class="input-medium required">
         <span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
         </div>
     </div>

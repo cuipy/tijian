@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -51,6 +52,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
 	private SystemService systemService;
+
+	private UserService userService;
 	
 	public SystemAuthorizingRealm() {
 		this.setCachingEnabled(false);
@@ -78,7 +81,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		}
 		
 		// 校验用户名密码
-		User user = getSystemService().getUserByLoginName(token.getUsername());
+		User user = getUserService().getUserByLoginName(token.getUsername());
 		if (user != null) {
 			if (Global.NO.equals(user.getLoginFlag())){
 				throw new AuthenticationException("msg:该已帐号禁止登录.");
@@ -136,7 +139,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 				}
 			}
 		}
-		User user = getSystemService().getUserByLoginName(principal.getLoginName());
+		User user = getUserService().getUserByLoginName(principal.getLoginName());
 		if (user != null) {
 			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 			List<Menu> list = UserUtils.getMenuList();
@@ -155,7 +158,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 				info.addRole(role.getEnname());
 			}
 			// 更新登录IP和时间
-			getSystemService().updateUserLoginInfo(user);
+			getUserService().updateUserLoginInfo(user);
 			// 记录登录日志
 			LogUtils.saveLog(Servlets.getRequest(), "系统登录");
 			return info;
@@ -244,6 +247,13 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 			systemService = SpringContextHolder.getBean(SystemService.class);
 		}
 		return systemService;
+	}
+
+	public UserService getUserService() {
+		if (userService == null){
+			userService = SpringContextHolder.getBean(UserService.class);
+		}
+		return userService;
 	}
 	
 	/**

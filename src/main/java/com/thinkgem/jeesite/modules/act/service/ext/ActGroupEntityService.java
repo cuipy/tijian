@@ -6,12 +6,14 @@ package com.thinkgem.jeesite.modules.act.service.ext;
 import java.util.List;
 import java.util.Map;
 
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import org.activiti.engine.identity.Group;
 import org.activiti.engine.identity.GroupQuery;
 import org.activiti.engine.impl.GroupQueryImpl;
 import org.activiti.engine.impl.Page;
 import org.activiti.engine.impl.persistence.entity.GroupEntity;
 import org.activiti.engine.impl.persistence.entity.GroupEntityManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.google.common.collect.Lists;
@@ -31,11 +33,20 @@ public class ActGroupEntityService extends GroupEntityManager {
 
 	private SystemService systemService;
 
+	private UserService userService;
+
 	public SystemService getSystemService() {
 		if (systemService == null){
 			systemService = SpringContextHolder.getBean(SystemService.class);
 		}
 		return systemService;
+	}
+
+	public UserService getUserService() {
+		if (userService == null){
+			userService = SpringContextHolder.getBean(UserService.class);
+		}
+		return userService;
 	}
 	
 	public Group createNewGroup(String groupId) {
@@ -80,7 +91,7 @@ public class ActGroupEntityService extends GroupEntityManager {
 	public List<Group> findGroupsByUser(String userId) {
 //		return getDbSqlSession().selectList("selectGroupsByUserId", userId);
 		List<Group> list = Lists.newArrayList();
-		User user = getSystemService().getUserByLoginName(userId);
+		User user = getUserService().getUserByLoginName(userId);
 		if (user != null && user.getRoleList() != null){
 			for (Role role : user.getRoleList()){
 				list.add(ActUtils.toActivitiGroup(role));

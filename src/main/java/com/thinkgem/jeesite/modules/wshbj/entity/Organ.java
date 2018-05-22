@@ -11,6 +11,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 
@@ -124,8 +125,8 @@ public class Organ extends DataEntity<Organ> {
 	}
 	@JsonIgnore
 	public String getCreateByName(){
-		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-		User user = systemService.getUser(createBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+		User user = userService.getUser(createBy.getId());
 		if(user==null){
 			return "";
 		}
@@ -133,8 +134,8 @@ public class Organ extends DataEntity<Organ> {
 	}
 	@JsonIgnore
 	public String getUpdateByName(){
-		SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-		User user = systemService.getUser(updateBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+		User user = userService.getUser(updateBy.getId());
 		if(user==null){
 			return "";
 		}

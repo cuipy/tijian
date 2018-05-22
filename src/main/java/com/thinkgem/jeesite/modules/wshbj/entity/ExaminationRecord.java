@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.service.UserService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.dao.ExaminationItemDao;
@@ -495,8 +496,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
     @JsonIgnore
     public String getCreateByName(){
-        SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-        User user = systemService.getUser(createBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+        User user = userService.getUser(createBy.getId());
         if(user==null){
             return "";
         }
@@ -504,8 +505,8 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
     }
     @JsonIgnore
     public String getUpdateByName(){
-        SystemService systemService = SpringContextHolder.getBean(SystemService.class);
-        User user = systemService.getUser(updateBy.getId());
+		UserService userService = SpringContextHolder.getBean(UserService.class);
+        User user = userService.getUser(updateBy.getId());
         if(user==null){
             return "";
         }
