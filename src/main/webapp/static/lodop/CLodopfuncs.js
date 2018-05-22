@@ -1,3 +1,4 @@
+var tolodop=null;
 function initCLodop(win) {
         var CLODOP = {
         strWebPageID:"7BCAAAD",strTaskID:"",strHostURI:"https://127.0.0.1:8443",
@@ -44,9 +45,10 @@ function initCLodop(win) {
                         this.defStyleJson={"beginpage":0,"beginpagea":0};
                         this.blNormalItemAdded=false;
                         if(document.getElementById('m_clodop')==null){
-                            var strCLodopInstall="<font id='m_clodop' color='#FF00FF'><br>CLodop云打印服务(localhost本地)未安装启动!点击这里<a href='"+ctxStatic+"/lodop/CLodop_Setup_for_Win32NT.exe' target='_self'>执行安装</a>,安装后请刷新页面。</font>";
+                            var strCLodopInstall="<font id='m_clodop' color='#FF00FF' style='display:none'><br>CLodop云打印服务(localhost本地)未安装启动!点击这里<a href='"+ctxStatic+"/lodop/CLodop_Setup_for_Win32NT.exe' target='_self'>执行安装</a>,安装后请刷新页面。</font>";
                             if(document.body){
-                                document.body.innerHTML=strCLodopInstall+document.body.innerHTML;
+                                $("body").prepend(strCLodopInstall);
+                                tolodop=setTimeout("$('#m_clodop').show()",2000);
                             }
                         }
                 },
@@ -69,7 +71,7 @@ function initCLodop(win) {
                                                 if (CLODOP.Priority==window.CLODOP_OK_Priority) setTimeout("window.On_CLodop_Opened(CLODOP)",1);
                                             };
                                             if(document.getElementById('m_clodop')!=null){
-                                                document.getElementById('m_clodop').style.display='none';
+                                                clearTimeout(tolodop);
                                              }
                                         };
                                         this.webskt.onmessage = function(e) {
