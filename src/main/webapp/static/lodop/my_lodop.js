@@ -5,7 +5,7 @@
 function lodop_check(){
 
     // 检查LODOP是否安装
-    if(getLodop()==undefined){
+    if(getCLodop()==undefined){
         $('#lodop_check').show();
         return;
     }
@@ -36,7 +36,7 @@ function lodop_check(){
 // 获得打印机列表
 function lodop_getPrintNames(){
     var arr=[];
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
     var cnt=LODOP.GET_PRINTER_COUNT();
     for(var i=0;i<cnt;i++){
         arr.push(LODOP.GET_PRINTER_NAME(i));
@@ -64,7 +64,7 @@ function lodop_setCardPrintIndex(){
 
 // 直接A4打印，单页打印
 function lodop_printA4(title,url){
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
@@ -78,7 +78,7 @@ function lodop_printA4(title,url){
 
 // 直接Barcode打印，单页打印
 function lodop_printBarcode(title,url){
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "50mm","10mm");
@@ -92,7 +92,7 @@ function lodop_printBarcode(title,url){
 
 // 直接Barcode打印，单页打印
 function lodop_printCard(title,url){
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "90mm","57mm");
@@ -106,7 +106,7 @@ function lodop_printCard(title,url){
 
 // A4 预览并打印
 function lodop_view_printA4(title,url){
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
@@ -121,7 +121,7 @@ function lodop_view_printA4(title,url){
 
 // 直接Barcode打印，单页打印
 function lodop_view_printBarcode(title,url){
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "50mm","10mm");
@@ -135,7 +135,7 @@ function lodop_view_printBarcode(title,url){
 
 // 直接Barcode打印，单页打印
 function lodop_view_printCard(title,url){
-    var LODOP = getLodop();
+    var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "90mm","57mm");

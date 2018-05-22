@@ -9,6 +9,6 @@
 <%@ taglib prefix="act" tagdir="/WEB-INF/tags/act" %>
 <%@ taglib prefix="cms" tagdir="/WEB-INF/tags/cms" %>
 <%@ taglib prefix="wshbj" tagdir="/WEB-INF/tags/wshbj" %>
-<c:set var="ctxfull" value="http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}${fns:getAdminPath()}"/>
+<c:set var="ctxfull" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}${fns:getAdminPath()}"/>
 <c:set var="ctx" value="${pageContext.request.contextPath}${fns:getAdminPath()}"/>
 <c:set var="ctxStatic" value="${pageContext.request.contextPath}/static"/>
