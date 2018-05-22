@@ -164,6 +164,29 @@ $(function(){
 
     });
 
+    // 当点击取像操作按钮
+    $("#content${path}  #btn${path}Capture").click(function(){
+        if(${path}State=="webrtcing"){
+            var canvas = document.createElement('canvas');
+            var canvasContext = canvas.getContext('2d');
+            var video=$("#content${path} #${path}Video")[0];
+
+            canvas.width=video.width;
+            canvas.height=video.height;
+
+            canvasContext.drawImage(video,0,0,video.width,video.height);
+            var base64url = canvas.toDataURL('image/png');
+
+            $('#content${path} #${path}Cropper').cropper("replace",base64url,false);
+
+            $('#content${path} #${path}Video').empty();
+            ${path}Track.stop();
+            ${path}Track = null;
+
+            dealState("croppering");
+        }
+    });
+
     $("#content${path} #btn${path}OK").on('click',function(){
         // 执行切图
         var cas=$('#content${path} #${path}Cropper').cropper("getCroppedCanvas");

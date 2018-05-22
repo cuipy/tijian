@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <style type="text/css">
+        #rtc-box{ position:absolute;  }
+
+    </style>
+
+</head>
+<body style="margin:0px;">
+<div id="rtc-box">
+<video id="rtc1" ></video>
+</div>
+<script src="jquery-1.9.1.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+
+    $(function(){
+        $("#rtc1").width(rtcWidth).height(rtcHeight);
+        dortc();
+    })
+
+    var rtcWidth=180,rtcHeight=240;
+    function dortc(){
+
+        var vrtc=$("#rtc1");
+        //vrtc.width(rtcWidth);
+        //vrtc.height(rtcHeight);
+        var video=vrtc[0];
+
+        // 初始状态
+        var videoObj = { "video": {width:rtcWidth,height:rtcHeight},"audio":false };
+
+        //  支持浏览器  谷歌,火狐,360,欧朋
+        if(navigator.mediaDevices&&navigator.mediaDevices.getUserMedia){
+            navigator.mediaDevices.getUserMedia(videoObj)
+            .then(getUserMediaThen)
+            .catch(getUserMediaCatch);
+        }else if(navigator.mediaDevices&&navigator.mediaDevices.webkitGetUserMedia){
+            navigator.mediaDevices.webkitGetUserMedia(videoObj)
+            .then(getUserMediaThen)
+            .catch(getUserMediaCatch);
+        }else if(navigator.mediaDevices&&navigator.mediaDevices.mozGetUserMedia){
+            navigator.mediaDevices.mozGetUserMedia(videoObj)
+            .then(getUserMediaThen)
+            .catch(getUserMediaCatch);
+        }else if(navigator.getUserMedia){
+          navigator.getUserMedia(videoObj)
+          .then(getUserMediaThen)
+          .catch(getUserMediaCatch);
+        }else if(navigator.webkitGetUserMedia){
+          navigator.webkitGetUserMedia(videoObj)
+          .then(getUserMediaThen)
+          .catch(getUserMediaCatch);
+        }else if(navigator.mozGetUserMedia){
+          navigator.mozGetUserMedia(videoObj)
+          .then(getUserMediaThen)
+          .catch(getUserMediaCatch);
+        }else{
+
+        }
+
+        function getUserMediaThen(stream){
+            tracks=stream.getTracks()[0];
+            video.srcObject=stream;
+            video.onloadedmetadata = function(e) {
+                video.play();
+            };
+        }
+
+        function getUserMediaCatch(err){
+            if(err.message=="Permission denied"){
+              console.warn("权限不足，请可查看浏览器是否允许访问摄像头<br> 谷歌浏览器在地址栏右侧应显示摄像头的图标。");
+            }else{
+              console.warn("访问webRTC出现异常：name["+err.name+"] - "+err.message);
+            }
+        }
+
+    }
+
+    function do1(){
+        alert("dksjd");
+    }
+
+</script>
+</body>
+</html>
