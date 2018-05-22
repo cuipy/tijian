@@ -41,6 +41,6 @@
 <link href="${ctxStatic}/common/jeesite.css?v=33" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
-<script src="${ctxStatic}/lodop/CLodopfuncs.js" type="text/javascript"></script>
-<script src="${ctxStatic}/lodop/my_lodop.js?v=12" type="text/javascript"></script>
+<script src="${ctxStatic}/lodop/CLodopfuncs.js?v=17" type="text/javascript"></script>
+<script src="${ctxStatic}/lodop/my_lodop.js?v=14" type="text/javascript"></script>
 
