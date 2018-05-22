@@ -241,7 +241,7 @@
                 $("#msg").show();
                 $("#msg").html(d1r.msg);
                 if(status.indexOf('print')>=0){
-                    lodop_printA4('流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id='+id);
+                    lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id='+id);
                 }
                 // 清除必要的字段，继续添加新登记。
                 setUserPro({});

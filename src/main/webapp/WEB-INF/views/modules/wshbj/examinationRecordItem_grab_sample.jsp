@@ -71,7 +71,7 @@ examRecord    当前要采样的 体检记录 对象
             var d1={"id":'${examRecordItem.id}'};
             $.get(url,d1);
 
-            lodop_printBarcode('样本编号','${ctxfull}/wshbj/exam_record_print/barcode_html?barcode='+$('#examRecordItemSampleCode').val() );
+            lodop_printBarcode('样本编号','${ctxhttp}/wshbj/exam_record_print/barcode_html?barcode='+$('#examRecordItemSampleCode').val() );
         }
         </c:if>
 

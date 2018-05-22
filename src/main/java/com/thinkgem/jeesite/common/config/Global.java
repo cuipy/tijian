@@ -249,6 +249,14 @@ public class Global {
 		return url;
 	}
 
+	public static String getLocalHttpServerUrl(){
+		String  url= getConfig("local_http_server_url");
+		if(StringUtils.isEmpty(url)){
+			return "http://localhost:8080/tijian";
+		}
+		return url;
+	}
+
 	public static String getCenterServerUrl(){
 		String  url= getConfig("center_server_url");
 		if(StringUtils.isEmpty(url)){

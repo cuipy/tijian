@@ -106,7 +106,7 @@
 
         // 执行打印制卡
         function do_print_card(){
-            lodop_printCard("制证","${ctxfull}/wshbj/exam_record_print/zhizheng_html?id="+$("#examRecordId").val());
+            lodop_printCard("制证","${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id="+$("#examRecordId").val());
         }
         </c:if>
 

@@ -131,9 +131,9 @@
 
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-success" href="javascript:void(0)"
-					onclick="lodop_printCard('体检流程表','${ctxfull}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')"  target="_blank">打印健康证</a>
+					onclick="lodop_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')"  target="_blank">打印健康证</a>
 					 <a class="label label-success" href="javascript:void(0)"
-                      onclick="lodop_view_printCard('体检流程表','${ctxfull}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')"  target="_blank">预览健康证</a>
+                      onclick="lodop_view_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')"  target="_blank">预览健康证</a>
 					 </c:if>
 
 				</td></shiro:hasPermission>

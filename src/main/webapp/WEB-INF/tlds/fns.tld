@@ -264,9 +264,17 @@
   <function>
     <description>获取体检本地服务器的全部地址</description>
     <name>getLocalServerUrl</name>
-    <function-class>com.thinkgem.jeesite.common.config.getLocalServerUrl</function-class>
+    <function-class>com.thinkgem.jeesite.common.config.Global</function-class>
     <function-signature>java.lang.String getLocalServerUrl()</function-signature>
     <example>${fns:getLocalServerUrl()}</example>
+  </function>
+
+  <function>
+    <description>获取体检本地HTTP服务器的全部地址</description>
+    <name>getLocalHttpServerUrl</name>
+    <function-class>com.thinkgem.jeesite.common.config.Global</function-class>
+    <function-signature>java.lang.String getLocalHttpServerUrl()</function-signature>
+    <example>${fns:getLocalHttpServerUrl()}</example>
   </function>
   
 </taglib>

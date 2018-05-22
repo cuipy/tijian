@@ -143,14 +143,14 @@
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
 					<c:if test="${examinationRecord.status <= 10}">
-					<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">直接打印体检表</a>
-					<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxfull}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>
+					<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">直接打印体检表</a>
+					<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>
                     </c:if>
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-success" href="javascript:void(0)"
-					 onclick="lodop_printCard('健康证','${ctxfull}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')" target="_blank">打印健康证</a>
+					 onclick="lodop_printCard('健康证','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')" target="_blank">打印健康证</a>
 					  <a class="label label-success" href="javascript:void(0)"
-                     onclick="lodop_view_printCard('健康证','${ctxfull}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')" target="_blank">预览健康证</a></c:if>
+                     onclick="lodop_view_printCard('健康证','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')" target="_blank">预览健康证</a></c:if>
 
 
 					<c:if test="${examinationRecord.status == '0'}">
