@@ -73,7 +73,7 @@
 		a.login_date,
 		a.remarks,
 		a.login_flag,
-		a.photo,
+		a.phone,
 		a.create_by AS "createBy.id",
 		a.create_date,
 		a.update_by AS "updateBy.id",
@@ -295,11 +295,10 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
-
 		<if test="defaultRecord != null ">default_record=#{defaultRecord},</if>
 		<if test="photo !=null and photo!='' ">photo = #{photo}, </if>
 		<if test="qianming !=null and qianming!='' ">qianming=#{qianming},</if>
-		login_flag = #{loginFlag},
+		login_flag = #{loginFlag}
 		WHERE id = #{id}
 	</update>
 	
