@@ -46,6 +46,7 @@
 		<div class="control-group span6" style="min-height:100px;">
 			<label class="control-label">头像:</label>
 			<div class="controls">
+			    <sys:cropper mainImgWidth="320"  mainImgHeight="240" imgName="头像" path="photo"  value="${ctx}/sys/user/getHeadImg?id=${user.id}"/>
 				<form:hidden id="nameImage" path="photo" htmlEscape="false"/>
 				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
 			</div>
