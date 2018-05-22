@@ -14,86 +14,7 @@
 <c:if test="${cropperInited == null}">
 <c:set var="cropperInited" value="1" scope="request"/>
 <style type="text/css">
-#CamBox {
-	-moz-border-radius: 10px;
-	border-radius: 10px;
-	left: 50%;
-	top: 30%;
-	position: fixed;
-	-moz-box-shadow: 5px 5px 10px 0 #3b3b3f;
-	box-shadow: 5px 5px 10px 0 #3b3b3f;
-	z-index: 1250;
-	display: none;
-	background: url(${ctxStatic}/jquery-webcam/images/cam_bg.jpg) #d5d5d5;
-}
 
-#CamBox #CamFlash {
-	width: 100%;
-	margin: 0 auto;
-	background: #fff;
-}
-
-#CamBox #timing {
-	color: #F60;
-	display: none;
-	font-size: 36px;
-	font-weight: 700;
-	height: 200px;
-	left: 50%;
-	line-height: 200px;
-	position: absolute;
-	text-align: center;
-	top: 50%;
-	width: 200px;
-	margin: -100px 0 0 -100px;
-}
-
-#CamBox .cambar {
-	height: 50px;
-	padding-top: 10px;
-	margin: 0px;
-	text-align:center;
-}
-
-#CamBox .cambar a {
-	background: url(${ctxStatic}/jquery-webcam/images/btn5.jpg) no-repeat;
-	display:inline-block;
-	height: 31px;
-	line-height: 31px;
-	text-align: center;
-	width: 79px
-}
-
-#CamBox .lens {
-	background: url(${ctxStatic}/jquery-webcam/images/cam.png) no-repeat 50%;
-	height: 50px;
-	width: 100%;
-	margin:0px;
-}
-
-#CamBox .cambar #camClose,
-#CamBox .cambar #setCam {
-	color: #333;
-}
-
-#CamBox .cambar #setCam {
-	margin-right: 30px;
-}
-
-#CamBox .cambar #camClose:hover,
-#CamBox .cambar #setCam:hover {
-	background-position: 0 -31px;
-}
-
-#CamBox .cambar #CamOk {
-	background-position: -79px 0;
-	color: #fff;
-	margin-right: 30px;
-}
-
-#CamBox .cambar #CamOk:hover {
-	background-position: -79px -31px;
-}
 </style>
 </c:if>
 
@@ -108,8 +29,8 @@
         <div class="cl"></div>
     </div>
     <div class="tailoring-content-one">
-        <label id="btn${path}Choose" title="上传${imgName}" for="chooseImg" class="btn btn-warning btn-mini">
-            <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="chooseImg" class="hidden">
+        <label id="btn${path}Choose" title="上传${imgName}" for="${path}ChooseImg" class="btn btn-warning btn-mini">
+            <input type="file" accept="image/jpg,image/jpeg,image/png" name="file" id="${path}ChooseImg" class="hidden">
             选择图片
         </label>
         <label id="btn${path}Cam" class="btn btn-warning btn-mini">拍照</label>
@@ -117,7 +38,7 @@
         <label id="btn${path}Cancel" class="btn btn-info btn-mini">取消</label>
         <label id="btn${path}OK" class="btn btn-info  btn-mini">保存</label>
     </div>
-    <input type="hidden" name="${path}" id="up${path}" value="${value}"/>
+    <input type="hidden" name="${path}" id="up${path}" value=""/>
 
 </div>
 <script type="text/javascript">
@@ -136,7 +57,7 @@ $(function(){
     dealState('init');
 
     // 选择本地图片
-    $("#content${path} #chooseImg").on("change",function(evt) {
+    $("#content${path} #${path}ChooseImg").on("change",function(evt) {
         if (!evt.target.files || !evt.target.files[0]){
             return;
         }
