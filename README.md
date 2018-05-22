@@ -1,3 +1,9 @@
+## 部署项目
+* 为了支持webRTC，必须采用https协议运行
+* 为了方便打印，必须采用http协议
+* tomcat设置为 http+https，配置文件见 tomcat8/conf/server.xml文件
+* 生成 tomcat.keystore 的方法，百度可获知
+
 ## 修改说明
 *  调整form样式，默认宽度为50% ，如果某行宽度为100% ，则设置 class 为 control-group-100
 
