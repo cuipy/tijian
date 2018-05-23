@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+import com.drew.lang.StringUtil;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.ImageUtils;
@@ -387,6 +388,10 @@ public class ExaminationRecordController extends BaseController {
 			}
 		}
 
+		if(StringUtils.isEmpty(examinationRecord.getHeadImg())){
+			examinationRecord.setHeadImg(examUser.getHeadImgPath());
+		}
+
 		RequestResult result = examinationRecordService.saveRecord(examinationRecord);
 		return result;
 	}
@@ -626,7 +631,12 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = "getHeadImg")
 	public void getHeadImg(String id, HttpServletResponse response) {
 
-		String imgStr = examinationRecordService.getHeadImg(id).substring(22);
+		String imgStr = examinationRecordService.getHeadImg(id);
+
+		if(imgStr==null||imgStr.length()<22){
+			return;
+		}
+		imgStr=imgStr.substring(22);
 		ImageUtils.base64OutResponse(imgStr,"jpg",response);
 	}
 

@@ -357,12 +357,21 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "getPhotoImg")
 	public void getPhotoImg(String id, HttpServletResponse response) {
 
-		String imgStr = userService.getPhotoImg(id).substring(22);
+		String imgStr = userService.getPhotoImg(id);
+
+		if(imgStr==null||imgStr.length()<22){
+			return;
+		}
+		imgStr=imgStr.substring(22);
 		ImageUtils.base64OutResponse(imgStr,"jpg",response);
 	}
 	@RequestMapping(value = "getQianmingImg")
 	public void getQianmingImg(String id, HttpServletResponse response) {
-		String imgStr = userService.getQianmingImg(id).substring(22);
+		String imgStr = userService.getQianmingImg(id);
+		if(imgStr==null||imgStr.length()<22){
+			return;
+		}
+		imgStr=imgStr.substring(22);
 		ImageUtils.base64OutResponse(imgStr,"jpg",response);
 	}
     

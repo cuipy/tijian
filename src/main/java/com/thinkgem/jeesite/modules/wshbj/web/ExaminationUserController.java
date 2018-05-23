@@ -160,7 +160,11 @@ public class ExaminationUserController extends BaseController {
     @RequestMapping(value = "getHeadImg")
     public void getHeadImg(String id, HttpServletResponse response) {
 
-        String imgStr = examinationUserService.getHeadImg(id).substring(22);
+        String imgStr = examinationUserService.getHeadImg(id);
+        if(imgStr==null||imgStr.length()<22){
+            return;
+        }
+        imgStr=imgStr.substring(22);
         ImageUtils.base64OutResponse(imgStr,"jpg",response);
 
     }

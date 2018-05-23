@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.service.UserService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.wshbj.service.ExaminationUserService;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
 import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
 import com.thinkgem.jeesite.modules.wshbj.service.OrganService;
@@ -201,7 +202,12 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.owner = owner;
 	}
 
+	@JsonIgnore
 	public String getHeadImgPath() {
+    	if(StringUtils.isEmpty(headImgPath)){
+			ExaminationUserService examinationUserService=SpringContextHolder.getBean(ExaminationUserService.class);
+			headImgPath=examinationUserService.getHeadImg(id);
+		}
 		return headImgPath;
 	}
 

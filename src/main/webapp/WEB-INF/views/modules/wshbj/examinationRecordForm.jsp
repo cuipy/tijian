@@ -152,8 +152,7 @@
                 $("#postId").trigger('change');
              }
 
-            $("#headImgImg").attr("src",u.headImgPath==null?'':u.headImgPath);
-            $("#upheadImg").val(u.headImgPath==null?'':u.headImgPath);
+            $("#headImgImg").attr("src","${ctx}/wshbj/examinationUser/getHeadImg?id="+u.id);
 
         }
 
