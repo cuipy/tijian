@@ -15,7 +15,7 @@
 
 	<script type="text/javascript">
 		$(function() {
-
+            setInterval(focusExamRecordCode, 2000);
 		    setTimeout("lodop_check()",500);
 
 		    // 当前要录入体检记录 编号的时候
@@ -52,6 +52,10 @@
 		    </c:if>
 
         });
+
+        function focusExamRecordCode(){
+            $("#examRecordCode").focus();
+        }
 
         <c:if test="${not empty examRecord}">
         <c:if test="${examRecord.status != '50'}">

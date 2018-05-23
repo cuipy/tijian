@@ -529,6 +529,17 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.zhizhengTime = zhizhengTime;
 	}
 
+	public Date getZhizhengEndTime(){
+		if(zhizhengTime==null){
+			return null;
+		}
+
+		Calendar c=Calendar.getInstance();
+		c.setTime(zhizhengTime);
+		c.add(Calendar.YEAR,1);
+		return c.getTime();
+	}
+
 	@JsonIgnore
 	public Map<String,String> getMap(){
 		Map<String,String > m=new HashMap();

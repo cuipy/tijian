@@ -53,11 +53,11 @@
 
             <table class="tbl" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td class="td-label" style="width:14mm;">姓&nbsp;&nbsp;名:</td><td class="td-content">${examRecord.name}</td>
+                    <td class="td-label" style="width:14mm;">姓&nbsp;&nbsp;名:</td><td class="td-content" style="width:18mm;">${examRecord.name}</td>
                     <td class="td-label"  style="width:14mm;">性&nbsp;&nbsp;别:</td><td class="td-content">${examRecord.strSex}</td>
                     <td rowspan="3" class="td-barcard2" style="width:14mm;"> <div id="barcode2"></div> </td>
                     <td rowspan="5" class="td-headimg" style="width:16mm;">
-                    <img style="width:100%;" src="${examRecord.headImg}"></td>
+                    <img style="width:16mm;height:24mm;" src="${examRecord.headImg}"></td>
                 </tr>
                 <tr>
                     <td class="td-label">从业类别:</td><td colspan="3" class="td-content">${examRecord.industryName}&nbsp;</td>
@@ -66,7 +66,7 @@
                      <td class="td-label">证&nbsp;&nbsp;号:</td><td colspan="3" class="td-content">${examRecord.code}&nbsp;</td>
                   </tr>
                 <tr>
-                    <td class="td-label">有效期至:</td><td colspan="4" class="td-content">${examRecord.age}&nbsp;</td>
+                    <td class="td-label">有效期至:</td><td colspan="4" class="td-content"><fmt:formatDate value="${examRecord.zhizhengEndTime}" pattern="yyyy-MM-dd"/>&nbsp;</td>
                  </tr>
                  <tr>
                      <td class="td-label">体检单位:</td><td colspan="4" class="td-content">${examRecord.organName}&nbsp;</td>
