@@ -68,7 +68,7 @@
             setTimeout("lodop_check()",300);
         });
 
-        function loadUserByIdNumber(){
+        function loadUserByIdNumber(idObj){
             $("#msg").hide();
 
             $("#idNumber").val($("#showIdNumber").val());
@@ -86,7 +86,11 @@
                     $("#idNumberInfo").show().html("系统内的体检用户。");
                 }else if(d1r.state==2){
                     setUserPro({});
-                    parseIdNumber();
+                    if(idObj!=null){
+                        loadIdObject(idObj);
+                    }else{
+                        parseIdNumber();
+                    }
                     $("#idNumberInfo").show().html("新用户，将创建新的体检用户。");
                 }
             }).error(function(xhr){
@@ -94,6 +98,7 @@
             });
          }
 
+        // 从身份证号码中读取部分信息
         function parseIdNumber(){
             var idNumber=$("#showIdNumber").val();
 
@@ -109,6 +114,35 @@
                 $("#sex2").attr('checked',true);
             }
 
+        }
+
+        // 从身份证读卡器中获取信息
+        function loadIdObject(idObj){
+            $("#name").val(idObj.Name);
+            $("#showIidNumber").val(idObj.Code);
+            $("#idNumber").val(idObj.Code);
+            $("#idNumberPicHead").val(idObj.p4base64);
+            $("#idNumberPicFore").val(idObj.p1base64);
+            $("#idNumberPicBack").val(idObj.p2base64);
+
+            // 头像默认采用身份证头像
+            if($("#upheadImg").val()==''||bIdNumberChanged){
+                $("#upheadImg").val(idObj.p4base64);
+                $("#headImgImg").attr("src",idObj.p4base64);
+            }
+
+            var srcBirthday=idObj.BirthDay;
+            var birthday=srcBirthday.substr(0,4)+"-"+srcBirthday.substr(4,2)+"-"+srcBirthday.substr(6,2);
+            $("#birthday").val(birthday);
+
+            var age=getAgeFromId(idObj.Code);
+            $("#age").val(age);
+
+            if(idObj.Gender=='男'){
+                $("#sex1").attr("checked",true);
+            }else if(idObj.Gender=='女'){
+                $("#sex2").attr("checked",true);
+            }
         }
 
 
@@ -268,7 +302,7 @@
                 }
 
                 $("#showIdNumber").val(jmsg.Code);
-                loadUserByIdNumber();
+                loadUserByIdNumber(jmsg);
             }
          }
 
