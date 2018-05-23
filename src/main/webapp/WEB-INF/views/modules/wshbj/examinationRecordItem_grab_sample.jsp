@@ -25,7 +25,7 @@ examRecord    当前要采样的 体检记录 对象
 
 	<script type="text/javascript">
 		$(function() {
-
+            setInterval(focusExamRecordCode, 2000);
 		    setTimeout("lodop_check()",300);
 
 		    // 当前要录入体检记录 编号的时候
@@ -63,6 +63,10 @@ examRecord    当前要采样的 体检记录 对象
 		    </c:if>
 
         });
+
+        function focusExamRecordCode(){
+            $("#examRecordCode").focus();
+        }
 
         <c:if test="${not empty examRecordItem and sampleCodePrintPoint==2}">
         // 执行 样本编号打印

@@ -244,6 +244,7 @@
                 }
                 // 清除必要的字段，继续添加新登记。
                 setUserPro({});
+                $("#showIdNumber").val('');
 
                 if(status.indexOf('return')>=0){
                     setTimeout("location.href='${ctx}/wshbj/examinationRecord/list'",1000);
@@ -266,31 +267,8 @@
                     bIdNumberChanged=true;
                 }
 
-                $("#name").val(jmsg.Name);
                 $("#showIdNumber").val(jmsg.Code);
-                $("#idNumber").val(jmsg.Code);
-                $("#idNumberPicHead").val(jmsg.p4base64);
-                $("#idNumberPicFore").val(jmsg.p1base64);
-                $("#idNumberPicBack").val(jmsg.p2base64);
-
-                // 头像默认采用身份证头像
-                if($("#upheadImg").val()==''||bIdNumberChanged){
-                    $("#upheadImg").val(jmsg.p4base64);
-                    $("#headImgImg").attr("src",jmsg.p4base64);
-                }
-
-                var srcBirthday=jmsg.BirthDay;
-                var birthday=srcBirthday.substr(0,4)+"-"+srcBirthday.substr(4,2)+"-"+srcBirthday.substr(6,2);
-                $("#birthday").val(birthday);
-
-                var age=getAgeFromId(jmsg.Code);
-                $("#age").val(age);
-
-                if(jmsg.Gender=='男'){
-                    $("#sex1").attr("checked",true);
-                }else if(jmsg.Gender=='女'){
-                    $("#sex2").attr("checked",true);
-                }
+                loadUserByIdNumber();
             }
          }
 

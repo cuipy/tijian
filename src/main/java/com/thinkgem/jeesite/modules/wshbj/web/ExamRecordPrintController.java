@@ -101,7 +101,11 @@ public class ExamRecordPrintController extends BaseController {
 	@GetMapping(value = "zhizheng_html")
 	public String zhizheng_html(String id,Model model) {
 		ExaminationRecord er=examinationRecordService.get(id);
+		String headImg=examinationRecordService.getHeadImg(id);
+
+		er.setHeadImg(headImg);
 		model.addAttribute("examRecord",er);
+
 		return "modules/wshbj/examRecordPrint_zhizheng_html";
 	}
 

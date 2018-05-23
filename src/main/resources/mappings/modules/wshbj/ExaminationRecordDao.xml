@@ -7,7 +7,7 @@
 		a.user_id AS "user.id",
 		a.code AS "code",
 		a.name AS "name", a.name_pinyin as "namePinyin",
-		a.phone_number AS "phoneNumber", a.head_img as "headImg",
+		a.phone_number AS "phoneNumber",
 		a.sex AS "sex", a.age as "age",
 		a.industry_id AS "industryId",
 		a.post_id AS "postId",
