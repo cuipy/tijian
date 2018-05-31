@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><meta name="author" content="http://jeesite.com/"/>
 <meta name="renderer" content="webkit"><meta http-equiv="X-UA-Compatible" content="IE=8,IE=9,IE=10" />
 <meta http-equiv="Expires" content="0"><meta http-equiv="Cache-Control" content="no-cache"><meta http-equiv="Cache-Control" content="no-store">
+<link rel="shortcut icon" href="${ctxStatic}/images/favicon.ico">
 <script src="${ctxStatic}/jquery/jquery-1.8.3.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/bootstrap/2.3.1/css_${not empty cookie.theme.value ? cookie.theme.value : 'cerulean'}/bootstrap.min.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap.min.js" type="text/javascript"></script>
@@ -38,6 +39,7 @@
 <script type="text/javascript">var ctx = '${ctx}',ctxfull= '${ctxfull}', ctxStatic='${ctxStatic}';</script>
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
+<link href="${ctxStatic}/common/style2.css?v=41" type="text/css" rel="stylesheet" />
 <link href="${ctxStatic}/common/jeesite.css?v=33" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
