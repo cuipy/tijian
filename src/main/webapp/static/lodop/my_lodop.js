@@ -19,19 +19,23 @@ function lodop_check(){
 
     // A4打印机索引
     var a4Index= localStorage.getItem('a4-print-index');
-    if(a4Index.length>0){
+    if(a4Index!=null){
         $("#sltA4Print").val(a4Index).trigger('change');
         $('#sltA4Print').change();
     }
     // 条码打印机索引
     var barcodeIndex= localStorage.getItem('barcode-print-index');
-    $("#sltBarcodePrint").val(barcodeIndex).trigger('change');
-    $('#sltBarcodePrint').change();
-
+    if(barcodeIndex!=null) {
+        $("#sltBarcodePrint").val(barcodeIndex).trigger('change');
+        $('#sltBarcodePrint').change();
+    }
     // 制卡打印机索引
     var cardIndex= localStorage.getItem('card-print-index');
-    $("#sltCardPrint").val(cardIndex).trigger('change');
-    $('#sltCardPrint').change();
+    if(cardIndex!=null) {
+        $("#sltCardPrint").val(cardIndex).trigger('change');
+        $('#sltCardPrint').change();
+    }
+
 }
 // 获得打印机列表
 function lodop_getPrintNames(){

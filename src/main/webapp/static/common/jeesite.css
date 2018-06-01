@@ -13,7 +13,7 @@ input[disabled],select[disabled],textarea[disabled],input[readonly],select[reado
 .input-prepend input,.input-append input,.input-prepend select,.input-append select,.input-prepend .uneditable-input,.input-append .uneditable-input {position:static;}
 legend {margin:10px 0;*left:-7px;*position:relative;color:#0088CC;*width:99.5%}
 .cl{clear:both}
-.collapse {*display:none;_position:static;} .collapse.in {*display:block;}
+.collapse {*display:none;_position:static;} .collapse.in {*display:block;background-color: #F0F9FD}
 .close {opacity:0.3;filter:alpha(opacity=30);} .close:hover {opacity:0.8;filter:alpha(opacity=80);}
 
 a.btn, button.btn {*padding:4px 10px 4px;*border:1px solid #cccccc;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fefefe', endColorstr='#e6e6e6', GradientType=0);}
@@ -88,7 +88,7 @@ legend + .control-group {margin-top:6px;}
 .accordion-heading a:hover,.dropdown a:hover {text-decoration:none;background:none;}
 .accordion-heading .accordion-toggle {font-family:黑体;font-size:14px;_padding-top:10px;_padding-bottom:8px;}
 .accordion-heading .accordion-toggle i {_margin-top:-1px;}
-.accordion-inner {padding:3px 8px 3px 8px;}
+.accordion-inner {}
 .accordion-inner .nav-list {margin-bottom:4px;}
 .accordion-inner .nav-list li a {padding:3px 0px 3px 8px;}
 

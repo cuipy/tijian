@@ -3,10 +3,11 @@
 
 <div class="accordion">
     <c:set var="menuList" value="${fns:listLeftMenu(pageScope.uri)}"/>
-    <c:forEach items="${menuList}" var="menu" varStatus="idxStatus"><c:if test="${menu.level ==2 &&menu.isShow eq '1'}">
+    <c:forEach items="${menuList}" var="menu" varStatus="idxStatus">
+        <c:if test="${menu.level ==2 &&menu.isShow eq '1'}">
     <div class="accordion-grou">
-        <div class="accordion-heading">
-            <a class="accordion-toggle" data-toggle="collapse" data-parent="#menu-${param.parentId}" data-href="#collapse-${menu.id}" href="#collapse-${menu.id}" title="${menu.remarks}"><i class="icon-chevron-down"></i>&nbsp;${menu.name}</a>
+        <div class="lefttop">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#menu-${param.parentId}" data-href="#collapse-${menu.id}" title="${menu.remarks}"><span class="icon-chevron-down"></span>&nbsp;${menu.name}</a>
         </div>
         <div id="collapse-${menu.id}" class="accordion-body collapse in">
             <div class="accordion-inner">

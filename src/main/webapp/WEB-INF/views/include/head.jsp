@@ -39,10 +39,10 @@
 <script type="text/javascript">var ctx = '${ctx}',ctxfull= '${ctxfull}', ctxStatic='${ctxStatic}';</script>
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
-<link href="${ctxStatic}/common/style2.css?v=41" type="text/css" rel="stylesheet" />
-<link href="${ctxStatic}/common/jeesite.css?v=33" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/common/style2.css?v=45" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/common/jeesite.css?v=35" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
 <script src="${ctxStatic}/lodop/CLodopfuncs.js?v=23" type="text/javascript"></script>
-<script src="${ctxStatic}/lodop/my_lodop.js?v=17" type="text/javascript"></script>
+<script src="${ctxStatic}/lodop/my_lodop.js?v=18" type="text/javascript"></script>
 
