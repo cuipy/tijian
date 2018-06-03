@@ -93,4 +93,15 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		return null;
 	}
 
+	@Cacheable(value = "officeCache",key="'office_getMyDepts'")
+	public List<Office> getMyDepts(){
+		Office office=new Office();
+		office.setType("2");  // 1 代表部门
+
+		List<Office> lst = dao.findList(office);
+		return lst;
+	}
+
+
+
 }

@@ -3,7 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -25,6 +29,7 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	private String typeId;		// 检查项目类型
+	private String resultDeptId;		// 录入检查结果的部门
 	private String prefixSampleCode ;
 	private String unit;		// 单位
 	private String price;		// 价格
@@ -108,7 +113,6 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 		this.owner = owner;
 	}
 	
-	@Length(min=0, max=64, message="检查项目类型长度必须介于 1 和 64 之间")
 	public String getTypeId() {
 		return typeId;
 	}
@@ -161,6 +165,25 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 
 	public void setSpecimenId(String specimenId) {
 		this.specimenId = specimenId;
+	}
+
+	public String getResultDeptId() {
+		return resultDeptId;
+	}
+
+	public void setResultDeptId(String resultDeptId) {
+		this.resultDeptId = resultDeptId;
+	}
+
+	@JsonIgnore
+	public String getResultDeptName(){
+		OfficeService officeService=SpringContextHolder.getBean(OfficeService.class);
+		Office dept = officeService.get(resultDeptId);
+
+		if(dept==null){
+			return "";
+		}
+		return dept.getName();
 	}
 
 	@Length(min=0, max=200)

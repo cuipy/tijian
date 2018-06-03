@@ -12,6 +12,7 @@ import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
@@ -57,7 +58,10 @@ public class ExaminationItemController extends BaseController {
 	private GenSeqNumberService genSeqNumberService;
 	@Autowired
 	private SystemService systemService;
-	
+	@Autowired
+	private OfficeService officeService;
+
+
 	@ModelAttribute
 	public ExaminationItem get(@RequestParam(required=false) String id) {
 		ExaminationItem entity = null;
@@ -79,27 +83,14 @@ public class ExaminationItemController extends BaseController {
 		return "modules/wshbj/examinationItemList";
 	}
 
-//	@RequiresPermissions("wshbj:examinationItem:edit")
-//	@RequestMapping(value = {"list4Pull", ""})
-//	public String list4Pull(ExaminationItem examinationItem, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		examinationItem.setOwner(null);
-//		examinationItem.setReferenceFlag("1");
-//		Page<ExaminationItem> page = examinationItemService.findPage(new Page<ExaminationItem>(request, response), examinationItem);
-//		model.addAttribute("page", page);
-//		return "modules/wshbj/examinationItemList4Pull";
-//	}
-//
-//	@RequiresPermissions("wshbj:examinationItem:edit")
-//	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
-//	@ResponseBody
-//	public RequestResult saveByPull(HttpServletRequest request, String examinationItemIds) {
-//		return examinationItemService.saveByPull(UserUtils.getUser(),examinationItemIds);
-//	}
-
 	@RequiresPermissions("wshbj:examinationItem:view")
 	@RequestMapping(value = "form")
 	public String form(ExaminationItem examinationItem, Model model) {
 		model.addAttribute("examinationItem", examinationItem);
+
+		// 加载部门列表
+		List<Office> depts = officeService.getMyDepts();
+		model.addAttribute("depts",depts);
 
 		// 加载体检项目类型 属于体检小类
 		ExaminationItemType examinationItemType = new ExaminationItemType();

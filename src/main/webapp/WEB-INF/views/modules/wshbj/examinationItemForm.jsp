@@ -61,32 +61,32 @@
         <div class="cl"></div>
 
 		<div class="control-group span12">
-			<label class="control-label">检查项目类型：</label>
+			<label class="control-label">录入结果部门：</label>
 			<div class="controls radios-div">
-				<form:radiobuttons path="typeId" items="${examinationItemTypeList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				<form:radiobuttons path="resultDeptId" items="${depts}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 			</div>
 		</div>
-		<div class="control-group span12">
+		<!-- div class="control-group span12">
 			<label class="control-label">单位：</label>
 			<div class="controls">
 				<form:input path="unit" htmlEscape="false" maxlength="64" class="input-medium"/>
 				<span class="help-inline"> </span>
 			</div>
-		</div>
+		</div -->
 		<div class="control-group span12">
 			<label class="control-label">价格：</label>
 			<div class="controls">
 				<form:input path="price" htmlEscape="false" maxlength="45" class="input-medium "/>
 			</div>
 		</div>
-		<div class="control-group span12">
+		<!-- div class="control-group span12">
 			<label class="control-label">参考范围：</label>
 			<div class="controls">
 				<form:input path="rangeMin" htmlEscape="false" maxlength="45" class="input-small"/>
 				<span class="help-inline"> - </span>
 				<form:input path="rangeMax" htmlEscape="false" maxlength="45" class="input-small"/>
 			</div>
-		</div>
+		</div -->
 
 		<div class="control-group span12">
 			<label class="control-label">所需标本：</label>
