@@ -166,7 +166,8 @@ examRecord    当前要采样的 体检记录 对象
         <div class="control-group">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
-                 <img id="imgHeadImg" style="width:90px;height:120px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
+                 <img id="imgHeadImg" style="width:90px;height:120px"  src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"
+                 onerror="javascript:this.src='${ctxStatic}/images/style2/nopic.png'"/>
             </div>
         </div>
 
