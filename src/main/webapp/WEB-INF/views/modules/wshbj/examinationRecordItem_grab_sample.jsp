@@ -124,7 +124,7 @@ examRecord    当前要采样的 体检记录 对象
         <c:if test="${vo.id!=currExamItemId}"><li></c:if>
         <a href="${ctx}/wshbj/examinationRecordItem/grab_sample?currExamItemId=${vo.id}">${vo.name}</a></li> </c:forEach>
 	</ul>
-
+    <div class="box1">
     <div id="msg" class="alert alert-danger" >
     <c:if test="${empty currExamItemId }">第一步：请选择采集样本类型</c:if>
     <c:if test="${not empty currExamItemId}">
@@ -134,15 +134,6 @@ examRecord    当前要采样的 体检记录 对象
     </c:if>
     </div>
 
-    <div class="breadcrumb form-search">
-    <ul class="ul-form">
-        <li><label>条码打印机：</label>
-            <select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
-        </li>
-    </ul>
-    </div>
-
-    <c:if test="${not empty currExamItemId }">
 	<div  style="max-width:1200px" class="form-horizontal">
 
 	    <input type="hidden" id="examRecordId" name="id" value="${examRecord.id}"/>
@@ -151,7 +142,7 @@ examRecord    当前要采样的 体检记录 对象
 	    <input type="hidden" id="examRecordItemId" name="examRecordItemId" value="${examRecordItem.id}"/>
         <input type="hidden" id="examRecordItemSampleCode" name="examRecordItemSampleCode" value="${examRecordItem.sampleCode}"/>
 
-        <div class="control-group span12">
+        <div class="control-group">
             <label class="control-label">编号：</label>
             <div class="controls">
                 <input type="text" id="examRecordCode" name="examRecordCode" maxlength="50" class="input-large"/>
@@ -160,84 +151,62 @@ examRecord    当前要采样的 体检记录 对象
         </div>
         <div class="cl"></div>
 
-        <c:if test="${not empty examRecord}">
-        <div class="control-group span6">
+        <div class="control-group">
             <label class="control-label">体检编号：</label>
             <div class="controls">
                 ${examRecord.code}
             </div>
         </div>
-        <div class="control-group span6">
+        <div class="control-group">
             <label class="control-label">样本编号：</label>
 
             <div class="controls"> ${examRecordItem.sampleCode}  打印次数：${examRecordItem.sampleCodePrintCount}   </div>
         </div>
         <div class="cl"></div>
 
-        <div class="control-group span6">
+        <div class="control-group">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
-                 <img id="imgHeadImg" style="width:320px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
+                 <img id="imgHeadImg" style="width:90px;height:120px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
             </div>
         </div>
 
-        <div class="control-group span4">
+        <div class="control-group">
             <label class="control-label">真实姓名：</label>
             <div class="controls">
                 ${examRecord.name}
             </div>
         </div>
-        <div class="control-group span4">
-            <label class="control-label">身份证：</label>
-            <div class="controls">
-                ${examRecord.idNumber}
-            </div>
-        </div>
-        <div class="control-group span4">
-            <label class="control-label">联系电话：</label>
-            <div class="controls">
-                ${examRecord.phoneNumber}
-            </div>
-        </div>
-        <div class="control-group span4">
+
+        <div class="control-group">
             <label class="control-label">性别：</label>
             <div class="controls">
                 ${examRecord.strSex}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group">
             <label class="control-label">年龄：</label>
             <div class="controls">
                 ${examRecord.age}
             </div>
         </div>
-        <div class="control-group span4">
-            <label class="control-label">出生日期：</label>
-            <div class="controls">
-                ${examRecord.birthday}
-            </div>
-        </div>
-        <div class="control-group span4">
+
+        <div class="control-group">
             <label class="control-label">体检单位：</label>
             <div class="controls">
                 ${examRecord.organName}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group">
             <label class="control-label">行业：</label>
             <div class="controls">
                 ${examRecord.industryName}
             </div>
         </div>
-        <div class="control-group span4">
-            <label class="control-label">岗位：</label>
-            <div class="controls">
-                ${examRecord.postName}
-            </div>
-        </div>
+
         <div class="cl"></div>
 
-        <div class="control-group span12">
+        <div class="control-group">
             <label class="control-label">全部体检项目：</label>
             <div class="controls">
                 <c:forEach items="${examRecord.items}" var="vo">
@@ -256,19 +225,26 @@ examRecord    当前要采样的 体检记录 对象
             </div>
         </div>
         <div class="cl"></div>
-		<div class="form-actions span12">
+		<div class="form-actions">
 
             <input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="do_sample_code_print()" />&nbsp;&nbsp;
             <c:if test="${!examRecordItem.grabSample}">
             <input id="btnUpdateGrabSample" class="btn btn-primary" type="button" value="设置取样成功" data-second="10" onclick="do_update_grab_sample()" />&nbsp;</c:if>
 		</div>
-        </c:if>
 
 <div class="cl"></div>
 
 	</div>
 
-	</c:if>
+	    <div class="breadcrumb form-search">
+        <ul class="ul-form">
+            <li><label>条码打印机：</label>
+                <select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
+            </li>
+        </ul>
+        </div>
+
+	</div>
 
 
 </body>
