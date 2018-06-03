@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.thinkgem.jeesite.common.utils.PinyinUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -27,6 +29,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import com.thinkgem.jeesite.modules.wshbj.service.SpecimenService;
 
+import java.util.List;
+
 /**
  * 检查标本类型Controller
  * @author zhxl
@@ -38,6 +42,9 @@ public class SpecimenController extends BaseController {
 
 	@Autowired
 	private SpecimenService specimenService;
+
+	@Autowired
+	private OfficeService officeService;
 	
 	@ModelAttribute
 	public Specimen get(@RequestParam(required=false) String id) {
@@ -60,26 +67,15 @@ public class SpecimenController extends BaseController {
 		return "modules/wshbj/specimenList";
 	}
 
-//	@RequiresPermissions("wshbj:specimen:edit")
-//	@RequestMapping(value = {"list4Pull", ""})
-//	public String list4Pull(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		specimen.setOwner(null);
-//		specimen.setReferenceFlag("1");
-//		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
-//		model.addAttribute("page", page);
-//		return "modules/wshbj/specimenList4Pull";
-//	}
-//
-//	@RequiresPermissions("wshbj:specimen:edit")
-//	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
-//	@ResponseBody
-//	public RequestResult saveByPull(HttpServletRequest request, String especimenIds) {
-//		return specimenService.saveByPull(UserUtils.getUser(),especimenIds);
-//	}
 
 	@RequiresPermissions("wshbj:specimen:view")
 	@RequestMapping(value = "form")
 	public String form(Specimen specimen, Model model) {
+
+		// 加载部门列表
+		List<Office> depts = officeService.getMyDepts();
+		model.addAttribute("depts",depts);
+
 		model.addAttribute("specimen", specimen);
 		return "modules/wshbj/specimenForm";
 	}

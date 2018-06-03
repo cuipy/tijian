@@ -40,7 +40,7 @@
 
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/style2.css?v=45" type="text/css" rel="stylesheet" />
-<link href="${ctxStatic}/common/jeesite.css?v=46" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/common/jeesite.css?v=48" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
 <script src="${ctxStatic}/lodop/CLodopfuncs.js?v=23" type="text/javascript"></script>

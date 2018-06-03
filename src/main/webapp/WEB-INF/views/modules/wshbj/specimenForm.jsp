@@ -58,6 +58,15 @@
             </div>
         </div>
 
+        <div class="cl"></div>
+        <div class="control-group span12">
+            <label class="control-label">采样部门：</label>
+            <div class="controls radios-div">
+                <form:radiobuttons path="grabDeptId" items="${depts}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+            </div>
+        </div>
+
+        <div class="cl"></div>
         <div class="control-group span6">
             <label class="control-label">顺序值：</label>
             <div class="controls">
@@ -65,13 +74,13 @@
             </div>
         </div>
 
-        <div class="cl"></div>
 		<div class="control-group span12">
-            <label class="control-label">样本编号的前缀：</label>
+            <label class="control-label">样本编号前缀：</label>
             <div class="controls">
                 <form:input path="prefix" htmlEscape="false" maxlength="16" class="input-medium required"/>
             </div>
         </div>
+        <div class="cl"></div>
 		<div class="control-group  span12">
 			<label class="control-label">备注：</label>
 			<div class="controls">

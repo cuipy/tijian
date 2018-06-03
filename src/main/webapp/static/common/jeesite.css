@@ -119,3 +119,8 @@ legend + .control-group {margin-top:6px;}
 .nav-tabs{
     background-image:url('../images/style2/righttop.gif');
 }
+
+.nav-tabs>.active>a, .nav-tabs>.active>a:hover, .nav-tabs>.active>a:focus{
+    background: url(/tijian/static/images/style2/topbg.gif) repeat-x;
+    color:#fff;
+}

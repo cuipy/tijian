@@ -3,7 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -24,6 +28,7 @@ public class Specimen extends DataEntity<Specimen> {
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 
+	private String grabDeptId;
 	private String prefix;
 	private Integer orderNumb;
 
@@ -95,5 +100,24 @@ public class Specimen extends DataEntity<Specimen> {
 
 	public void setPrefix(String prefix) {
 		this.prefix = prefix;
+	}
+
+	public String getGrabDeptId() {
+		return grabDeptId;
+	}
+
+	public void setGrabDeptId(String grabDeptId) {
+		this.grabDeptId = grabDeptId;
+	}
+
+	@JsonIgnore
+	public String getGrabDeptName(){
+		OfficeService officeService=SpringContextHolder.getBean(OfficeService.class);
+		Office dept = officeService.get(grabDeptId);
+
+		if(dept==null){
+			return "";
+		}
+		return dept.getName();
 	}
 }

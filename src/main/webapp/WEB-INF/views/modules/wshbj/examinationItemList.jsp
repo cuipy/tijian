@@ -45,9 +45,7 @@
 				<th>编号</th>
 				<th width="120">名称</th>
 				<th>样本编号前缀</th>
-				<th>单位</th>
 				<th>价格</th>
-				<th>参考范围</th>
 				<th>备注</th>
 				<th>顺序值</th>
 				<shiro:hasPermission name="wshbj:examinationItem:edit"><th>操作</th></shiro:hasPermission>
@@ -66,13 +64,7 @@
                     ${examinationItem.prefixSampleCode}
                 </td>
 				<td>
-					${examinationItem.unit}
-				</td>
-				<td>
 					${examinationItem.price}
-				</td>
-				<td>
-					${examinationItem.rangeMax} -- ${examinationItem.rangeMin}
 				</td>
 				<td>
 						${examinationItem.remarks}
