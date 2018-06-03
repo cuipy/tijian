@@ -52,6 +52,9 @@ public class ExaminationRecordItemController extends BaseController {
 	private ExaminationItemService examinationItemService;
 	@Autowired
 	private SampleCodesService sampleCodesService;
+
+	@Autowired
+	private SpecimenService specimenService;
 	
 	@ModelAttribute
 	public ExaminationRecordItem get(@RequestParam(required=false) String id) {
@@ -206,7 +209,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})
-	public String grab_sample(String currExamItemId,String examRecordCode , Model model) {
+	public String grab_sample(String currSpecimenId,String examRecordCode , Model model) {
 
 		// 获取 什么阶段生成 样本编号 ；获取 什么阶段打印 样本编号
 		Integer sampleCodeCreatePoint =GlobalSetUtils.getGlobalSet().getSampleCodeCreatePoint();
@@ -215,18 +218,20 @@ public class ExaminationRecordItemController extends BaseController {
 		model.addAttribute("sampleCodeCreatePoint",sampleCodeCreatePoint);
 		model.addAttribute("sampleCodePrintPoint",sampleCodePrintPoint);
 
-		// 加载需要采集样本的类型列表
-		ExaminationItem ei=new ExaminationItem();
-		ei.setNeedSamples("1");
-		List<ExaminationItem> needSampleItems = examinationItemService.findList(ei);
-		model.addAttribute("needSampleItems",needSampleItems);
+		// 加载当前用户所在部门的采样标本
+		String deptId = UserUtils.getUser().getOffice().getId();
+		Specimen sp=new Specimen();
+		sp.setGrabDeptId(deptId);
+		List<Specimen> specimens = specimenService.findList(sp);
+
+		model.addAttribute("specimens",specimens);
 
 		// 如果没有设置 currExamItemId 参数
-		if(StringUtils.isEmpty(currExamItemId)){
+		if(StringUtils.isEmpty(currSpecimenId)){
 			return "modules/wshbj/examinationRecordItem_grab_sample";
 		}
 
-		model.addAttribute("currExamItemId",currExamItemId);
+		model.addAttribute("currSpecimenId",currSpecimenId);
 
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){
@@ -239,7 +244,7 @@ public class ExaminationRecordItemController extends BaseController {
 				if (recordItems != null) {
 					for (ExaminationRecordItem eri : recordItems) {
 						// 1类型与当前类型 currExamItemId 相同， 2 最新的体检记录项目  3 未采样
-						if (eri.getItemId().equals(currExamItemId) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
+						if (eri.getItemId().equals(currSpecimenId /*currExamItemId*/) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
 							model.addAttribute("examRecord",record);
 
 							// 如果没有样本编号，则生成样本编号

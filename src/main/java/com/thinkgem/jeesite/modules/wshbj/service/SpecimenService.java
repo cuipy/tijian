@@ -33,7 +33,7 @@ public class SpecimenService extends CrudService<SpecimenDao, Specimen> {
 		return super.get(id);
 	}
 
-	@Cacheable(value = "specimenCache",key="'specimen_findList_'+#specimen.code+#specimen.name+#specimen.owner")
+	@Cacheable(value = "specimenCache",key="'specimen_findList_'+#specimen.code+#specimen.name+#specimen.grabDeptId+#specimen.owner")
 	public List<Specimen> findList(Specimen specimen) {
 		return super.findList(specimen);
 	}

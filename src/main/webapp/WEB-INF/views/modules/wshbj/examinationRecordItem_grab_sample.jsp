@@ -118,16 +118,16 @@ examRecord    当前要采样的 体检记录 对象
 <body>
 
 	<ul class="nav nav-tabs">
-        <li><a href="${ctx}/wshbj/examinationRecordItem/grab_sample" style="color:#666;">快速采样：选择采集类型</a></li>
-        <c:forEach items="${needSampleItems}" var="vo">
-        <c:if test="${vo.id==currExamItemId}"><li class="active"></c:if>
-        <c:if test="${vo.id!=currExamItemId}"><li></c:if>
-        <a href="${ctx}/wshbj/examinationRecordItem/grab_sample?currExamItemId=${vo.id}">${vo.name}</a></li> </c:forEach>
+        <li><a href="${ctx}/wshbj/examinationRecordItem/grab_sample" style="color:#666;">快速采样：选择采样标本</a></li>
+        <c:forEach items="${specimens}" var="vo">
+        <c:if test="${vo.id==currSpecimenId}"><li class="active"></c:if>
+        <c:if test="${vo.id!=currSpecimenId}"><li></c:if>
+        <a href="${ctx}/wshbj/examinationRecordItem/grab_sample?currSpecimenId=${vo.id}">${vo.name}</a></li> </c:forEach>
 	</ul>
     <div class="box1">
     <div id="msg" class="alert alert-danger" >
-    <c:if test="${empty currExamItemId }">第一步：请选择采集样本类型</c:if>
-    <c:if test="${not empty currExamItemId}">
+    <c:if test="${empty currSpecimenId }">第一步：请选择采集样本类型</c:if>
+    <c:if test="${not empty currSpecimenId}">
         <c:if test="${empty examRecord}">
             第二步：请录入体检记录编号，或扫描体检人身份证
         </c:if>
@@ -137,7 +137,7 @@ examRecord    当前要采样的 体检记录 对象
 	<div  style="max-width:1200px" class="form-horizontal">
 
 	    <input type="hidden" id="examRecordId" name="id" value="${examRecord.id}"/>
-	    <input type="hidden" id="currExamItemId" name="currExamItemId" value="${currExamItemId}"/>
+	    <input type="hidden" id="currSpecimenId" name="currSpecimenId" value="${currSpecimenId}"/>
 
 	    <input type="hidden" id="examRecordItemId" name="examRecordItemId" value="${examRecordItem.id}"/>
         <input type="hidden" id="examRecordItemSampleCode" name="examRecordItemSampleCode" value="${examRecordItem.sampleCode}"/>

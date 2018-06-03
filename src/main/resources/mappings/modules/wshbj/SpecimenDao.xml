@@ -38,6 +38,9 @@
 			<if test="owner != null and owner != ''">
 				AND a.owner = #{owner}
 			</if>
+			<if test="grabDeptId != null and grabDeptId != ''">
+				AND a.grab_dept_id = #{grabDeptId}
+			</if>
 			<if test="referenceFlag != null and referenceFlag != ''">
 				AND a.reference_flag = #{referenceFlag}
 			</if>
@@ -65,6 +68,9 @@
 		<include refid="specimenJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="grabDeptId != null and grabDeptId != ''">
+				AND a.grab_dept_id = #{grabDeptId}
+			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
