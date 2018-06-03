@@ -52,6 +52,11 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+
+			<if test="likeField != null and likeField != ''">
+				and (a.name like #{likeField} or a.name_pinyin like #{likeField})
+			</if>
+
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

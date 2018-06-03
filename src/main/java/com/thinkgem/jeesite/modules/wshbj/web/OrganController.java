@@ -145,6 +145,7 @@ public class OrganController extends BaseController {
 	@GetMapping(value = "ajax_for_autocompleter")
 	public List<Map<String,String>> ajax_for_autocompleter(String query,Integer limit){
 		Organ organ=new Organ();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
 		organ.setLikeField(StringUtils.forSuperLikeQuery(query));
 
 		Page<Organ> page=new Page();

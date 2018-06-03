@@ -113,6 +113,7 @@ public class JobPostController extends BaseController {
 	@GetMapping(value = "ajax_for_autocompleter")
 	public List<Map<String,String>> ajax_for_autocompleter(String query, Integer limit){
 		JobPost organ=new JobPost();
+		organ.setOwner(UserUtils.getUser().getCompany().getId());
 		organ.setLikeField(StringUtils.forSuperLikeQuery(query));
 
 		Page<JobPost> page=new Page();
