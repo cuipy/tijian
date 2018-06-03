@@ -12,8 +12,8 @@
 5 采样编号如果是在 体检记录创建的时候生成，但在采用的时候打印，则此时需要打印 样本编号；
 6 采样编号如果在这个时候生成，则需要 自动生成体检编号，则需要打印 样本编号。
 
-needSampleItems   需要采集样本的 ExaminationItem 的列表
-currExamItemId  当前选中的 体检项目类型 id
+specimens   需要当前用户可采样的 specimens 的列表
+currSpecimenId  当前选中的 标本 id
 examRecord    当前要采样的 体检记录 对象
 
 
@@ -35,17 +35,17 @@ examRecord    当前要采样的 体检记录 对象
 
 		        // 输入体检记录编号后，开始检测体检编号，如果编号合法，则可以采集编号
 		        var recordCode =$.trim($("#examRecordCode").val());
-		        var currExamItemId = $.trim($("#currExamItemId").val());
+		        var currSpecimenId = $.trim($("#currSpecimenId").val());
 
 		        var url="${ctx}/wshbj/examinationRecord/ajax_check_exam_record_code_can_grab_sample";
-		        var d1={"examRecordCode":recordCode,"examItemId":currExamItemId};
+		        var d1={"examRecordCode":recordCode,"specimenId":currSpecimenId};
 		        $.get(url,d1,function(d1r){
 
                     if(d1r.state!=1){
                         $("#msg_examRecordCode").html(d1r.msg);
                         return;
                     }else{
-                        var url2="${ctx}/wshbj/examinationRecordItem/grab_sample?examRecordCode="+recordCode+"&currExamItemId="+currExamItemId;
+                        var url2="${ctx}/wshbj/examinationRecordItem/grab_sample?examRecordCode="+recordCode+"&currSpecimenId="+currSpecimenId;
                         location.href=url2;
                     }
 
@@ -53,7 +53,7 @@ examRecord    当前要采样的 体检记录 对象
 
 		    });
 
-		    <c:if test="${not empty currExamItemId and not empty examRecord and !examRecordItem.grabSample}">
+		    <c:if test="${not empty currSpecimenId and not empty examRecord and !examRecordItem.grabSample}">
 		    // 体检记录项目还没有真正采样
             setTimeout("daojishiGrabSample()",1000);
 		    </c:if>
@@ -79,7 +79,7 @@ examRecord    当前要采样的 体检记录 对象
         }
         </c:if>
 
-        <c:if test="${not empty currExamItemId and not empty examRecord and !examRecordItem.grabSample}">
+        <c:if test="${not empty currSpecimenId and not empty examRecord and !examRecordItem.grabSample}">
         var submited=false;
         function daojishiGrabSample(){
             var second=$("#btnUpdateGrabSample").attr("data-second");
@@ -116,7 +116,6 @@ examRecord    当前要采样的 体检记录 对象
 	</script>
 </head>
 <body>
-
 	<ul class="nav nav-tabs">
         <li><a href="${ctx}/wshbj/examinationRecordItem/grab_sample" style="color:#666;">快速采样：选择采样标本</a></li>
         <c:forEach items="${specimens}" var="vo">

@@ -228,7 +228,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 		// 如果只有一个标本，则默认选中
 		if(specimens.size()>0&&StringUtils.isEmpty(currSpecimenId)){
-			currSpecimenId=specimens.get(0).getGrabDeptId();
+			currSpecimenId=specimens.get(0).getId();
 		}
 
 		// 如果没有设置 currExamItemId 参数
@@ -249,7 +249,7 @@ public class ExaminationRecordItemController extends BaseController {
 				if (recordItems != null) {
 					for (ExaminationRecordItem eri : recordItems) {
 						// 1类型与当前类型 currExamItemId 相同， 2 最新的体检记录项目  3 未采样
-						if (eri.getItemId().equals(currSpecimenId /*currExamItemId*/) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
+						if (eri.getSpecimenId().equals(currSpecimenId) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
 							model.addAttribute("examRecord",record);
 
 							// 如果没有样本编号，则生成样本编号
@@ -266,7 +266,6 @@ public class ExaminationRecordItemController extends BaseController {
 							}
 
 							model.addAttribute("examRecordItem",eri);
-							break;
 						}
 					}
 				}
