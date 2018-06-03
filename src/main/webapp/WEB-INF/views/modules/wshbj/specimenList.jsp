@@ -41,6 +41,7 @@
 			<tr>
 				<th>编号</th>
 				<th>名称</th>
+				<th>采样部门</th>
 				<th>更新时间</th>
 				<th>备注</th>
 				<th>顺序值</th>
@@ -56,6 +57,9 @@
 				<td>
 					${specimen.name}
 				</td>
+				<td>
+                    ${specimen.grabDeptName}
+                </td>
 				<td>
 					<fmt:formatDate value="${specimen.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>

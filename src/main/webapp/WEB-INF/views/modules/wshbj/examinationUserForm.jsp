@@ -58,6 +58,21 @@
                 }
 			});
 
+            $("#postName").autocompleter({
+                highlightMatches: true,
+                template: '{{ label }}',
+                hint: false, focusOpen:true,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/jobPost/ajax_for_autocompleter",
+                callback: function (value, index, selected) {
+                    var o=selected;
+                    $('#postId').val(o.id);
+                    $('#postName').val(o.name);
+                }
+            });
+
 			$("#idNumber").on('blur',parseIdNumber);
 			$("#idNumber").on('change',parseIdNumber);
 
@@ -131,6 +146,8 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationUser/form?id=${examinationUser.id}">体检用户<shiro:hasPermission name="wshbj:examinationUser:edit">${not empty examinationUser.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationUser:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 
+	<div class="box1">
+
 	<div id="dlalert" class="alert alert-warning">
           <strong>重要提示，身份证读取服务插件安装说明：</strong> <br>
           1. 身份证读取需要安装读取服务。 首先<a href="${ctxStatic}/idr200svr1.zip">下载身份证读取程序zip压缩包</a>，然后解压缩到本地计算机任意位置，然后运行 install.bat 命令完成服务注册。<br>
@@ -145,35 +162,35 @@
 
 		<form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
 
-		<div class="control-group span6">
+		<div class="control-group">
             <label class="control-label">真人照片采集：</label>
             <div class="controls">
                 <sys:cropper mainImgWidth="190"  mainImgHeight="240" imgName="真人照片" path="headImgPath" value="${ctx}/wshbj/examinationUser/getHeadImg?id=${examinationUser.id}"/>
             </div>
         </div>
 
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label">姓名：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span4">
+		<div class="control-group">
             <label class="control-label">姓名全拼：</label>
             <div class="controls">
                 <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
             </div>
         </div>
 
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label">身份证号：</label>
 			<div class="controls">
 				<form:input path="idNumber" htmlEscape="false" maxlength="20" class="input-medium required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label">联系电话：</label>
 			<div class="controls">
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium required"/>
@@ -181,7 +198,7 @@
 			</div>
 		</div>
 
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label">出生日期：</label>
 			<div class="controls">
 				<form:input path="birthday" htmlEscape="false" maxlength="45" autocomplete="true" readonly="true" class="input-medium Wdate required"
@@ -189,33 +206,32 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls radios-div radios-sex">
 				<form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 			</div>
 		</div>
 
-		<div class="control-group span4">
+		<div class="control-group">
             <label class="control-label"><font color="red">*</font> 年龄：</label>
             <div class="controls radios-div radios-sex">
                 <form:input path="age" type="number" htmlEscape="false" class="input-medium required"/>
             </div>
         </div>
 
-<div class="cl"></div>
-<div class="control-group span4">
-    <label class="control-label">体检单位：</label>
+<div class="control-group">
+    <label class="control-label"><a href="${ctx}/wshbj/organ/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 单位：</label>
     <div class="controls">
         <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationUser.organId}" >
                     <input type="text" id="organName" name="organName" value="${examinationUser.organName}" class="input-medium required">
-        <span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
+        <span class="help-inline">  </span>
         </div>
     </div>
 </div>
 
-		<div class="control-group span4">
-			<label class="control-label">行业：</label>
+		<div class="control-group">
+			<label class="control-label"> <a href="${ctx}/wshbj/industry/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 行业：</label>
 			<div class="controls">
 				<form:select path="industryId" class="input-medium">
 					<form:option value="">
@@ -223,32 +239,28 @@
 					</form:option>
 					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline">  <a href="${ctx}/wshbj/industry/form" target="_blank">新增行业</a> </span>
+				<span class="help-inline">   </span>
 			</div>
 		</div>
 
-		<div class="control-group span4">
-			<label class="control-label">岗位：</label>
+		<div class="control-group">
+			<label class="control-label"> <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 岗位：</label>
 			<div class="controls">
-				<form:select path="postId" class="input-medium">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-				<span class="help-inline">  <a href="${ctx}/wshbj/jobPost/form" target="_blank">新增岗位</a> </span>
+				<div class="autocompleter-box"><input type="hidden" id="postId" name="postId" value="${examinationUser.postId}" >
+                 <input type="text" id="postName" name="postName" value="${examinationUser.jobPostName}" class="input-medium required">
+               <span class="help-inline"> </span>
+               </div>
 			</div>
 		</div>
 
-        <div class="cl"></div>
-		<div class="control-group span12">
+		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="cl"></div>
-		<div class="form-actions span12">
+		<div class="form-actions">
 			<shiro:hasPermission name="wshbj:examinationUser:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
@@ -271,6 +283,8 @@
       1. 体检单位、行业、岗位，需要先录入系统<br>
       2. 身份证号码不允许重复。<br>
     </div>
+    </div>
+
     </div>
 </body>
 </html>

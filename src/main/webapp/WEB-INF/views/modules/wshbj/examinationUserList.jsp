@@ -22,6 +22,8 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationUser/">体检用户列表</a></li>
 		<shiro:hasPermission name="wshbj:examinationUser:edit"><li><a href="${ctx}/wshbj/examinationUser/form">体检用户添加</a></li></shiro:hasPermission>
 	</ul>
+
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -110,7 +112,7 @@
       2. 身份证号码不允许重复。
 
     </div>
-
+    </div>
 
 </body>
 </html>

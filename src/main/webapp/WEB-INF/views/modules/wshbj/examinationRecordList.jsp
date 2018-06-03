@@ -40,6 +40,7 @@
 		<li class=""><a href="${ctx}/wshbj/examinationRecord/list_print">可制证体检记录</a></li>
 		<li ><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul>
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -176,6 +177,7 @@
       2. 体检套餐必须录入系统，见：<span class="help-inline">左侧菜单 - 基础数据 - 体检套餐</span>，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
       3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
 
+    </div>
     </div>
 
 

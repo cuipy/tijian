@@ -43,6 +43,8 @@
 		<li class="active"><a href="${ctx}/wshbj/examinationRecordItem/list_resulting">待录结果项目</a></li>
 		<li><a href="${ctx}/wshbj/examinationRecordItem/list_resulted">已录结果项目</a></li>
 	</ul>
+
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="examinationRecordItem" action="${ctx}/wshbj/examinationRecordItem/list_resulting" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -101,5 +103,6 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+	</div>
 </body>
 </html>

@@ -122,6 +122,7 @@
         <li><a href="javascript:void(0)">快速制卡</a></li>
 	</ul>
 
+    <div class="box1">
     <div id="msg" class="alert alert-danger" >
         <c:if test="${empty examRecord}">
         请录入体检记录编号，或扫描体检人身份证
@@ -249,7 +250,7 @@
 
 <div class="cl"></div>
 
-	</div>
+	</div></div>
 
 
 

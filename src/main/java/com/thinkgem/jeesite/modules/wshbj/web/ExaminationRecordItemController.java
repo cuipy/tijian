@@ -226,6 +226,11 @@ public class ExaminationRecordItemController extends BaseController {
 
 		model.addAttribute("specimens",specimens);
 
+		// 如果只有一个标本，则默认选中
+		if(specimens.size()>0&&StringUtils.isEmpty(currSpecimenId)){
+			currSpecimenId=specimens.get(0).getGrabDeptId();
+		}
+
 		// 如果没有设置 currExamItemId 参数
 		if(StringUtils.isEmpty(currSpecimenId)){
 			return "modules/wshbj/examinationRecordItem_grab_sample";
