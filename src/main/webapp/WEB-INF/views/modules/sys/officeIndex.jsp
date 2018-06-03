@@ -11,18 +11,18 @@
 </head>
 <body>
 	<sys:message content="${message}"/>
-	<div id="content2" class="row-fluid">
-		<div id="left2" class="accordion-group" style="float:left">
+	<div class="box1" style="padding-top:12px;">
+    	<table style="width:100%;">
+    		<tr><td style="border:1px solid #e5e5e5;width:260px;vertical-align:top;">
 			<div class="accordion-heading">
 		    	<a class="accordion-toggle">组织机构<i class="icon-refresh pull-right" onclick="refreshTree();"></i></a>
 		    </div>
 			<div id="ztree" class="ztree"></div>
-		</div>
-		<div id="openClose2" class="close"  style="float:left">&nbsp;</div>
-		<div id="right2">
-			<iframe id="officeContent" src="${ctx}/sys/office/list?id=&parentIds=" style="min-height:400px" frameborder="0"></iframe>
-		</div>
-	</div>
+		</td>
+		<td>
+			<iframe id="officeContent" src="${ctx}/sys/office/list?id=&parentIds=" style="width:100%;min-height:800px" frameborder="0"></iframe>
+		</td></tr>
+	</table>
 	<script type="text/javascript">
 		var setting = {data:{simpleData:{enable:true,idKey:"id",pIdKey:"pId",rootPId:'0'}},
 			callback:{onClick:function(event, treeId, treeNode){
