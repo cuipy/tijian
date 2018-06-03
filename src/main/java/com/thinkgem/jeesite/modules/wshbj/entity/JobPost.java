@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 工作岗位Entity
@@ -85,5 +87,19 @@ public class JobPost extends DataEntity<JobPost> {
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
-	
+
+
+	public Map<String,String> getMap(){
+		Map<String,String> map=new HashMap();
+
+		map.put("id",id);
+		map.put("code",code);
+		map.put("name",name);
+
+		map.put("value",name);
+		map.put("label",name+"("+namePinyin+")");
+
+
+		return map;
+	}
 }

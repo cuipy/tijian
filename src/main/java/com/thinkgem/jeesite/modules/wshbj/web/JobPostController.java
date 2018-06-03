@@ -12,6 +12,7 @@ import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
 import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
+import com.thinkgem.jeesite.modules.wshbj.entity.Organ;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.JobPost;
 import com.thinkgem.jeesite.modules.wshbj.service.JobPostService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 工作岗位Controller
@@ -59,24 +64,6 @@ public class JobPostController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/wshbj/jobPostList";
 	}
-
-//	@RequiresPermissions("wshbj:jobPost:edit")
-//	@RequestMapping(value = {"list4Pull", ""})
-//	public String list4Pull(JobPost jobPost, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		jobPost.setOwner(null);
-//		jobPost.setReferenceFlag("1");
-//		Page<JobPost> page = jobPostService.findPage(new Page<JobPost>(request, response), jobPost);
-//		model.addAttribute("page", page);
-//		return "modules/wshbj/jobPostList4Pull";
-//	}
-//
-//	@RequiresPermissions("wshbj:jobPost:edit")
-//	@RequestMapping(value =  "saveByPull",method = RequestMethod.POST)
-//	@ResponseBody
-//	public RequestResult saveByPull(HttpServletRequest request, String jobPostIds) {
-//		return jobPostService.saveByPull(UserUtils.getUser(),jobPostIds);
-//	}
-
 
 	@RequiresPermissions("wshbj:jobPost:view")
 	@RequestMapping(value = "form")
@@ -122,41 +109,23 @@ public class JobPostController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/wshbj/jobPost/list?repage";
 	}
 
-//	@RequiresPermissions("wshbj:jobPost:viewByCenter")
-//	@RequestMapping(value = {"listByCenter", ""})
-//	public String listByCenter(JobPost jobPost, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		jobPost.setOwner(null);
-//		jobPost.setReferenceFlag("1");
-//		Page<JobPost> page = jobPostService.findPage(new Page<JobPost>(request, response), jobPost);
-//		model.addAttribute("page", page);
-//		return "modules/wshbj/jobPostListByCenter";
-//	}
-//
-//	@RequiresPermissions("wshbj:jobPost:viewByCenter")
-//	@RequestMapping(value = "formByCenter")
-//	public String formByCenter(JobPost jobPost, Model model) {
-//		model.addAttribute("jobPost", jobPost);
-//		return "modules/wshbj/jobPostFormByCenter";
-//	}
-//
-//	@RequiresPermissions("wshbj:jobPost:editByCenter")
-//	@RequestMapping(value = "saveByCenter")
-//	public String saveByCenter(JobPost jobPost, Model model, RedirectAttributes redirectAttributes) {
-//		if (!beanValidator(model, jobPost)){
-//			return form(jobPost, model);
-//		}
-//		jobPost.setOwner(null);
-//		jobPost.setReferenceFlag("1");
-//		jobPostService.save(jobPost);
-//		addMessage(redirectAttributes, "保存工作岗位管理成功");
-//		return "redirect:"+Global.getAdminPath()+"/wshbj/jobPost/listByCenter?repage";
-//	}
-//
-//	@RequiresPermissions("wshbj:jobPost:editByCenter")
-//	@RequestMapping(value = "deleteByCenter")
-//	public String deleteByCenter(JobPost jobPost, RedirectAttributes redirectAttributes) {
-//		jobPostService.delete(jobPost);
-//		addMessage(redirectAttributes, "删除工作岗位管理成功");
-//		return "redirect:"+Global.getAdminPath()+"/wshbj/jobPost/listByCenter?repage";
-//	}
+	@ResponseBody
+	@GetMapping(value = "ajax_for_autocompleter")
+	public List<Map<String,String>> ajax_for_autocompleter(String query, Integer limit){
+		JobPost organ=new JobPost();
+		organ.setLikeField(StringUtils.forSuperLikeQuery(query));
+
+		Page<JobPost> page=new Page();
+		page.setPageNo(1);
+		page.setPageSize(limit);
+		Page<JobPost> p = jobPostService.findPage(page,organ);
+		List<Map<String,String>> lst2=new ArrayList();
+
+		for(JobPost o:p.getList()){
+			lst2.add(o.getMap());
+		}
+
+		return lst2;
+	}
+
 }

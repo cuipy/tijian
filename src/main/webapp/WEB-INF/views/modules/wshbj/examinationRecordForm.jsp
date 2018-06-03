@@ -60,6 +60,21 @@
                 }
 			});
 
+			$("#postName").autocompleter({
+                highlightMatches: true,
+                template: '{{ label }}',
+                hint: false, focusOpen:true,
+                cache:false,
+                empty: false,
+                limit: 10,
+                source:"${ctx}/wshbj/jobPost/ajax_for_autocompleter",
+                callback: function (value, index, selected) {
+                    var o=selected;
+                    $('#postId').val(o.id);
+                    $('#postName').val(o.name);
+                }
+            });
+
             // 身份证输入文本框失去焦点的时候
              $('#showIdNumber').blur(function(){
                 loadUserByIdNumber();
@@ -319,6 +334,7 @@
         <li ><a href="${ctx}/wshbj/examinationRecord/list_nopass">不合格体检记录</a></li>
 	</ul><br/>
 
+    <div class="box1">
     <div id="lodop_check" class="alert alert-danger" style="display:none" >
         1 您可能还未安装Lodop打印驱动，请<a href="${ctxStatic}/lodop/CLodop_Setup_for_Win32NT.exe" target="_blank">下载</a>并安装Lodop。<br>
         2 您如果已经安装Lodop打印驱动，但没有启动服务。请运行 <span style="color:#000;"> 开始 > 所有程序 > C-Lodop(HTM-WEB-PRINT)32bit > C-Lodop Setup</span> ，并启动CLodop服务。
@@ -344,37 +360,39 @@
 
     <div>
 
-		<div class="control-group span12">
-			<label class="control-label"><font color="red">*</font>  身份证号：</label>
-			<div class="controls">
-				<div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-large required"/>
-				<span id="idNumberInfo" class="help-inline">通过身份证获取用户信息</span>
-				</div>
-			</div>
-		</div>
-        <div class="cl"></div>
 
-        <div class="control-group span6">
+
+
+        <div class="control-group">
             <label class="control-label"><font color="red">*</font>  用户头像：</label>
             <div class="controls">
                  <sys:cropper mainImgWidth="180"  mainImgHeight="240" imgName="真人照片" path="headImg"  value="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"/>
             </div>
         </div>
 
-        <div class="control-group span4">
+        <div class="control-group">
+            <label class="control-label" style="font-weight:bold"><font color="red">*</font>  身份证号：</label>
+            <div class="controls">
+                <div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-large required"/>
+                <span id="idNumberInfo" class="help-inline">通过身份证获取用户信息</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
             <label class="control-label"><font color="red">*</font> 真实姓名：</label>
             <div class="controls">
                 <form:input path="name" htmlEscape="false" maxlength="32" class="input-medium  required"/>
             </div>
         </div>
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium  required"/>
 			</div>
 		</div>
 
-		<div class="control-group span4">
+		<div class="control-group">
 			<label class="control-label"><font color="red">*</font> 性别：</label>
 			<div class="controls">
                 <form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
@@ -382,7 +400,7 @@
 			</div>
 		</div>
 
-		<div class="control-group span4">
+		<div class="control-group">
             <label class="control-label"><font color="red">*</font> 年龄：</label>
             <div class="controls">
                 <input type="number" id="age" name="age"  value="${examinationRecord.age}" class="input-medium required">
@@ -390,7 +408,7 @@
         </div>
 
 
-		<div class="control-group span4">
+		<div class="control-group">
             <label class="control-label"><font color="red">*</font> 出生日期：</label>
             <div class="controls">
                 <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}"  readonly="true"
@@ -398,17 +416,19 @@
 
             </div>
         </div>
-        <div class="control-group span4">
-            <label class="control-label">体检单位：</label>
+        <div class="control-group">
+            <label class="control-label">
+             <a href="${ctx}/wshbj/organ/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
+             体检单位：</label>
             <div class="controls">
                 <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
                             <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
-                <span class="help-inline"> <a href="${ctx}/wshbj/organ/form" target="_blank">新增单位</a> </span>
+                <span class="help-inline"> </span>
                 </div>
             </div>
         </div>
-	<div class="control-group span4">
-		<label class="control-label">行业：</label>
+	<div class="control-group">
+		<label class="control-label"> <a href="${ctx}/wshbj/industry/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 行业：</label>
 		<div class="controls">
 				<form:select path="industryId" class="input-medium">
 					<form:option value="">
@@ -416,25 +436,21 @@
 					</form:option>
 					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
-				<span class="help-inline">  <a href="${ctx}/wshbj/industry/form" target="_blank">新增行业</a> </span>
+				<span class="help-inline"> </span>
 		</div>
 	</div>
 
-	<div class="control-group span4">
-		<label class="control-label">岗位：</label>
+	<div class="control-group">
+		<label class="control-label"> <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 岗位：</label>
 		<div class="controls">
-		   <form:select path="postId" class="input-medium">
-                <form:option value="">
-                    请选择
-                </form:option>
-                <form:options items="${postList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-            </form:select>
-            <span class="help-inline">  <a href="${ctx}/wshbj/jobPost/form" target="_blank">新增岗位</a> </span>
+		   <div class="autocompleter-box"><input type="hidden" id="postId" name="postId" value="${examinationRecord.postId}" >
+                       <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
+           <span class="help-inline"> </span>
+           </div>
 		</div>
 	</div>
 
-<div class="cl"></div>
-		<div class="control-group span8">
+		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:input path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
@@ -442,16 +458,7 @@
 		</div>
 		<div class="cl"></div>
 
-<div class="control-group span4">
-    		<label class="control-label">体检日期：</label>
-    		<div class="controls">
-                <input type="text" id="examTime" name="examTime" value="<fmt:formatDate pattern='yyyy-MM-dd' value='${examinationRecord.examTime}' />"
-                   class="input-medium Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
-
-    		</div>
-    	</div>
-    	<div class="cl"></div>
-		<div class="control-group span12" id="packageIdDiv">
+		<div class="control-group" id="packageIdDiv">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
                 <label for="packageId_no"> <input type="radio" id="packageId_no" name="packageId" value="" onclick="chkPackage('no')" data-itemIds=''
@@ -465,37 +472,39 @@
 
 			</div>
 		</div>
-		<div class="control-group span12" id="itemsDiv1" >
+		<div class="cl"></div>
+		<div class="control-group" id="itemsDiv1" style="display:none" >
             <label class="control-label">必选项目：</label>
             <div class="controls radios-box">
                 <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
                <label id="lbl_tcri${ri.id}" for="tcri${ri.id}" style="display:none;">
                <input id="tcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="return false;">
-                 ${ri.name} ${ri.price}元</label>
+                 ${ri.name} </label>
                 </c:forEach>
             </div>
         </div>
-		<div class="control-group span12" id="itemsDiv" >
+        <div class="cl"></div>
+		<div class="control-group" id="itemsDiv" >
 			<label class="control-label">自由选择项目：</label>
 			<div class="controls radios-box">
 			    <c:if test="${not empty examinationItemList  }">
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
 				<label id="lbl_bcri${ri.id}" for="bcri${ri.id}"> <input id="bcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
 				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
-				${ri.name} ${ri.price}元</label>
+				${ri.name} </label>
 				</c:forEach>
 				</c:if>
 			</div>
 		</div>
 		<div class="cl"></div>
-		<div class="control-group span6">
+		<div class="control-group">
             <label class="control-label">合计价：</label>
             <div class="controls">
                 <form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium " readonly="true"/>
             </div>
         </div>
 		<div class="cl"></div>
-		<div class="form-actions span12">
+		<div class="form-actions">
 
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" onclick="do_sumbit('print')" />&nbsp;</shiro:hasPermission>
             <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" onclick="do_sumbit('return')" />&nbsp;</shiro:hasPermission>
@@ -525,6 +534,8 @@
       3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
 
     </div>
+</div>
+
 </div>
 
 

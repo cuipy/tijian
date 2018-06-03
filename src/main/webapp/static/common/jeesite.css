@@ -40,7 +40,7 @@ input.btn:hover {*color:#333333}
 
 .supcan {border:1px #d3d3d3 solid;height:300px;}
 
-.form-horizontal .control-group {min-height:37px;padding-bottom:6px;margin-bottom:6px;margin-left:0px;border-bottom:1px dotted #dddddd;}
+.form-horizontal .control-group {float:left;min-height:37px;padding-bottom:6px;margin-bottom:6px;margin-left:0px;}
 legend + .control-group {margin-top:6px;}
 .controls .lbl {display:inline-block;padding-top:5px;margin-bottom:0;vertical-align:middle;}
 .measure-input {background:url("../images/ruler.gif") repeat-x scroll 0 bottom transparent;}
@@ -66,7 +66,7 @@ legend + .control-group {margin-top:6px;}
 .form-horizontal .table-form{width:100%;border-color:#dddddd;}
 .form-horizontal .table-form, .form-horizontal .table-form td{border:1px solid #ddd;background-color:#fdfdfd;padding:4px;} 
 .form-horizontal .table-form td.tit{background:#fafafa;text-align:center;padding-right:8px;white-space:nowrap;}
-.form-horizontal .form-actions{margin-bottom:0px;margin-left:0px;float:left;box-sizing:border-box;padding-left:100px;}
+.form-horizontal .form-actions{width:100%;background-color:transparent;margin-bottom:0px;margin-left:0px;float:left;box-sizing:border-box;padding-left:100px;}
 
 .form-horizontal fieldset .row-fluid {margin-bottom:10px;}
 
@@ -92,10 +92,6 @@ legend + .control-group {margin-top:6px;}
 .accordion-inner .nav-list {margin-bottom:4px;}
 .accordion-inner .nav-list li a {padding:3px 0px 3px 8px;}
 
-#left,#openClose {float:left;} #openClose {width:6px;margin:0 1px;cursor:pointer;}
-#openClose,#openClose.close {background:#efefef url("../images/openclose.png") no-repeat -29px center;}
-#openClose.close {background-position:1px center;opacity:0.5;filter:alpha(opacity=50)}
-
 .alert .help-inline{
     color:#f30;
 }
@@ -112,7 +108,14 @@ legend + .control-group {margin-top:6px;}
 .help-div{
     padding-left:0px;
 }
+.box1{
+    padding-left:12px;
+}
 .radios-div>span,.checkboxs-div>span,.radios-div>label{
     display:inline-block;
     min-width:120px;
+}
+
+.nav-tabs{
+    background-image:url('../images/style2/righttop.gif');
 }
