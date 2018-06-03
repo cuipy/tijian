@@ -109,7 +109,7 @@ legend + .control-group {margin-top:6px;}
     padding-left:0px;
 }
 .box1{
-    padding-left:12px;
+    padding-left:12px; padding-right:12px;
 }
 .radios-div>span,.checkboxs-div>span,.radios-div>label{
     display:inline-block;

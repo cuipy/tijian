@@ -105,6 +105,7 @@ examRecord    当前要采样的 体检记录 对象
         <a href="${ctx}/wshbj/examinationRecordItem/set_result?currExamItemId=${vo.id}">${vo.name}</a></li> </c:forEach>
 	</ul>
 
+    <div class="box1">
     <div id="msg" class="alert alert-danger" >
     <c:if test="${empty currExamItemId }">第一步：请选择采集样本类型</c:if>
     <c:if test="${not empty currExamItemId}">
@@ -235,7 +236,7 @@ examRecord    当前要采样的 体检记录 对象
 	</div>
 
 	</c:if>
-
+    </div>
 
 
 </body>
