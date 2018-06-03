@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,6 +105,9 @@ public class OfficeController extends BaseController {
 			return form(office, model);
 		}
 
+		if(StringUtils.isEmpty(office.getCode())) {
+			office.setCode(SysSequenceUtils.nextSequence(Office.class, "code"));
+		}
 		officeService.save(office);
 		
 		if(office.getChildDeptList()!=null){

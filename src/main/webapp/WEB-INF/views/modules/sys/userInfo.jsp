@@ -36,8 +36,7 @@
 		<div class="control-group">
 			<label class="control-label">头像:</label>
 			<div class="controls">
-				<form:hidden id="nameImage" path="photo" htmlEscape="false" maxlength="255" class="input-xlarge"/>
-				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="300" maxHeight="300"/>
+				 <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="头像" path="photo"  value="${ctx}/sys/user/getPhotoImg?id=${user.id}"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -52,6 +51,7 @@
 				<label class="lbl">${user.office.name}</label>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">姓名:</label>
 			<div class="controls">
@@ -64,6 +64,7 @@
 				<form:input path="email" htmlEscape="false" maxlength="50" class="email"/>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">电话:</label>
 			<div class="controls">
@@ -76,12 +77,14 @@
 				<form:input path="mobile" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">用户类型:</label>
 			<div class="controls">
@@ -94,6 +97,7 @@
 				<label class="lbl">${user.roleNames}</label>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">上次登录:</label>
 			<div class="controls">

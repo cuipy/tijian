@@ -21,6 +21,7 @@
 		<li class="active"><a href="${ctx}/sys/menu/">菜单列表</a></li>
 		<shiro:hasPermission name="sys:menu:edit"><li><a href="${ctx}/sys/menu/form">菜单添加</a></li></shiro:hasPermission>
 	</ul>
+	<div class="box1">
 	<sys:message content="${message}"/>
 	<form id="listForm" method="post">
 		<table id="treeTable" class="table table-striped table-bordered table-condensed hide">
@@ -51,5 +52,6 @@
 			<input id="btnSubmit" class="btn btn-primary" type="button" value="保存排序" onclick="updateSort();"/>
 		</div></shiro:hasPermission>
 	 </form>
+	 </div>
 </body>
 </html>

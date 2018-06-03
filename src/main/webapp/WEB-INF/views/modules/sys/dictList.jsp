@@ -18,6 +18,7 @@
 		<li class="active"><a href="${ctx}/sys/dict/">字典列表</a></li>
 		<shiro:hasPermission name="sys:dict:edit"><li><a href="${ctx}/sys/dict/form?sort=10">字典添加</a></li></shiro:hasPermission>
 	</ul>
+		<div class="box1">
 	<form:form id="searchForm" modelAttribute="dict" action="${ctx}/sys/dict/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -46,5 +47,6 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+	</div>
 </body>
 </html>

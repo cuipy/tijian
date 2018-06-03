@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.TreeEntity;
@@ -197,6 +198,7 @@ public class Office extends TreeEntity<Office> {
 	}
 
 	@Length(min=0, max=100)
+	@ExpressSequence(express = "D{yyMMdd}[3]",describe = "部门编号")
 	public String getCode() {
 		return code;
 	}

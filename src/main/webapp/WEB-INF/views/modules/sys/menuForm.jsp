@@ -30,6 +30,7 @@
 		<li><a href="${ctx}/sys/menu/">菜单列表</a></li>
 		<li class="active"><a href="${ctx}/sys/menu/form?id=${menu.id}&parent.id=${menu.parent.id}">菜单<shiro:hasPermission name="sys:menu:edit">${not empty menu.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="sys:menu:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
+	<div class="box1">
 	<form:form id="inputForm" modelAttribute="menu" action="${ctx}/sys/menu/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
@@ -47,6 +48,7 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">链接:</label>
 			<div class="controls">
@@ -54,6 +56,7 @@
 				<span class="help-inline">点击菜单跳转的页面</span>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">目标:</label>
 			<div class="controls">
@@ -67,6 +70,7 @@
 				<sys:iconselect id="icon" name="icon" value="${menu.icon}"/>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">排序:</label>
 			<div class="controls">
@@ -81,6 +85,7 @@
 				<span class="help-inline">该菜单或操作是否显示到系统菜单中</span>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">权限标识:</label>
 			<div class="controls">
@@ -88,6 +93,7 @@
 				<span class="help-inline">控制器中定义的权限标识，如：@RequiresPermissions("权限标识")</span>
 			</div>
 		</div>
+		<div class="cl"></div>
 		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">
@@ -99,5 +105,6 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	</div>
 </body>
 </html>
