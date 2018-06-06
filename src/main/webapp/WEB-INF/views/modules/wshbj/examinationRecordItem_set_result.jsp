@@ -72,7 +72,7 @@ examRecord    当前要采样的 体检记录 对象
             });
 
             var d1={"resultFlag": resultFlag };
-            $.get(url,d1,function(d1r){
+            $.post(url,d1,function(d1r){
                 $("#msg").show().html(d1r.msg);
             });
         }

@@ -170,14 +170,16 @@ public class ExaminationRecordItemController extends BaseController {
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
-	@RequestMapping(value = "ajax_update_result_flag")
+	@PostMapping(value = "ajax_update_result_flag")
 	@ResponseBody
 	public RequestResult ajax_update_result_flag(String resultFlag, Model model){
 
-        List<RequestResult> rrs=new ArrayList();
+        String res = "";
 
 		if(StringUtils.isEmpty(resultFlag)){
-			String[] arrResultFlag = resultFlag.split("|");
+			String[] arrResultFlag = resultFlag.split("\\|");
+
+			System.out.println(arrResultFlag.length);
 
 			if(arrResultFlag.length>0){
 				for(String strResultFlag : arrResultFlag){
@@ -197,12 +199,12 @@ public class ExaminationRecordItemController extends BaseController {
 					examinationRecordItem.setId(itemId);
 					examinationRecordItem.setResultFlag(strFlag);
 					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
-					rrs.add(rr);
+					res+=rr.getState()+":"+rr.getMsg()+"<br>";
 				}
 			}
 
 		}
-		return RequestResult.generate(1,"保存完成。",rrs);
+		return RequestResult.generate(1,res);
 
 	}
 
