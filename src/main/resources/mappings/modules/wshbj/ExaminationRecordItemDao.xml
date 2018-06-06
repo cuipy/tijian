@@ -455,5 +455,10 @@
 		UPDATE bj_examination_record_item SET grab_sample = 1 WHERE sample_code = #{sampleCode}
 	</update>
 
+	<update id="cancelGrabSample">
+		UPDATE bj_examination_record_item SET grab_sample = 0,sample_code = null
+		WHERE record_id = #{examRecordId} and specimen_id = #{specimenId}
+	</update>
+
 
 </mapper>

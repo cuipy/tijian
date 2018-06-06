@@ -206,6 +206,14 @@ public class ExaminationRecordItemController extends BaseController {
 		return RequestResult.generate(1,"更新成功");
 	}
 
+	@RequiresPermissions("wshbj:examinationRecordItem:edit")
+	@PostMapping(value = "ajax_cancel_grab_sample")
+	@ResponseBody
+	public RequestResult ajax_cancel_grab_sample(String examRecordId, String specimenId ){
+		Integer count = examinationRecordItemService.cancelGrabSample(examRecordId, specimenId);
+		return RequestResult.generate(1,"更新成功");
+	}
+
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"grab_sample"})

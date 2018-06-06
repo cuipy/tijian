@@ -100,6 +100,15 @@ examRecord    当前要采样的 体检记录 对象
             });
         }
 
+        <c:if test="${not autPrint}">
+        // 撤销取样
+        function do_cancel_grab_sample(){
+            var url="${ctx}/wshbj/examinationRecordItem/ajax_cancel_grab_sample";
+            var d1 = {"examRecordId":$("#examRecordId").val(),"spencimenId": $("#currSpecimenId").val() };
+            $.post(url,d1,function(){location.reload();});
+        }
+        </c:if>
+
         </c:if>
 
 
@@ -119,6 +128,9 @@ examRecord    当前要采样的 体检记录 对象
     <c:if test="${not empty currSpecimenId}">
         <c:if test="${empty examRecord}">
             第二步：请录入体检记录编号，或扫描体检人身份证
+        </c:if>
+        <c:if test="${not autoPrint}">
+            已经取样成功。
         </c:if>
     </c:if>
     </div>
@@ -219,8 +231,9 @@ examRecord    当前要采样的 体检记录 对象
 		<div class="form-actions">
 
             <input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="do_sample_code_print()" />&nbsp;&nbsp;
-            <c:if test="${!examRecordItem.grabSample}">
-            <input id="btnUpdateGrabSample" class="btn btn-primary" type="button" value="设置取样成功" data-second="10" onclick="do_update_grab_sample()" />&nbsp;</c:if>
+            <c:if test="${not autoPrint}">
+            <input id="btnCancelGrabSample" class="btn btn-primary" type="button" value="撤销并重新取样"
+                   onclick="do_cancel_grab_sample()" />&nbsp;</c:if>
 		</div>
 
 <div class="cl"></div>

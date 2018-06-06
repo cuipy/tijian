@@ -356,4 +356,9 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     public Integer updateGrabSample(String sampleCode) {
         return dao.updateGrabSample(sampleCode);
     }
+
+    @Transactional(readOnly = false)
+    public Integer cancelGrabSample(String examRecordId,String spencimenId) {
+        return dao.cancelGrabSample(examRecordId,spencimenId);
+    }
 }
