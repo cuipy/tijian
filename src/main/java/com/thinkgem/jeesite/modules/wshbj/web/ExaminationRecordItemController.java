@@ -174,6 +174,7 @@ public class ExaminationRecordItemController extends BaseController {
 	@ResponseBody
 	public RequestResult ajax_update_result_flag(String resultFlag, Model model){
 
+        List<RequestResult> rrs=new ArrayList();
 
 		if(StringUtils.isEmpty(resultFlag)){
 			String[] arrResultFlag = resultFlag.split("|");
@@ -196,13 +197,12 @@ public class ExaminationRecordItemController extends BaseController {
 					examinationRecordItem.setId(itemId);
 					examinationRecordItem.setResultFlag(strFlag);
 					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
-
-
+					rrs.add(rr);
 				}
 			}
 
 		}
-		return RequestResult.generate(1,"保存成功。");
+		return RequestResult.generate(1,"保存完成。",rrs);
 
 	}
 
