@@ -202,7 +202,7 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = "ajax_update_grab_sample")
 	@ResponseBody
 	public RequestResult ajax_update_grab_sample(ExaminationRecordItem examinationRecordItem, Model model){
-		Integer count = examinationRecordItemService.updateGrabSample(examinationRecordItem.getId());
+		Integer count = examinationRecordItemService.updateGrabSample(examinationRecordItem.getSampleCode());
 		return RequestResult.generate(1,"更新成功");
 	}
 
@@ -231,13 +231,16 @@ public class ExaminationRecordItemController extends BaseController {
 			currSpecimenId=specimens.get(0).getId();
 		}
 
-		// 如果没有设置 currExamItemId 参数
+		// 如果没有设置 currSpecimenId 参数
 		if(StringUtils.isEmpty(currSpecimenId)){
 			return "modules/wshbj/examinationRecordItem_grab_sample";
 		}
 
 		model.addAttribute("currSpecimenId",currSpecimenId);
 
+		String newSampleCode = null;
+		boolean autoPrint = false;
+		Integer sampleCodeCount = 0;
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){
 			ExaminationRecord er=new ExaminationRecord();
@@ -248,29 +251,44 @@ public class ExaminationRecordItemController extends BaseController {
 				List<ExaminationRecordItem> recordItems = record.getItems();
 				if (recordItems != null) {
 					for (ExaminationRecordItem eri : recordItems) {
-						// 1类型与当前类型 currExamItemId 相同， 2 最新的体检记录项目  3 未采样
-						if (eri.getSpecimenId().equals(currSpecimenId) && "1".equals(eri.getLastFlag()) && !eri.getGrabSample()) {
+						// 1类型与当前类型 currSpecimenId 相同， 2 最新的体检记录项目
+						if (eri.getSpecimenId().equals(currSpecimenId) && "1".equals(eri.getLastFlag())) {
 							model.addAttribute("examRecord",record);
+							sampleCodeCount++;
 
 							// 如果没有样本编号，则生成样本编号
 							String sampleCode = eri.getSampleCode();
 							if(StringUtils.isEmpty(sampleCode)) {
-								String itemId = eri.getItemId();
-								ExaminationItem examItem = examinationItemService.get(itemId);
 
-								// 样本编号前缀
-								String prefixSampleCode = examItem.getPrefixSampleCode();
-								sampleCode = SysSequenceUtils.nextSequence(prefixSampleCode + "{yyMMdd}[4]");
-								eri.setSampleCode(sampleCode);
+								if(StringUtils.isEmpty(newSampleCode)) {
+									String itemId = eri.getItemId();
+									ExaminationItem examItem = examinationItemService.get(itemId);
+									// 样本编号前缀
+									String prefixSampleCode = examItem.getPrefixSampleCode();
+									newSampleCode = SysSequenceUtils.nextSequence(prefixSampleCode + "{yyMMdd}[4]");
+								}
+								eri.setSampleCode(newSampleCode);
 								examinationRecordItemService.save(eri);
+								autoPrint=true;
+							}else{
+								// 已经有样本编号，则使用之前生产的样本编号
+								if(StringUtils.isEmpty(newSampleCode)) {
+									newSampleCode = sampleCode;
+								}
 							}
 
-							model.addAttribute("examRecordItem",eri);
 						}
 					}
 				}
 			}
 		}
+
+		// 是否自动打印
+		model.addAttribute("autoPrint",autoPrint);
+
+		model.addAttribute("sampleCode",newSampleCode);
+
+		model.addAttribute("sampleCodeCount",sampleCodeCount);
 
 		return "modules/wshbj/examinationRecordItem_grab_sample";
 	}

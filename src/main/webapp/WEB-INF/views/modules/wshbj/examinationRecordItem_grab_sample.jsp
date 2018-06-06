@@ -41,7 +41,7 @@ examRecord    当前要采样的 体检记录 对象
 		        var d1={"examRecordCode":recordCode,"specimenId":currSpecimenId};
 		        $.get(url,d1,function(d1r){
 
-                    if(d1r.state!=1){
+                    if(d1r.state!=1&&d1r.state!=3){
                         $("#msg_examRecordCode").html(d1r.msg);
                         return;
                     }else{
@@ -53,15 +53,14 @@ examRecord    当前要采样的 体检记录 对象
 
 		    });
 
-		    <c:if test="${not empty currSpecimenId and not empty examRecord and !examRecordItem.grabSample}">
+		    <c:if test="${not empty currSpecimenId and not empty examRecord}">
 		    // 体检记录项目还没有真正采样
-            setTimeout("daojishiGrabSample()",1000);
+            daojishiGrabSample();
 		    </c:if>
 
-		    <c:if test="${ not empty examRecordItem && examRecordItem.sampleCodePrintCount<=3 && sampleCodePrintPoint==2}">
+            <c:if test="${autoPrint}">
 		    setTimeout("do_sample_code_print()",1000);
-		    </c:if>
-
+            </c:if>
         });
 
         function focusExamRecordCode(){
@@ -72,39 +71,30 @@ examRecord    当前要采样的 体检记录 对象
         // 执行 样本编号打印
         function do_sample_code_print(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_sample_code_print_count";
-            var d1={"id":'${examRecordItem.id}'};
+            var d1={"sampleCode":$("#sampleCode").val()};
             $.get(url,d1);
 
-            lodop_printBarcode('样本编号','${ctxhttp}/wshbj/exam_record_print/barcode_html?barcode='+$('#examRecordItemSampleCode').val() );
+            var cnt = $("#sampleCodeCount").val();
+            if(!isNaN(cnt)){
+                cnt=parseInt(cnt);
+
+                for(var i=0;i<cnt;i++){
+                    lodop_printBarcode('样本编号','${ctxhttp}/wshbj/exam_record_print/barcode_html?barcode='+$('#sampleCode').val() );
+                }
+            }
         }
         </c:if>
 
         <c:if test="${not empty currSpecimenId and not empty examRecord and !examRecordItem.grabSample}">
-        var submited=false;
         function daojishiGrabSample(){
-            var second=$("#btnUpdateGrabSample").attr("data-second");
-            var isecond=parseInt(second);
-
-            if(submited){
-                return;
-            }
-
-            if(isecond<=0){
-                $("#btnUpdateGrabSample").hide();
-                do_update_grab_sample();
-            }else{
-                $("#btnUpdateGrabSample").attr("data-second",isecond-1);
-                $("#btnUpdateGrabSample").val("设置取样成功("+isecond+"秒后自动提交)");
-                setTimeout("daojishiGrabSample()",1000);
-            }
-
+            $("#btnUpdateGrabSample").hide();
+            do_update_grab_sample();
         }
         // 体检记录项目还没有真正采样
         function do_update_grab_sample(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_grab_sample";
-            var d1={"id":'${examRecordItem.id}'};
+            var d1={"sampleCode":$("#sampleCode").val()};
             $.get(url,d1,function(d1r){
-                submited=true;
                 $("#btnUpdateGrabSample").hide();
                 $("#msg").show().html("体检记录项目采集成功。");
             });
@@ -138,8 +128,9 @@ examRecord    当前要采样的 体检记录 对象
 	    <input type="hidden" id="examRecordId" name="id" value="${examRecord.id}"/>
 	    <input type="hidden" id="currSpecimenId" name="currSpecimenId" value="${currSpecimenId}"/>
 
-	    <input type="hidden" id="examRecordItemId" name="examRecordItemId" value="${examRecordItem.id}"/>
-        <input type="hidden" id="examRecordItemSampleCode" name="examRecordItemSampleCode" value="${examRecordItem.sampleCode}"/>
+        <input type="hidden" id="autoPrint" value="${autoPrint}"/>
+        <input type="hidden" id="sampleCode" name="sampleCode" value="${sampleCode}"/>
+        <input type="hidden" id="sampleCodeCount" value="${sampleCodeCount}"/>
 
         <div class="control-group">
             <label class="control-label">编号：</label>
@@ -210,7 +201,7 @@ examRecord    当前要采样的 体检记录 对象
             <label class="control-label">全部体检项目：</label>
             <div class="controls">
                 <c:forEach items="${examRecord.items}" var="vo">
-                <c:if test="${vo.lastFlag=='1'}">
+                <c:if test="${vo.lastFlag=='1' and vo.specimenId == currSpecimenId}">
                 <label class="label"> ${vo.itemName} </label> -
                 <label class="label"> <c:if test="${vo.needSamples == 1 }">需要采样 <c:if test="${vo.grabSample == true}">已采样</c:if>
                 <c:if test="${vo.grabSample == false }">待采样</c:if>  </c:if>

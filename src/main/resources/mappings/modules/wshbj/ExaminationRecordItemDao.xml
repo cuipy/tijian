@@ -452,7 +452,7 @@
 	</update>
 
 	<update id="updateGrabSample">
-		UPDATE bj_examination_record_item SET grab_sample = 1 WHERE id = #{id}
+		UPDATE bj_examination_record_item SET grab_sample = 1 WHERE sample_code = #{sampleCode}
 	</update>
 
 

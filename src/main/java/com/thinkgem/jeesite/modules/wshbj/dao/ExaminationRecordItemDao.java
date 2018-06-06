@@ -109,5 +109,5 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
 
     Integer updateSampleCodePrintCount(@Param("id")String id);
 
-    Integer updateGrabSample(@Param("id")String id);
+    Integer updateGrabSample(@Param("sampleCode")String sampleCode);
 }
