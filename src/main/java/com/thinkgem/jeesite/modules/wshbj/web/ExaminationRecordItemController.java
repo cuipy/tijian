@@ -172,8 +172,38 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = "ajax_update_result_flag")
 	@ResponseBody
-	public RequestResult ajax_update_result_flag(ExaminationRecordItem examinationRecordItem, Model model){
-		return examinationRecordItemService.updateResultFlag(examinationRecordItem);
+	public RequestResult ajax_update_result_flag(String resultFlag, Model model){
+
+
+		if(StringUtils.isEmpty(resultFlag)){
+			String[] arrResultFlag = resultFlag.split("|");
+
+			if(arrResultFlag.length>0){
+				for(String strResultFlag : arrResultFlag){
+					if(StringUtils.isEmpty(strResultFlag)){
+						continue;
+					}
+
+					String[] arrRf=strResultFlag.split(",");
+					if(arrRf.length!=2||StringUtils.isEmpty(arrRf[0])||StringUtils.isEmpty(arrRf[1])){
+						continue;
+					}
+
+					String itemId=arrRf[0];
+					String strFlag=arrRf[1];
+
+					ExaminationRecordItem examinationRecordItem = new ExaminationRecordItem();
+					examinationRecordItem.setId(itemId);
+					examinationRecordItem.setResultFlag(strFlag);
+					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
+
+
+				}
+			}
+
+		}
+		return RequestResult.generate(1,"保存成功。");
+
 	}
 
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
@@ -304,6 +334,10 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"set_result"})
 	public String set_result( String examRecordCode,  Model model) {
+
+		String myDeptId=UserUtils.getUser().getOffice().getId();
+		model.addAttribute("myDeptId",myDeptId);
+
 		ExaminationRecord record = null;
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){
