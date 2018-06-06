@@ -67,7 +67,6 @@ examRecord    当前要采样的 体检记录 对象
             $("#examRecordCode").focus();
         }
 
-        <c:if test="${not empty examRecordItem and sampleCodePrintPoint==2}">
         // 执行 样本编号打印
         function do_sample_code_print(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_sample_code_print_count";
@@ -83,7 +82,6 @@ examRecord    当前要采样的 体检记录 对象
                 }
             }
         }
-        </c:if>
 
         <c:if test="${not empty currSpecimenId and not empty examRecord and !examRecordItem.grabSample}">
         function daojishiGrabSample(){
@@ -104,7 +102,7 @@ examRecord    当前要采样的 体检记录 对象
         // 撤销取样
         function do_cancel_grab_sample(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_cancel_grab_sample";
-            var d1 = {"examRecordId":$("#examRecordId").val(),"spencimenId": $("#currSpecimenId").val() };
+            var d1 = {"examRecordId":$("#examRecordId").val(),"specimenId": $("#currSpecimenId").val() };
             $.post(url,d1,function(){location.reload();});
         }
         </c:if>
