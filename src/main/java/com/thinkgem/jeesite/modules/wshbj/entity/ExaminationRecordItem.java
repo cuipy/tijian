@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.service.UserService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
@@ -54,6 +56,10 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 
 	private Date grabSampleTime;   // 采样时间
 	private Date recordResultTime;			// 录入结果时间
+
+	private String grabSampleDeptId;
+
+	private String recordResultDeptId;
 
 
 	public String getItemNamePinyin() {
@@ -383,6 +389,24 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		this.queryExamCode = queryExamCode;
 	}
 
+	public String getGrabSampleDeptName(){
+		OfficeService officeService = SpringContextHolder.getBean(OfficeService.class);
+		Office dept = officeService.get(grabSampleDeptId);
+		if(dept==null){
+			return "";
+		}
+		return dept.getName();
+	}
+
+	public String getRecordResultDeptName(){
+		OfficeService officeService = SpringContextHolder.getBean(OfficeService.class);
+		Office dept = officeService.get(recordResultDeptId);
+		if(dept==null){
+			return "";
+		}
+		return dept.getName();
+	}
+
 	@JsonIgnore
 	public String getCreateByName(){
 		UserService userService = SpringContextHolder.getBean(UserService.class);
@@ -403,6 +427,21 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 		return user.getName();
 	}
 
+	public String getGrabSampleDeptId() {
+		return grabSampleDeptId;
+	}
+
+	public void setGrabSampleDeptId(String grabSampleDeptId) {
+		this.grabSampleDeptId = grabSampleDeptId;
+	}
+
+	public String getRecordResultDeptId() {
+		return recordResultDeptId;
+	}
+
+	public void setRecordResultDeptId(String recordResultDeptId) {
+		this.recordResultDeptId = recordResultDeptId;
+	}
 
 	@JsonIgnore
     public Map<String,String> getMap(){

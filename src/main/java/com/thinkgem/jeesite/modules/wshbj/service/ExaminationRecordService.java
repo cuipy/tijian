@@ -57,6 +57,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     @Autowired
     private ExaminationRecordItemService examinationRecordItemService;
 
+    @Autowired
+    private SpecimenService specimenService;
+
 
     //@Cacheable(value = "examinationRecordCache",key="'examinationRecord_get_'+#id")
     public ExaminationRecord get(String id) {
@@ -255,21 +258,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             }
         }
 
-        // 无意义，登记的信息允许修改
-//        //if (examinationUser != null) {
-//        if (!examinationRecord.getIdNumber().equals(examinationUser.getIdNumber())) {
-//            resultMessages.add("身份证与体检用户内记录信息不一致");
-//            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-//        }
-//        if (!examinationRecord.getName().equals(examinationUser.getName())) {
-//            resultMessages.add("名称与体检用户内记录信息不一致");
-//            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-//        }
-//        if (!examinationRecord.getSex().equals(examinationUser.getSex())) {
-//            resultMessages.add("性别与体检用户内记录的信息不一致");
-//            return ResponseResult.generateFailResult("用户信息错误", resultMessages);
-//        }
-
         super.save(examinationRecord);
 
         // 获取条码生成 和 打印 阶段
@@ -341,6 +329,18 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             item.setSpecimenId(savingItem.getSpecimenId());
             item.setLastFlag("1");
 
+            // 设置采样部门
+            if("1".equals(savingItem.getNeedSamples())){
+                String specimentId=savingItem.getSpecimenId();
+                Specimen specimen=specimenService.get(specimentId);
+                if(specimen!=null){
+                    item.setGrabSampleDeptId(specimen.getGrabDeptId());
+                }
+            }
+
+            // 设置录入结果部门
+            item.setRecordResultDeptId(savingItem.getResultDeptId());
+
             // 如果在 体检编号 在 创建体检记录的时候 生成
             if(sampleCodeCreatePoint==1&&"1".equals(savingItem.getNeedSamples())){
                 String exp = savingItem.getPrefixSampleCode()+"{yyMMdd}[4]";
@@ -351,147 +351,8 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             examinationRecordItemService.save(item);
         }
 
-
-//        List<String> itemIdList = new ArrayList<String>();
-//        //若选择了套餐，则以套餐为准
-//        if (StringUtils.isNotBlank(examinationRecord.getPackageId())) {
-//            //清除原有体检项目
-//            ExaminationRecordItem recordItem = new ExaminationRecordItem();
-//            recordItem.setRecordId(examinationRecord.getId());
-//            examinationRecordItemDao.delete(recordItem);
-//
-//            //保存现有体检项目
-//            List<ExaminationItem> itemList = examinationItemService.findListByPackage(examinationRecord.getPackageId());
-//            for (ExaminationItem examinationItem : itemList) {
-//                itemIdList.add(examinationItem.getId());
-//
-//                recordItem = new ExaminationRecordItem();
-//                recordItem.setRecordId(examinationRecord.getId());
-//                recordItem.setItemId(examinationItem.getId());
-//                recordItem.setItemName(examinationItem.getName());
-//                recordItem.setExaminationFlag("1");//初检
-//                recordItem.setNeedSamples(examinationItem.getNeedSamples());
-//                recordItem.setSpecimenId(examinationItem.getSpecimenId());
-//                recordItem.setLastFlag("1");
-//                recordItem.preInsert();
-//                examinationRecordItemDao.insert(recordItem);
-//            }
-//        } else {
-//            //自由选择体检项目
-//            ExaminationItem examinationItem = null;
-//            for (ExaminationRecordItem recordItem : examinationRecord.getItems()) {
-//                if (recordItem.getId() == null) {
-//                    continue;
-//                }
-//                if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(recordItem.getDelFlag())) {
-//                    if (StringUtils.isBlank(recordItem.getId())) {
-//                        recordItem.setRecordId(examinationRecord.getId());
-//                        examinationItem = examinationItemService.get(recordItem.getId());
-//                        if (examinationItem != null) {
-//                            recordItem.setItemName(examinationItem.getName());
-//                        }
-//                        recordItem.setExaminationFlag("1");//初检
-//                        recordItem.setNeedSamples(examinationItem.getNeedSamples());
-//                        recordItem.setSpecimenId(examinationItem.getSpecimenId());
-//                        recordItem.setLastFlag("1");
-//                        recordItem.preInsert();
-//                        examinationRecordItemDao.insert(recordItem);
-//                    } else {
-//                        recordItem.preUpdate();
-//                        examinationRecordItemDao.update(recordItem);
-//                    }
-//                } else {
-//                    examinationRecordItemDao.delete(recordItem);
-//                }
-//            }
-//        }
-
-
         return RequestResult.generate(1,"保存成功",examinationRecord);
     }
-
-//    @Transactional(readOnly = false)
-//    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
-//    public ResponseResult saveResult(String[] recordItemIds, String[] resultDictIds, String[] remarksArray) {
-//        if (recordItemIds == null || recordItemIds.length < 1) {
-//            return ResponseResult.generateFailResult("体检项目数据错误");
-//        }
-//        ExaminationResultDict resultDict = null;
-//        ExaminationRecordItem recordItem = null;
-//        for (int i = 0; i < recordItemIds.length; i++) {
-//            recordItem = examinationRecordItemService.get(recordItemIds[i]);
-//            if (recordItem == null) {
-//                continue;
-//            }
-//            resultDict = resultDictService.get(resultDictIds[i]);
-//            if (resultDict == null) {
-//                continue;
-//            }
-//            examinationRecordItemService.saveRecordResult(recordItemIds[i], null, resultDictIds[i], resultDict.getName(), resultDict.getFlag(), remarksArray[i]);
-//
-//            //如果涉及样本，则同步更新样本的检验结果
-//            if (StringUtils.isNotBlank(recordItem.getSampleCode())) {
-//                examinationSamplesDao.updateResultByCode(recordItem.getSampleCode(), resultDict.getId(), resultDict.getFlag(), remarksArray[i]);
-//            }
-//        }
-//
-//        //刷新体检记录状态
-//        if (recordItem != null) {
-//            refreshStatus(recordItem.getRecordId());
-//        }
-//
-//        ResponseResult responseResult = ResponseResult.generateSuccessResult("保存成功");
-//        return responseResult;
-//    }
-
-
-//    public List<ExaminationRecord> getList4Result(String startDate, String endDate, String examinationCode, String organId) {
-//        List<ExaminationRecord> recordList = this.dao.getList4Result(startDate, endDate, examinationCode, organId);
-//        return recordList;
-//    }
-//
-//
-//    public List<Map> getList4CertForm(String startDate, String endDate
-//            , String code, String organId, String name, String status) {
-//        List<Map> recordList = this.dao.getList4CertForm(startDate, endDate, code, organId, name, status);
-//        return recordList;
-//    }
-//
-//    public List<Map> getItemListMap4Result(String recordId) {
-//        List<Map> mapList = new ArrayList<Map>();
-//        if (StringUtils.isBlank(recordId)) {
-//            return mapList;
-//        }
-//        ExaminationRecordItem recordItem = new ExaminationRecordItem();
-//        recordItem.setRecordId(recordId);
-//        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
-////                recordItem.setExaminationFlag(examinationFlag);
-//        List<ExaminationRecordItem> recordItems = examinationRecordItemService.findList(recordItem);
-//        if (recordItems == null) {
-//            return mapList;
-//        }
-//        Map itemMap = null;
-//        ExaminationResultDict examinationResultDict = new ExaminationResultDict();
-//        for (ExaminationRecordItem recordItem1 : recordItems) {
-//            itemMap = new HashMap();
-//            itemMap.put("recordItem", recordItem1);
-//
-//            //项目结果字典
-//            examinationResultDict.setItemId(recordItem1.getItemId());
-//            examinationResultDict.setDelFlag(ExaminationResultDict.DEL_FLAG_NORMAL);
-//            List<ExaminationResultDict> dictList = resultDictService.findList(examinationResultDict);
-//
-//            itemMap.put("resultDictList", dictList);
-//
-//            itemMap.put("recordId", recordId);
-//
-//            mapList.add(itemMap);
-//
-//        }
-//
-//        return mapList;
-//    }
-
 
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)

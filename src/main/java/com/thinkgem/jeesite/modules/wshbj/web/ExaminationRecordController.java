@@ -479,64 +479,6 @@ public class ExaminationRecordController extends BaseController {
 	}
 
 
-
-//	/**
-//	* @author zhxl
-//	* @Description
-//	* @Date 2018/4/16 00:30:12
-//	* @Param [examinationRecord, request, response, model, redirectAttributes]
-//	* @return java.lang.String
-//	*/
-//	@RequiresPermissions("wshbj:certRecord:edit")
-//	@RequestMapping(value = "recordResultDetailPop")
-//	public String recordResultDetailPop(String recordId,HttpServletRequest request, HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
-//		ExaminationRecord record = examinationRecordService.get(recordId);
-//		model.addAttribute("record", record);
-//
-//		/**
-//		 * 获取体检记录所有体检项目
-//		 */
-//		List<ExaminationRecordItem> recordItemList = examinationRecordItemService.listByRecordId(recordId);
-//		model.addAttribute("recordItemList", recordItemList);
-//
-//		return "modules/wshbj/recordResultDetailPop";
-//	}
-//
-//
-//
-//
-//	@ResponseBody
-//	@RequestMapping(value = "getMapByCode4Result")
-//	public Map getMapByCode4Result(@RequestParam(required=true) String code,@RequestParam()String examinationFlag, HttpServletResponse response) {
-//		if (org.apache.commons.lang3.StringUtils.isBlank(code)){
-//			return new HashedMap();
-//		}
-//		return examinationRecordService.getMapByCode4Result(code,examinationFlag);
-//	}
-//
-//
-//	@ResponseBody
-//	@RequestMapping(value = "getListMap4Result")
-//	public List<ExaminationRecord> getListMap4Result(String startDate,String endDate,String examinationCode,String organId) {
-//
-//		return examinationRecordService.getList4Result(startDate,endDate,examinationCode,organId);
-//	}
-//
-//	@ResponseBody
-//	@RequestMapping(value = "getItemListMap4Result")
-//	public List<Map> getItemListMap4Result(String recordId) {
-//
-//		return examinationRecordService.getItemListMap4Result(recordId);
-//	}
-//
-//
-//	@ResponseBody
-//	@RequestMapping(value = "getList4CertForm")
-//	public List<Map> getList4CertForm(String startDate,String endDate,String examinationCode
-//			,String organId, String userName, String status) {
-//		return examinationRecordService.getList4CertForm(startDate,endDate,examinationCode,organId,userName,status);
-//	}
-
 	/**
 	 * ajax方式获取未完成的体检记录列表，用于autocomplete
 	 * @param model
