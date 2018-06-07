@@ -202,11 +202,11 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
     public RequestResult updateResultFlag(ExaminationRecordItem examinationRecordItem) {
 
-        ExaminationRecord record = examinationRecordItem.getRecord();
         ExaminationRecordItem eri = get(examinationRecordItem.getId());
+        ExaminationRecord record = eri.getRecord();
 
         if(eri==null){
-            return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败");
+            return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败!");
         }
 
         if("1".equals(eri.getResultFlag())){
@@ -242,7 +242,8 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         if(eri.getResultFlag()!=null){
             examinationRecordItem.setExaminationFlag("2");
         }
-        super.save(examinationRecordItem);
+        eri.setResultFlag(examinationRecordItem.getResultFlag());
+        super.save(eri);
 
         // 更新体检记录的状态
         examinationRecordService.updateStatus(record);

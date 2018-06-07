@@ -176,10 +176,8 @@ public class ExaminationRecordItemController extends BaseController {
 
         String res = "";
 
-		if(StringUtils.isEmpty(resultFlag)){
-			String[] arrResultFlag = resultFlag.split("\\|");
-
-			System.out.println(arrResultFlag.length);
+		if(StringUtils.isNotEmpty(resultFlag)){
+			String[] arrResultFlag = StringUtils.split(resultFlag,'|');
 
 			if(arrResultFlag.length>0){
 				for(String strResultFlag : arrResultFlag){
@@ -187,7 +185,7 @@ public class ExaminationRecordItemController extends BaseController {
 						continue;
 					}
 
-					String[] arrRf=strResultFlag.split(",");
+					String[] arrRf=StringUtils.split(strResultFlag,',');
 					if(arrRf.length!=2||StringUtils.isEmpty(arrRf[0])||StringUtils.isEmpty(arrRf[1])){
 						continue;
 					}
