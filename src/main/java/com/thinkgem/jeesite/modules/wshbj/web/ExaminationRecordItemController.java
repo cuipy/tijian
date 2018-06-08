@@ -249,6 +249,9 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = {"grab_sample"})
 	public String grab_sample(String currSpecimenId,String examRecordCode , Model model) {
 
+		String myDeptId=UserUtils.getUser().getOffice().getId();
+		model.addAttribute("myDeptId",myDeptId);
+
 		// 获取 什么阶段生成 样本编号 ；获取 什么阶段打印 样本编号
 		Integer sampleCodeCreatePoint =GlobalSetUtils.getGlobalSet().getSampleCodeCreatePoint();
 		Integer sampleCodePrintPoint= GlobalSetUtils.getGlobalSet().getSampleCodePrintPoint();

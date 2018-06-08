@@ -162,7 +162,7 @@ examRecord    当前要采样的 体检记录 对象
             <div class="controls">
                 <table class="tbl-items">
                 <c:forEach items="${examRecord.items}" var="vo" varStatus="idx">
-                    <c:if test="${vo.recordResultDeptId != myDeptId}">
+                    <c:if test="${vo.recordResultDeptId == myDeptId}">
                     <tr><td> ${vo.itemName}  </td>
                     <td> <c:if test="${vo.needSamples == 1 }">需要采样 </c:if>
                         <c:if test="${vo.needSamples != 1 }">无需采样</c:if>
@@ -188,9 +188,10 @@ examRecord    当前要采样的 体检记录 对象
         <div class="cl"></div>
 
           <div class="form-actions span12">
-              <c:if test="${not empty examRecord }">
+              <c:if test="${not empty examRecord  }">
+              <c:if test="${examRecord.status==0 or examRecord.status==10 or examRecord.status==35 }">
                 <input id="btnUpdateResultFlag" class="btn btn-primary" type="button" value="重新提交体检项目结果" onclick="doUpdateResultFlag()"/>&nbsp;
-              </c:if>
+              </c:if></c:if>
 
           </div>
 

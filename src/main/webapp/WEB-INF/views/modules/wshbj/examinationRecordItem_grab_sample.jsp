@@ -216,7 +216,7 @@ examRecord    当前要采样的 体检记录 对象
 
                 <table class="tbl-items">
                 <c:forEach items="${examRecord.items}" var="vo" varStatus="idx">
-                     <c:if test="${vo.lastFlag=='1' and vo.specimenId == currSpecimenId}">
+                     <c:if test="${vo.lastFlag=='1' and vo.specimenId == currSpecimenId and  vo.grabSampleDeptId==myDeptId }">
                     <tr><td> ${vo.itemName}  </td>
                     <td>
                         <c:if test="${vo.sampleCode != null && vo.sampleCode != ''}">标本编号：${vo.sampleCode}</c:if>

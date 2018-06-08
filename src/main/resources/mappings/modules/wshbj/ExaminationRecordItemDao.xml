@@ -11,7 +11,7 @@
 		a.sample_code AS "sampleCode",
 		a.result_dict_id AS "resultDictId",
 		a.result_dict_name AS "resultDictName",
-		a.result_flag AS "resultFlag",
+		a.result_flag AS "resultFlag", a.record_result_dept_id as "recordResultDeptId",a.grab_sample_dept_id as "grabSampleDeptId",
 		a.result_remarks AS "resultRemarks", a.grab_sample_time as "grabSampleTime",a.record_result_time as "recordResultTime",
 		a.del_flag AS "delFlag",
 		a.create_by AS "createBy.id",
@@ -456,7 +456,7 @@
 	</update>
 
 	<update id="cancelGrabSample">
-		UPDATE bj_examination_record_item SET grab_sample = 0,sample_code = null
+		UPDATE bj_examination_record_item SET grab_sample = 0,sample_code = null,result_flag = null
 		WHERE record_id = #{examRecordId} and specimen_id = #{specimenId}
 	</update>
 
