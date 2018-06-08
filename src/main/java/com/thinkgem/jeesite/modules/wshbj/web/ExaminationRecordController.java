@@ -280,32 +280,6 @@ public class ExaminationRecordController extends BaseController {
 		return "modules/wshbj/examinationRecordForm";
 	}
 
-//	@RequiresPermissions("wshbj:examinationRecord:edit")
-//	@RequestMapping(value = "save")
-//	public String save(ExaminationRecord examinationRecord, Model model, RedirectAttributes redirectAttributes) {
-//
-//		//编号在保存的时候才创建
-//		if (StringUtils.isEmpty(examinationRecord.getCode())){
-//			examinationRecord.setCode(GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code"));
-//		}
-//
-//		if (!beanValidator(model, examinationRecord)){
-//			return RequestResult.generate(102,model.);
-//		}
-//
-//		//如果是新创建而不是编辑的时候，则设置状态为 未检查状态
-//		if(StringUtils.isBlank(examinationRecord.getId())){
-//			examinationRecord.setStatus(ExaminationRecordConstant.STATUS0);
-//			examinationRecord.setName(examinationRecord.getName());
-//			examinationRecord.setOwner(UserUtils.getUser().getCompany().getId());
-//		}
-//
-//		RequestResult result = examinationRecordService.saveRecord(examinationRecord);
-//		List<String> resultMessages = (List<String>) result.getData();
-//		addMessage(redirectAttributes, resultMessages.toArray(new String[]{}));
-//		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationRecord/?repage";
-//	}
-
 	/**
 	 * ajax方式保存体检记录
 	 * @param examinationRecord

@@ -327,7 +327,7 @@
 			item_name, item_name_pinyin,
 			need_samples,
 		<if test="grabSample!=null ">grab_sample,</if>
-			sample_code,
+			sample_code,  record_result_dept_id  ,grab_sample_dept_id,
 			specimen_id,
 			result_dict_id,
 			result_dict_name,
@@ -348,7 +348,7 @@
 			#{itemName},#{itemNamePinyin},
 			#{needSamples},
 			<if test="grabSample!=null  ">#{grabSample},</if>
-			#{sampleCode},
+			#{sampleCode},   ${recordResultDeptId}  ,${grabSampleDeptId},
 			#{specimenId},
 			#{resultDictId},
 			#{resultDictName},
