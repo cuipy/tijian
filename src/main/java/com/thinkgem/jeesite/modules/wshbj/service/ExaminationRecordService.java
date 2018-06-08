@@ -157,14 +157,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                 continue;
             }
             if (ExaminationRecordItem.DEL_FLAG_NORMAL.equals(examinationRecordItem.getDelFlag())) {
-//                if (StringUtils.isBlank(examinationRecordItem.getId())) {
-//                    examinationRecordItem.setRecordId(examinationRecord.getId());
-//                    examinationRecordItem.preInsert();
-//                    examinationRecordItemService.save(examinationRecordItem);
-//                } else {
-//                    examinationRecordItem.preUpdate();
-//                    examinationRecordItemService.save(examinationRecordItem);
-//                }
                 examinationRecordItemService.save(examinationRecordItem);
             } else {
                 examinationRecordItemService.delete(examinationRecordItem);

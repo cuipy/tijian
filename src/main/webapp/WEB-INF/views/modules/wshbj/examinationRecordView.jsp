@@ -4,6 +4,13 @@
 <head>
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
+    <style type="text/css">
+        .tbl-items td{
+            padding: 3px 6px;
+            border:solid 1px #999;
+        }
+
+    </style>
 
 </head>
 <body>
@@ -19,10 +26,10 @@
 
     <div style="max-width:1200px;">
 
-        <div class="control-group span6">
+        <div class="control-group span4">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
-                 <img id="imgHeadImg" style="width:320px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"/>
+                 <img id="imgHeadImg" style="width:180px;" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"/>
             </div>
         </div>
 
@@ -88,21 +95,8 @@
             </div>
         </div>
 
-		<div class="cl"></div>
-		<div class="control-group span12">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				${examinationRecord.remarks}
-			</div>
-		</div>
-		<div class="cl"></div>
-		<div class="control-group span4">
-			<label class="control-label">体检项目方式：</label>
-			<div class="controls">
 
-			${examinationRecord.itemType=="1"? "体检套餐":"自由选择"}
-			</div>
-		</div>
+		<div class="cl"></div>
         <div class="control-group span4">
             <label class="control-label">价格：</label>
             <div class="controls">
@@ -120,17 +114,28 @@
 		<div class="control-group span12" id="itemsDiv">
 			<label class="control-label">检查项目列表：</label>
 			<div class="controls">
-			   <c:forEach items="${examinationRecord.items}" var="ri"><label class="label"> ${ri.itemName} </label> -
-                <label class="label"> <c:if test="${ri.needSamples == 1 }">需要采样
-                <c:if test="${ri.grabSample == true}">标本编号：${ri.sampleCode}</c:if>
-                <c:if test="${ri.grabSample == false}">待采样</c:if>  </c:if>
-                <c:if test="${ri.needSamples != 1 }">无需采样</c:if> </label> -
 
-                 <label class="label">  <c:if test="${ri.resultFlag == null }">无结果</c:if>
-                 <c:if test="${ri.resultFlag == 0 }">不合格</c:if>
-                <c:if test="${ri.resultFlag == 1 }">合格</c:if> </label>
+                <table class="tbl-items">
+                <c:forEach items="${examinationRecord.items}" var="vo" varStatus="idx">
+                    <c:if test="${vo.lastFlag=='1'}">
+                    <tr><td> ${vo.itemName}  </td>
+                    <td> <c:if test="${vo.needSamples == 1 }">需要采样 </c:if>
+                        <c:if test="${vo.needSamples != 1 }">无需采样</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${vo.sampleCode != null && vo.sampleCode != ''}">标本编号：${vo.sampleCode}</c:if>
+                        <c:if test="${vo.sampleCode == null || vo.sampleCode == ''}">待采样</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${ vo.resultFlag == null }">无结果</c:if>
+                        <c:if test="${ vo.resultFlag == 1 }">合格</c:if>
+                         <c:if test="${ vo.resultFlag == 0 }">不合格</c:if>
+                    </td>
+                     </tr>
+                     </c:if>
+                </c:forEach>
+                </table>
 
-                <br> </c:forEach>
 			</div>
 		</div>
 		<div class="cl"></div>

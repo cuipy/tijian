@@ -20,6 +20,13 @@ examRecord    当前要采样的 体检记录 对象
   -->
 	<title>快速采集体检样本</title>
 	<meta name="decorator" content="default"/>
+    <style type="text/css">
+        .tbl-items td{
+            padding: 3px 6px;
+            border:solid 1px #999;
+        }
+
+    </style>
     <script src="${ctxStatic}/websocket/reconnecting-websocket.js" type="text/javascript"></script>
     <script src="${ctxStatic}/websocket/web_socket.js" type="text/javascript"></script>
 
@@ -204,21 +211,26 @@ examRecord    当前要采样的 体检记录 对象
         <div class="cl"></div>
 
         <div class="control-group">
-            <label class="control-label">全部体检项目：</label>
+            <label class="control-label">体检项目：</label>
             <div class="controls">
-                <c:forEach items="${examRecord.items}" var="vo">
-                <c:if test="${vo.lastFlag=='1' and vo.specimenId == currSpecimenId}">
-                <label class="label"> ${vo.itemName} </label> -
-                <label class="label"> <c:if test="${vo.needSamples == 1 }">需要采样 <c:if test="${vo.grabSample == true}">已采样</c:if>
-                <c:if test="${vo.grabSample == false }">待采样</c:if>  </c:if>
-                <c:if test="${vo.needSamples != 1 }">无需采样</c:if> </label> -
 
-                 <label class="label">  <c:if test="${vo.resultFlag == null }">无结果</c:if>
-                 <c:if test="${vo.resultFlag == 0 }">不合格</c:if>
-                <c:if test="${vo.resultFlag == 1 }">合格</c:if> </label>
-
-                <br></c:if>
+                <table class="tbl-items">
+                <c:forEach items="${examRecord.items}" var="vo" varStatus="idx">
+                     <c:if test="${vo.lastFlag=='1' and vo.specimenId == currSpecimenId}">
+                    <tr><td> ${vo.itemName}  </td>
+                    <td>
+                        <c:if test="${vo.sampleCode != null && vo.sampleCode != ''}">标本编号：${vo.sampleCode}</c:if>
+                        <c:if test="${vo.sampleCode == null || vo.sampleCode == ''}">待采样</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${ vo.resultFlag == null }">无结果</c:if>
+                        <c:if test="${ vo.resultFlag == 1 }">合格</c:if>
+                         <c:if test="${ vo.resultFlag == 0 }">不合格</c:if>
+                    </td> </tr>
+                    </c:if>
                 </c:forEach>
+                </table>
+
             </div>
         </div>
         <div class="cl"></div>
