@@ -209,9 +209,9 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
             return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败!");
         }
 
-        if("1".equals(eri.getResultFlag())){
-            return RequestResult.generate(8,"该体检项目已经合格，无需再录入项目结果");
-        }
+//        if("1".equals(eri.getResultFlag())){
+//            return RequestResult.generate(8,"该体检项目已经合格，无需再录入项目结果");
+//        }
 
         // 首先获取当前记录，检查状态是否合法
         if(record==null){
@@ -219,19 +219,19 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         }
 
         // 检查体检记录状态
-        if(ExaminationRecordConstant.STATUS40.equals(record.getStatus())||ExaminationRecordConstant.STATUS45.equals(record.getStatus())
-                ||ExaminationRecordConstant.STATUS50.equals(record.getStatus())){
-            return RequestResult.generate(20,"体检记录的状态为"+record.getStrStatus()+"，无法再设置体检项目的检查结果。");
-        }
+//        if(ExaminationRecordConstant.STATUS40.equals(record.getStatus())||ExaminationRecordConstant.STATUS45.equals(record.getStatus())
+//                ||ExaminationRecordConstant.STATUS50.equals(record.getStatus())){
+//            return RequestResult.generate(20,"体检记录的状态为"+record.getStrStatus()+"，无法再设置体检项目的检查结果。");
+//        }
 
         // 检查体检项目的状态
         if("0".equals(eri.getLastFlag())){
             return RequestResult.generate(30,"该体检项目属于废弃的记录，无法修改体检记录。");
         }
 
-        if(eri.getStatus()==3){
-            return RequestResult.generate(40,"体检项目已经合格，无需再录入项目结果。");
-        }
+//        if(eri.getStatus()==3){
+//            return RequestResult.generate(40,"体检项目已经合格，无需再录入项目结果。");
+//        }
 
         if(eri.getStatus()==0){
             return RequestResult.generate(50,"体检项目需要体检样本，但似乎没有进行样本采集，无法进行结果录入。");
