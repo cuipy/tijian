@@ -81,6 +81,13 @@
         </div>
 
 		<div class="control-group span12">
+			<label class="control-label">可制证次数：</label>
+			<div class="controls">
+				${globalSet.printCardCount}次
+			</div>
+		</div>
+
+		<div class="control-group span12">
 			<label class="control-label"> 样本编号生成阶段：</label>
 			<div class="controls radios-div">
                 <label for="sampleCodeCreatePoint1"><input type="radio" id="sampleCodeCreatePoint1" name="sampleCodeCreatePoint" value="1" <c:if test="${globalSet.sampleCodeCreatePoint==1}">checked='checked'</c:if>> 创建体检记录时生成样本编号 </label>

@@ -23,10 +23,13 @@ public class GlobalSet extends DataEntity<GlobalSet> {
 	private String codePre;		// 当前体检中心编号前缀
 	private String token;		// 体检中心token
 
+	private String printCardCount;					// 可制证次数
+
+	private String mingPrintCardCount;				// 可制证次数
+
 	private Integer sampleCodeCreatePoint;			// 样本编号生成阶段  1 创建体检记录时生成体检编号；2 在取样的时候生成样本编号
 
 	private Integer sampleCodePrintPoint;			// 样本编号打印阶段  sampleCodeCreatePoint == 1 的时候生效  1 创建体检记录阶段打印  2 取样的时候打印
-
 
 
 	public GlobalSet() {
@@ -92,5 +95,24 @@ public class GlobalSet extends DataEntity<GlobalSet> {
 
 	public void setToken(String token) {
 		this.token = token;
+	}
+
+	public String getPrintCardCount() {
+		return printCardCount;
+	}
+
+	public void setPrintCardCount(String printCardCount) {
+		this.printCardCount = printCardCount;
+	}
+
+	/**
+	 * 可制证次数的明文，  体检中心id + 次数值  。
+	 * @return
+	 */
+	public String getMingPrintCardCount() {
+
+
+
+		return mingPrintCardCount;
 	}
 }
