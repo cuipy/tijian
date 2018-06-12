@@ -1,8 +1,13 @@
 package com.thinkgem.jeesite.modules.wshbj.service;
 
+import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.Encodes;
+import com.thinkgem.jeesite.modules.wshbj.dao.SpecimenDao;
+import com.thinkgem.jeesite.modules.wshbj.dao.ZhizhengAddRecordDao;
+import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
+import com.thinkgem.jeesite.modules.wshbj.entity.ZhizhengAddRecord;
 
-public class ZhizhengAddRecordService {
+public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao, ZhizhengAddRecord> {
 
     private String salt="pingbukeji1234";
 
@@ -15,9 +20,6 @@ public class ZhizhengAddRecordService {
         // 验证当前是否没有记录
         String ming=ownerId+salt+count;
         String addCount=Encodes.md5(ming);
-
-
-
 
     }
 

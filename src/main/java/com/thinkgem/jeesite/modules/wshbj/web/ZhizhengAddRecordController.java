@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import com.thinkgem.jeesite.modules.wshbj.entity.ZhizhengAddRecord;
 import com.thinkgem.jeesite.modules.wshbj.service.SpecimenService;
-import com.thinkgem.jeesite.modules.wshbj.service.ZhiZhengAddService;
+import com.thinkgem.jeesite.modules.wshbj.service.ZhizhengAddRecordService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +39,7 @@ import java.util.List;
 @RequestMapping(value = "${adminPath}/wshbj/zhizhengAddRecord")
 public class ZhizhengAddRecordController extends BaseController {
 
-	private ZhiZhengAddRecordService zhiZhengAddRecordService;
+	private ZhizhengAddRecordService zhizhengAddRecordService;
 
 
 	@ModelAttribute
@@ -49,106 +49,16 @@ public class ZhizhengAddRecordController extends BaseController {
 			entity = zhizhengAddRecordService.get(id);
 		}
 		if (entity == null){
-			entity = new Specimen();
+			entity = new ZhizhengAddRecord();
 		}
 		return entity;
 	}
 	
-	@RequiresPermissions("wshbj:specimen:view")
-	@RequestMapping(value = {"list", ""})
-	public String list(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
-		specimen.setOwner(UserUtils.getUser().getCompany().getId());
-		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen); 
-		model.addAttribute("page", page);
-		return "modules/wshbj/specimenList";
+	@RequiresPermissions("wshbj:zhizhengAddRecord:view")
+	@RequestMapping(value = {"list"})
+	public String list(ZhizhengAddRecord zhizhengAddRecord, Model model) {
+
+		return "modules/wshbj/zhizhengAddRecord_list";
 	}
 
-
-	@RequiresPermissions("wshbj:specimen:view")
-	@RequestMapping(value = "form")
-	public String form(Specimen specimen, Model model) {
-
-		// 加载部门列表
-		List<Office> depts = officeService.getMyDepts();
-		model.addAttribute("depts",depts);
-
-		model.addAttribute("specimen", specimen);
-		return "modules/wshbj/specimenForm";
-	}
-
-	@RequiresPermissions("wshbj:specimen:edit")
-	@RequestMapping(value = "save")
-	public String save(Specimen specimen, Model model, RedirectAttributes redirectAttributes) {
-		specimen.setOwner(UserUtils.getUser().getCompany().getId());
-		specimen.setReferenceFlag("0");
-
-		if(StringUtils.isEmpty(specimen.getCode())){
-			String code=GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(Specimen.class,"code");
-			specimen.setCode(code);
-		}
-
-		if (!beanValidator(model, specimen)){
-			return form(specimen, model);
-		}
-
-		if(StringUtils.isEmpty(specimen.getNamePinyin())){
-			String py=PinyinUtils.getStringPinYin(specimen.getName());
-			specimen.setNamePinyin(py);
-		}
-
-		if(null==specimen.getOrderNumb()){
-			specimen.setOrderNumb(100);
-		}
-
-		specimenService.save(specimen);
-		addMessage(redirectAttributes, "保存检查标本类型成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/list?repage";
-	}
-	
-	@RequiresPermissions("wshbj:specimen:edit")
-	@RequestMapping(value = "delete")
-	public String delete(Specimen specimen, RedirectAttributes redirectAttributes) {
-		specimenService.delete(specimen);
-		addMessage(redirectAttributes, "删除检查标本类型成功");
-		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/list?repage";
-	}
-
-
-//	@RequiresPermissions("wshbj:specimen:viewByCenter")
-//	@RequestMapping(value = {"listByCenter", ""})
-//	public String listByCenter(Specimen specimen, HttpServletRequest request, HttpServletResponse response, Model model) {
-//		specimen.setOwner(null);
-//		specimen.setReferenceFlag("1");
-//		Page<Specimen> page = specimenService.findPage(new Page<Specimen>(request, response), specimen);
-//		model.addAttribute("page", page);
-//		return "modules/wshbj/specimenListByCenter";
-//	}
-//
-//	@RequiresPermissions("wshbj:specimen:viewByCenter")
-//	@RequestMapping(value = "formByCenter")
-//	public String formByCenter(Specimen specimen, Model model) {
-//		model.addAttribute("specimen", specimen);
-//		return "modules/wshbj/specimenFormByCenter";
-//	}
-//
-//	@RequiresPermissions("wshbj:specimen:editByCenter")
-//	@RequestMapping(value = "saveByCenter")
-//	public String saveByCenter(Specimen specimen, Model model, RedirectAttributes redirectAttributes) {
-//		if (!beanValidator(model, specimen)){
-//			return form(specimen, model);
-//		}
-//		specimen.setOwner(null);
-//		specimen.setReferenceFlag("1");
-//		specimenService.save(specimen);
-//		addMessage(redirectAttributes, "保存检查标本类型成功");
-//		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
-//	}
-//
-//	@RequiresPermissions("wshbj:specimen:editByCenter")
-//	@RequestMapping(value = "deleteByCenter")
-//	public String deleteByCenter(Specimen specimen, RedirectAttributes redirectAttributes) {
-//		specimenService.delete(specimen);
-//		addMessage(redirectAttributes, "删除检查标本类型成功");
-//		return "redirect:"+Global.getAdminPath()+"/wshbj/specimen/listByCenter?repage";
-//	}
 }

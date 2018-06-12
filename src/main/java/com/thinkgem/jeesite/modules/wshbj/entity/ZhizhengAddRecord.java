@@ -1,11 +1,13 @@
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.thinkgem.jeesite.common.persistence.DataEntity;
+
 import java.util.Date;
 
 /**
  * 制证新增记录
  */
-public class ZhizhengAddRecord {
+public class ZhizhengAddRecord extends DataEntity<ZhizhengAddRecord> {
 
     private String id;
 

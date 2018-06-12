@@ -16,7 +16,7 @@ import java.util.List;
  * @version 2018-06-12
  */
 @MyBatisDao
-public interface ZhizhengAddRecordDao extends CrudDao<Specimen> {
+public interface ZhizhengAddRecordDao extends CrudDao<ZhizhengAddRecord> {
 
     List<ZhizhengAddRecord> getLast2();
     
