@@ -6,7 +6,7 @@ public class ZhiZhengAddService {
 
     /**
      * 验证当前可制证次数
-     * add_code的算法： ownerId + 前一次add_code + 增加数 + salt + 结果值 进行md5 加密
+     * add_code的算法： ownerId + 前一次add_code + 上次可制证次数 + salt + 结果值 进行md5 加密
      */
     public Boolean validateLastZhizhengCount(String ownerId){
 
@@ -39,7 +39,7 @@ public class ZhiZhengAddService {
 
         // 2.1 结果数量 = 可制证次数+ addCount
 
-        // 3 组装新的add_code  ownerId+ 最后一次add_code+ addCount+ salt + 结果数量 => md5加密
+        // 3 组装新的add_code  ownerId+ 最后一次add_code + 可制证数量 + salt + 结果数量 => md5加密
 
 
         return null;
