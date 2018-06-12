@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.wshbj.web;
 
 import com.alibaba.druid.support.json.JSONUtils;
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 制证数量记录Controller
@@ -48,7 +52,10 @@ public class ZhizhengAddRecordController extends BaseController {
 	
 	@RequiresPermissions("wshbj:zhizhengAddRecord:view")
 	@RequestMapping(value = {"list"})
-	public String list(ZhizhengAddRecord zhizhengAddRecord, Model model) {
+	public String list(ZhizhengAddRecord zhizhengAddRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		Page<ZhizhengAddRecord> page = zhizhengAddRecordService.findPage(new Page<ZhizhengAddRecord>(request, response), zhizhengAddRecord);
+		model.addAttribute("page", page);
 
 		return "modules/wshbj/zhizhengAddRecord_list";
 	}

@@ -17,7 +17,18 @@
 		<include refid="joins"/>
 		WHERE a.id = #{id}
 	</select>
-	
+
+	<select id="findList" resultType="ZhizhengAddRecord">
+		SELECT
+		<include refid="columns"/>
+		FROM bj_zhizheng_add_record a
+		<include refid="joins"/>
+		<where>
+
+		</where>
+		ORDER BY a.update_time desc
+	</select>
+
 	<select id="getLast2" resultType="ZhizhengAddRecord">
 		SELECT 
 			<include refid="columns"/>
