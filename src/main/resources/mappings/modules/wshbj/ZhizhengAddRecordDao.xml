@@ -3,7 +3,8 @@
 <mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.ZhizhengAddRecordDao">
     
 	<sql id="columns">
-		a.id AS "id",a.add_code,a.add_count,a.result_count,a.update_time,a.update_type
+		a.id AS "id",a.add_code as "addCode",a.add_count as "addCount"
+		,a.result_count as "resultCount",a.update_time as "updateTime",a.update_type as "updateType"
 	</sql>
 	
 	<sql id="joins">
@@ -25,7 +26,7 @@
 		<where>
 
 		</where>
-				ORDER BY a.update_time desc limit 2
+		ORDER BY a.update_time desc limit 2
 	</select>
 	
 
@@ -33,7 +34,7 @@
 		INSERT INTO bj_zhizheng_add_record(
 			id,add_code,add_count,result_count,update_time,update_type
 		) VALUES (
-			#{id},#{add_code},#{add_count},#{result_count},#{update_time},#{update_type}
+			#{id},#{addCode},#{addCount},#{resultCount},#{updateTime},#{updateType}
 		)
 	</insert>
 	

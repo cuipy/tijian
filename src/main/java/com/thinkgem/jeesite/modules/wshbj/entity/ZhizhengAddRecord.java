@@ -11,61 +11,63 @@ public class ZhizhengAddRecord extends DataEntity<ZhizhengAddRecord> {
 
     private String id;
 
-    private String add_code;
+    private String addCode;
 
-    private Integer add_count;
+    private Integer addCount;
 
-    private Integer result_count;
+    private Integer resultCount;
 
-    private java.util.Date update_time;
+    private java.util.Date updateTime;
 
-    private Integer update_type;
+    private Integer updateType;
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
 
-    public String getAdd_code() {
-        return add_code;
+    public String getAddCode() {
+        return addCode;
     }
 
-    public void setAdd_code(String add_code) {
-        this.add_code = add_code;
+    public void setAddCode(String addCode) {
+        this.addCode = addCode;
     }
 
-    public Integer getAdd_count() {
-        return add_count;
+    public Integer getAddCount() {
+        return addCount;
     }
 
-    public void setAdd_count(Integer add_count) {
-        this.add_count = add_count;
+    public void setAddCount(Integer addCount) {
+        this.addCount = addCount;
     }
 
-    public Integer getResult_count() {
-        return result_count;
+    public Integer getResultCount() {
+        return resultCount;
     }
 
-    public void setResult_count(Integer result_count) {
-        this.result_count = result_count;
+    public void setResultCount(Integer resultCount) {
+        this.resultCount = resultCount;
     }
 
-    public Date getUpdate_time() {
-        return update_time;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdate_time(Date update_time) {
-        this.update_time = update_time;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
-    public Integer getUpdate_type() {
-        return update_type;
+    public Integer getUpdateType() {
+        return updateType;
     }
 
-    public void setUpdate_type(Integer update_type) {
-        this.update_type = update_type;
+    public void setUpdateType(Integer updateType) {
+        this.updateType = updateType;
     }
 }

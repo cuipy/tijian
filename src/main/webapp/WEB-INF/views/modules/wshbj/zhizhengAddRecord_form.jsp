@@ -36,9 +36,7 @@
 	<div class="box1">
 	<div id="msg" class="alert alert-danger" style="display:none" ></div>
 
-	<form:form id="inputForm" modelAttribute="zhizhengAddRecord" action="${ctx}/wshbj/zhizhengAddRecord/ajax_add" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
+	<form id="inputForm" action="${ctx}/wshbj/zhizhengAddRecord/ajax_add" method="post" class="form-horizontal">
 		<div class="control-group span12">
             <label class="control-label">体检中心ID：</label>
             <div class="controls">
@@ -66,7 +64,7 @@
 		<div class="control-group span12">
 			<label class="control-label">制证编号：</label>
 			<div class="controls">
-				<form:input path="add_code" htmlEscape="false" maxlength="45" class="input-xxlarge"  />
+				<input type="text" name="add_code" maxlength="45" class="input-xxlarge"  />
 				<span class="help-inline"> </span>
 			</div>
 		</div>
@@ -77,7 +75,7 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		<div class="cl"></div>
-	</form:form>
+	</form>
     </div>
 
     </div>

@@ -8,6 +8,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import com.thinkgem.jeesite.modules.wshbj.entity.ZhizhengAddRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
 
     public ZhizhengAddRecord getLastRecord(){
         List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
-        if(lst!=null&&lst.size()>1){
+        if(lst!=null&&lst.size()>0){
             return lst.get(0);
         }
 
@@ -35,6 +36,8 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
      * @return
      */
     public Integer decrementZhizhengCount(String ownerId){
+
+        List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
 
         return 0;
     }
@@ -54,8 +57,8 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
         List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
         if(lst!=null&&lst.size()>0){
             ZhizhengAddRecord record=lst.get(0);
-            lastAddCode = record.getAdd_code();
-            currResultCount=record.getResult_count();
+            lastAddCode = record.getAddCode();
+            currResultCount=record.getResultCount();
         }
 
         Integer resultCount = currResultCount+addCount;
@@ -72,6 +75,7 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
      * @param addCount
      * @return
      */
+    @Transactional(readOnly = false)
     public boolean addCode(String ownerId,String newCode,Integer addCount){
         Integer currResultCount=0;
 
@@ -79,17 +83,17 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
         List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
         if(lst!=null&&lst.size()>0){
             ZhizhengAddRecord record=lst.get(0);
-            currResultCount=record.getResult_count();
+            currResultCount=record.getResultCount();
         }
 
         ZhizhengAddRecord record=new ZhizhengAddRecord();
-        record.setAdd_code(newCode);
-        record.setAdd_count(addCount);
-        record.setResult_count(currResultCount+addCount);
-        record.setUpdate_time(new java.util.Date());
-        record.setUpdate_type(1);
+        record.setAddCode(newCode);
+        record.setAddCount(addCount);
+        record.setResultCount(currResultCount+addCount);
+        record.setUpdateTime(new java.util.Date());
+        record.setUpdateType(1);
 
-        int res = zhizhengAddRecordDao.insert(record);
+        super.save(record);
         return true;
     }
 

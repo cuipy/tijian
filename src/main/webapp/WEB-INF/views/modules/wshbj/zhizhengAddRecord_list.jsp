@@ -30,7 +30,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>名称：</label>
-				<form:input path="add_code" htmlEscape="false" maxlength="50" class="input-medium"/>
+				<form:input path="addCode" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -54,8 +54,8 @@
 		<c:forEach items="${page.list}" var="vo" varStatus="idx">
 			<tr>
 				<td> ${idx.count} </td>
-				<td>${vo.add_code}</td><td>${vo.add_count}</td> <td> ${vo.result_count} </td>
-				<td> ${vo.update_time} </td>  <td> ${vo.update_type} </td>
+				<td>${vo.addCode}</td><td>${vo.addCount}</td> <td> ${vo.resultCount} </td>
+				<td> ${vo.updateTime} </td>  <td> ${vo.updateType} </td>
 			</tr>
 		</c:forEach>
 		</tbody>

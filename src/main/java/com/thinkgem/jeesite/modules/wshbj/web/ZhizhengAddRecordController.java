@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.web;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -11,6 +12,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ZhizhengAddRecord;
 import com.thinkgem.jeesite.modules.wshbj.service.ZhizhengAddRecordService;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,8 +63,8 @@ public class ZhizhengAddRecordController extends BaseController {
 		// 获取最新的记录
 		ZhizhengAddRecord record = zhizhengAddRecordService.getLastRecord();
 		if(record!=null){
-			model.addAttribute("currAddCode",record.getAdd_code());
-			model.addAttribute("currResultCount",record.getResult_count());
+			model.addAttribute("currAddCode",record.getAddCode());
+			model.addAttribute("currResultCount",record.getResultCount());
 		}else {
 			model.addAttribute("currAddCode","空");
 			model.addAttribute("currResultCount",0);
@@ -78,7 +80,7 @@ public class ZhizhengAddRecordController extends BaseController {
 	public RequestResult ajax_add(String add_code) {
 
 		// 判断格式
-		if(StringUtils.isEmpty(add_code)&&add_code.length()<=32){
+		if(StringUtils.isEmpty(add_code)||add_code.length()<=32){
 			return RequestResult.generate(101,"编号 "+add_code+" 不合法。");
 		}
 
