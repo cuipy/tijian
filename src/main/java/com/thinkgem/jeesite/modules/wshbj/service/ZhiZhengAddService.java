@@ -5,6 +5,18 @@ public class ZhiZhengAddService {
     private String salt="pingbukeji1234";
 
     /**
+     * 初始化制证add_code  ownerId + salt + 结果值
+     * @param ownerId
+     */
+    public void initAddCode(String ownerId){
+
+        // 验证当前是否没有记录
+
+
+
+    }
+
+    /**
      * 验证当前可制证次数
      * add_code的算法： ownerId + 前一次add_code + 上次可制证次数 + salt + 结果值 进行md5 加密
      */
