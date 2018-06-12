@@ -24,6 +24,8 @@
 			<!--li><a href="${ctx}/wshbj/examinationItem/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
+
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -82,14 +84,6 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
-
-    <div class="alert alert-success">
-      <strong>帮助：</strong> <br>
-      1. 检查项目属于<span class="help-inline">检查细类</span><br>
-      2. 设置检查项目需要定义<span class="help-inline">单位、价格、所属标本类型等</span><br>
-
-      <strong>作用：</strong> <br>
-      1. 检查项目属于检查的细类，上承<span class="help-inline">项目类型(小类) - 检查大类(大类)</span><br>
 
     </div>
 

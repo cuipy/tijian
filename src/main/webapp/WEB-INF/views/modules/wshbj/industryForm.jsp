@@ -33,7 +33,7 @@
 		<!--li><a href="${ctx}/wshbj/industry/list4Pull">快速添加</a></li-->
 	</ul><br/>
 
-	<div class="">
+	<div class="box1">
 	<form:form id="inputForm" modelAttribute="industry" action="${ctx}/wshbj/industry/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
@@ -107,6 +107,7 @@
       3. 不同的行业可能健康证模板不同，通过设置不同行业的健康证打印模板<br>
 
     </div></div>
+    </div>
 
 
 </body>

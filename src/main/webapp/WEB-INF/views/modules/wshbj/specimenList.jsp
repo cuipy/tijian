@@ -24,6 +24,8 @@
 			<!--li><a href="${ctx}/wshbj/specimen/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
+
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="specimen" action="${ctx}/wshbj/specimen/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -82,6 +84,6 @@
       2. 操作人可以增加标本类型<br>
 
     </div>
-
+    </div>
 </body>
 </html>

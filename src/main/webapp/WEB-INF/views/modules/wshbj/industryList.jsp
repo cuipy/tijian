@@ -24,6 +24,8 @@
 			<!--li><a href="${ctx}/wshbj/industry/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
+
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="industry" action="${ctx}/wshbj/industry/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -77,6 +79,7 @@
       2. 在体检人注册的时候，必须选择体检人所属行业<br>
       3. 不同的行业可能健康证模板不同，通过设置不同行业的健康证打印模板<br>
 
+    </div>
     </div>
 
 </body>

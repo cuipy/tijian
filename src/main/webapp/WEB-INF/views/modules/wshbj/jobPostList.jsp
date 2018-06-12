@@ -24,6 +24,8 @@
 			<!--li><a href="${ctx}/wshbj/jobPost/list4Pull">快速添加</a></li-->
 		</shiro:hasPermission>
 	</ul>
+
+	<div class="box1">
 	<form:form id="searchForm" modelAttribute="jobPost" action="${ctx}/wshbj/jobPost/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -77,6 +79,7 @@
       2. 岗位用于体检人，每个体检人必定属于某种岗位<br>
       3. 不同岗位体检人的检查项目和健康证可以选择不同的设置
 
+    </div>
     </div>
 
 </body>

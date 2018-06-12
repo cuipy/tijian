@@ -30,8 +30,9 @@
 		<li><a href="${ctx}/wshbj/examinationItem/list">检查项目列表</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationItem/form?id=${examinationItem.id}">检查项目<shiro:hasPermission name="wshbj:examinationItem:edit">${not empty examinationItem.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="wshbj:examinationItem:edit">查看</shiro:lacksPermission></a></li>
 		<!--li><a href="${ctx}/wshbj/examinationItem/list4Pull">快速添加</a></li-->
-	</ul><br/>
+	</ul>
 
+	<div class="box1">
 	<div class="max-width:1200px;">
 	<form:form id="inputForm" modelAttribute="examinationItem" action="${ctx}/wshbj/examinationItem/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -135,6 +136,6 @@
       1. 检查项目属于检查的细类，上承<span class="help-inline">项目类型(小类) - 检查大类(大类)</span><br>
 
     </div></div>
-
+    </div>
 </body>
 </html>
