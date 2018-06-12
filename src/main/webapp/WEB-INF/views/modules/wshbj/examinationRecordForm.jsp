@@ -366,7 +366,9 @@
         <div class="control-group">
             <label class="control-label"><font color="red">*</font>  用户头像：</label>
             <div class="controls">
-                 <sys:cropper mainImgWidth="180"  mainImgHeight="240" imgName="真人照片" path="headImg"  value="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"/>
+                 <sys:cropper mainImgWidth="180"  mainImgHeight="240" imgName="真人照片" path="headImg"
+                              value="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"
+                 errImg="${ctxStatic}/images/nopic.jpg"/>
             </div>
         </div>
 

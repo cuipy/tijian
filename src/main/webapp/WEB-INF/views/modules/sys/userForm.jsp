@@ -46,13 +46,17 @@
 		<div class="control-group" style="min-height:100px;">
 			<label class="control-label">头像:</label>
 			<div class="controls">
-			    <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="头像" path="photo"  value="${ctx}/sys/user/getPhotoImg?id=${user.id}"/>
+			    <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="头像" path="photo"
+							 errImg="${ctxStatic}/images/nopic.jpg"
+							 value="${ctx}/sys/user/getPhotoImg?id=${user.id}"/>
 			</div>
 		</div>
 		<div class="control-group" style="min-height:100px;">
             <label class="control-label">签名图片:</label>
             <div class="controls">
-                <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="签名" path="qianming"  value="${ctx}/sys/user/getQianmingImg?id=${user.id}"/>
+                <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="签名" path="qianming"
+							 errImg="${ctxStatic}/images/nopic.jpg"
+							 value="${ctx}/sys/user/getQianmingImg?id=${user.id}"/>
             </div>
         </div>
 

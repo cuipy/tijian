@@ -45,7 +45,9 @@
 		<div class="control-group">
 			<label class="control-label">头像：</label>
 			<div class="controls">
-				<sys:cropper mainImgWidth="360" imgName="头像" path="headImg" value="${test1.headImg}"/>
+				<sys:cropper mainImgWidth="360" imgName="头像" path="headImg"
+							 errImg="${ctxStatic}/images/nopic.jpg"
+							 value="${test1.headImg}"/>
 			</div>
 		</div>
 		<div class="control-group">

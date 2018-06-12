@@ -36,7 +36,9 @@
 		<div class="control-group">
 			<label class="control-label">头像:</label>
 			<div class="controls">
-				 <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="头像" path="photo"  value="${ctx}/sys/user/getPhotoImg?id=${user.id}"/>
+				 <sys:cropper mainImgWidth="180"  mainImgHeight="180" imgName="头像" path="photo"
+							  errImg="${ctxStatic}/images/nopic.jpg"
+							  value="${ctx}/sys/user/getPhotoImg?id=${user.id}"/>
 			</div>
 		</div>
 		<div class="control-group">

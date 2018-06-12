@@ -21,7 +21,7 @@
 <div class="tailoring-content" id="content${path}">
     <div class="tailoring-content-two">
         <div class="tailoring-box-parcel" style="width:${mainImgWidth}px;height:${mainImgHeight}px">
-            <img id="${path}Img" src="${value}" style="display:none;height:${mainImgHeight-2}px;max-width:${mainImgWidth-2}px;max-height:${mainImgHeight-2}px;"/>
+            <img id="${path}Img" src="${value}" onerror="javascript:this.src='${errImg}'" style="display:none;height:${mainImgHeight-2}px;max-width:${mainImgWidth-2}px;max-height:${mainImgHeight-2}px;"/>
             <img id="${path}Cropper" width="${mainImgWidth-2}" height="${mainImgHeight-2}"  style="display:none"/>
             <div id="${path}Jqcam"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></div>
             <video id="${path}Video"  width="${mainImgWidth-2}" height="${mainImgHeight-2}" style="display:none"></video>

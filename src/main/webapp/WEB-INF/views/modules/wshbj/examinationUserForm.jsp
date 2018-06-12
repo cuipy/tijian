@@ -165,7 +165,9 @@
 		<div class="control-group">
             <label class="control-label">真人照片采集：</label>
             <div class="controls">
-                <sys:cropper mainImgWidth="190"  mainImgHeight="240" imgName="真人照片" path="headImgPath" value="${ctx}/wshbj/examinationUser/getHeadImg?id=${examinationUser.id}"/>
+                <sys:cropper mainImgWidth="190"  mainImgHeight="240" imgName="真人照片" path="headImgPath"
+							 errImg="${ctxStatic}/images/nopic.jpg"
+							 value="${ctx}/wshbj/examinationUser/getHeadImg?id=${examinationUser.id}"/>
             </div>
         </div>
 
