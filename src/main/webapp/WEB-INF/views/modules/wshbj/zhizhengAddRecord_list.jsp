@@ -20,7 +20,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/wshbj/zhizhengAddRecord/list">制证数管理列表</a></li>
 		<shiro:hasPermission name="wshbj:zhizhengAddRecord:edit">
-			<li><a href="${ctx}/wshbj/zhizhengAddRecord/form">增加制证数</a></li>
+			<li><a href="${ctx}/wshbj/zhizhengAddRecord/add">增加制证数</a></li>
 		</shiro:hasPermission>
 	</ul>
 

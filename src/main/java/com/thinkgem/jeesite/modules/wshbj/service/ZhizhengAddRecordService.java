@@ -7,9 +7,13 @@ import com.thinkgem.jeesite.modules.wshbj.dao.ZhizhengAddRecordDao;
 import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
 import com.thinkgem.jeesite.modules.wshbj.entity.ZhizhengAddRecord;
 
+import java.util.List;
+
 public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao, ZhizhengAddRecord> {
 
     private String salt="pingbukeji1234";
+
+    private ZhizhengAddRecordDao zhizhengAddRecordDao;
 
     /**
      * 初始化制证add_code  ownerId + salt + 结果值
@@ -21,6 +25,15 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
         String ming=ownerId+salt+count;
         String addCount=Encodes.md5(ming);
 
+    }
+
+    public ZhizhengAddRecord getLastRecord(){
+        List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
+        if(lst!=null&&lst.size()>1){
+            return lst.get(0);
+        }
+
+        return null;
     }
 
     /**
