@@ -125,9 +125,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	@Length(min=5, max=45, message="联系电话长度必须介于 5 和 45 之间")
-	@NotNull(message = "联系电话必须填写")
+
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -136,10 +134,8 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.phoneNumber = phoneNumber;
 	}
 
-	@Length(min=15, max=20, message="身份证号长度必须介于 15 和 20 之间")
-	@NotNull(message = "身份证号码必须填写")
 	@Pattern(regexp = "(^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$)" +
-			"|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}[0-9Xx]$)" ,message = "身份证格式不合法")
+			"|(^[1-9]\\d{5}\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{2}[0-9Xx]$)|(^\\s*$)" ,message = "身份证格式不合法")
 	public String getIdNumber() {
 		return idNumber;
 	}
@@ -148,7 +144,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.idNumber = idNumber;
 	}
 
-	@Length(min=1, max=64, message="性别长度必须介于 1 和 64 之间")
+
 	public String getSex() {
 		return sex;
 	}
@@ -157,7 +153,6 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.sex = sex;
 	}
 	
-	@Length(min=0, max=64, message="行业长度必须介于 1 和 64 之间")
 	public String getIndustryId() {
 		return industryId;
 	}
@@ -175,7 +170,6 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.postId = postId;
 	}
 	
-	@Length(min=1, max=10, message="出生日期长度必须介于 1 和 10 之间")
 	public String getBirthday() {
 		return birthday;
 	}
@@ -184,7 +178,6 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 		this.birthday = birthday;
 	}
 	
-	@Length(min=0, max=64, message="单位长度必须介于 1 和 64 之间")
 	public String getOrganId() {
 		return organId;
 	}
@@ -194,6 +187,7 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	}
 	
 	@Length(min=0, max=64, message="所属体检中心长度必须介于 0 和 64 之间")
+	@NotNull(message="体检中心必须填写")
 	public String getOwner() {
 		return owner;
 	}

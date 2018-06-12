@@ -3,6 +3,7 @@
 <%@ attribute name="imgName" type="java.lang.String" required="true" description="图片名称"%>
 <%@ attribute name="path" type="java.lang.String" required="true" description="上传图片的input控件name值"%>
 <%@ attribute name="value" type="java.lang.String" required="false" description="图片的路径地址"%>
+<%@ attribute name="errImg" type="java.lang.String" required="false" description="NoPic"%>
 <%@ attribute name="mainImgWidth" type="java.lang.String" required="true" description="主图片的宽度"%>
 <%@ attribute name="mainImgHeight" type="java.lang.String" required="false" description="主图片的高度"%>
 <c:if test="${mainImgHeight == null }">

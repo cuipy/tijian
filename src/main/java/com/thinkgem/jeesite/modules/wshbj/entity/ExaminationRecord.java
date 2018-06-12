@@ -243,9 +243,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.name = name;
 	}
 	
-	@Length(min=1, max=45, message="联系电话长度必须介于 1 和 45 之间")
-	@ExcelField(value="phoneNumber",title="联系电话",type=0,sort=50)
-	@NotNull(message="用户手机号码不允许为空")
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
@@ -254,12 +251,10 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	@Length(min=1, max=64, message="性别长度必须介于 1 和 64 之间")
 	public String getSex() {
 		return sex;
 	}
 
-	@ExcelField(value="strSex",title="性别",type=0,sort=60)
 	public String getStrSex(){
 		return DictUtils.getDictLabel(sex,"sex","");
 	}
@@ -269,7 +264,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="行业长度必须介于 1 和 64 之间")
-
+	@NotNull(message = "行业必须填写")
 	public String getIndustryId() {
 		return industryId;
 	}
@@ -288,7 +283,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 	
 	@Length(min=1, max=64, message="岗位长度必须介于 1 和 64 之间")
-
+	@NotNull(message = "岗位必须填写")
 	public String getPostId() {
 		return postId;
 	}
@@ -307,8 +302,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.postId = postId;
 	}
 	
-	@Length(min=1, max=10, message="出生日期长度必须介于 1 和 10 之间")
-	@ExcelField(value="birthday",title="出生日期",type=0,sort=90)
 	public String getBirthday() {
 		return birthday;
 	}
@@ -317,7 +310,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.birthday = birthday;
 	}
 	
-	@Length(min=1, max=64, message="单位长度必须介于 1 和 64 之间")
 	public String getOrganId() {
 		return organId;
 	}
@@ -326,7 +318,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.organId = organId;
 	}
 
-	@ExcelField(value="organName",title="单位",type=0,sort=100)
 	public String getOrganName(){
 		Organ organ = getOrgan();
 		if(organ==null||organ.getName()==null){
@@ -346,8 +337,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	}
 
 
-	@Length(min=0, max=64, message="体检套餐长度必须介于 0 和 64 之间")
-
 	public String getPackageId() {
 		return packageId;
 	}
@@ -356,7 +345,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.packageId = packageId;
 	}
 
-	@ExcelField(value="packageName",title="体检套餐",type=0,sort=180)
 	public String getPackageName(){
 		ExaminationPackage p = getExaminationPackage();
 		if(p==null||p.getName()==null){
@@ -367,7 +355,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	}
 
-	@Length(min=1, max=10, message="套餐价格长度必须介于 1 和 10 之间")
+	@Length(min=1, max=10, message="体检价格长度必须介于 1 和 10 之间")
 	@NotNull(message = "体检价格不允许为空")
 	@ExcelField(value="packagePrice",title="套餐价格",type=0,sort=190)
 	public String getPackagePrice() {
@@ -378,9 +366,6 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		this.packagePrice = packagePrice;
 	}
 	
-	@Length(min=0, max=20, message="身份证号长度必须介于 0 和 20 之间")
-	@NotNull(message="体检用户身份证号码不能为空")
-	@ExcelField(value="idNumber",title="身份证号",type=0,sort=200)
 	public String getIdNumber() {
 		return idNumber;
 	}
