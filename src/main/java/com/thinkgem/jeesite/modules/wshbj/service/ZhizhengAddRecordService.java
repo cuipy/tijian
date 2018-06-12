@@ -1,6 +1,8 @@
 package com.thinkgem.jeesite.modules.wshbj.service;
 
-public class ZhiZhengAddService {
+import com.thinkgem.jeesite.common.utils.Encodes;
+
+public class ZhizhengAddRecordService {
 
     private String salt="pingbukeji1234";
 
@@ -8,9 +10,12 @@ public class ZhiZhengAddService {
      * 初始化制证add_code  ownerId + salt + 结果值
      * @param ownerId
      */
-    public void initAddCode(String ownerId){
+    public void initAddCode(String ownerId,Integer count){
 
         // 验证当前是否没有记录
+        String ming=ownerId+salt+count;
+        String addCount=Encodes.md5(ming);
+
 
 
 
@@ -45,7 +50,9 @@ public class ZhiZhengAddService {
     private String buildNewCode(String ownerId,Integer addCount){
         // 1 获取最后一次 add_code
 
+
         // 1.1 验证最后一次可制证次数是否合法
+
 
         // 2 获取当前的可制证次数
 

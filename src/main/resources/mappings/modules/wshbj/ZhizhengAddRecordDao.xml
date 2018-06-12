@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wshbj.dao.ZhizhengAddRecordDao">
+    
+	<sql id="columns">
+		a.id AS "id",a.add_code,a.add_count,a.result_count,a.update_time,a.update_type
+	</sql>
+	
+	<sql id="joins">
+	</sql>
+    
+	<select id="get" resultType="ZhizhengAddRecord">
+		SELECT 
+			<include refid="columns"/>
+		FROM bj_zhizheng_add_record a
+		<include refid="joins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getLast2" resultType="ZhizhengAddRecord">
+		SELECT 
+			<include refid="columns"/>
+		FROM bj_zhizheng_add_record a
+		<include refid="joins"/>
+		<where>
+
+		</where>
+				ORDER BY a.update_time desc limit 2
+	</select>
+	
+
+	<insert id="insert">
+		INSERT INTO bj_zhizheng_add_record(
+			id,add_code,add_count,result_count,update_time,update_type
+		) VALUES (
+			#{id},#{add_code},#{add_count},#{result_count},#{update_time},#{update_type}
+		)
+	</insert>
+	
+
+</mapper>
