@@ -46,10 +46,6 @@
 
 		    });
 
-		    <c:if test="${not empty examRecord and examRecord.status != '50'}">
-		    // 如果已经选中体检记录对象，可以进行制卡
-		    setTimeout("daojishiPrintCard()",1000);
-		    </c:if>
 
         });
 
@@ -58,33 +54,8 @@
         }
 
         <c:if test="${not empty examRecord}">
-        <c:if test="${examRecord.status != '50'}">
-        var submited=false;
-        function daojishiPrintCard(){
-            if(submited){
-                return;
-            }
-
-            var strSecond=$("#btnPrintCard").attr("data-second");
-            var isecond=parseInt(strSecond);
-            if(isecond<=0){
-                do_update_print_card();
-            }else{
-                isecond--;
-                $("#btnPrintCard").attr("data-second",isecond);
-                $("#btnPrintCard").val("制卡("+isecond+"秒钟后自动制证)");
-                setTimeout("daojishiPrintCard()",1000);
-            }
-        }
-        </c:if>
-
         // 如果已经选中体检记录对象，可以进行制卡
         function do_update_print_card(){
-            <c:if test="${examRecord.status != '50'}">
-            if(submited){
-                return;
-            }
-            </c:if>
 
             if($("#examRecordId").val()==''){
                 $("#msg").show().html("未能获取体检记录对象的id，无法制卡。");
