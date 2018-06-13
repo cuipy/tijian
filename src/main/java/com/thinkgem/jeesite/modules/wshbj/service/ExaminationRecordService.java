@@ -324,76 +324,76 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return RequestResult.generate(1,"保存成功",examinationRecord);
     }
 
-    @Transactional(readOnly = false)
-    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
-    public void refreshStatus(String recordId) {
-        if (StringUtils.isBlank(recordId)) {
-            return;
-        }
-
-        //不存在或已删除不处理
-        ExaminationRecord record = get(recordId);
-        if (record == null || "1".equals(record.getDelFlag())) {
-            return;
-        }
-
-        //已制证返回不处理
-        if (ExaminationRecordConstant.STATUS50.equals(record.getStatus())) {
-            return;
-        }
-
-        //未体检完数量
-        int count10 = 0;
-        //体检不合格数量
-        int count20 = 0;
-        //复检合格数量
-        int count30 = 0;
-        //初检合格数量
-        int count40 = 0;
-
-
-        //查询出所有检查项目
-        ExaminationRecordItem recordItem = new ExaminationRecordItem();
-        recordItem.setRecordId(recordId);
-        recordItem.setLastFlag("1");
-        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
-        List<ExaminationRecordItem> itemList = examinationRecordItemService.findList(recordItem);
-        for (int i = 0; i < itemList.size(); i++) {
-            recordItem = itemList.get(i);
-            if (StringUtils.isBlank(recordItem.getResultDictId())) {  //未录入项目体检结果
-                count10++;
-            } else {
-                if ("1".equals(recordItem.getResultFlag())) {  //合格
-                    //初检合格
-                    if ("1".equals(recordItem.getExaminationFlag())) {
-                        count40++;
-                    } else {  //复检合格
-                        count30++;
-                    }
-                } else {  //不合格
-                    count20++;
-                }
-            }
-        }
-
-        String status = null;
-        if (count10 > 0) {    //未体检完
-            if (count10 == itemList.size()) {   //未体检
-                status = ExaminationRecordConstant.STATUS0;
-            } else {  //未体检完
-                status = ExaminationRecordConstant.STATUS10;
-            }
-
-        } else if (count20 > 0) {  //体检不合格
-            status = ExaminationRecordConstant.STATUS20;
-        } else if (count30 > 0) {  //复检合格
-            status = ExaminationRecordConstant.STATUS30;
-        } else {  //初检合格，可制证
-            status = ExaminationRecordConstant.STATUS40;
-        }
-
-        this.updateRecordStatus(recordId, status);
-    }
+//    @Transactional(readOnly = false)
+//    //@CacheEvict(value = "examinationRecordCache",allEntries = true)
+//    public void refreshStatus(String recordId) {
+//        if (StringUtils.isBlank(recordId)) {
+//            return;
+//        }
+//
+//        //不存在或已删除不处理
+//        ExaminationRecord record = get(recordId);
+//        if (record == null || "1".equals(record.getDelFlag())) {
+//            return;
+//        }
+//
+//        //已制证返回不处理
+//        if (ExaminationRecordConstant.STATUS50.equals(record.getStatus())) {
+//            return;
+//        }
+//
+//        //未体检完数量
+//        int count10 = 0;
+//        //体检不合格数量
+//        int count20 = 0;
+//        //复检合格数量
+//        int count30 = 0;
+//        //初检合格数量
+//        int count40 = 0;
+//
+//
+//        //查询出所有检查项目
+//        ExaminationRecordItem recordItem = new ExaminationRecordItem();
+//        recordItem.setRecordId(recordId);
+//        recordItem.setLastFlag("1");
+//        recordItem.setDelFlag(ExaminationRecordItem.DEL_FLAG_NORMAL);
+//        List<ExaminationRecordItem> itemList = examinationRecordItemService.findList(recordItem);
+//        for (int i = 0; i < itemList.size(); i++) {
+//            recordItem = itemList.get(i);
+//            if (StringUtils.isBlank(recordItem.getResultDictId())) {  //未录入项目体检结果
+//                count10++;
+//            } else {
+//                if ("1".equals(recordItem.getResultFlag())) {  //合格
+//                    //初检合格
+//                    if ("1".equals(recordItem.getExaminationFlag())) {
+//                        count40++;
+//                    } else {  //复检合格
+//                        count30++;
+//                    }
+//                } else {  //不合格
+//                    count20++;
+//                }
+//            }
+//        }
+//
+//        String status = null;
+//        if (count10 > 0) {    //未体检完
+//            if (count10 == itemList.size()) {   //未体检
+//                status = ExaminationRecordConstant.STATUS0;
+//            } else {  //未体检完
+//                status = ExaminationRecordConstant.STATUS10;
+//            }
+//
+//        } else if (count20 > 0) {  //体检不合格
+//            status = ExaminationRecordConstant.STATUS20;
+//        } else if (count30 > 0) {  //复检合格
+//            status = ExaminationRecordConstant.STATUS30;
+//        } else {  //初检合格，可制证
+//            status = ExaminationRecordConstant.STATUS40;
+//        }
+//
+//        this.updateRecordStatus(recordId, status);
+//    }
 
     /**
      * 更新状态，只需要id
@@ -426,6 +426,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                     // 复检合格
                     record.setStatus(ExaminationRecordConstant.STATUS45);
                 }
+                record.setZhizhengTime(new java.util.Date());
 
             }
             // 存在体检不合格的问题

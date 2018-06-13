@@ -148,7 +148,7 @@
 				<th width="100">联系电话</th>
 				<th width="40">性别</th>
 				<th >体检套餐/项目</th>
-				<th width="120">填报时间</th>
+				<th width="120">制证日期</th>
 				<th width="100">状态</th>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="400">操作</th></shiro:hasPermission>
 			</tr>
@@ -180,7 +180,7 @@
 
 				</td>
 				<td>
-					<fmt:formatDate value="${examinationRecord.updateDate}" pattern="yyyy-MM-dd HH:mm"/>
+					<fmt:formatDate value="${examinationRecord.zhizhengTime}" pattern="yyyy-MM-dd HH:mm"/>
 				</td>
 				<td>
 						${fns:getDictLabel(examinationRecord.status,'examination_record_status','')}

@@ -248,7 +248,8 @@ public class ExaminationSamplesService extends CrudService<ExaminationSamplesDao
         //更新体检记录状态
 		if (!recordIdList.isEmpty()){
 			for (String recordId:recordIdList) {
-				examinationRecordService.refreshStatus(recordId);
+				ExaminationRecord record = examinationRecordService.get(recordId);
+				examinationRecordService.updateStatus(record);
 			}
 		}
 
