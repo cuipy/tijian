@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ZhizhengAddRecord;
 import com.thinkgem.jeesite.modules.wshbj.service.ZhizhengAddRecordService;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.bouncycastle.ocsp.Req;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,6 +80,14 @@ public class ZhizhengAddRecordController extends BaseController {
 
 
 		return "modules/wshbj/zhizhengAddRecord_form";
+	}
+
+	@RequiresPermissions("wshbj:zhizhengAddRecord:view")
+	@RequestMapping(value = {"ajax_get_last"})
+	@ResponseBody
+	public RequestResult ajax_get_last() {
+		ZhizhengAddRecord record = zhizhengAddRecordService.getLastRecord();
+		return RequestResult.generate(1,"获取最新制证数量记录",record);
 	}
 
 	@RequiresPermissions("wshbj:zhizhengAddRecord:edit")

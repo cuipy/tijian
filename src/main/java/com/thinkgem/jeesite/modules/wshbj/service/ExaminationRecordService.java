@@ -193,6 +193,10 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             return RequestResult.generate(20,"可制证数量为0，可不制证");
         }
 
+        // 可制证数量减1
+        String ownerId= UserUtils.getUser().getCompany().getId();
+        zhizhengAddRecordService.decrementZhizhengCount(ownerId);
+
         dao.updatePrintCard(examinationRecord.getId());
 
         // 返回执行成功
