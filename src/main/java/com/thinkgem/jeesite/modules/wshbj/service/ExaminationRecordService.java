@@ -60,6 +60,9 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     @Autowired
     private SpecimenService specimenService;
 
+    @Autowired
+    private ZhizhengAddRecordService zhizhengAddRecordService;
+
 
     //@Cacheable(value = "examinationRecordCache",key="'examinationRecord_get_'+#id")
     public ExaminationRecord get(String id) {
@@ -77,44 +80,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         return examinationRecord;
     }
 
-//    public Map getMapByCode4Result(String code, String examinationFlag) {
-//        if (StringUtils.isBlank(code)) {
-//            new HashMap<String, Object>();
-//        }
-//
-//        Map map = this.dao.getMapByCode(code);
-//        if (map != null && map.containsKey("id")) {
-//            ExaminationRecordItem recordItem = new ExaminationRecordItem();
-//            recordItem.setRecordId(map.get("id").toString());
-//            recordItem.setExaminationFlag(examinationFlag);
-//            List<ExaminationRecordItem> recordItems = examinationRecordItemService.findList(recordItem);
-//            List<Map<String, Object>> examinationRecordItemList = new ArrayList<Map<String, Object>>();
-//            Map<String, Object> itemMap = null;
-//            ExaminationResultDict examinationResultDict = new ExaminationResultDict();
-//            if (recordItems != null && recordItems.size() > 0) {
-//                for (ExaminationRecordItem recordItem1 : recordItems) {
-//                    itemMap = new HashMap<String, Object>();
-//                    itemMap.put("recordItemId", recordItem1.getId());
-//                    itemMap.put("itemId", recordItem1.getItemId());
-//                    itemMap.put("itemName", recordItem1.getItemName());
-//                    itemMap.put("needSamples", recordItem1.getNeedSamples());
-//                    itemMap.put("sampleCode", recordItem1.getSampleCode());
-//                    itemMap.put("resultDictId", recordItem1.getResultDictId());
-//                    itemMap.put("examinationFlag", recordItem1.getExaminationFlag());
-//                    //项目结果字典
-//                    examinationResultDict.setItemId(recordItem1.getItemId());
-//                    List<ExaminationResultDict> dictList = resultDictService.findList(examinationResultDict);
-//
-//                    itemMap.put("dictList", dictList);
-//                    examinationRecordItemList.add(itemMap);
-//                }
-//            }
-//
-//            map.put("examinationRecordItemList", examinationRecordItemList);
-//        }
-//
-//        return map;
-//    }
 
     public List<ExaminationRecord> findList(ExaminationRecord examinationRecord) {
         return super.findList(examinationRecord);
@@ -207,7 +172,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
     //@CacheEvict(value = "examinationRecordCache",allEntries = true)
     public RequestResult updatePrintCard(ExaminationRecord examinationRecord) {
 
-
         ExaminationRecord record = get(examinationRecord.getId());
 
         if (ExaminationRecordConstant.STATUS50.equals(record.getStatus())) {
@@ -217,6 +181,16 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         //未体检状态才允许修改
         if (!ExaminationRecordConstant.STATUS40.equals(record.getStatus())&&!ExaminationRecordConstant.STATUS45.equals(record.getStatus())) {
             return RequestResult.generate(10, "体检记录的状态必须是合格才允许制证。");
+        }
+
+        // 获取可制证数量
+        ZhizhengAddRecord zzrecord = zhizhengAddRecordService.getLastRecord();
+        Integer resultCount = 0;
+        if(zzrecord!=null) {
+            resultCount = zzrecord.getResultCount();
+        }
+        if(resultCount<=0){
+            return RequestResult.generate(20,"可制证数量为0，可不制证");
         }
 
         dao.updatePrintCard(examinationRecord.getId());
