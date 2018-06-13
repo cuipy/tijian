@@ -79,7 +79,9 @@ public class MenuService {
                 if(mn.getId().equals(currRootId)){
                     mn.setActived(true);
                 }
-                tops.add(mn);
+                if("1".equals(mn.getIsShow())) {
+                    tops.add(mn);
+                }
             }
         }
 
