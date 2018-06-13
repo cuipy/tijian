@@ -82,6 +82,9 @@ public class ExaminationRecordController extends BaseController {
 
 	@Autowired
 	private ExaminationRecordItemService examinationRecordItemService;
+
+	@Autowired
+	private ZhizhengAddRecordService zhizhengAddRecordService;
 	
 	@ModelAttribute
 	public ExaminationRecord get(@RequestParam(required=false) String id) {
@@ -621,6 +624,14 @@ public class ExaminationRecordController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecord:edit")
 	@RequestMapping(value = {"print_card"})
 	public String print_card(String examRecordCode,  Model model) {
+
+		Integer canZhizhengCount = 0;
+		// 可制证数量
+		ZhizhengAddRecord zzAddRecord = zhizhengAddRecordService.getLastRecord();
+		if(zzAddRecord!=null){
+			canZhizhengCount = zzAddRecord.getResultCount();
+		}
+		model.addAttribute("canZhizhengCount",canZhizhengCount);
 
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){

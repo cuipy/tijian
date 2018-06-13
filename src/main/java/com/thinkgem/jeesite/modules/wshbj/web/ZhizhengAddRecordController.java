@@ -86,20 +86,21 @@ public class ZhizhengAddRecordController extends BaseController {
 	@ResponseBody
 	public RequestResult ajax_add(String add_code) {
 
+		int MD5_LEN=32;
 		// 判断格式
-		if(StringUtils.isEmpty(add_code)||add_code.length()<=32){
+		if(StringUtils.isEmpty(add_code)||add_code.length()<=MD5_LEN){
 			return RequestResult.generate(101,"编号 "+add_code+" 不合法。");
 		}
 
 		// 分解真正的add_code和数字
-		String strCount=StringUtils.substring(add_code,32);
+		String strCount=StringUtils.substring(add_code,MD5_LEN);
 		if(!NumberUtils.isNumber(strCount)){
 			return RequestResult.generate(121,"编号 "+add_code+"新增的数量不合法。");
 		}
 
 		Integer addCount = Integer.valueOf(strCount);
 
-		String addCode = StringUtils.substring(add_code,0,32);
+		String addCode = StringUtils.substring(add_code,0,MD5_LEN);
 
 		String ownerId = UserUtils.getUser().getCompany().getId();
 

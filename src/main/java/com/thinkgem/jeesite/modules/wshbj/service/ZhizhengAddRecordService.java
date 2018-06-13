@@ -35,11 +35,10 @@ public class ZhizhengAddRecordService  extends CrudService<ZhizhengAddRecordDao,
      * 减一可制证次数
      * @return
      */
-    public Integer decrementZhizhengCount(String ownerId){
-
-        List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
-
-        return 0;
+    @Transactional(readOnly = false)
+    public void decrementZhizhengCount(String ownerId){
+        String newCode=buildNewCode(ownerId,-1);
+        addCode(ownerId,newCode,-1);
     }
 
 

@@ -134,6 +134,9 @@
         <li><label>制卡打印机：</label>
             <select id="sltCardPrint" style="min-width:200px;"  onclick="lodop_setCardPrintIndex()"></select>
         </li>
+        <li><label>可制证数量：</label>
+        ${currZhizhengCount}
+        </li>
     </ul>
     </div>
 
@@ -151,7 +154,6 @@
         </div>
         <div class="cl"></div>
 
-        <c:if test="${not empty examRecord}">
         <div class="control-group span6">
             <label class="control-label">体检编号：</label>
             <div class="controls">
@@ -161,10 +163,10 @@
 
         <div class="cl"></div>
 
-        <div class="control-group span6">
+        <div class="control-group span4">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
-                 <img id="imgHeadImg" style="width:320px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
+                 <img id="imgHeadImg" style="width:180px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
             </div>
         </div>
 
@@ -225,28 +227,39 @@
         <div class="cl"></div>
 
         <div class="control-group span12">
-            <label class="control-label">全部体检项目：</label>
+            <label class="control-label">体检项目：</label>
             <div class="controls">
-                <c:forEach items="${examRecord.items}" var="vo">
-                <c:if test="${vo.lastFlag=='1'}">
-                <label class="label"> ${vo.itemName} </label> -
-                <label class="label"> <c:if test="${vo.needSamples == 1 }">需要采样 <c:if test="${vo.grabSample == true}">已采样</c:if>
-                <c:if test="${vo.grabSample == false }">待采样</c:if>  </c:if>
-                <c:if test="${vo.needSamples != 1 }">无需采样</c:if> </label> -
-
-                 <label class="label">  <c:if test="${vo.resultFlag == null }">无结果</c:if>
-                 <c:if test="${vo.resultFlag == 0 }">不合格</c:if>
-                <c:if test="${vo.resultFlag == 1 }">合格</c:if> </label>
-
-                <br></c:if>
+                <table class="tbl-items">
+                <c:forEach items="${examRecord.items}" var="vo" varStatus="idx">
+                    <c:if test="${vo.recordResultDeptId == myDeptId}">
+                    <tr><td> ${vo.itemName}  </td>
+                    <td> <c:if test="${vo.needSamples == 1 }">需要采样 </c:if>
+                        <c:if test="${vo.needSamples != 1 }">无需采样</c:if>
+                    </td>
+                    <td>
+                        <c:if test="${vo.sampleCode != null && vo.sampleCode != ''}">标本编号：${vo.sampleCode}</c:if>
+                        <c:if test="${vo.sampleCode == null || vo.sampleCode == ''}">待采样</c:if>
+                    </td>
+                    <td>
+                        <label for="resultFlag1${idx.index}">
+                            <c:if test="${vo.resultFlag ==null}">  <input type="hidden" class="noResultItemId" value="${vo.id}"> </c:if>
+                            <input class="rd-itemId" id="resultFlag1${idx.index}" value="1" name="resultFlag[${idx.index}]" type="radio"
+                               data-itemId="${vo.id}" <c:if test="${vo.resultFlag ==null or vo.resultFlag == 1 }">checked="checked"</c:if>>合格</label>
+                        <label for="resultFlag0${idx.index}">
+                            <input class="rd-itemId" id="resultFlag0${idx.index}" value="0" name="resultFlag[${idx.index}]" type="radio"
+                               data-itemId="${vo.id}" <c:if test="${vo.resultFlag == 0 }">checked="checked"</c:if>>不合格</label>
+                    </td> </tr>
+                    </c:if>
                 </c:forEach>
+                </table>
             </div>
         </div>
         <div class="cl"></div>
+
+
 		<div class="form-actions span12">
             <input id="btnPrintCard" class="btn btn-primary" type="button" value="制卡打印" data-second="10" onclick="do_update_print_card()" />&nbsp;
 		</div>
-        </c:if>
 
 <div class="cl"></div>
 
