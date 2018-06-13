@@ -27,6 +27,62 @@
         	return false;
         }
 
+        function do_print(recordId){
+            var url='${ctx}/wshbj/zhizhengAddRecord/ajax_get_last';
+            var d1={};
+            $.get(url,d1,function(d1r){
+                if(d1r.state!=1){
+                    alert(d1r.msg);
+                    return;
+                }
+                var resultCount=0;
+                if(d1r.data==null||d1r.data.resultCount==null){
+                    resultCount=0;
+                }else{
+                    resultCount = d1r.data.resultCount;
+                }
+                if(resultCount<=0){
+                    alert("可制证数量不足，请联系管理员");
+                    return;
+                }
+
+                var url2='${ctx}/wshbj/examinationRecord/ajax_print_card';
+                var d2={id:recordId};
+                $.get(url2,d2);
+
+                lodop_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId)
+
+            });
+        }
+
+        function do_printview(recordId){
+            var url='${ctx}/wshbj/zhizhengAddRecord/ajax_get_last';
+            var d1={};
+            $.get(url,d1,function(d1r){
+                if(d1r.state!=1){
+                    alert(d1r.msg);
+                    return;
+                }
+                var resultCount=0;
+                if(d1r.data==null||d1r.data.resultCount==null){
+                    resultCount=0;
+                }else{
+                    resultCount = d1r.data.resultCount;
+                }
+                if(resultCount<=0){
+                    alert("可制证数量不足，请联系管理员");
+                    return;
+                }
+
+                var url2='${ctx}/wshbj/examinationRecord/ajax_print_card';
+                var d2={id:recordId};
+                $.get(url2,d2);
+
+                lodop_view_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
+
+            });
+        }
+
 
 
 	</script>
@@ -149,9 +205,9 @@
                     </c:if>
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-success" href="javascript:void(0)"
-					 onclick="lodop_printCard('健康证','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')" target="_blank">打印健康证</a>
+					 onclick="do_print('${examinationRecord.id}')" target="_blank">打印健康证</a>
 					  <a class="label label-success" href="javascript:void(0)"
-                     onclick="lodop_view_printCard('健康证','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id=${examinationRecord.id}')" target="_blank">预览健康证</a></c:if>
+                     onclick="do_printview('${examinationRecord.id}')" target="_blank">预览健康证</a></c:if>
 
 
 					<c:if test="${examinationRecord.status == '0'}">
