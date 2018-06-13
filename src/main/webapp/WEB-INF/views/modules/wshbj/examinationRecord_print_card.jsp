@@ -135,7 +135,7 @@
             <select id="sltCardPrint" style="min-width:200px;"  onclick="lodop_setCardPrintIndex()"></select>
         </li>
         <li><label>可制证数量：</label>
-        ${currZhizhengCount}
+        ${canZhizhengCount}
         </li>
     </ul>
     </div>
@@ -166,7 +166,8 @@
         <div class="control-group span4">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
-                 <img id="imgHeadImg" style="width:180px;min-height:220px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"/>
+                 <img id="imgHeadImg" style="width:90px;min-height:110px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"
+                 onerror="javascript:this.src='${ctxStatic}/images/style2/nopic.png'"/>
             </div>
         </div>
 
