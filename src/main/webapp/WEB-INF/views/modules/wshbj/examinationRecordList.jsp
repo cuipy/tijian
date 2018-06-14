@@ -101,14 +101,6 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>体检单位：</label>
-				<form:select path="organId" class="input-mini">
-					<form:option value="">
-						请选择
-					</form:option>
-					<form:options items="${organList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-				</form:select>
-			</li>
 
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-mini"/>

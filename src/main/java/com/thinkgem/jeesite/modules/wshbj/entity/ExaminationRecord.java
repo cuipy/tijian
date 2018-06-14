@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.annotation.ExpressSequence;
 import com.thinkgem.jeesite.common.annotation.SequenceBean;
@@ -498,6 +499,7 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
         return user.getName();
     }
 
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 	public Date getExamTime() {
 		return examTime;
 	}
@@ -562,6 +564,15 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		m.put("createByName",getCreateBy().getName());
 		m.put("updateById",getUpdateBy().getId());
 		m.put("updateByName",getUpdateBy().getName());
+
+		m.put("examTime",DateUtils.formatDate(examTime,"yyyy-MM-dd HH:mm"));
+		m.put("successTime",DateUtils.formatDate(successTime,"yyyy-MM-dd HH:mm"));
+		m.put("failTime",DateUtils.formatDate(failTime,"yyyy-MM-dd HH:mm"));
+		m.put("zhizhengTime",DateUtils.formatDate(zhizhengTime,"yyyy-MM-dd HH:mm"));
+
+		m.put("idNumberPicHead",this.idNumberPicHead);
+		m.put("idNumberPicFore",this.idNumberPicFore);
+		m.put("idNumberPicBack",this.idNumberPicBack);
 
 		return m;
 	}
