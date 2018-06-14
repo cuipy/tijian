@@ -565,10 +565,10 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		m.put("updateById",getUpdateBy().getId());
 		m.put("updateByName",getUpdateBy().getName());
 
-		m.put("examTime",DateUtils.formatDate(examTime,"yyyy-MM-dd HH:mm"));
-		m.put("successTime",DateUtils.formatDate(successTime,"yyyy-MM-dd HH:mm"));
-		m.put("failTime",DateUtils.formatDate(failTime,"yyyy-MM-dd HH:mm"));
-		m.put("zhizhengTime",DateUtils.formatDate(zhizhengTime,"yyyy-MM-dd HH:mm"));
+		m.put("examTime",examTime==null?null:DateUtils.formatDate(examTime,"yyyy-MM-dd HH:mm:ss"));
+		m.put("successTime",successTime==null?null:DateUtils.formatDate(successTime,"yyyy-MM-dd HH:mm:ss"));
+		m.put("failTime",failTime==null?null:DateUtils.formatDate(failTime,"yyyy-MM-dd HH:mm:ss"));
+		m.put("zhizhengTime",zhizhengTime==null?null:DateUtils.formatDate(zhizhengTime,"yyyy-MM-dd HH:mm:ss"));
 
 		m.put("idNumberPicHead",this.idNumberPicHead);
 		m.put("idNumberPicFore",this.idNumberPicFore);
