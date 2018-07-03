@@ -1,6 +1,3 @@
-/**
- * Copyright &copy; 2012-2016 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
- */
 package com.thinkgem.jeesite.modules.wshbj.web;
 
 import com.alibaba.druid.support.json.JSONUtils;
@@ -119,13 +116,10 @@ public class ZhizhengAddRecordController extends BaseController {
 		System.out.println(newCode);
 		if(newCode.equals(addCode)){
 			zhizhengAddRecordService.addCode(ownerId,addCode,addCount);
-
 			return RequestResult.generate(1,"新增制证数量成功");
 		}else {
 			return RequestResult.generate(131,"编号"+add_code+"不合法。");
 		}
-
-
 
 	}
 
