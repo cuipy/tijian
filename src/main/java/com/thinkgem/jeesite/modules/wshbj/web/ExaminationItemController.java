@@ -130,7 +130,7 @@ public class ExaminationItemController extends BaseController {
 		if(null==examinationItem.getOrderNumb()){
 			examinationItem.setOrderNumb(100);
 		}
-
+		examinationItem.setOwner(UserUtils.getUser().getCompany().getId());
 		examinationItemService.save(examinationItem);
 		addMessage(redirectAttributes, "保存检查项目成功");
 		return "redirect:"+Global.getAdminPath()+"/wshbj/examinationItem/list?repage";
