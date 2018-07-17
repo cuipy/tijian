@@ -352,6 +352,7 @@ public class ExaminationRecordController extends BaseController {
 			examUser.setCode(SysSequenceUtils.nextSequence(ExaminationUser.class,"code"));
 
 			examUser.setHeadImgPath(examinationRecord.getHeadImg());
+			examUser.setSex(examinationRecord.getSex());
 			examUser.setIdNumberPicHead(examinationRecord.getIdNumberPicHead());
 			examUser.setIdNumberPicFore(examinationRecord.getIdNumberPicFore());
 			examUser.setIdNumberPicBack(examinationRecord.getIdNumberPicBack());

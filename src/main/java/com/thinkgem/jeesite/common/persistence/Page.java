@@ -61,7 +61,7 @@ public class Page<T> implements Serializable {
 	 * @param response 用于设置 Cookie，记住页码
 	 */
 	public Page(HttpServletRequest request, HttpServletResponse response){
-		this(request, response, -2);
+		this(request, response, -2  );
 	}
 
 	/**

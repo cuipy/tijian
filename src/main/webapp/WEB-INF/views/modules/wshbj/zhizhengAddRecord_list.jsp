@@ -55,7 +55,9 @@
 			<tr>
 				<td> ${idx.count} </td>
 				<td>${vo.addCode}</td><td>${vo.addCount}</td> <td> ${vo.resultCount} </td>
-				<td> ${vo.updateTime} </td>  <td> ${vo.updateType} </td>
+				<td>
+					<fmt:formatDate value="${vo.updateTime}" type="date" pattern="yyyy-MM-dd hh:mm:ss"/>
+				</td>  <td> ${vo.updateType} </td>
 			</tr>
 		</c:forEach>
 		</tbody>

@@ -227,7 +227,6 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
                 return RequestResult.generate(230,"您当前选择的用户信息，未能获得该用户的信息");
             }
         }
-
         super.save(examinationRecord);
 
         // 获取条码生成 和 打印 阶段

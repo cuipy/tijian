@@ -254,7 +254,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 		// 获取 什么阶段生成 样本编号 ；获取 什么阶段打印 样本编号
 		Integer sampleCodeCreatePoint =GlobalSetUtils.getGlobalSet().getSampleCodeCreatePoint();
-		Integer sampleCodePrintPoint= GlobalSetUtils.getGlobalSet().getSampleCodePrintPoint();
+		Integer sampleCodePrintPoint  =GlobalSetUtils.getGlobalSet().getSampleCodePrintPoint();
 
 		model.addAttribute("sampleCodeCreatePoint",sampleCodeCreatePoint);
 		model.addAttribute("sampleCodePrintPoint",sampleCodePrintPoint);

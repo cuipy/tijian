@@ -116,9 +116,6 @@ public class ExaminationUserController extends BaseController {
     @RequiresPermissions("wshbj:examinationUser:edit")
     @RequestMapping(value = "save")
     public String save(ExaminationUser examinationUser, Model model, RedirectAttributes redirectAttributes) {
-        if (!beanValidator(model, examinationUser)) {
-            return form(examinationUser, model);
-        }
         examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
         if (StringUtils.isEmpty(examinationUser.getCode())) {
             String c = GlobalSetUtils.getGlobalSet().getCodePre() + SysSequenceUtils.nextSequence(ExaminationUser.class, "code");
@@ -127,6 +124,9 @@ public class ExaminationUserController extends BaseController {
         if (StringUtils.isEmpty(examinationUser.getNamePinyin())) {
             String py = PinyinUtils.getStringPinYin(examinationUser.getName());
             examinationUser.setNamePinyin(py);
+        }
+        if (!beanValidator(model, examinationUser)) {
+            return form(examinationUser, model);
         }
         examinationUserService.save(examinationUser);
         addMessage(redirectAttributes, "保存体检用户成功");
