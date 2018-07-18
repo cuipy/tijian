@@ -173,6 +173,8 @@
             $("#idNumber").val(u.idNumber);
             $("#birthday").val(u.birthday);
             $("#phoneNumber").val(u.phoneNumber);
+            $("#postName").val(u.postName);
+            $("#remarks").val(u.remarks);
 
             if(u.age!=null&&u.age!=''){
                 $("#age").val(u.age);
@@ -455,7 +457,7 @@
 		<div class="control-group">
 			<label class="control-label">备注：</label>
 			<div class="controls">
-				<form:input path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
+				<form:input id="remarks" path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="cl"></div>

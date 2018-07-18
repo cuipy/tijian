@@ -5,7 +5,7 @@ $(function(){
 
 function cvsInit2(){
     var cvsWidth=$("#right").width()>1024?1024:$("#right").width()-20;
-    var opt={width:cvsWidth,height:cvsWidth*2/3,backgroundColor:'#eee'};
+    var opt={width:cvsWidth,height:cvsWidth*2/3,backgroundColor:'#ffffff'};
     var cvsMain = new fabric.Canvas('cvs-main',opt);
     cvsMain.items={};
 

@@ -254,7 +254,7 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	 */
 	public Integer getStatus(){
 		int res=10;
-		if("1".equals(this.needSamples)&&StringUtils.isEmpty(this.sampleCode)){
+		if("1".equals(this.needSamples)&&this.grabSample==false){
 			res=0;
 		}else if("1".equals(this.needSamples)&&StringUtils.isNotEmpty(this.sampleCode)){
 			if(StringUtils.isEmpty(resultFlag)){
