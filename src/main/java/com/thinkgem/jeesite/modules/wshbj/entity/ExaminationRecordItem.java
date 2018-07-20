@@ -62,6 +62,17 @@ public class ExaminationRecordItem extends DataEntity<ExaminationRecordItem> {
 	private String recordResultDeptId;
 
 
+    private Date beginDate;		// 开始日期
+    private Date endDate;		// 结束日期
+
+    public void setEndDate(Date endDate) { this.endDate = endDate; }
+
+    public void setBeginDate(Date beginDate) { this.beginDate = beginDate; }
+
+    public Date getEndDate() {return endDate; }
+
+    public Date getBeginDate() { return beginDate; }
+
 	public String getItemNamePinyin() {
 		return itemNamePinyin;
 	}

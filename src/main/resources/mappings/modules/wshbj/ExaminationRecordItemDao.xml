@@ -192,6 +192,22 @@
 		<include refid="examinationRecordItemJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and  (( a.need_samples = 1 and a.sample_code is not null) or ( a.need_samples = 0)) and a.result_flag is null
+			<if test="itemId==1">
+
+				and #{beginDate}<![CDATA[  <  ]]>a.create_date and a.create_date <![CDATA[  <  ]]>#{endDate}
+			</if>
+			<if test="itemId==2">
+
+				and #{beginDate}<![CDATA[  <  ]]>a.grab_sample_time and a.grab_sample_time <![CDATA[  <  ]]>#{endDate}
+			</if>
+			<if test="itemId==3">
+
+				and #{beginDate}<![CDATA[  <  ]]>a.record_result_time and a.record_result_time <![CDATA[  <  ]]>#{endDate}
+			</if>
+            <if test="itemName != null and itemName !=''">
+                and a.item_id = #{itemName}
+            </if>
+
 			<include refid="whereif2"/>
 		</where>
 	</select>
@@ -203,6 +219,22 @@
 		<include refid="examinationRecordItemJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and a.result_flag is not null
+			<if test="itemId==1">
+
+				and #{beginDate}<![CDATA[  <  ]]>a.create_date and a.create_date <![CDATA[  <  ]]>#{endDate}
+			</if>
+			<if test="itemId==2">
+
+				and #{beginDate}<![CDATA[  <  ]]>a.grab_sample_time and a.grab_sample_time <![CDATA[  <  ]]>#{endDate}
+			</if>
+			<if test="itemId==3">
+
+				and #{beginDate}<![CDATA[  <  ]]>a.record_result_time and a.record_result_time <![CDATA[  <  ]]>#{endDate}
+			</if>
+			<if test="itemName != null and itemName !=''">
+				and a.item_id = #{itemName}
+			</if>
+
 			<include refid="whereif2"/>
 		</where>
 	</select>
@@ -340,7 +372,8 @@
 			update_date,
 			remarks,
 			examination_flag,
-			last_flag
+			last_flag,
+			grab_sample_time
 		) VALUES (
 			#{id},
 			#{recordId},
@@ -348,7 +381,7 @@
 			#{itemName},#{itemNamePinyin},
 			#{needSamples},
 			<if test="grabSample!=null  ">#{grabSample},</if>
-			#{sampleCode}, #{recordResultDeptId}, #{grabSampleDeptId},
+			#{sampleCode},#{recordResultDeptId},#{grabSampleDeptId},
 			#{specimenId},
 			#{resultDictId},
 			#{resultDictName},
@@ -361,7 +394,8 @@
 			#{updateDate},
 			#{remarks},
 			#{examinationFlag},
-			#{lastFlag}
+			#{lastFlag},
+			#{grabSampleTime}
 		)
 	</insert>
 	
@@ -373,7 +407,7 @@
 				sample_code = #{sampleCode},specimen_id = #{specimenId},result_dict_id = #{resultDictId},
 				result_dict_name = #{resultDictName},result_flag = #{resultFlag},
 				result_remarks = #{resultRemarks},update_by = #{updateBy.id},
-				update_date = now() ,remarks = #{remarks},
+				update_date = now() ,remarks = #{remarks},grab_sample_time=#{grabSampleTime},record_result_time=#{recordResultTime}
 			</set>
 		WHERE id = #{id}
 	</update>
@@ -448,15 +482,15 @@
 	</update>
 
 	<update id="updateSampleCodePrintCount">
-		UPDATE bj_examination_record_item SET sample_code_print_count = sample_code_print_count+1 WHERE id = #{id}
+		UPDATE bj_examination_record_item SET  sample_code_print_count = sample_code_print_count+1 WHERE id = #{id}
 	</update>
 
 	<update id="updateGrabSample">
-		UPDATE bj_examination_record_item SET grab_sample = 1 WHERE sample_code = #{sampleCode}
+		UPDATE bj_examination_record_item SET grab_sample = 1,grab_sample_time= #{grabSampleTime} WHERE sample_code = #{sampleCode}
 	</update>
 
 	<update id="cancelGrabSample">
-		UPDATE bj_examination_record_item SET grab_sample = 0,sample_code = null,result_flag = null
+		UPDATE bj_examination_record_item SET grab_sample = 0,sample_code = null,result_flag = null,grab_sample_time = #{strtodate}
 		WHERE record_id = #{examRecordId} and specimen_id = #{specimenId}
 	</update>
 

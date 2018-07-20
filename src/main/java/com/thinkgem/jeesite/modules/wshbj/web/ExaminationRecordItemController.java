@@ -4,6 +4,10 @@
 package com.thinkgem.jeesite.modules.wshbj.web;
 
 import com.drew.lang.StringUtil;
+import java.text.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
@@ -55,7 +59,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@Autowired
 	private SpecimenService specimenService;
-	
+
 	@ModelAttribute
 	public ExaminationRecordItem get(@RequestParam(required=false) String id) {
 		ExaminationRecordItem entity = null;
@@ -105,6 +109,16 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = {"list_resulting"})
 	public String list_resulting(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
 
+		// 获得体检项目类别
+ 		ExaminationItem examinationItem = new ExaminationItem();
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("examinationItemList", examinationItemList);
+		if(examinationRecordItem.getBeginDate()==null||examinationRecordItem.getEndDate()==null){
+			examinationRecordItem.setItemId("0");
+		}
+
+		examinationRecordItem.setUserName("");
+
 		// 读取已经有采样，但还没有输入结果的项目
 		Page<ExaminationRecordItem> page = examinationRecordItemService.pageResulting(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
 		model.addAttribute("page", page);
@@ -114,6 +128,13 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = {"list_resulted"})
 	public String list_resulted(ExaminationRecordItem examinationRecordItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 获得体检项目类别
+		ExaminationItem examinationItem = new ExaminationItem();
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem);
+		model.addAttribute("examinationItemList", examinationItemList);
+		if(examinationRecordItem.getBeginDate()==null||examinationRecordItem.getEndDate()==null){
+			examinationRecordItem.setItemId("0");
+		}
 
 		// 已经有采样，且有输入结果，并且体检记录还没结束的项目
 		Page<ExaminationRecordItem> page = examinationRecordItemService.pageResulted(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
@@ -168,14 +189,14 @@ public class ExaminationRecordItemController extends BaseController {
 	public RequestResult ajax_check_sample_code(ExaminationRecordItem examinationRecordItem, Model model){
 		return examinationRecordItemService.checkSampleCode(examinationRecordItem);
 	}
-
+/*待录结果项目是否合格
+* */
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@PostMapping(value = "ajax_update_result_flag")
 	@ResponseBody
 	public RequestResult ajax_update_result_flag(String resultFlag, Model model){
 
         String res = "";
-
 		if(StringUtils.isNotEmpty(resultFlag)){
 			String[] arrResultFlag = StringUtils.split(resultFlag,'|');
 
@@ -184,18 +205,19 @@ public class ExaminationRecordItemController extends BaseController {
 					if(StringUtils.isEmpty(strResultFlag)){
 						continue;
 					}
-
+/*分割itemId和是否合格*/
 					String[] arrRf=StringUtils.split(strResultFlag,',');
 					if(arrRf.length!=2||StringUtils.isEmpty(arrRf[0])||StringUtils.isEmpty(arrRf[1])){
 						continue;
 					}
-
+/*修改检查结果是否合格*/
 					String itemId=arrRf[0];
 					String strFlag=arrRf[1];
 
 					ExaminationRecordItem examinationRecordItem = new ExaminationRecordItem();
 					examinationRecordItem.setId(itemId);
 					examinationRecordItem.setResultFlag(strFlag);
+
 					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
 					res+=rr.getState()+":"+rr.getMsg()+"<br>";
 				}
@@ -224,7 +246,8 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = "ajax_update_sample_code_print_count")
 	@ResponseBody
 	public RequestResult ajax_update_sample_code_print_count(ExaminationRecordItem examinationRecordItem, Model model){
-		Integer count = examinationRecordItemService.updateSampleCodePrintCount(examinationRecordItem.getId());
+
+		Integer count = examinationRecordItemService.updateSampleCodePrintCount(examinationRecordItem);
 		return RequestResult.generate(1,"更新成功");
 	}
 
@@ -232,7 +255,14 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = "ajax_update_grab_sample")
 	@ResponseBody
 	public RequestResult ajax_update_grab_sample(ExaminationRecordItem examinationRecordItem, Model model){
-		Integer count = examinationRecordItemService.updateGrabSample(examinationRecordItem.getSampleCode());
+		/* 储存取样本的时间*/
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateString = formatter.format(currentTime);
+		ParsePosition pos = new ParsePosition(0);
+		Date strtodate = formatter.parse(dateString, pos);
+		examinationRecordItem.setGrabSampleTime(strtodate);
+		Integer count = examinationRecordItemService.updateGrabSample(examinationRecordItem);
 		return RequestResult.generate(1,"更新成功");
 	}
 
@@ -240,7 +270,13 @@ public class ExaminationRecordItemController extends BaseController {
 	@PostMapping(value = "ajax_cancel_grab_sample")
 	@ResponseBody
 	public RequestResult ajax_cancel_grab_sample(String examRecordId, String specimenId ){
-		Integer count = examinationRecordItemService.cancelGrabSample(examRecordId, specimenId);
+		/* 储存取样本的时间*/
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String dateString = formatter.format(currentTime);
+		ParsePosition pos = new ParsePosition(0);
+		Date strtodate = formatter.parse(dateString, pos);
+ 		Integer count = examinationRecordItemService.cancelGrabSample(examRecordId, specimenId,strtodate);
 		return RequestResult.generate(1,"更新成功");
 	}
 
@@ -309,6 +345,13 @@ public class ExaminationRecordItemController extends BaseController {
 									newSampleCode = SysSequenceUtils.nextSequence(prefixSampleCode + "{yyMMdd}[4]");
 								}
 								eri.setSampleCode(newSampleCode);
+								/* 储存取样本的时间*/
+								Date currentTime = new Date();
+								SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+								String dateString = formatter.format(currentTime);
+								ParsePosition pos = new ParsePosition(0);
+								Date strtodate = formatter.parse(dateString, pos);
+								eri.setGrabSampleTime(strtodate);
 								examinationRecordItemService.save(eri);
 								autoPrint=true;
 							}else{

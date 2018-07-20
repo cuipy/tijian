@@ -18,7 +18,7 @@
         function clkResult(itemId,result){
 
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
-            var d1={id:itemId,resultFlag:result};
+            var d1={id:itemId,resultFlag:result+","+itemId};
             $.ajax({
                 type:'post',dataType:'json',url:url,data:d1,
                 success:function(d1r){
@@ -57,6 +57,36 @@
 			</li>
 			<li><label>体检用户：</label>
 				<form:input path="userName" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			<li><label>体检项目：</label>
+				<form:select path="itemName" class="input-mini">
+					<form:option value="">
+						请选择
+					</form:option>
+					<form:options items="${examinationItemList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</li>
+
+			<li><label>开始时间：</label>
+ 				<form:input path="beginDate" cssStyle="width: 163px;" htmlEscape="false"  maxlength="64" class="input-mini Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</li>
+			<li><label>截止时间：</label>
+				<form:input path="endDate" cssStyle="width: 163px;" htmlEscape="false"  maxlength="64" class="input-mini Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+			</li>
+			<li><label>体检项目：</label>
+				<form:select path="itemId" class="input-mini" cssStyle="width: 163px">
+					<form:option value="0">
+						请选择
+					</form:option>
+					<form:option value="1">
+						信息登记日期
+					</form:option>
+					<form:option value="2">
+						采样日期
+					</form:option>
+
+
+ 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>	</li>
 			<li class="clearfix"></li>

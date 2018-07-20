@@ -10,6 +10,7 @@ import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.cache.annotation.CacheEvict;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -107,9 +108,9 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
 
     void updateUploadDate(ExaminationRecordItem examinationRecordItem);
 
-    Integer updateSampleCodePrintCount(@Param("id")String id);
+    Integer updateSampleCodePrintCount(ExaminationRecordItem examinationRecordItem);
 
-    Integer updateGrabSample(@Param("sampleCode")String sampleCode);
+    Integer updateGrabSample(ExaminationRecordItem examinationRecordItem);
 
-    Integer cancelGrabSample(@Param("examRecordId")String examRecordId,@Param("specimenId")String specimenId);
+    Integer cancelGrabSample(@Param("examRecordId")String examRecordId, @Param("specimenId")String specimenId,@Param("strtodate")Date strtodate);
 }

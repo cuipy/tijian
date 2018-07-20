@@ -24,10 +24,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * 体检记录项目Service
@@ -242,6 +241,13 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
             examinationRecordItem.setExaminationFlag("2");
         }
         eri.setResultFlag(examinationRecordItem.getResultFlag());
+        /* 储存取样本的时间*/
+        Date currentTime = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateString = formatter.format(currentTime);
+        ParsePosition pos = new ParsePosition(0);
+        Date strtodate = formatter.parse(dateString, pos);
+        eri.setRecordResultTime(strtodate);
         super.save(eri);
 
         // 更新体检记录的状态
@@ -348,17 +354,17 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     }
 
     @Transactional(readOnly = false)
-    public int updateSampleCodePrintCount(String id ){
-        return this.dao.updateSampleCodePrintCount(id);
+    public int updateSampleCodePrintCount( ExaminationRecordItem examinationRecordItem){
+        return this.dao.updateSampleCodePrintCount(examinationRecordItem);
     }
 
     @Transactional(readOnly = false)
-    public Integer updateGrabSample(String sampleCode) {
-        return dao.updateGrabSample(sampleCode);
+    public Integer updateGrabSample(ExaminationRecordItem examinationRecordItem) {
+        return dao.updateGrabSample(examinationRecordItem);
     }
 
     @Transactional(readOnly = false)
-    public Integer cancelGrabSample(String examRecordId,String spencimenId) {
-        return dao.cancelGrabSample(examRecordId,spencimenId);
+    public Integer cancelGrabSample(String examRecordId,String spencimenId,Date strtodate) {
+        return dao.cancelGrabSample(examRecordId,spencimenId,strtodate);
     }
 }

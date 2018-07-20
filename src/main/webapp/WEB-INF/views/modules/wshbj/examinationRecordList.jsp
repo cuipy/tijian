@@ -77,8 +77,10 @@
                 var url2='${ctx}/wshbj/examinationRecord/ajax_print_card';
                 var d2={id:recordId};
                 $.get(url2,d2);
+				//alert('${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
+                //lodop_view_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
 
-                lodop_view_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
+                 window.open("${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id="+recordId,"_blank");
 
             });
         }
@@ -127,7 +129,7 @@
 					<form:option value="">
 						请选择
 					</form:option>
-					<form:options items="${packageList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+					<form:options items="${examinationItemList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
