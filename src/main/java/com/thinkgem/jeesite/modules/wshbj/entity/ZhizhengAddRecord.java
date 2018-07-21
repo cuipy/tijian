@@ -11,10 +11,19 @@ public class ZhizhengAddRecord extends DataEntity<ZhizhengAddRecord> {
 
     private String id;
 
+    /**
+     * md5加密码的 新增制证数量，32位长度
+     */
     private String addCode;
 
+    /**
+     * 增加的明文数量
+     */
     private Integer addCount;
 
+    /**
+     * 明文的结果数
+     */
     private Integer resultCount;
 
     private java.util.Date updateTime;

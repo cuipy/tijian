@@ -47,7 +47,15 @@ public class ZhizhengAddRecordController extends BaseController {
 		}
 		return entity;
 	}
-	
+
+	/**
+	 * 加载体检中心的制证数变化的列表
+	 * @param zhizhengAddRecord
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequiresPermissions("wshbj:zhizhengAddRecord:view")
 	@RequestMapping(value = {"list"})
 	public String list(ZhizhengAddRecord zhizhengAddRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -58,19 +66,29 @@ public class ZhizhengAddRecordController extends BaseController {
 		return "modules/wshbj/zhizhengAddRecord_list";
 	}
 
+	/**
+	 * 进入新增制证数的页面
+	 * @param zhizhengAddRecord
+	 * @param model
+	 * @return
+	 */
 	@RequiresPermissions("wshbj:zhizhengAddRecord:edit")
 	@RequestMapping(value = {"add"})
 	public String add(ZhizhengAddRecord zhizhengAddRecord, Model model) {
 
+		// 作为种子
 		String ownerId = UserUtils.getUser().getCompany().getId();
 		model.addAttribute("ownerId",ownerId);
 
 		// 获取最新的记录
 		ZhizhengAddRecord record = zhizhengAddRecordService.getLastRecord();
 		if(record!=null){
+			// 最后一个制证数的md5的编码
 			model.addAttribute("currAddCode",record.getAddCode());
+			// 当前可制证数的明文
 			model.addAttribute("currResultCount",record.getResultCount());
 		}else {
+			// 如果是第一次
 			model.addAttribute("currAddCode","空");
 			model.addAttribute("currResultCount",0);
 		}
@@ -87,6 +105,13 @@ public class ZhizhengAddRecordController extends BaseController {
 		return RequestResult.generate(1,"获取最新制证数量记录",record);
 	}
 
+	/**
+	 * ajax方式新增制证数
+	 * @param add_code  md5 + 明文的数量   比如 eae520817e0bee80e0361a227ad3d28d + 12  = eae520817e0bee80e0361a227ad3d28d12
+	 *                  是在运营服务端生成的
+	 *                  生成的算法，根据 种子、最新add_code、明文的新增数量 md5加密算得的
+	 * @return
+	 */
 	@RequiresPermissions("wshbj:zhizhengAddRecord:edit")
 	@RequestMapping(value = {"ajax_add"})
 	@ResponseBody
@@ -106,8 +131,10 @@ public class ZhizhengAddRecordController extends BaseController {
 
 		Integer addCount = Integer.valueOf(strCount);
 
+		// 拆除 32位的 md5 的 addCode
 		String addCode = StringUtils.substring(add_code,0,MD5_LEN);
 
+		// 获得当前用户的owner  作为种子
 		String ownerId = UserUtils.getUser().getCompany().getId();
 
 		// 获取最新的记录
