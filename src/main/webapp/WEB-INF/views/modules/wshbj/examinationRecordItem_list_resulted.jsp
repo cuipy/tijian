@@ -100,8 +100,9 @@
 					<form:option value="2">
 						采样日期
 					</form:option>
-
-
+					<form:option value="3">
+						录入结果日期
+					</form:option>
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>	</li>

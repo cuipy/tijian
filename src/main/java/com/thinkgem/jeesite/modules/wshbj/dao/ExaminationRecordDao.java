@@ -40,8 +40,10 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 	List<ExaminationRecord> listForNopass(ExaminationRecord examinationRecord);
 
     List<ExaminationRecord> listNeedUpload(ExaminationRecord examinationRecord);
+	List<ExaminationRecord> listJkzNeedUpload(ExaminationRecord examinationRecord);
 
 	Integer updateUploadDate(ExaminationRecord examinationRecord);
+	Integer updateOrderNumb(ExaminationRecord examinationRecord);
 
 	Integer updatePrintCard(@Param("id")String id);
 
