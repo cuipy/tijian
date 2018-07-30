@@ -57,11 +57,17 @@ public class JkzUploadService extends CrudService<ExaminationRecordDao, Examinat
         }
         return 1;
     }
-    //查询未同步过得健康证信息order_numb ：1是已经同步过的 0或者null 是没有同步的
+
+    /**
+     * 查询未同步过得健康证信息order_numb ：1是已经同步过的 0或者null 是没有同步的
+     */
     public List<ExaminationRecord> listJkzNeedUpload(ExaminationRecord examinationRecord) {
         return dao.listJkzNeedUpload(examinationRecord);
     }
-    //改变同步成功的标识 order_numb ：1是已经同步过的 0或者null 是没有同步的
+
+    /**
+     * 改变同步成功的标识 order_numb ：1是已经同步过的 0或者null 是没有同步的
+     */
     @Transactional(readOnly = false)
     public void updateUploadDate(ExaminationRecord examinationRecord) {
          dao.updateOrderNumb(examinationRecord);

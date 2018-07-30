@@ -16,13 +16,15 @@ public class JkzQuartz {
 
     @Autowired
     private JkzUploadService jkzUploadService;
-/* 向服务端同步健康证的信息
-* */
+
+    /**
+     * 向服务端同步健康证的信息
+     */
     @Scheduled(cron = "0 0/1 * * * ? ")
     public void upload(){
-//查询出哪些信息需要同步
+        //查询出哪些信息需要同步
         List<ExaminationRecord> lst = jkzUploadService.listJkzNeedUpload(new ExaminationRecord());
-//向服务端同步数据
+        //向服务端同步数据
         for(ExaminationRecord examinationRecord:lst){
             examinationRecord.setUploadDate(null);
             jkzUploadService.doUpload(examinationRecord);

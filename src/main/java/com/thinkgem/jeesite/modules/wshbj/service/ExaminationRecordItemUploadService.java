@@ -36,7 +36,7 @@ public class ExaminationRecordItemUploadService extends CrudService<ExaminationR
 		params.put("token",token);
 		params.putAll(examinationRecordItem.getMap());
 
-		String url = Global.getCenterServerUrl()+"/rest/jkz/save";
+		String url = Global.getCenterServerUrl()+"/rest/examination_record_item/save";
 
 		RequestResult rr = HttpRequestUtils.doHttpPost(url, params);
 		if(rr!=null&&rr.getState()==1){

@@ -232,7 +232,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
 //        }
 
         if(eri.getStatus()==0){
-            return RequestResult.generate(1,"体检项目需要体检样本，但似乎没有进行样本采集，无法进行结果录入。");
+            return RequestResult.generate(50,"体检项目需要体检样本，但似乎没有进行样本采集，无法进行结果录入。");
         }
 
         // 设置项目的状态
