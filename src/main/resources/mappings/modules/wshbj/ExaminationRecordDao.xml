@@ -26,6 +26,7 @@
 		a.id_number_pic_back as "idNumberPicBack",
 		a.status AS "status",
 		a.item_type AS "itemType",
+		a.upload_jkz as uploadJkz,
 		u2.name AS "user.name"
 	</sql>
 
@@ -410,7 +411,7 @@
 		FROM bj_examination_record a
 		<include refid="examinationRecordJoins"/>
 		<where>
-			 (a.status = 40 or a.status = 50 )  and ( a.order_numb is null or a.order_numb =0 )
+			 (a.status = 40 or a.status = 50 )  and ( a.upload_jkz is null or a.upload_jkz =0 )
 		</where>
 		limit 100
 	</select>
@@ -425,7 +426,7 @@
 
 	<update id="updateOrderNumb">
 		UPDATE bj_examination_record SET
-		 order_numb = 1
+		 upload_jkz = 1
 		WHERE id = #{id}
 	</update>
 </mapper>

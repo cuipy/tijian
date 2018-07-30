@@ -51,7 +51,7 @@ public class JkzUploadService extends CrudService<ExaminationRecordDao, Examinat
         String url = Global.getCenterServerUrl()+"/rest/jkz/save";
 
         RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
-        //同步成功后改变本地标识 order_numb ：1是已经同步过的 0或者null 是没有同步的
+        //同步成功后改变本地标识 uploadJkz ：1是已经同步过的 0或者null 是没有同步的
         if(rr!=null&&rr.getState()==1){
             updateUploadDate(examinationRecord);
         }
@@ -59,14 +59,14 @@ public class JkzUploadService extends CrudService<ExaminationRecordDao, Examinat
     }
 
     /**
-     * 查询未同步过得健康证信息order_numb ：1是已经同步过的 0或者null 是没有同步的
+     * 查询未同步过得健康证信息uploacJkz ：1是已经同步过的 0或者null 是没有同步的
      */
     public List<ExaminationRecord> listJkzNeedUpload(ExaminationRecord examinationRecord) {
         return dao.listJkzNeedUpload(examinationRecord);
     }
 
     /**
-     * 改变同步成功的标识 order_numb ：1是已经同步过的 0或者null 是没有同步的
+     * 改变同步成功的标识 uploacJkz ：1是已经同步过的 0或者null 是没有同步的
      */
     @Transactional(readOnly = false)
     public void updateUploadDate(ExaminationRecord examinationRecord) {

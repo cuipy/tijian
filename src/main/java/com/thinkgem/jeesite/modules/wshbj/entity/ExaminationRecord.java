@@ -71,7 +71,9 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private Date failTime;		// 体检失败的时间
 	private Date zhizhengTime;	// 制证时间
 
-	private Integer orderNumb;
+	private Integer orderNumb;	//排序
+	private Integer uploadJkz; 	//是否同步健康证的信息 1：已同步
+
 
 	public Integer getOrderNumb() {
 		return orderNumb;
@@ -577,4 +579,11 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 		return m;
 	}
 
+	public Integer getUploadJkz() {
+		return uploadJkz;
+	}
+
+	public void setUploadJkz(Integer uploadJkz) {
+		this.uploadJkz = uploadJkz;
+	}
 }
