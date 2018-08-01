@@ -8,7 +8,19 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 		});
-		function page(n,s){
+
+        $(function() {
+            $('#all').on('click',function(){
+                if(this.checked) {
+                    $("input[name='id']").attr('checked',true);
+                }else {
+                    $("input[name='id']").attr('checked',false);
+                }
+            });
+        });
+
+
+        function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
 			$("#searchForm").submit();
@@ -16,7 +28,6 @@
         }
 
         function clkResult(itemId,result){
-
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
             var d1={id:itemId,resultFlag:result+","+itemId};
             $.ajax({
@@ -33,6 +44,34 @@
                 error:function(err){
                    showMsgx($("#msg"),d1r);
                 }
+            })
+
+        }
+        function clkAllResult(result){
+            //声明变量
+            var ids="";
+            //jquery获取选中的checkedbox值判断这个值不为空 用,号隔开
+            $("input[name='id']:checkbox:checked").each(function(){ if($(this).val()!=''){ ids+=$(this).val()+",";} });
+             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_allresult_flag";
+            var d1={ids:ids,resultFlag:result};
+            $.ajax({
+                type:'post',dataType:'json',url:url,data:d1,
+                success:function(d1r){
+                    if(d1r.state== 1){
+                        showTip(d1r.msg);
+                        var result=ids.split(",");
+                        for(var i=0;i<result.length;i++){
+                             $("#tr_"+result[i]).remove();
+                        }
+                     }else{
+                        showMsgx($("#msg"),d1r);
+
+                    }
+
+                },
+                error:function(err){
+                    showMsgx($("#msg"),d1r);
+                 }
             })
 
         }
@@ -92,7 +131,10 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
-	<div id="msg" class="alert alert-danger" style="display:none">
+		<span class="btn btn-mini btn-success" onclick="clkAllResult(1)">批量合格</span>&nbsp;&nbsp;&nbsp;
+		<span class="btn btn-mini btn-danger" onclick="clkAllResult(0)">批量不合格</span>
+
+		<div id="msg" class="alert alert-danger" style="display:none">
 	    <a class="close" data-dismiss="alert" href="#">&times;</a>
 	    <span class="text"></span>
 	</div>
@@ -100,6 +142,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th> <input type="checkbox"  id="all" value=""></th>
 				<th width="150">体检编号</th>
 				<th width="200">样本编号</th>
 				<th width="200">体检人</th>
@@ -113,6 +156,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="item">
 			<tr id="tr_${item.id}">
+				<td><input type="checkbox" name="id" value="${item.id}" ></td>
 				<td>
 					${item.examinationCode}
 				</td>

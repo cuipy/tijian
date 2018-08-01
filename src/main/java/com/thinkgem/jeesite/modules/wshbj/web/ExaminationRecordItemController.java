@@ -205,12 +205,12 @@ public class ExaminationRecordItemController extends BaseController {
 					if(StringUtils.isEmpty(strResultFlag)){
 						continue;
 					}
-/*分割itemId和是否合格*/
+					/*分割itemId和是否合格*/
 					String[] arrRf=StringUtils.split(strResultFlag,',');
 					if(arrRf.length!=2||StringUtils.isEmpty(arrRf[0])||StringUtils.isEmpty(arrRf[1])){
 						continue;
 					}
-/*修改检查结果是否合格*/
+					/*修改检查结果是否合格*/
 					String itemId=arrRf[0];
 					String strFlag=arrRf[1];
 
@@ -227,7 +227,40 @@ public class ExaminationRecordItemController extends BaseController {
 		return RequestResult.generate(1,res);
 
 	}
+	/*待录结果项目批量是否合格
+	 * */
+	@RequiresPermissions("wshbj:examinationRecordItem:view")
+	@PostMapping(value = "ajax_update_allresult_flag")
+	@ResponseBody
+	public RequestResult ajax_update_allresult_flag(String ids,String resultFlag, Model model){
+		String res = "";
+		//判断是id串是否为空
+		if(StringUtils.isNotEmpty(ids)){
+			//用,分隔id字符串
+			String[] id = StringUtils.split(ids,',');
+			if(id.length>0){
+				//循环录入结果
+				for(String strid : id){
+					if(StringUtils.isEmpty(strid)){
+						continue;
+					}
+					//修改检查结果是否合格
+					String itemId=strid;
+					String strFlag=resultFlag;
 
+					ExaminationRecordItem examinationRecordItem = new ExaminationRecordItem();
+					examinationRecordItem.setId(itemId);
+					examinationRecordItem.setResultFlag(strFlag);
+
+					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
+					res+=rr.getState()+":"+rr.getMsg()+"<br>";
+				}
+			}
+
+		}
+		return RequestResult.generate(1,res);
+
+	}
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@RequestMapping(value = "ajax_cancel_sample")
 	@ResponseBody
