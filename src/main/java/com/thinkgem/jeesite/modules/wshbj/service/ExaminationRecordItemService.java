@@ -249,8 +249,10 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         Date strtodate = formatter.parse(dateString, pos);
         eri.setRecordResultTime(strtodate);
         super.save(eri);
-
-        // 更新体检记录的状态
+        if(record.getStatus().equals("0")) {
+            record.setStatus("10");
+        }
+         // 更新体检记录的状态
         examinationRecordService.updateStatus(record);
 
         return RequestResult.generate(1,"保存成功。");

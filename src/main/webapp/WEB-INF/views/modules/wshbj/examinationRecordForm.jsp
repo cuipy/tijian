@@ -223,9 +223,8 @@
         }
 
         // 选中某个体检套餐，更新总费用
-        function chkPackage(packageId) {
-            var itemIds=$("#packageId_"+packageId).attr("data-itemIds");
-
+        function chkPackage(packageId,money) {
+             var itemIds=$("#packageId_"+packageId).attr("data-itemIds");
             // 1 显示套餐必选项目
             $("label[id^='lbl_tcri']").each(function(){
                 var lblId=$(this).attr('id');
@@ -266,10 +265,33 @@
         // 当勾选体检项目的时候，刷新体检项目总费用
         function refreshItemsPrice(){
             var aprice=0;
-            $("input[type='checkbox'][id^=tcri]:checked,input[type='checkbox'][id^=bcri]:checked").each(function(i){
-                var price=$(this).attr("data-price");
-                aprice+= parseInt(price);
+            var itemIds= $("input[type='radio'][id^=packageId_]:checked").attr("data-itemIds");
+             var money=0;
+              $("input[type='checkbox'][id^=tcri]:checked,input[type='checkbox'][id^=bcri]:checked").each(function(i){
+                  //情况1：如果选择了套餐
+                  if(itemIds!=null&&itemIds!=''){
+                      //获得这个套餐的价钱
+                      money= $("input[type='radio'][id^=packageId_]:checked").attr("data-money");
+                      var examinationItem=$(this).attr("value");
+                      var packageIds= new Array();
+                      packageIds=itemIds.split(",");
+                      //循环找出套餐是否包括所选的体检项目 使用优惠后的价钱
+                      for (i=0;i<packageIds.length ;i++ ){
+                             if(examinationItem==packageIds[i]){
+                                 return;
+                             }
+                     }
+                     //如果还要选择套餐这之外的体检项目 使用套餐的价钱 加上套餐之外的项目的钱
+                        var price=$(this).attr("data-price");
+                        aprice+= parseFloat(price);
+                 }else {
+                    //情况2 ：没选择套餐 把选择的体检项目的钱相加
+                     var  price=$(this).attr("data-price");
+                      aprice+= parseFloat(price);
+                 }
             })
+
+            aprice+= parseFloat(money);
             $("#packagePrice").val(aprice);
         }
 
@@ -443,9 +465,10 @@
 				<span class="help-inline"> </span>
 		</div>
 	</div>
-
 	<div class="control-group">
-		<label class="control-label"> <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 岗位：</label>
+		<label class="control-label">
+            <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
+            岗位：</label>
 		<div class="controls">
 		   <div class="autocompleter-box"><input type="hidden" id="postId" name="postId" value="${examinationRecord.postId}" >
                        <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
@@ -465,12 +488,13 @@
 		<div class="control-group" id="packageIdDiv">
 			<label class="control-label">体检套餐：</label>
 			<div class="controls">
-                <label for="packageId_no"> <input type="radio" id="packageId_no" name="packageId" value="" onclick="chkPackage('no')" data-itemIds=''
+                <label for="packageId_no">
+                    <input type="radio" id="packageId_no" name="packageId" value="" onclick="chkPackage('no','')" data-itemIds=''
                    <c:if test="${examinationRecord.packageId == null || examinationRecord.packageId ==''}">checked='checked'</c:if> />
                                 自由选择体检项目</label>
                 <c:forEach items="${packageList}" var="p">
-                <label for="packageId_${p.id}"> <input type="radio" id="packageId_${p.id}" name="packageId" value="${p.id}" data-itemIds="${p.itemIds}"
-                 onclick="chkPackage('${p.id}')" <c:if test="${p.id == examinationRecord.packageId}">checked='checked'</c:if> />
+                <label for="packageId_${p.id}"> <input type="radio" id="packageId_${p.id}" name="packageId" value="${p.id}" data-itemIds="${p.itemIds}" data-money="${p.price}"
+                 onclick="chkPackage('${p.id}',${p.price})" <c:if test="${p.id == examinationRecord.packageId}">checked='checked'</c:if> />
                 ${p.name}</label>
                 </c:forEach>
 
@@ -493,7 +517,9 @@
 			<div class="controls radios-box">
 			    <c:if test="${not empty examinationItemList  }">
 			    <c:forEach items="${examinationItemList}" var="ri" varStatus="s">
-				<label id="lbl_bcri${ri.id}" for="bcri${ri.id}"> <input id="bcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice()"
+
+				<label id="lbl_bcri${ri.id}" for="bcri${ri.id}">
+                    <input id="bcri${ri.id}" name="examinationRecordItemList[${s.index}].itemId" value="${ri.id}" type="checkbox" data-price="${ri.price}" onclick="refreshItemsPrice('')"
 				<c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
 				${ri.name} </label>
 				</c:forEach>

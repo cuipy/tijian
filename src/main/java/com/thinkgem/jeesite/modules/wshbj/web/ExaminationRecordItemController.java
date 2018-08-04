@@ -386,6 +386,10 @@ public class ExaminationRecordItemController extends BaseController {
 								Date strtodate = formatter.parse(dateString, pos);
 								eri.setGrabSampleTime(strtodate);
 								examinationRecordItemService.save(eri);
+								if(record.getStatus().equals("0")) {
+                                    record.setStatus("10");
+                                }
+                                examinationRecordService.updateStatus(record);
 								autoPrint=true;
 							}else{
 								// 已经有样本编号，则使用之前生产的样本编号
