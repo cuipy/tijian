@@ -396,6 +396,10 @@ public class ExaminationRecordItemController extends BaseController {
 								if(StringUtils.isEmpty(newSampleCode)) {
 									newSampleCode = sampleCode;
 								}
+								if(record.getStatus().equals("0")) {
+									record.setStatus("10");
+								}
+								examinationRecordService.updateStatus(record);
 							}
 
 						}

@@ -277,7 +277,8 @@
                       packageIds=itemIds.split(",");
                       //循环找出套餐是否包括所选的体检项目 使用优惠后的价钱
                       for (i=0;i<packageIds.length ;i++ ){
-                             if(examinationItem==packageIds[i]){
+                          //如果套餐里包含该体检项目 就不增加额外的费用
+                          if(examinationItem==packageIds[i]){
                                  return;
                              }
                      }

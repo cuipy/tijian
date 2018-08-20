@@ -9,7 +9,7 @@ function cvsInit2(){
     var cvsMain = new fabric.Canvas('cvs-main',opt);
     cvsMain.items={};
 
-    fabricAddButton(cvsMain,'/tijian/static/images/icons/icon08.png','体检用户','/tijian/a/wshbj/examinationUser/list',80,100,120,{'zoom1':true});
+    fabricAddButton(cvsMain,'/tijian/static/images/icons/1.png','体检用户','/tijian/a/wshbj/examinationUser/list',80,100,120,{'zoom1':true});
 
     fabricAddButton(cvsMain,'/tijian/static/images/icons/icon07.png','体检单位','/tijian/a/wshbj/organ/list',80,100,280,{'zoom1':true});
 
