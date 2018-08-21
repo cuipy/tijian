@@ -49,12 +49,15 @@ public class JkzUploadService extends CrudService<ExaminationRecordDao, Examinat
         params.putAll(jkz.getMap());
 
         String url = Global.getCenterServerUrl()+"/rest/jkz/save";
-
-        RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
-        //同步成功后改变本地标识 uploadJkz ：1是已经同步过的 0或者null 是没有同步的
-        if(rr!=null&&rr.getState()==1){
-            updateUploadDate(examinationRecord);
-        }
+        try{
+                RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
+                //同步成功后改变本地标识 uploadJkz ：1是已经同步过的 0或者null 是没有同步的
+                if(rr!=null&&rr.getState()==1){
+                    updateUploadDate(examinationRecord);
+                }
+        }catch (Exception e){
+                System.out.println("无法与运营端链接");
+            }
         return 1;
     }
 

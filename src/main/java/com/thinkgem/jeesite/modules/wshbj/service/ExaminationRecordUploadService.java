@@ -37,11 +37,16 @@ public class ExaminationRecordUploadService extends CrudService<ExaminationRecor
 		params.putAll(examinationRecord.getMap());
 
 		String url = Global.getCenterServerUrl()+"/rest/examination_record/save";
+		try {
+			RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
+			if(rr!=null&&rr.getState()==1){
+				updateUploadDate(examinationRecord);
+			}
+		}catch (Exception e){
+			System.out.println("无法与运营端链接");
 
-		RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
-		if(rr!=null&&rr.getState()==1){
-			updateUploadDate(examinationRecord);
 		}
+
 
 		return 1;
 	}

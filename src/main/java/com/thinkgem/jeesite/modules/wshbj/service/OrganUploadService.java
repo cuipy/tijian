@@ -45,11 +45,15 @@ public class OrganUploadService extends CrudService<OrganDao, Organ> {
 		params.put("ownerName",organ.getOwnerName());
 
 		String url = Global.getCenterServerUrl()+"/rest/organ/save";
-
-		RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
-		if(rr!=null&&rr.getState()==1){
-			updateUploadDate(organ);
+		try {
+			RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
+			if(rr!=null&&rr.getState()==1){
+				updateUploadDate(organ);
+			}
+		}catch (Exception e){
+			System.out.println("无法与运营端链接");
 		}
+
 
 		return 1;
 	}

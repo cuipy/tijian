@@ -37,11 +37,15 @@ public class ExamUserUploadService extends CrudService<ExaminationUserDao, Exami
 		params.putAll(examinationUser.getMap());
 
 		String url = Global.getCenterServerUrl()+"/rest/exam_user/save";
-
-		RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
-		if(rr!=null&&rr.getState()==1){
-			updateUploadDate(examinationUser);
+		try {
+			RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
+			if(rr!=null&&rr.getState()==1){
+				updateUploadDate(examinationUser);
+			}
+		}catch (Exception e){
+			System.out.println("无法与运营端链接");
 		}
+
 
 		return 1;
 	}
