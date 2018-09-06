@@ -108,7 +108,7 @@ examRecord    当前要采样的 体检记录 对象
         </div>
         <div class="cl"></div>
 
-        <div class="control-group span4">
+        <div class="control-group span3">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
                  <img id="imgHeadImg" style="width:90px;height:120px"   onerror="javascript:this.src='${ctxStatic}/images/style2/nopic.png'"
@@ -116,39 +116,39 @@ examRecord    当前要采样的 体检记录 对象
             </div>
         </div>
 
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">体检编号：</label>
             <div class="controls">
                 ${examRecord.code}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span9">
             <label class="control-label">真实姓名：</label>
             <div class="controls">
                 ${examRecord.name}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">身份证：</label>
             <div class="controls">
                 ${examRecord.idNumber}
             </div>
         </div>
 
-        <div class="control-group span4">
+        <div class="control-group span9">
             <label class="control-label">性别：</label>
             <div class="controls">
                 ${examRecord.strSex}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">年龄：</label>
             <div class="controls">
                 ${examRecord.age}
             </div>
         </div>
 
-        <div class="control-group span4">
+        <div class="control-group span9">
             <label class="control-label">行业：</label>
             <div class="controls">
                 ${examRecord.industryName}

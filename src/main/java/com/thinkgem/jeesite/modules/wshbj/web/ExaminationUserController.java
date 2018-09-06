@@ -249,12 +249,24 @@ public class ExaminationUserController extends BaseController {
     @GetMapping(value = "ajax_get_by_idnumber")
     public RequestResult ajax_get_by_idnumber(ExaminationUser examinationUser) {
         ExaminationUser examinationUser1 = examinationUserService.getByIdNumberAndOwner(examinationUser.getIdNumber(), UserUtils.getUser().getCompany().getId());
+        String newCode = null;
+        newCode=SysSequenceUtils.nextSequence("{yyMMdd}[4]");
         if (examinationUser1 == null) {
-            return RequestResult.generate(2, "未获得用户。");
-        }
 
-        Map<String, String> map = examinationUser1.getMap();
+            return RequestResult.generate(2, "未获得用户。",newCode);
+        }
+        examinationUser1.setCode(newCode);
+         Map<String, String> map = examinationUser1.getMap();
         return RequestResult.generate(1, "获取用户成功", map);
     }
-
+    @ResponseBody
+    @GetMapping(value = "ajax_get_by_prefixExamCode")
+    public RequestResult ajax_get_by_prefixExamCode(String industryId) {
+        String prefixExamCode="";
+        if(industryId!=null&&!industryId.equals("")){
+            Industry industry=  industryService.get(industryId);
+            prefixExamCode = industry.getPrefixExamCode();
+        }
+        return RequestResult.generate(1, "获取用户成功", prefixExamCode);
+    }
 }

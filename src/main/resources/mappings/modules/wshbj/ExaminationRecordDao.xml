@@ -429,4 +429,46 @@
 		 upload_jkz = 1
 		WHERE id = #{id}
 	</update>
+
+	<select id="tongji2" resultType="ExaminationRecord">
+		SELECT u.*
+		FROM `bj_examination_record` u
+		INNER JOIN `bj_organ` o
+		ON u.organ_id=o.id
+
+		<if test="beginDate != null and beginDate !='' and endDate != null and endDate !='' ">
+			and #{beginDate}<![CDATA[  <  ]]>u.create_date and u.create_date <![CDATA[  <  ]]>#{endDate}
+		</if>
+		<if test="organ != null and organ !='' ">
+
+			AND o.`name` LIKE concat('%', #{organ},'%')
+		</if>
+
+		order by u.create_date desc
+
+
+	</select>
+
+	<select id="tongji4" resultType="ExaminationRecord">
+		SELECT u.*
+		FROM `bj_examination_record` u
+		INNER JOIN `bj_organ` o
+		ON u.organ_id=o.id
+
+		<if test="beginDate != null and beginDate !='' and endDate != null and endDate !='' ">
+			and #{beginDate}<![CDATA[  <  ]]>u.create_date and u.create_date <![CDATA[  <  ]]>#{endDate}
+		</if>
+		<if test="organ != null and organ !='' ">
+
+			AND o.`name` LIKE concat('%', #{organ},'%')
+		</if>
+		<if test="state != null and state !='' ">
+
+			AND u.`status` =#{state}
+		</if>
+		order by u.create_date desc
+
+
+	</select>
+
 </mapper>

@@ -134,7 +134,7 @@
 
         <div class="cl"></div>
 
-        <div class="control-group span4">
+        <div class="control-group span3">
             <label class="control-label"> 用户头像：</label>
             <div class="controls">
                  <img id="imgHeadImg" style="width:90px;min-height:110px" src="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examRecord.id}"
@@ -142,63 +142,62 @@
             </div>
         </div>
 
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">真实姓名：</label>
             <div class="controls">
                 ${examRecord.name}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span9">
             <label class="control-label">身份证：</label>
             <div class="controls">
                 ${examRecord.idNumber}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">联系电话：</label>
             <div class="controls">
                 ${examRecord.phoneNumber}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span9">
             <label class="control-label">性别：</label>
             <div class="controls">
                 ${examRecord.strSex}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">年龄：</label>
             <div class="controls">
                 ${examRecord.age}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span9">
             <label class="control-label">出生日期：</label>
             <div class="controls">
                 ${examRecord.birthday}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span3">
             <label class="control-label">体检单位：</label>
             <div class="controls">
                 ${examRecord.organName}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">行业：</label>
             <div class="controls">
                 ${examRecord.industryName}
             </div>
         </div>
-        <div class="control-group span4">
+        <div class="control-group span2">
             <label class="control-label">岗位：</label>
             <div class="controls">
                 ${examRecord.postName}
             </div>
         </div>
-        <div class="cl"></div>
 
-        <div class="control-group span12">
+        <div class="control-group span9">
             <label class="control-label">体检项目：</label>
             <div class="controls">
                 <table class="tbl-items">

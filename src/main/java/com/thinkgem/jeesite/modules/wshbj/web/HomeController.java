@@ -47,5 +47,11 @@ public class HomeController extends BaseController {
 		return "modules/wshbj/home_flow1";
 	}
 
+	@RequestMapping(value = {"dayinji", ""})
+	public String dayinji(Model m) {
+ 		return "/modules/wshbj/editDayinji";
+	}
+
+
 
 }

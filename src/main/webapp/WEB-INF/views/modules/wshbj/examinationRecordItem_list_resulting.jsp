@@ -144,8 +144,9 @@
 			<tr>
 				<th> <input type="checkbox"  id="all" value=""></th>
 				<th width="150">体检编号</th>
-				<th width="200">样本编号</th>
-				<th width="200">体检人</th>
+				<th width="130">样本编号</th>
+				<th width="150">体检单位</th>
+				<th width="70">体检人</th>
 				<th width="80">项目</th>
 				<th width="80">状态</th>
 				<th width="80">初/复</th>
@@ -161,7 +162,8 @@
 					${item.examinationCode}
 				</td>
 				<td> ${item.sampleCode} </td>
-				<td> <c:if test="${not empty item.recordOrganName }">${item.recordOrganName} - </c:if> ${item.recordUserName}  </td>
+				<td> <c:if test="${not empty item.recordOrganName }">${item.recordOrganName} </c:if>  </td>
+				<td> ${item.recordUserName}  </td>
 				<td>${wshbjfns:getEntityName('ExaminationItem',item.itemId,'')} </td>
 				<td>${item.strStatus}</td>
 				<td>${item.strExaminationFlag}</td>

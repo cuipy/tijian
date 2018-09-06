@@ -99,7 +99,7 @@ function lodop_printCard(title,url){
     var LODOP = getCLodop();
 
     LODOP.PRINT_INIT(title);
-    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "90mm","57mm");
+    LODOP.SET_PRINT_PAGESIZE(2, 0, 0, "90mm","57mm");
     if(localStorage.getItem('card-print-index')>=0){
         LODOP.SET_PRINTER_INDEX(localStorage.getItem('card-print-index'));
     }

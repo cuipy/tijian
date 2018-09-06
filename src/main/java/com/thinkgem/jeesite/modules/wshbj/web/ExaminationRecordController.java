@@ -293,6 +293,7 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = "ajax_save")
 	@ResponseBody
 	public RequestResult ajax_save(ExaminationRecord examinationRecord, Model model) {
+/*
 
 		//编号在保存的时候才创建
 		if (StringUtils.isEmpty(examinationRecord.getCode())){
@@ -308,7 +309,11 @@ public class ExaminationRecordController extends BaseController {
 			}
 			examinationRecord.setCode(newCode);
 		}
+*/
 
+		if(examinationRecord.getIndustry().getPrefixExamCode()!=null){
+		examinationRecord.setCode(examinationRecord.getIndustry().getPrefixExamCode()+examinationRecord.getCode());
+		}
 		// 体检时间
 		if(examinationRecord.getExamTime()==null){
 			examinationRecord.setExamTime(new java.util.Date());
@@ -655,6 +660,48 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = "ajax_print_card")
 	public RequestResult ajax_print_card(ExaminationRecord examinationRecord ) {
 		return examinationRecordService.updatePrintCard(examinationRecord);
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = {"tongji1"})
+	public String tongji1(String beginDate,String endDate,String organ, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		// 获取分页的体检记录
+		Page<Organ> page = organService.tongji1(new Page<Organ>(request, response),beginDate,endDate,organ);
+		model.addAttribute("page", page);
+
+  		return "modules/wshbj/tongji1";
+	}
+
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = {"tongji2"})
+	public String tongji2(String beginDate,String endDate,String organ, ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		// 获取分页的体检记录
+		Page<ExaminationRecord> page = examinationRecordService.tongji2(new Page<ExaminationRecord>(request, response), examinationRecord,beginDate,endDate,organ);
+		model.addAttribute("page", page);
+		return "modules/wshbj/tongji2";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = {"tongji3"})
+	public String tongji3(String beginDate,String endDate,String organ, ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		// 获取分页的体检记录
+		Page<ExaminationRecord> page = examinationRecordService.tongji2(new Page<ExaminationRecord>(request, response), examinationRecord,beginDate,endDate,organ);
+		model.addAttribute("page", page);
+		return "modules/wshbj/tongji3";
+	}
+
+	@RequiresPermissions("wshbj:examinationRecord:view")
+	@RequestMapping(value = {"tongji4"})
+	public String tongji4(String beginDate,String endDate,String organ, ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		// 获取分页的体检记录
+		Page<ExaminationRecord> page = examinationRecordService.tongji4(new Page<ExaminationRecord>(request, response), examinationRecord,beginDate,endDate,organ,"20");
+		model.addAttribute("page", page);
+		return "modules/wshbj/tongji4";
 	}
 
 

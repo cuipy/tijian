@@ -50,12 +50,12 @@
                 var d2={id:recordId};
                 $.get(url2,d2);
 
-                lodop_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId)
+                lodop_view_printBarcode('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId)
 
             });
         }
 
-        function do_printview(recordId){
+        function do_print2(recordId){
             var url='${ctx}/wshbj/zhizhengAddRecord/ajax_get_last';
             var d1={};
             $.get(url,d1,function(d1r){
@@ -77,12 +77,14 @@
                 var url2='${ctx}/wshbj/examinationRecord/ajax_print_card';
                 var d2={id:recordId};
                 $.get(url2,d2);
-				//alert('${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
-                //lodop_view_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
 
-                 window.open("${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id="+recordId,"_blank");
+                lodop_printCard('体检流程表','${ctxhttp}/wshbj/exam_record_print/zhizheng_html2?id='+recordId)
 
             });
+        }
+        function do_printview(recordId){
+                 window.open('${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id='+recordId);
+
         }
 
 
@@ -133,7 +135,9 @@
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			</li>
+                <input id="btnExport" class="btn btn-primary" type="button" value="导出Excel"/>
+
+            </li>
 
 			<li><label>A4打印机：</label>
                     <select id="sltA4Print" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
@@ -148,9 +152,10 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th width="150">编号</th>
-				<th width="180">体检人</th>
-				<th width="180">身份证号</th>
+				<th width="130">编号</th>
+				<th width="130">体检单位</th>
+                <th width="80">体检人</th>
+                <th width="170">身份证号</th>
 				<th width="100">联系电话</th>
 				<th width="40">性别</th>
 				<th >体检套餐/项目</th>
@@ -165,9 +170,12 @@
 				<td>
 						<a href="${ctx}/wshbj/examinationRecord/view?id=${examinationRecord.id}">${examinationRecord.code}</a>
 				</td>
-				<td>
-					${examinationRecord.organName}	${examinationRecord.name}
-				</td>
+                <td>
+                        ${examinationRecord.organName}
+                </td>
+                <td>
+                       ${examinationRecord.name}
+                </td>
 				<td>
 						${examinationRecord.idNumber}
 				</td>
@@ -194,12 +202,17 @@
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
 					<c:if test="${examinationRecord.status <= 10}">
-					<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">直接打印体检表</a>
-					<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>
+						<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">打印健康体检表</a>
+						<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb2_html?id=${examinationRecord.id}')" target="_blank">打印公共体检表</a>
+<%--
+						<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>
+--%>
                     </c:if>
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-success" href="javascript:void(0)"
-					 onclick="do_print('${examinationRecord.id}')" target="_blank">打印健康证</a>
+					 onclick="do_print('${examinationRecord.id}')" target="_blank">打印健康证1</a>
+						<a class="label label-success" href="javascript:void(0)"
+						   onclick="do_print2('${examinationRecord.id}')" target="_blank">打印健康证2</a>
 					  <a class="label label-success" href="javascript:void(0)"
                      onclick="do_printview('${examinationRecord.id}')" target="_blank">预览健康证</a></c:if>
 
@@ -213,7 +226,7 @@
 	</table>
 	<div class="pagination">${page}</div>
 
-    <div class="alert alert-success">
+    <%--<div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 信息登记是在体检前进行登记<br>
       2. 该信息一般由前台登记人员创建<br><br>
@@ -227,7 +240,7 @@
       2. 体检套餐必须录入系统，见：<span class="help-inline">左侧菜单 - 基础数据 - 体检套餐</span>，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
       3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
 
-    </div>
+    </div>--%>
     </div>
 
 

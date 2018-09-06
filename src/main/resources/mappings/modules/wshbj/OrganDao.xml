@@ -145,5 +145,21 @@
 		<if test="uploadDate != null ">upload_date = #{uploadDate}</if>
 		WHERE id = #{id}
 	</update>
-	
+
+	<select id="tongji1" resultType="Organ">
+		SELECT o.`name` as'name', COUNT(e.`name`) as 'orderNumb'
+		FROM `bj_examination_user` e INNER JOIN `bj_organ` o
+		ON e.organ_id=o.id
+
+		<if test="beginDate != null and beginDate !='' and endDate != null and endDate !='' ">
+			and #{beginDate}<![CDATA[  <  ]]>e.create_date and e.create_date <![CDATA[  <  ]]>#{endDate}
+ 		</if>
+		<if test="organ != null and organ !='' ">
+
+			AND o.`name` LIKE concat('%', #{organ},'%')
+		</if>
+		GROUP BY e.`organ_id`
+
+	</select>
+
 </mapper>

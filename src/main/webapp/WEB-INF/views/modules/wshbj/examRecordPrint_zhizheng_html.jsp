@@ -13,69 +13,70 @@
     div,table{box-sizing:border-box;}
     .cl{clear:both;}
 
-    .tbl-top{height: 22mm;}
-    .tbl-bottom{height: 29mm;}
+    .tbl-top{height: 23mm;}
+    .tbl-bottom{height: 15mm;}
 
-    .idcard{width:90mm;height:57mm;}
+    .idcard{width:90mm;height:50mm;}
     .idcard .content-div { position:relative;padding:3mm 5mm;height:100%;}
-    .tbl{width:100%;border:0px;}
-    .tbl td{border:0px;text-align:center; font-family:'宋体'; vertical-align:top}
-    .tbl .td-label{font-size:5pt;height:14pt;}
-    .tbl .td-content{text-align:left;font-size:5pt;font-weight:bold;}
+    .tbl{width: 90%;border:0px;}
+    .tbl td{border:0px;text-align:center; font-family:'宋体'; font-size: 0.1mm; vertical-align:top}
+    .tbl .td-label{}
+    .tbl .td-content{text-align:left;font-size:11px;font-weight:bold;line-height: 0.1mm}
 
 
-    .tbl-head .title{text-align:center;font-size:15px;font-weight:bold;color:#7B68EE}
-    .t2-left{float:left;height:50px;}
-    .t2-right{float:right;height:50px;}
-    .t2-tm-img{height:30px;}
-    .t2-tm-code{text-align:center;height:20px;}
+    .tbl-head .title{text-align:center;font-size:11px;font-weight:bold;color:#7B68EE;}
+    .t2-left{float:left;height:40px;}
+    .t2-right{float:right;height:40px;}
+    .t2-tm-img{height:25px;}
+    .t2-tm-code{text-align:center;height:15px;}
 
     .beizhu {padding:20px;}
     </style>
-
     <script type="text/javascript">
-    $(function(){
-        var code1=$('#dv-code1').text();
-        $("#barcode2").qrcode({width:54,height:54, "text":"http://c.guoxue.com/d?code=${examRecord.code}"});
+        $('#body').css('transform','rotateX(90deg)');
+        $('#body').css('-webkit-transform','rotateX(90deg)');
+        $('#body').css('-moz-transform','rotateX(90deg)');
+     $(function(){
+         var code1=$('#dv-code1').text();
+        $("#barcode2").qrcode({width:50,height:50, "text":"http://localhost:8080/tijian"});
     })
     </script>
 </head>
-<body>
-
-	<div class="idcard">
+<body id="body">
+ 	<div class="idcard">
     <div class="content-div">
         <div class="tbl-top"> </div>  <!-- tbl-top end  -->
 
         <div class="tbl-bottom">
             <div class="tbl-head">
-                <div class="title">河北省食品药品从业人员健康合格证明</div>
+                <div class="title"></div>
             </div>
 
             <table class="tbl" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td class="td-label" style="width:14mm;">姓&nbsp;&nbsp;名:</td><td class="td-content" style="width:18mm;">${examRecord.name}</td>
-                    <td class="td-label"  style="width:14mm;">性&nbsp;&nbsp;别:</td><td class="td-content">${examRecord.strSex}</td>
-                    <td rowspan="3" class="td-barcard2" style="width:14mm;"> <div id="barcode2"></div> </td>
-                    <td rowspan="5" class="td-headimg" style="width:16mm;">
-                    <img style="width:16mm;height:24mm;" src="${examRecord.headImg}"></td>
+                    <td class=" " style="width:14mm;"></td>
+                    <td class="td-content" style="width:22mm">${examRecord.name}</td>
+                    <td class="" style="text-align:center;font-size:11px;font-weight:bold;line-height: 0.1mm;">${examRecord.strSex}</td>
+                     <td rowspan="5"  style="width: 10mm; padding: 0; margin: 0"> <div id="barcode2"></div> </td>
+                    <td rowspan="5" style="padding: 0; margin: 0"><img style="height:20mm;" src="${examRecord.headImg}"/></td>
                 </tr>
                 <tr>
-                    <td class="td-label">从业类别:</td><td colspan="3" class="td-content">${examRecord.industryName}&nbsp;</td>
+                    <td ></td><td colspan="5" style="height: 0.1mm; margin: 0px ;padding: 0px; " class="td-content">${ examRecord.industryName}</td>
                  </tr>
                  <tr>
-                     <td class="td-label">证&nbsp;&nbsp;号:</td><td colspan="3" class="td-content">${examRecord.code}&nbsp;</td>
+                     <td  ></td><td colspan="5" style="height: 0.1mm; margin: 0px ;padding: 0px ;" class="td-content">${examRecord.code}</td>
                   </tr>
                 <tr>
-                    <td class="td-label">有效期至:</td><td colspan="4" class="td-content"><fmt:formatDate value="${examRecord.zhizhengEndTime}" pattern="yyyy-MM-dd"/>&nbsp;</td>
+                    <td  ></td><td colspan="5" style="height: 0.1mm; margin: 0px ;padding: 0px;" class="td-content"><fmt:formatDate value="${examRecord.zhizhengEndTime}" pattern="yyyy-MM-dd"/></td>
                  </tr>
                  <tr>
-                     <td class="td-label">体检单位:</td><td colspan="4" class="td-content">${examRecord.organName}&nbsp;</td>
+                     <td ></td><td colspan="5"  style="height: 0mm; margin: 0px ;padding: 0px;" class="td-content">${examRecord.organName}</td>
                   </tr>
 
             </table>
         </div>
 
    	</div>
-
-</body>
+    </div>
+ </body>
 </html>

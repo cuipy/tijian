@@ -91,6 +91,12 @@ public class ExamRecordPrintController extends BaseController {
 		model.addAttribute("examRecord",er);
 		return "modules/wshbj/examRecordPrint_tjb_html";
 	}
+	@GetMapping(value = "tjb2_html")
+	public String tjb2_html(String id,Model model) {
+		ExaminationRecord er = examinationRecordService.get(id);
+		model.addAttribute("examRecord",er);
+		return "modules/wshbj/examRecordPrint_tjb2_html";
+	}
 
 	@GetMapping(value = "barcode_html")
 	public String barcode_html(String barcode,Model model) {
@@ -108,7 +114,16 @@ public class ExamRecordPrintController extends BaseController {
 
 		return "modules/wshbj/examRecordPrint_zhizheng_html";
 	}
+	@GetMapping(value = "zhizheng_html2")
+	public String zhizheng_html2(String id,Model model) {
+		ExaminationRecord er=examinationRecordService.get(id);
+		String headImg=examinationRecordService.getHeadImg(id);
 
+		er.setHeadImg(headImg);
+		model.addAttribute("examRecord",er);
+
+		return "modules/wshbj/examRecordPrint_zhizheng_html2";
+	}
 
 
 }

@@ -98,7 +98,7 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
-
+<%--
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 体检用户是体检人管理，由前台操作录入<br>
@@ -111,7 +111,7 @@
       1. 体检单位、行业、岗位，需要先录入系统<br>
       2. 身份证号码不允许重复。
 
-    </div>
+    </div>--%>
     </div>
 
 </body>

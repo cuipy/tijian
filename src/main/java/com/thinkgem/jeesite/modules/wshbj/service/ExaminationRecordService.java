@@ -498,4 +498,17 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         }
         return lst;
     }
+
+    public Page<ExaminationRecord> tongji2(Page<ExaminationRecord> page, ExaminationRecord examinationRecord,String beginDate,String endDate,String organ) {
+
+        examinationRecord.setPage(page);
+        page.setList(dao.tongji2(beginDate,endDate,organ));
+        return page;
+    }
+    public Page<ExaminationRecord> tongji4(Page<ExaminationRecord> page, ExaminationRecord examinationRecord,String beginDate,String endDate,String organ,String state) {
+
+        examinationRecord.setPage(page);
+        page.setList(dao.tongji4(beginDate,endDate,organ,state));
+        return page;
+    }
 }

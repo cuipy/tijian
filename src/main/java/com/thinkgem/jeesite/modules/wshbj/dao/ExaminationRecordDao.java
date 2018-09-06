@@ -48,4 +48,8 @@ public interface ExaminationRecordDao extends CrudDao<ExaminationRecord> {
 	Integer updatePrintCard(@Param("id")String id);
 
 	String getHeadImg(String id);
+
+	List<ExaminationRecord> tongji2(@Param("beginDate")String beginDate, @Param("endDate")String endDate,@Param("organ") String organ);
+	List<ExaminationRecord> tongji4(@Param("beginDate")String beginDate, @Param("endDate")String endDate,@Param("organ") String organ ,@Param("state") String state);
+
 }

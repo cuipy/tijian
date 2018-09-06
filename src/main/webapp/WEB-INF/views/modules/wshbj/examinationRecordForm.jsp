@@ -77,11 +77,25 @@
 
             // 身份证输入文本框失去焦点的时候
              $('#showIdNumber').blur(function(){
-                loadUserByIdNumber();
-             })
-
+                 loadUserByIdNumber();
+             });
             setTimeout("lodop_check()",300);
         });
+
+        function getFixExamCode(idObj){
+            $("#msg").hide();
+            var url="${ctx}/wshbj/examinationUser/ajax_get_by_prefixExamCode";
+            var d1={industryId: $("#industryId").val() };
+
+            $.get(url,d1,function(d1r) {
+                $("#prefixExamCode").val('');
+                  if (d1r.data !='') {
+                     $("#prefixExamCode").val(d1r.data);
+                 }else {
+                      $("#prefixExamCode").val('');
+                  }
+            });
+        }
 
         function loadUserByIdNumber(idObj){
             $("#msg").hide();
@@ -100,6 +114,7 @@
                     setUserPro(d1r.data);
                     $("#idNumberInfo").show().html("系统内的体检用户。");
                 }else if(d1r.state==2){
+                    $("#code").val(d1r.data);
                     setUserPro({});
                     if(idObj!=null){
                         loadIdObject(idObj);
@@ -175,6 +190,10 @@
             $("#phoneNumber").val(u.phoneNumber);
             $("#postName").val(u.postName);
             $("#remarks").val(u.remarks);
+            $("#code").val(u.code);
+
+
+
 
             if(u.age!=null&&u.age!=''){
                 $("#age").val(u.age);
@@ -204,7 +223,7 @@
              }
 
             $("#headImgImg").attr("src","${ctx}/wshbj/examinationUser/getHeadImg?id="+u.id);
-
+            refreshItemsPrice();
         }
 
         // 行业更新后，设置行业默认套餐
@@ -294,6 +313,7 @@
 
             aprice+= parseFloat(money);
             $("#packagePrice").val(aprice);
+
         }
 
         // ajax form方式提交保存
@@ -319,6 +339,16 @@
                 // 清除必要的字段，继续添加新登记。
                 setUserPro({});
                 $("#showIdNumber").val('');
+                $("#userId").val('');
+                $("#name").val('');
+                $("#idNumber").val('');
+                $("#birthday").val('');
+                $("#phoneNumber").val('');
+                $("#postName").val('');
+                $("#remarks").val('');
+                $("#code").val('');
+                $("input:radio,input:checkbox").attr("checked",false);
+                chkPackage('no','');
 
                 if(status.indexOf('return')>=0){
                     setTimeout("location.href='${ctx}/wshbj/examinationRecord/list'",1000);
@@ -455,9 +485,9 @@
             </div>
         </div>
 	<div class="control-group">
-		<label class="control-label"> <a href="${ctx}/wshbj/industry/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 行业：</label>
+		<label class="control-label" > <a href="${ctx}/wshbj/industry/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 行业：</label>
 		<div class="controls">
-				<form:select path="industryId" class="input-medium">
+				<form:select path="industryId"   onchange="getFixExamCode()" class="input-medium">
 					<form:option value="">
 						请选择
 					</form:option>
@@ -484,6 +514,15 @@
 				<form:input id="remarks" path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
+        <div class="control-group">
+            <label class="control-label">编号：</label>
+            <div class="controls">
+<%--
+                <input type="text"  id="prefixExamCode" name="prefixExamCode"   class="input-medium required">
+--%>
+                <input type="text" readonly  style="padding-left: 0px; margin-left: 0px" id="code" name="code"  value="${examinationRecord.code}" class="input-medium required">
+            </div>
+        </div>
 		<div class="cl"></div>
 
 		<div class="control-group" id="packageIdDiv">
@@ -534,21 +573,17 @@
                 <form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium " readonly="true"/>
             </div>
         </div>
-		<div class="cl"></div>
-		<div class="form-actions">
 
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" onclick="do_sumbit('print')" />&nbsp;</shiro:hasPermission>
             <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" onclick="do_sumbit('return')" />&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 
-			<br>当前A4打印机<select id="sltA4Print" style="min-width:200px;"  onclick="lodop_setA4PrintIndex()"></select>
 
-			&nbsp;&nbsp;当前条码打印机<select id="sltBarcodePrint" style="min-width:200px;"  onclick="lodop_setBarcodePrintIndex()"></select>
-		</div>
-<div class="cl"></div>
+ <div class="cl"></div>
 </div>
 	</form:form>
 	</div>
+<%--
 <div class="help-div">
     <div class="alert alert-success">
       <strong>帮助：</strong> <br>
@@ -566,6 +601,7 @@
 
     </div>
 </div>
+--%>
 
 </div>
 

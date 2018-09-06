@@ -217,61 +217,61 @@ a:hover {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 780px;
+  width: 100%;
 }
 .span9 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 700px;
+  width: 90%;
 }
 .span8 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 620px;
+  width: 80%;
 }
 .span7 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 540px;
+  width: 70%;
 }
 .span6 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 460px;
+  width: 60%;
 }
 .span5 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 380px;
+  width: 50%;
 }
 .span4 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 300px;
+  width: 40%;
 }
 .span3 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 220px;
+  width: 30%;
 }
 .span2 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 140px;
+  width: 20%;
 }
 .span1 {
   float: left;
   min-height: 1px;
   margin-left: 20px;
-  width: 60px;
+  width: 10%;
 }
 .offset12 {
   margin-left: 980px;

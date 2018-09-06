@@ -5,6 +5,9 @@ package com.thinkgem.jeesite.modules.wshbj.service;
 
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.wshbj.entity.tongji1;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -38,7 +41,7 @@ public class OrganService extends CrudService<OrganDao, Organ> {
 	public Page<Organ> findPage(Page<Organ> page, Organ organ) {
 		return super.findPage(page, organ);
 	}
-	
+
 	@Transactional(readOnly = false)
 	@CacheEvict(value = "organCache",allEntries = true)
 	public void save(Organ organ) {
@@ -50,5 +53,10 @@ public class OrganService extends CrudService<OrganDao, Organ> {
 	public void delete(Organ organ) {
 		super.delete(organ);
 	}
-	
+
+	@Transactional(readOnly = false)
+ 	public Page<Organ>  tongji1(Page<Organ> page,String beginDate,String endDate,String organ){
+  		return page.setList(dao.tongji1( beginDate,endDate,organ));
+
+	};
 }

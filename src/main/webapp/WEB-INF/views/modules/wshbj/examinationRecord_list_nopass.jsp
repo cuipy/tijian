@@ -92,7 +92,9 @@
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+<%--
 			<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
+--%>
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -101,14 +103,15 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th width="150">编号</th>
-				<th width="180">体检人</th>
-				<th width="180">身份证号</th>
+				<th width="120">编号</th>
+				<th width="130">体检单位</th>
+				<th width="80">体检人</th>
+				<th width="170">身份证号</th>
 				<th width="100">联系电话</th>
 				<th width="40">性别</th>
 				<th >体检套餐/项目</th>
 				<th width="120">填报时间</th>
-				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="400">操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="150">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -118,7 +121,10 @@
 						<a href="${ctx}/wshbj/examinationRecord/view?id=${examinationRecord.id}">${examinationRecord.code}</a>
 				</td>
 				<td>
-					${examinationRecord.organName}	${examinationRecord.name}
+						${examinationRecord.organName}
+				</td>
+				<td>
+						${examinationRecord.name}
 				</td>
 				<td>
 						${examinationRecord.idNumber}
@@ -152,7 +158,7 @@
 	</table>
 	<div class="pagination">${page}</div>
 
-    <div class="alert alert-success">
+  <%--  <div class="alert alert-success">
       <strong>帮助：</strong> <br>
       1. 信息登记是在体检前进行登记<br>
       2. 该信息一般由前台登记人员创建<br><br>
@@ -166,6 +172,6 @@
       2. 体检套餐必须录入系统，见：<span class="help-inline">左侧菜单 - 基础数据 - 体检套餐</span>，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
       3. 自由选择的体检项目，项目都是在<span class="help-inline">辅助信息 - 检查项目</span>菜单中维护，如没有该菜单，说明您没有操作该功能的权限或菜单名称变更，请联系相关负责人处理<br>
 
-    </div></div>
+    </div></div>--%>
 </body>
 </html>
