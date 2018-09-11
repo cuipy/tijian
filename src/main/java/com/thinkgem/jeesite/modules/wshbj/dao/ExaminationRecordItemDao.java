@@ -48,6 +48,14 @@ public interface ExaminationRecordItemDao extends CrudDao<ExaminationRecordItem>
      * @return java.util.List<com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem>
      */
     List<ExaminationRecordItem> listByRecordId(String recordId);
+    /**
+     * @author zhxl
+     * @description 根据体检记录和体检项目查询体检项目的详细信息
+     * @date 2018/4/18 23:36:48
+     * @param
+     * @return java.util.List<com.thinkgem.jeesite.modules.wshbj.entity.ExaminationRecordItem>
+     */
+    ExaminationRecordItem listByRecordIdAndItemId(@Param("recordId")String recordId,@Param("specimenId")String specimenId);
 
     int count(ExaminationRecordItem item);
 

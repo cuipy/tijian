@@ -14,7 +14,8 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.reference_flag AS "referenceFlag",
-		a.owner AS "owner"
+		a.owner AS "owner",
+		a.result_dept_id as "resultDeptId"
 	</sql>
 	
 	<sql id="specimenJoins">
@@ -40,6 +41,9 @@
 			</if>
 			<if test="grabDeptId != null and grabDeptId != ''">
 				AND a.grab_dept_id = #{grabDeptId}
+			</if>
+			<if test="resultDeptId != null and resultDeptId != ''">
+				AND a.result_dept_id = #{resultDeptId}
 			</if>
 			<if test="referenceFlag != null and referenceFlag != ''">
 				AND a.reference_flag = #{referenceFlag}
@@ -95,7 +99,8 @@
 			update_date,
 			remarks,
 			reference_flag,
-			owner
+			owner,
+			result_dept_id
 		) VALUES (
 			#{id},
 			#{code},
@@ -108,7 +113,8 @@
 			#{updateDate},
 			#{remarks},
 			#{referenceFlag},
-			#{owner}
+			#{owner},
+			#{resultDeptId}
 		)
 	</insert>
 	
@@ -121,7 +127,8 @@
 			update_date = #{updateDate},
 			remarks = #{remarks},
 			reference_flag = #{referenceFlag},
-			owner = #{owner}
+			owner = #{owner},
+			result_dept_id=#{resultDeptId}
 		WHERE id = #{id}
 	</update>
 	

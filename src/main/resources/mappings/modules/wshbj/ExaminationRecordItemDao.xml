@@ -267,6 +267,16 @@
 		</where>
 		ORDER BY  a.create_date ASC
 	</select>
+	<select id="listByRecordIdAndItemId" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag=0 AND a.record_id = #{recordId} and a.specimen_id=#{specimenId}
+		</where>
+		ORDER BY  a.create_date desc
+	</select>
 
 	<select id="countSampleCode" resultType="java.lang.Integer">
 		SELECT
@@ -490,7 +500,7 @@
 	</update>
 
 	<update id="cancelGrabSample">
-		UPDATE bj_examination_record_item SET grab_sample = 0,sample_code = null,result_flag = null,grab_sample_time = #{strtodate}
+		UPDATE bj_examination_record_item SET grab_sample = 0,result_flag = null,grab_sample_time = null
 		WHERE record_id = #{examRecordId} and specimen_id = #{specimenId}
 	</update>
 

@@ -194,7 +194,7 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecordItem:view")
 	@PostMapping(value = "ajax_update_result_flag")
 	@ResponseBody
-	public RequestResult ajax_update_result_flag(String resultFlag, Model model){
+	public RequestResult ajax_update_result_flag(String resultFlag,String resultRemarks , Model model){
 
         String res = "";
 		if(StringUtils.isNotEmpty(resultFlag)){
@@ -217,6 +217,8 @@ public class ExaminationRecordItemController extends BaseController {
 					ExaminationRecordItem examinationRecordItem = new ExaminationRecordItem();
 					examinationRecordItem.setId(itemId);
 					examinationRecordItem.setResultFlag(strFlag);
+					examinationRecordItem.setResultRemarks(resultRemarks);
+
 
 					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
 					res+=rr.getState()+":"+rr.getMsg()+"<br>";
@@ -310,7 +312,7 @@ public class ExaminationRecordItemController extends BaseController {
 		ParsePosition pos = new ParsePosition(0);
 		Date strtodate = formatter.parse(dateString, pos);
  		Integer count = examinationRecordItemService.cancelGrabSample(examRecordId, specimenId,strtodate);
-		return RequestResult.generate(1,"更新成功");
+		return RequestResult.generate(1,"撤销成功");
 	}
 
 
@@ -420,18 +422,43 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"set_result"})
-	public String set_result( String examRecordCode,  Model model) {
-
+	public String set_result(String currSpecimenId, String examRecordCode,  Model model) {
+        ExaminationItem   examinationItem=new ExaminationItem();
+        if(currSpecimenId!=null&&!currSpecimenId.equals("")){
+            examinationItem = examinationItemService.get(currSpecimenId);
+        }
 		String myDeptId=UserUtils.getUser().getOffice().getId();
 		model.addAttribute("myDeptId",myDeptId);
 
 		ExaminationRecord record = null;
+		ExaminationRecordItem examinationRecordItem=null;
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){
 			ExaminationRecord er=new ExaminationRecord();
 			er.setCode(examRecordCode);
 			record = examinationRecordService.getByCode(er);
+			examinationRecordItem=examinationRecordItemService.FindByRecordIdAndItemId(record.getId(),examinationItem.getSpecimenId());
 		}
+		// 加载当前用户所在部门的采样标本
+		String deptId = UserUtils.getUser().getOffice().getId();
+        ExaminationItem ei=new ExaminationItem();
+		ei.setResultDeptId(deptId);
+		List<ExaminationItem> specimens = examinationItemService.findList(ei);
+
+		model.addAttribute("specimens",specimens);
+
+		// 如果只有一个标本，则默认选中
+		if(specimens.size()>0&&StringUtils.isEmpty(currSpecimenId)){
+			currSpecimenId=specimens.get(0).getId();
+		}
+		// 如果没有设置 currSpecimenId 参数
+		if(StringUtils.isEmpty(currSpecimenId)){
+			return "modules/wshbj/examinationRecordItem_grab_sample";
+		}
+
+
+		model.addAttribute("currSpecimenId",currSpecimenId);
+		model.addAttribute("examinationRecordItem",examinationRecordItem);
 
 		model.addAttribute("examRecord",record);
 		return "modules/wshbj/examinationRecordItem_set_result";

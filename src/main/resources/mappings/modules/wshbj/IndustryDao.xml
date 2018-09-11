@@ -14,7 +14,9 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.reference_flag AS "referenceFlag",
-		a.owner AS "owner"
+		a.owner AS "owner",
+		a.default_jkz AS "defaultJkz",
+		a.default_health AS "defaultHealth"
 	</sql>
 	
 	<sql id="industryJoins"></sql>
@@ -94,7 +96,9 @@
 			update_date,
 			remarks,
 			reference_flag,
-			owner
+			owner,
+			default_jkz,
+			default_health
 		) VALUES (
 			#{id},
 			#{code},
@@ -107,7 +111,9 @@
 			#{updateDate},
 			#{remarks},
 			#{referenceFlag},
-			#{owner}
+			#{owner},
+			#{defaultJkz},
+			#{defaultHealth}
 		)
 	</insert>
 	
@@ -120,7 +126,10 @@
 			update_date = #{updateDate},
 			remarks = #{remarks},
 			reference_flag = #{referenceFlag},
-			owner = #{owner}
+			owner = #{owner},
+			default_jkz=#{defaultJkz},
+			default_health=#{defaultHealth}
+
 		WHERE id = #{id}
 	</update>
 	

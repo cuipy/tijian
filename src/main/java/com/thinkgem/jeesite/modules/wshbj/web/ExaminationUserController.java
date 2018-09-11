@@ -263,10 +263,11 @@ public class ExaminationUserController extends BaseController {
     @GetMapping(value = "ajax_get_by_prefixExamCode")
     public RequestResult ajax_get_by_prefixExamCode(String industryId) {
         String prefixExamCode="";
+        Industry industry=null;
         if(industryId!=null&&!industryId.equals("")){
-            Industry industry=  industryService.get(industryId);
+            industry=  industryService.get(industryId);
             prefixExamCode = industry.getPrefixExamCode();
         }
-        return RequestResult.generate(1, "获取用户成功", prefixExamCode);
+        return RequestResult.generate(1, "获取用户成功", industry);
     }
 }

@@ -88,9 +88,11 @@
             var d1={industryId: $("#industryId").val() };
 
             $.get(url,d1,function(d1r) {
-                $("#prefixExamCode").val('');
-                  if (d1r.data !='') {
-                     $("#prefixExamCode").val(d1r.data);
+                $("#defaultHealth").val("");
+                $("#defaultHealth").val(d1r.data.defaultHealth);
+                 $("#prefixExamCode").val('');
+                  if (d1r.data.prefixExamCode !='') {
+                      $("#prefixExamCode").val(d1r.data.prefixExamCode);
                  }else {
                       $("#prefixExamCode").val('');
                   }
@@ -334,7 +336,8 @@
                 $("#msg").show();
                 $("#msg").html(d1r.msg);
                 if(status.indexOf('print')>=0){
-                    lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id='+id);
+                    var defaultHealth=  $("#defaultHealth").val();
+                     lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb'+defaultHealth+'_html?id='+id);
                 }
                 // 清除必要的字段，继续添加新登记。
                 setUserPro({});
@@ -408,7 +411,7 @@
 	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-
+        <input type="text" id="defaultHealth" name="defaultHealth" >
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
         <form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>

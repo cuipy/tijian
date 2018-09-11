@@ -28,9 +28,19 @@ public class Specimen extends DataEntity<Specimen> {
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 
+	private String resultDeptId;
 	private String grabDeptId;
+
 	private String prefix;
 	private Integer orderNumb;
+
+	public String getResultDeptId() {
+		return resultDeptId;
+	}
+
+	public void setResultDeptId(String resultDeptId) {
+		this.resultDeptId = resultDeptId;
+	}
 
 	public Integer getOrderNumb() {
 		return orderNumb;

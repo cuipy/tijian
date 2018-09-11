@@ -37,11 +37,17 @@
 	<form:form id="inputForm" modelAttribute="industry" action="${ctx}/wshbj/industry/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group span12">
+		<div class="control-group span6">
 			<label class="control-label">编号：</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="45" class="input-xlarge" readonly="true"/>
 				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group span6">
+			<label class="control-label">全拼：</label>
+			<div class="controls">
+				<form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
 			</div>
 		</div>
 		<div class="cl"></div>
@@ -53,11 +59,16 @@
 			</div>
 		</div>
 		<div class="control-group span6">
-            <label class="control-label">全拼：</label>
-            <div class="controls">
-                <form:input path="namePinyin" htmlEscape="false" maxlength="128" class="input-medium"/>
-            </div>
-        </div>
+			<label class="control-label">默认套餐：</label>
+			<div class="controls">
+				<form:select path="defaultPackageId" class="input-medium">
+					<form:option value="">
+						请选择体检套餐
+					</form:option>
+					<form:options items="${examinationPackages}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
         <div class="cl"></div>
         <div class="control-group span6">
             <label class="control-label">顺序值：</label>
@@ -65,33 +76,46 @@
                 <form:input type="number" step="1" path="orderNumb" htmlEscape="false" maxlength="10" class="input-medium "/>
             </div>
         </div>
-        <div class="control-group span6">
-            <label class="control-label">默认套餐：</label>
-            <div class="controls">
-               <form:select path="defaultPackageId" class="input-medium">
-                    <form:option value="">
-                        请选择体检套餐
-                    </form:option>
-                    <form:options items="${examinationPackages}" itemLabel="name" itemValue="id" htmlEscape="false"/>
-                </form:select>
-            </div>
-        </div>
+		<div class="control-group span6">
+			<label class="control-label">健康证：</label>
+			<div class="controls">
+				<form:select path="defaultJkz" class="input-medium">
+					<form:option value="">
+						请选择健康证格式
+					</form:option>
+					<form:options items="${jkzStyle}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
+
          <div class="cl"></div>
-        <div class="control-group span12">
+        <div class="control-group span6">
             <label class="control-label">体检编号前缀：</label>
             <div class="controls">
                 <form:input path="prefixExamCode" htmlEscape="false" maxlength="30" class="input-medium "/>
                 <span class="help-inline"> </span>
             </div>
         </div>
+		<div class="control-group span6">
+			<label class="control-label">体检表：</label>
+			<div class="controls">
+				<form:select path="defaultHealth" class="input-medium">
+					<form:option value="">
+						请选择体检表格式
+					</form:option>
+					<form:options items="${healthStyle}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</div>
+		</div>
 
         <div class="cl"></div>
-		<div class="control-group span12">
+		<div class="control-group span6">
 			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
+
 		<div class="form-actions span12">
 			<shiro:hasPermission name="wshbj:industry:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>

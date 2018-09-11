@@ -28,16 +28,18 @@ examRecord    当前要采样的 体检记录 对象
 
 	<script type="text/javascript">
 		$(function() {
-		    setInterval(focusExamRecordCode, 2000);
+		   // setInterval(focusExamRecordCode, 2000);
 
 		    // 当前要录入体检记录 编号的时候
 		    $("#examRecordCode").focus();
 		    $("#examRecordCode").on("blur keypress",function(){
 		        // 输入体检记录编号后，开始检测体检编号，如果编号合法，则可以采集编号
 		        var recordCode =$("#examRecordCode").val();
+                var currSpecimenId = $.trim($("#currSpecimenId").val());
 
-		        if($.trim(recordCode)!=''){
-                    var url2="${ctx}/wshbj/examinationRecordItem/set_result?examRecordCode="+recordCode;
+
+                if($.trim(recordCode)!=''){
+                    var url2="${ctx}/wshbj/examinationRecordItem/set_result?examRecordCode="+recordCode+"&currSpecimenId="+currSpecimenId;
                     location.href=url2;
                 }
 		    });
@@ -64,14 +66,13 @@ examRecord    当前要采样的 体检记录 对象
         function doUpdateResultFlag(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
             var resultFlag = '';
+            var resultRemarks=$("#resultRemarks").val();
             $(".rd-itemId:checked").each(function(){
                 var itemId=$(this).attr('data-itemId');
                 var val=$(this).val();
-
                 resultFlag +=itemId+","+val+"|";
             });
-
-            var d1={"resultFlag": resultFlag };
+             var d1={"resultFlag": resultFlag,"resultRemarks":resultRemarks };
             $.post(url,d1,function(d1r){
                 $("#msg").show().html(d1r.msg);
             });
@@ -84,9 +85,15 @@ examRecord    当前要采样的 体检记录 对象
 </head>
 <body>
 
+
 	<ul class="nav nav-tabs">
-        <li class="active"><a href="${ctx}/wshbj/examinationRecordItem/set_result" >快速录入结果：选择体检项目</a></li>
+        <li><a href="${ctx}/wshbj/examinationRecordItem/set_result" >快速录入结果：选择体检项目</a></li>
+        <c:forEach items="${specimens}" var="vo">
+            <c:if test="${vo.id==currSpecimenId}"><li class="active"></c:if>
+            <c:if test="${vo.id!=currSpecimenId}"><li></c:if>
+            <a href="${ctx}/wshbj/examinationRecordItem/set_result?currSpecimenId=${vo.id}">${vo.name}</a></li> </c:forEach>
 	</ul>
+    <input type="hidden" id="currSpecimenId" name="currSpecimenId" value="${currSpecimenId}"/>
 
     <div class="box1">
     <div id="msg" class="alert alert-danger" >
@@ -161,28 +168,37 @@ examRecord    当前要采样的 体检记录 对象
             <label class="control-label">体检项目：</label>
             <div class="controls">
                 <table class="tbl-items">
-                <c:forEach items="${examRecord.items}" var="vo" varStatus="idx">
-                    <c:if test="${vo.recordResultDeptId == myDeptId}">
-                    <tr><td> ${vo.itemName}  </td>
-                    <td> <c:if test="${vo.needSamples == 1 }">需要采样 </c:if>
-                        <c:if test="${vo.needSamples != 1 }">无需采样</c:if>
+                     <c:if test="${examinationRecordItem.recordResultDeptId == myDeptId}">
+                    <tr><td> ${examinationRecordItem.itemName}  </td>
+                    <td> <c:if test="${examinationRecordItem.needSamples == 1 }">需要采样 </c:if>
+                        <c:if test="${examinationRecordItem.needSamples != 1 }">无需采样</c:if>
                     </td>
                     <td>
-                        <c:if test="${vo.sampleCode != null && vo.sampleCode != ''}">标本编号：${vo.sampleCode}</c:if>
-                        <c:if test="${vo.sampleCode == null || vo.sampleCode == ''}">待采样</c:if>
+                        <c:if test="${examinationRecordItem.sampleCode != null && examinationRecordItem.sampleCode != ''}">标本编号：${examinationRecordItem.sampleCode}</c:if>
+                        <c:if test="${examinationRecordItem.sampleCode == null || examinationRecordItem.sampleCode == ''}">待采样</c:if>
                     </td>
                     <td>
-                        <label for="resultFlag1${idx.index}">
-                            <c:if test="${vo.resultFlag ==null}">  <input type="hidden" class="noResultItemId" value="${vo.id}"> </c:if>
+                        <label >
+                            <c:if test="${examinationRecordItem.resultFlag ==null}">  <input type="hidden" class="noResultItemId" value="${examinationRecordItem.id}"> </c:if>
                             <input class="rd-itemId" id="resultFlag1${idx.index}" value="1" name="resultFlag[${idx.index}]" type="radio"
-                               data-itemId="${vo.id}" <c:if test="${vo.resultFlag ==null or vo.resultFlag == 1 }">checked="checked"</c:if>>合格</label>
-                        <label for="resultFlag0${idx.index}">
+                               data-itemId="${examinationRecordItem.id}" <c:if test="${examinationRecordItem.resultFlag ==null or examinationRecordItem.resultFlag == 1 }">checked="checked"</c:if>>合格</label>
+                        <label >
                             <input class="rd-itemId" id="resultFlag0${idx.index}" value="0" name="resultFlag[${idx.index}]" type="radio"
-                               data-itemId="${vo.id}" <c:if test="${vo.resultFlag == 0 }">checked="checked"</c:if>>不合格</label>
-                    </td> </tr>
+                               data-itemId="${examinationRecordItem.id}" <c:if test="${examinationRecordItem.resultFlag == 0 }">checked="checked"</c:if>>不合格</label>
+
+                    </td>
+
+
+                    </tr>
+                         <tr>
+                             <td colspan="4">
+                                 备注：
+                                 <form:textarea path="examinationRecordItem.resultRemarks" id="resultRemarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
+
+                              </td>
+                         </tr>
                     </c:if>
-                </c:forEach>
-                </table>
+                 </table>
             </div>
         </div>
         <div class="cl"></div>

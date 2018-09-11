@@ -3,35 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.wshbj.web;
 
-import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
-import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
-import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
-import org.apache.commons.collections.map.HashedMap;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 体检记录Controller
@@ -89,7 +70,7 @@ public class ExamRecordPrintController extends BaseController {
 	public String tjb_html(String id,Model model) {
 		ExaminationRecord er = examinationRecordService.get(id);
 		model.addAttribute("examRecord",er);
-		return "modules/wshbj/examRecordPrint_tjb_html";
+		return "modules/wshbj/examRecordPrint_tjb1_html";
 	}
 	@GetMapping(value = "tjb2_html")
 	public String tjb2_html(String id,Model model) {

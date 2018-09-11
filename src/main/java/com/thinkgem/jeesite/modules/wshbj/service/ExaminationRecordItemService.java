@@ -62,6 +62,13 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         List<ExaminationRecordItem> lst = this.dao.listByRecordId(recordId);
         return lst;
     }
+    public ExaminationRecordItem FindByRecordIdAndItemId(String recordId,String specimenId){
+        if(StringUtils.isBlank(recordId)||StringUtils.isBlank(specimenId)){
+            return new ExaminationRecordItem();
+        }
+        ExaminationRecordItem examinationRecordItem = this.dao.listByRecordIdAndItemId(recordId,specimenId);
+        return examinationRecordItem;
+    }
 
     public Page<ExaminationRecordItem> pageNeedSampleNodo(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
         entity.setPage(page);
@@ -202,6 +209,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     public RequestResult updateResultFlag(ExaminationRecordItem examinationRecordItem) {
 
         ExaminationRecordItem eri = get(examinationRecordItem.getId());
+        eri.setResultRemarks(examinationRecordItem.getResultRemarks());
         ExaminationRecord record = eri.getRecord();
         if(eri==null){
             return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败!");

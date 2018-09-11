@@ -110,7 +110,11 @@ examRecord    当前要采样的 体检记录 对象
         function do_cancel_grab_sample(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_cancel_grab_sample";
             var d1 = {"examRecordId":$("#examRecordId").val(),"specimenId": $("#currSpecimenId").val() };
-            $.post(url,d1,function(){location.reload();});
+            $.post(url,d1,function(){
+                $("#msg").show().html("撤销成功。");
+
+
+            });
         }
         </c:if>
 
@@ -237,7 +241,7 @@ examRecord    当前要采样的 体检记录 对象
 
             <input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="do_sample_code_print()" />&nbsp;&nbsp;
             <c:if test="${not autoPrint}">
-            <input id="btnCancelGrabSample" class="btn btn-primary" type="button" value="撤销并重新取样"
+            <input id="btnCancelGrabSample" class="btn btn-primary" type="button" value="撤销取样"
                    onclick="do_cancel_grab_sample()" />&nbsp;</c:if>
 		</div>
 

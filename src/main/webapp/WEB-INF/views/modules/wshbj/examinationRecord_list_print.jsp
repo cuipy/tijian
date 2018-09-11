@@ -6,7 +6,35 @@
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
+        // 执行打印制卡
+
+        function clkAllResult(){
+            //jquery获取选中的checkedbox值判断这个值不为空 用,号隔开
+            $("input[name='id']:checkbox:checked").each(
+                function(){
+                    alert($(this).val());
+
+                    if($(this).val()!=''){
+
+						lodop_printCard("制证","${ctxhttp}/wshbj/exam_record_print/zhizheng_html?id="+$(this).val());
+            }});
+
+        }
+
+        $(document).ready(function() {
+        });
+
+        $(function() {
+            $('#all').on('click',function(){
+                if(this.checked) {
+                    $("input[name='id']").attr('checked',true);
+                }else {
+                    $("input[name='id']").attr('checked',false);
+                }
+            });
+        });
+
+        $(document).ready(function() {
 			$("#btnExport").click(function(){
 				top.$.jBox.confirm("确认要导出体检记录数据吗？","系统提示",function(v,h,f){
 					if(v=="ok"){
@@ -94,6 +122,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+
 			<li><label>体检单位：</label>
 				<form:select path="organId" class="input-medium">
 					<form:option value="">
@@ -140,10 +169,12 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
-	<sys:message content="${message}"/>
+		<span class="btn btn-mini btn-success" onclick="clkAllResult()">批量制证</span>&nbsp;&nbsp;&nbsp;
+ 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th> <input type="checkbox"  id="all" value=""></th>
 				<th width="130">编号</th>
 				<th width="130">体检单位</th>
 				<th width="80">体检人</th>
@@ -159,6 +190,8 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="examinationRecord">
 			<tr >
+				<td><input type="checkbox" name="id" value="${examinationRecord.id}" ></td>
+
 				<td>
 						<a href="${ctx}/wshbj/examinationRecord/view?id=${examinationRecord.id}">${examinationRecord.code}</a>
 				</td>

@@ -11,8 +11,7 @@ import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.wshbj.bean.RequestResult;
-import com.thinkgem.jeesite.modules.wshbj.entity.ExaminationPackage;
-import com.thinkgem.jeesite.modules.wshbj.entity.Specimen;
+import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.ExaminationPackageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +24,9 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.wshbj.entity.Industry;
 import com.thinkgem.jeesite.modules.wshbj.service.IndustryService;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -76,6 +75,28 @@ public class IndustryController extends BaseController {
 		examinationPackage.setDelFlag("0");
 		List<ExaminationPackage> examinationPackages = examinationPackageService.findList(examinationPackage);
 		model.addAttribute("examinationPackages", examinationPackages);
+		//自定义的两种体检表的格式 更具需求在这设置
+		HealthStyle healthStyle1=new HealthStyle();
+		healthStyle1.setId(1);
+		healthStyle1.setName("体检表1");
+		HealthStyle healthStyle2=new HealthStyle();
+		healthStyle2.setId(2);
+		healthStyle2.setName("体检表2");
+		List<HealthStyle> healthStyle =new LinkedList<HealthStyle>();
+		healthStyle.add(healthStyle1);
+		healthStyle.add(healthStyle2);
+		model.addAttribute("healthStyle", healthStyle);
+		//自定义的两种健康证的格式 更具需求在这设置
+		JkzStyle jkzStyle1= new JkzStyle();
+		jkzStyle1.setId(1);
+		jkzStyle1.setName("健康证1");
+		JkzStyle jkzStyle2=new JkzStyle();
+		jkzStyle2.setId(2);
+		jkzStyle2.setName("健康证2");
+		List<JkzStyle> jkzStyle =new LinkedList<JkzStyle>() ;
+		jkzStyle.add(jkzStyle1);
+		jkzStyle.add(jkzStyle2);
+		model.addAttribute("jkzStyle", jkzStyle);
 
 		model.addAttribute("industry", industry);
 		return "modules/wshbj/industryForm";

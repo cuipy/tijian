@@ -32,6 +32,24 @@ public class Industry extends DataEntity<Industry> {
 	private String referenceFlag;		// 参考标识：0-否，1-是
 	private String owner;		// 所属体检中心
 	private Integer orderNumb;
+	private Integer defaultJkz;
+	private Integer defaultHealth;
+
+	public Integer getDefaultJkz() {
+		return defaultJkz;
+	}
+
+	public void setDefaultJkz(Integer defaultJkz) {
+		this.defaultJkz = defaultJkz;
+	}
+
+	public Integer getDefaultHealth() {
+		return defaultHealth;
+	}
+
+	public void setDefaultHealth(Integer defaultHealth) {
+		this.defaultHealth = defaultHealth;
+	}
 
 	public Integer getOrderNumb() {
 		return orderNumb;

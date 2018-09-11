@@ -54,6 +54,9 @@
 			<if test="needSamples != null and needSamples != ''">
 				AND a.need_samples = #{needSamples}
 			</if>
+			<if test="resultDeptId != null and resultDeptId != ''">
+				AND a.result_dept_id = #{resultDeptId}
+			</if>
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
