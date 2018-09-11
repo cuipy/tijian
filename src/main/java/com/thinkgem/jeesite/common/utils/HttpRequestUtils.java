@@ -86,7 +86,6 @@ public class HttpRequestUtils {
             response = client.newCall(request).execute();
             res = response.body().string();
 
-
             JSONObject json = JSONObject.parseObject(res);
 
             if(json.get("state")!=null){
@@ -95,8 +94,8 @@ public class HttpRequestUtils {
 
         } catch(JSONException e){
             System.out.println(res);
-        }catch (IOException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
         }
 
         return rr;
