@@ -21,7 +21,8 @@
 		a.range_min AS "rangeMin",
 		a.specimen_id AS "specimenId",
 		a.permission AS "permission",
-		a.need_samples AS "needSamples"
+		a.need_samples AS "needSamples",
+		a.code_type as 'codeType'
 	</sql>
 	
 	<sql id="examinationItemJoins">
@@ -136,7 +137,8 @@
 			range_min,
 			specimen_id,
 			permission,
-			need_samples
+			need_samples,
+			code_type
 		) VALUES (
 			#{id},
 			#{code},
@@ -156,7 +158,8 @@
 			#{rangeMin},
 			#{specimenId},
 			#{permission},
-			#{needSamples}
+			#{needSamples},
+			#{codeType}
 		)
 	</insert>
 	
@@ -175,7 +178,9 @@
 			range_max = #{rangeMax},
 			range_min = #{rangeMin},
 			specimen_id = #{specimenId},
-			need_samples = #{needSamples}
+			need_samples = #{needSamples},
+			code_type=#{codeType}
+
 		WHERE id = #{id}
 	</update>
 	

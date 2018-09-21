@@ -1,3 +1,4 @@
+<%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
@@ -338,6 +339,7 @@
                 if(status.indexOf('print')>=0){
                     var defaultHealth=  $("#defaultHealth").val();
                      lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb'+defaultHealth+'_html?id='+id);
+                     lodop_sampleCode(id)
                 }
                 // 清除必要的字段，继续添加新登记。
                 setUserPro({});
@@ -379,7 +381,22 @@
             }
          }
 
-
+        function lodop_sampleCode(id) {
+            var code= $("#recordId").val();
+             $.ajax({
+                url:'${ctx}/wshbj/examinationRecordItem/ajax_examinationRecordItem?recordId='+id+'&code='+code,
+                type:'post',
+                success(result){
+                    var vendorJson = eval(result);
+                    for(var i=0; i<vendorJson.length; i++){
+                        if(vendorJson[i].sampleCode!=undefined){
+                            alert(vendorJson[i].sampleCode);
+                            lodop_printBarcode('样本编号','${ctxhttp}/wshbj/exam_record_print/barcode_html?barcode='+vendorJson[i].sampleCode);
+                        }
+                    }
+                }
+            });
+        }
 
 	</script>
 </head>
@@ -408,14 +425,18 @@
 
 
 	<div  style="max-width:1200px" >
-	<form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
+      <%--  <form action="${ctx}/wshbj/examinationRecord/readXls" method="post"  enctype="multipart/form-data"" >
+            <input type="file" id="is" name="is" >
+            <input type="submit" value="tijiao">
+        </form>
+--%>
+        <form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
-        <input type="text" id="defaultHealth" name="defaultHealth" >
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
         <form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
-
+        <input type="hidden" name="defaultHealth" id="defaultHealth">
     <div>
 
 
@@ -579,7 +600,10 @@
 
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" onclick="do_sumbit('print')" />&nbsp;</shiro:hasPermission>
             <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" onclick="do_sumbit('return')" />&nbsp;</shiro:hasPermission>
-			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
+        <input type="text" id="recordId" name="recordId"  class="input-medium required">
+        <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="lodop_sampleCode(1)" />&nbsp;</shiro:hasPermission>
+
+        <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 
 
  <div class="cl"></div>

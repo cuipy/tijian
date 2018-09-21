@@ -62,6 +62,16 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         List<ExaminationRecordItem> lst = this.dao.listByRecordId(recordId);
         return lst;
     }
+    public List<ExaminationRecordItem> listByRecordIdAndDetId(String recordId,String recordResultDeptId){
+        if(StringUtils.isBlank(recordId)){
+            return new ArrayList<ExaminationRecordItem>();
+        }
+        if(StringUtils.isBlank(recordResultDeptId)){
+            return new ArrayList<ExaminationRecordItem>();
+        }
+        List<ExaminationRecordItem> lst = this.dao.listByRecordIdAndDetId(recordId,recordResultDeptId);
+        return lst;
+    }
     public ExaminationRecordItem FindByRecordIdAndItemId(String recordId,String specimenId){
         if(StringUtils.isBlank(recordId)||StringUtils.isBlank(specimenId)){
             return new ExaminationRecordItem();
@@ -69,6 +79,7 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
         ExaminationRecordItem examinationRecordItem = this.dao.listByRecordIdAndItemId(recordId,specimenId);
         return examinationRecordItem;
     }
+
 
     public Page<ExaminationRecordItem> pageNeedSampleNodo(Page<ExaminationRecordItem> page, ExaminationRecordItem entity) {
         entity.setPage(page);
@@ -209,7 +220,9 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     public RequestResult updateResultFlag(ExaminationRecordItem examinationRecordItem) {
 
         ExaminationRecordItem eri = get(examinationRecordItem.getId());
-        eri.setResultRemarks(examinationRecordItem.getResultRemarks());
+        if(!StringUtils.isEmpty(examinationRecordItem.getResultRemarks())) {
+            eri.setResultRemarks(examinationRecordItem.getResultRemarks());
+        }
         ExaminationRecord record = eri.getRecord();
         if(eri==null){
             return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败!");

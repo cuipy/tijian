@@ -27,15 +27,46 @@
         	return false;
         }
 
+        function info (recordId){
+ 			$.ajax({
+				url:"${ctx}/wshbj/examinationRecordItem/ajax_examinationRecordItem?recordId="+recordId,
+				type:"post",
+				success(res){
+                          backFunc(res);
+ 				}
+			});
+         }
+         //请求成功后开始遍历list
+        function backFunc(result){
+            var vendorJson = eval(result);
+            $("#infomation>tr").remove();
+            for(var i=0; i<vendorJson.length; i++){
+
+                if(vendorJson[i].sampleCode==undefined){
+                     vendorJson[i].sampleCode='不需要采样';
+                }
+                  $("#infomation").append("<tr id='tr_"+vendorJson[i].id+"'>" +
+                     "<td>"+vendorJson[i].sampleCode+"</td> " +
+                     "<td>"+vendorJson[i].recordOrganName+" </td> " +
+                     "<td>"+vendorJson[i].itemName+" </td>"+
+                     "<td>"+vendorJson[i].strStatus+"</td>" +
+                     "<td>"+vendorJson[i].strExaminationFlag+"</td>"+
+                      "<td style='width:100px;'> <span class='btn btn-mini btn-success' onclick=\"clkResult('"+vendorJson[i].id+"',1)\">合格</span>&nbsp;&nbsp;&nbsp;"+
+                     "<span class='btn btn-mini btn-danger' onclick=\"clkResult('"+vendorJson[i].id+"',0)\">不合格</span> </td>"+
+                     "</tr>");
+
+            }
+        };
+
         function clkResult(itemId,result){
-            var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
-            var d1={id:itemId,resultFlag:result+","+itemId};
+             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_result_flag";
+            var d1={id:itemId,resultFlag:itemId+","+result};
             $.ajax({
                 type:'post',dataType:'json',url:url,data:d1,
                 success:function(d1r){
                     if(d1r.state== 1){
                         showTip(d1r.msg);
-                        $("#tr_"+itemId).remove();
+                         $("#tr_"+itemId).remove();
                     }else{
                         showMsgx($("#msg"),d1r);
                     }
@@ -94,25 +125,27 @@
 			<li><label>样本编号：</label>
 				<form:input path="sampleCode" htmlEscape="false" maxlength="50" class="input-medium"/>
 			</li>
-			<li><label>体检用户：</label>
-				<form:input path="userName" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
+
 			<li><label>体检项目：</label>
-				<form:select path="itemName" class="input-mini">
+				<form:select path="itemName" class="input-mini" cssStyle="width: 163px">
 					<form:option value="">
 						请选择
 					</form:option>
 					<form:options items="${examinationItemList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
-
+            <li><label> </label>
+                <form:hidden path="userName" htmlEscape="false" maxlength="64" class="input-medium"/>
+            </li>
+            <li><label></label>
+            </li>
 			<li><label>开始时间：</label>
  				<form:input path="beginDate" cssStyle="width: 163px;" htmlEscape="false"  maxlength="64" class="input-mini Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
 			<li><label>截止时间：</label>
 				<form:input path="endDate" cssStyle="width: 163px;" htmlEscape="false"  maxlength="64" class="input-mini Wdate" onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</li>
-			<li><label>体检项目：</label>
+			<li><label>体检时间：</label>
 				<form:select path="itemId" class="input-mini" cssStyle="width: 163px">
 					<form:option value="0">
 						请选择
@@ -134,7 +167,8 @@
 	   <p style="margin-left:1%">
 	   <span class="btn btn-mini btn-success" onclick="clkAllResult(1)">批量合格</span>&nbsp;&nbsp;&nbsp;
        		<span class="btn btn-mini btn-danger" onclick="clkAllResult(0)">批量不合格</span>
-	     </p>
+
+        </p>
 
 
 		<div id="msg" class="alert alert-danger" style="display:none">
@@ -143,80 +177,82 @@
 	</div>
 	<sys:message content="${message}"/>
 
-	<table id="contentTable" class="table table-striped table-bordered table-condensed;" style="width:900px;float:right;margin-right:22.1%";>
-		<thead style="width:20px;">
-			<tr>
-
-
-				<th width="130">样本编号</th>
-				<th width="150">体检单位</th>
-
-				<th width="80">项目</th>
-				<th width="80">状态</th>
-				<th width="80">初/复</th>
-				<th>备注</th>
-				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><th>操作</th></shiro:hasPermission>
-			</tr>
-		</thead>
-
-		<tbody style:flolt:left width:200px;border:1px solid #ff0000;>
-		<c:forEach items="${page.list}" var="item">
-			<tr id="tr_${item.id}">
-
-				<td> ${item.sampleCode} </td>
-				<td> <c:if test="${not empty item.recordOrganName }">${item.recordOrganName} </c:if>  </td>
-
-				<td>${wshbjfns:getEntityName('ExaminationItem',item.itemId,'')} </td>
-				<td>${item.strStatus}</td>
-				<td>${item.strExaminationFlag}</td>
-				<td> ${item.remarks} </td>
-				<shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td style="width:100px;">
-
-    				<span class="btn btn-mini btn-success" onclick="clkResult('${item.id}',1)">合格</span>&nbsp;&nbsp;&nbsp;
-    				<span class="btn btn-mini btn-danger" onclick="clkResult('${item.id}',0)">不合格</span>
-
-				</td></shiro:hasPermission>
-			</tr>
-		</c:forEach>
-		</tbody style:"width:50%;flolt:left;";>
-    </table>
 
 
 
-		<table id="contentTable" class="table table-striped table-bordered table-condensed;" style="width:400px;float:left;">
+		<table id="contentTable" class="table table-striped table-bordered table-condensed;" style="width:250px;float:left;">
     		<thead style="width:80px;margin-left:10%;">
     			<tr>
-    				<th width="20"> <input type="checkbox"  id="all" value=""></th>
-    				<th width="150">体检编号</th>
+    				<th width="10"> <input type="checkbox"  id="all" value=""></th>
+    				<th width="40">体检编号</th>
 
-    				<th width="70">体检人</th>
+    				<th width="40">体检人</th>
 
     			</tr>
     		</thead>
 
 
 
-    		<tbody style:flolt:left width:200px;boder:1px solid #ff0000;>
+    		<tbody  style:flolt:left width:200px;boder:1px solid #ff0000;>
     		<c:forEach items="${page.list}" var="item">
-    			<tr id="tr_${item.id}">
-    				<td><input type="checkbox" name="id" value="${item.id}"></td>
+    			<tr id="tr_${item.id}" >
+    				<td><input  type="checkbox" name="id" value="${item.recordId}"></td>
     				<td>
-    					${item.examinationCode}
+						<a href="#" onclick="info('${item.recordId}')" >${item.examinationCode}</a>
     				</td>
      				<td> ${item.recordUserName}  </td>
 
     			</tr>
     		</c:forEach>
-    		</tbody style:"width:50%;flolt:left;";>
+
+            </tbody style:"width:50%;flolt:left;">
+            <div class="pagination">${page}</div>
 
 
     	</table>
+		<table id="contentTable" class="table table-striped table-bordered table-condensed;" style="width:800px;float:left;margin-left:30px";>
+			<thead style="width:20px;"  >
+			<tr>
+
+
+				<th width="60">样本编号</th>
+				<th width="80">体检单位</th>
+
+				<th width="50">项目</th>
+				<th width="50">状态</th>
+				<th width="50">初/复</th>
+				<shiro:hasPermission name="wshbj:examinationRecordItem:edit">
+					<th width="80">操作</th></shiro:hasPermission>
+			</tr>
+			</thead>
+
+			<tbody id="infomation" style:flolt:left width:200px;border:1px solid #ff0000;>
+<%--
+			<c:forEach items="${page.list}" var="item">
+                <tr id='tr_'>
+
+                <td> ${item.sampleCode} </td>
+                <td> <c:if test="${not empty item.recordOrganName }">${item.recordOrganName} </c:if>  </td>
+
+                <td>${wshbjfns:getEntityName('ExaminationItem',item.itemId,'')} </td>
+                <td>${item.strStatus}</td>
+                <td>${item.strExaminationFlag}</td>
+                <shiro:hasPermission name="wshbj:examinationRecordItem:edit"><td style="width:100px;">
+
+                    <span class="btn btn-mini btn-success" onclick="clkResult('${item.id}',1)">合格</span>&nbsp;&nbsp;&nbsp;
+                    <span class="btn btn-mini btn-danger" onclick="clkResult('${item.id}',0)">不合格</span>
+
+                </td></shiro:hasPermission>
+                </tr>
+			</c:forEach>
+--%>
+			</tbody style:"width:50%;flolt:left;";>
+		</table>
 
 
 
 
 
-	<div class="pagination">${page}</div>
 	</div>
 </body>
 </html>

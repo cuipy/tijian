@@ -312,9 +312,23 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
 
             // 如果在 体检编号 在 创建体检记录的时候 生成
             if(sampleCodeCreatePoint==1&&"1".equals(savingItem.getNeedSamples())){
-                String exp = savingItem.getPrefixSampleCode()+"{yyMMdd}[4]";
-                String sampleCode = SysSequenceUtils.nextSequence(exp);
-                item.setSampleCode(sampleCode);
+                if(savingItem.getCodeType()==0){
+                    String exp = UserUtils.getUser().getCompany().getId()+"{yy}[6]";
+                    String sampleCode = SysSequenceUtils.nextSequence(exp);
+                    item.setSampleCode(sampleCode);
+                }
+                if(savingItem.getCodeType()==1){
+                    String exp = UserUtils.getUser().getCompany().getId()+"{yyMM}[6]";
+                    String sampleCode = SysSequenceUtils.nextSequence(exp);
+                    item.setSampleCode(sampleCode);
+                }
+                if(savingItem.getCodeType()==2){
+                    String exp = UserUtils.getUser().getCompany().getId()+"{yyMMdd}[6]";
+                    String sampleCode = SysSequenceUtils.nextSequence(exp);
+                    item.setSampleCode(sampleCode);
+                }
+
+
             }
 
             examinationRecordItemService.save(item);

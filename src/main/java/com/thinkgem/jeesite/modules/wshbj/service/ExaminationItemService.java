@@ -44,7 +44,7 @@ public class ExaminationItemService extends CrudService<ExaminationItemDao, Exam
 		return super.get(id);
 	}
 
-	@Cacheable(value = "examinationItemCache",key="'examinationItem_findList_'+#examinationItem.code+#examinationItem.name+#examinationItem.owner+#examinationItem.needSamples")
+	@Cacheable(value = "examinationItemCache",key="'examinationItem_findList_'+#examinationItem.code+#examinationItem.name+#examinationItem.owner+#examinationItem.needSamples+#examinationItem.resultDeptId")
 	public List<ExaminationItem> findList(ExaminationItem examinationItem) {
 		return super.findList(examinationItem);
 	}

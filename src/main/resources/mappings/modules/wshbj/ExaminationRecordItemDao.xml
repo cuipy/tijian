@@ -187,8 +187,7 @@
 
 	<select id="listResulting" resultType="ExaminationRecordItem">
 		SELECT
-		<include refid="examinationRecordItemColumns"/>
-		FROM bj_examination_record_item a
+		a.record_id AS "recordId"		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and  (( a.need_samples = 1 and a.sample_code is not null) or ( a.need_samples = 0)) and a.result_flag is null
@@ -210,6 +209,8 @@
 
 			<include refid="whereif2"/>
 		</where>
+		GROUP BY record_id
+
 	</select>
 
 	<select id="listResulted" resultType="ExaminationRecordItem">
@@ -263,10 +264,21 @@
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
-			a.del_flag=0 AND a.record_id = #{recordId}
+			a.del_flag=0 AND a.record_id = #{recordId}  AND last_flag &lt;&gt; 0
 		</where>
 		ORDER BY  a.create_date ASC
 	</select>
+	<select id="listByRecordIdAndDetId" resultType="ExaminationRecordItem">
+		SELECT
+		<include refid="examinationRecordItemColumns"/>
+		FROM bj_examination_record_item a
+		<include refid="examinationRecordItemJoins"/>
+		<where>
+			a.del_flag=0 AND (a.record_id = #{recordId} OR sample_code=#{recordId}) AND record_result_dept_id= #{recordResultDeptId}   AND last_flag &lt;&gt; 0
+		</where>
+		ORDER BY  a.create_date ASC
+	</select>
+
 	<select id="listByRecordIdAndItemId" resultType="ExaminationRecordItem">
 		SELECT
 		<include refid="examinationRecordItemColumns"/>

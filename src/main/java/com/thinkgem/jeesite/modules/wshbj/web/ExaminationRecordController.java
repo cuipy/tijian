@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.drew.lang.StringUtil;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.bean.ResponseResult;
 import com.thinkgem.jeesite.common.utils.ImageUtils;
@@ -23,6 +24,10 @@ import com.thinkgem.jeesite.modules.wshbj.constant.ExaminationRecordConstant;
 import com.thinkgem.jeesite.modules.wshbj.entity.*;
 import com.thinkgem.jeesite.modules.wshbj.service.*;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,8 +41,7 @@ import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -703,6 +707,67 @@ public class ExaminationRecordController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/wshbj/tongji4";
 	}
+
+ 	private File     is;                    //文件（和jsp中的名字保持一致）
+	private String isFileName;            //文件名称
+	private String isContentType;        //文件类型
+
+	public String getIsFileName() {
+		return isFileName;
+	}
+
+	public void setIsFileName(String isFileName) {
+		this.isFileName = isFileName;
+	}
+
+	public String getIsContentType() {
+		return isContentType;
+	}
+
+	public void setIsContentType(String isContentType) {
+		this.isContentType = isContentType;
+	}
+
+	public File getIs() {
+		return is;
+	}
+
+	public void setIs(File is) {
+		this.is = is;
+	}
+
+	/**
+	 * 通过导入excel文件，读出每个单元格的内容。
+	 * InputStream来自于文件上传时的MultipartFile对象
+	 */
+ 	@RequestMapping(value = {"readXls"})
+	@ResponseBody
+	public String readXls(InputStream is, Model model) throws IOException,
+			InvalidFormatException {
+ 		HSSFWorkbook book = new HSSFWorkbook(is);
+		HSSFSheet sheet = book.getSheetAt(0);
+
+		/**
+		 * 通常第一行都是标题，所以从第二行开始读取数据
+		 */
+		for(int i=1; i<sheet.getLastRowNum()+1; i++) {
+			HSSFRow row = sheet.getRow(i);
+			row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+			row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+			row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+			String uuid = row.getCell(0).getStringCellValue(); //名称
+			String dealerName = row.getCell(1).getStringCellValue(); //url
+			String prodName = row.getCell(2).getStringCellValue();
+
+
+
+ 		}
+
+
+		return "";
+
+	}
+
 
 
 }

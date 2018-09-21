@@ -76,6 +76,7 @@ public class SpecimenController extends BaseController {
 		List<Office> depts = officeService.getMyDepts();
 		model.addAttribute("depts",depts);
 
+
 		model.addAttribute("specimen", specimen);
 		return "modules/wshbj/specimenForm";
 	}

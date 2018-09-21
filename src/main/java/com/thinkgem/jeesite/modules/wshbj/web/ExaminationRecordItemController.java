@@ -121,6 +121,7 @@ public class ExaminationRecordItemController extends BaseController {
 
 		// 读取已经有采样，但还没有输入结果的项目
 		Page<ExaminationRecordItem> page = examinationRecordItemService.pageResulting(new Page<ExaminationRecordItem>(request, response), examinationRecordItem);
+
 		model.addAttribute("page", page);
 		return "modules/wshbj/examinationRecordItem_list_resulting";
 	}
@@ -197,6 +198,7 @@ public class ExaminationRecordItemController extends BaseController {
 	public RequestResult ajax_update_result_flag(String resultFlag,String resultRemarks , Model model){
 
         String res = "";
+        Integer state=0;
 		if(StringUtils.isNotEmpty(resultFlag)){
 			String[] arrResultFlag = StringUtils.split(resultFlag,'|');
 
@@ -222,11 +224,12 @@ public class ExaminationRecordItemController extends BaseController {
 
 					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
 					res+=rr.getState()+":"+rr.getMsg()+"<br>";
+					state=rr.getState();
 				}
 			}
 
 		}
-		return RequestResult.generate(1,res);
+		return RequestResult.generate(state,res);
 
 	}
 	/*待录结果项目批量是否合格
@@ -274,6 +277,7 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequestMapping(value = "ajax_cancel_result")
 	@ResponseBody
 	public RequestResult ajax_cancel_result(ExaminationRecordItem examinationRecordItem, Model model){
+
 		return examinationRecordItemService.cancelResult(examinationRecordItem);
 	}
 
@@ -422,46 +426,49 @@ public class ExaminationRecordItemController extends BaseController {
 
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = {"set_result"})
-	public String set_result(String currSpecimenId, String examRecordCode,  Model model) {
+	public String set_result(String examRecordCode,  Model model) {
         ExaminationItem   examinationItem=new ExaminationItem();
-        if(currSpecimenId!=null&&!currSpecimenId.equals("")){
-            examinationItem = examinationItemService.get(currSpecimenId);
-        }
+
 		String myDeptId=UserUtils.getUser().getOffice().getId();
 		model.addAttribute("myDeptId",myDeptId);
 
 		ExaminationRecord record = null;
-		ExaminationRecordItem examinationRecordItem=null;
+		List <ExaminationRecordItem> examinationRecordItem=null;
 		// 获取 采样记录Code
 		if(StringUtils.isNotEmpty(examRecordCode)){
 			ExaminationRecord er=new ExaminationRecord();
 			er.setCode(examRecordCode);
 			record = examinationRecordService.getByCode(er);
-			examinationRecordItem=examinationRecordItemService.FindByRecordIdAndItemId(record.getId(),examinationItem.getSpecimenId());
+			String deptId = UserUtils.getUser().getOffice().getId();
+			if(record!=null){
+				examinationRecordItem=examinationRecordItemService.listByRecordIdAndDetId(record.getId(),deptId);
+			}else{
+				examinationRecordItem=examinationRecordItemService.listByRecordIdAndDetId(examRecordCode,deptId);
+				if(examinationRecordItem!=null){
+					record = examinationRecordService.get(examinationRecordItem.get(0).getRecordId());
+				}
+
+			}
+
 		}
-		// 加载当前用户所在部门的采样标本
-		String deptId = UserUtils.getUser().getOffice().getId();
-        ExaminationItem ei=new ExaminationItem();
-		ei.setResultDeptId(deptId);
-		List<ExaminationItem> specimens = examinationItemService.findList(ei);
-
-		model.addAttribute("specimens",specimens);
-
-		// 如果只有一个标本，则默认选中
-		if(specimens.size()>0&&StringUtils.isEmpty(currSpecimenId)){
-			currSpecimenId=specimens.get(0).getId();
-		}
-		// 如果没有设置 currSpecimenId 参数
-		if(StringUtils.isEmpty(currSpecimenId)){
-			return "modules/wshbj/examinationRecordItem_grab_sample";
-		}
-
-
-		model.addAttribute("currSpecimenId",currSpecimenId);
 		model.addAttribute("examinationRecordItem",examinationRecordItem);
 
 		model.addAttribute("examRecord",record);
 		return "modules/wshbj/examinationRecordItem_set_result";
+	}
+
+ 	@RequestMapping(value = "ajax_examinationRecordItem")
+	@ResponseBody
+	public List<ExaminationRecordItem>  ajax_examinationRecordItem(String recordId,String code, Model model){
+		if(!StringUtils.isEmpty(code)){
+			ExaminationRecord examinationRecord=new ExaminationRecord();
+			examinationRecord.setCode(code);
+			examinationRecord=examinationRecordService.getByCode(examinationRecord);
+			recordId=examinationRecord.getId();
+ 		}
+ 		List<ExaminationRecordItem> list =null;
+		list=examinationRecordItemService.listByRecordId(recordId);
+ 		return list;
 	}
 
 

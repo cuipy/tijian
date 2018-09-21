@@ -5,7 +5,8 @@
 	<title>检查项目管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
+
+        $(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -111,6 +112,17 @@
             </div>
         </div>
         <div class="cl"></div>
+		<div class="control-group span12">
+			<label class="control-label">编号样式：</label>
+			<div class="controls radios-div">
+				<input path="codeType" name="codeType" <c:if test="${examinationItem.codeType=='0'}">checked='checked'</c:if>   type="radio" value="0"/>双位年
+				<input path="codeType" name="codeType"  <c:if test="${examinationItem.codeType=='1'}">checked='checked'</c:if>  type="radio" value="1"/>四位年月
+				<input path="codeType" name="codeType"  <c:if test="${examinationItem.codeType=='2'}">checked='checked'</c:if>  type="radio" value="2"/>六位年月日
+
+			</div>
+		</div>
+
+		<div class="cl"></div>
 
 		<div class="control-group span12">
 			<label class="control-label">备注：</label>

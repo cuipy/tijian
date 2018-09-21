@@ -38,9 +38,16 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String specimenId;		// 所需标本
 	private String permission;
 	private String needSamples;		//是否需要样本：0-否，1-是
-
+	private Integer codeType;
 	private Integer orderNumb;
 
+	public Integer getCodeType() {
+		return codeType;
+	}
+
+	public void setCodeType(Integer codeType) {
+		this.codeType = codeType;
+	}
 
 	public String getPrefixSampleCode() {
 		return prefixSampleCode;
