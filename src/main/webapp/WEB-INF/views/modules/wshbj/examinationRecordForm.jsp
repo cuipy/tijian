@@ -596,15 +596,27 @@
             <div class="controls">
                 <form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium " readonly="true"/>
             </div>
+
+
         </div>
+
 
 			<shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并打印" onclick="do_sumbit('print')" />&nbsp;</shiro:hasPermission>
             <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="保存并返回" onclick="do_sumbit('return')" />&nbsp;</shiro:hasPermission>
-        <input type="text" id="recordId" name="recordId"  class="input-medium required">
-        <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="lodop_sampleCode(1)" />&nbsp;</shiro:hasPermission>
 
         <input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 
+        <div class="cl"></div>
+        <div class="control-group">
+            <label class="control-label">体检编号：</label>
+            <div class="controls">
+                <input type="text" id="recordId" name="recordId"  class="input-medium required">
+            </div>
+
+        </div>
+        <p>
+            <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="lodop_sampleCode(1)" />&nbsp;</shiro:hasPermission>
+        </p>
 
  <div class="cl"></div>
 </div>

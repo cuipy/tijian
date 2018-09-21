@@ -16,6 +16,7 @@ import com.thinkgem.jeesite.common.utils.ImageUtils;
 import com.thinkgem.jeesite.common.utils.PinyinUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.GlobalSetUtils;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -27,18 +28,17 @@ import org.apache.commons.collections.map.HashedMap;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
-import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpSession;
 import javax.validation.ConstraintViolationException;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 
@@ -736,37 +737,68 @@ public class ExaminationRecordController extends BaseController {
 		this.is = is;
 	}
 
-	/**
-	 * 通过导入excel文件，读出每个单元格的内容。
-	 * InputStream来自于文件上传时的MultipartFile对象
-	 */
- 	@RequestMapping(value = {"readXls"})
-	@ResponseBody
-	public String readXls(InputStream is, Model model) throws IOException,
-			InvalidFormatException {
- 		HSSFWorkbook book = new HSSFWorkbook(is);
-		HSSFSheet sheet = book.getSheetAt(0);
+     // 通过导入excel文件，读出每个单元格的内容。
+    //InputStream来自于文件上传时的MultipartFile对象
+     @RequestMapping(value = "importFile")
+     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes,Model model) throws IOException {
+        List<ExaminationRecord> ExaminationRecord=new ArrayList<ExaminationRecord>();
+         InputStream in =file.getInputStream();
 
-		/**
-		 * 通常第一行都是标题，所以从第二行开始读取数据
-		 */
-		for(int i=1; i<sheet.getLastRowNum()+1; i++) {
-			HSSFRow row = sheet.getRow(i);
-			row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
-			row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
-			row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
-			String uuid = row.getCell(0).getStringCellValue(); //名称
-			String dealerName = row.getCell(1).getStringCellValue(); //url
-			String prodName = row.getCell(2).getStringCellValue();
+        HSSFWorkbook book = new HSSFWorkbook(in);
+        HSSFSheet sheet = book.getSheetAt(0);
 
 
+          //通常第一行都是标题，所以从第二行开始读取数据
 
- 		}
+        for(int i=1; i<sheet.getLastRowNum()+1; i++) {
+            HSSFRow row = sheet.getRow(i);
+            row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(9).setCellType(Cell.CELL_TYPE_STRING);
+            row.getCell(10).setCellType(Cell.CELL_TYPE_STRING);
+
+            String name = row.getCell(0).getStringCellValue(); //名称
+            String sex = row.getCell(1).getStringCellValue(); //url
+            String idNumber = row.getCell(2).getStringCellValue();
+            String organId = row.getCell(3).getStringCellValue();
+            String phoneNumber = row.getCell(4).getStringCellValue();
+            String industryId = row.getCell(5).getStringCellValue();
+            String postId = row.getCell(6).getStringCellValue();
+            String packageId = row.getCell(7).getStringCellValue();
+            String packagePrice = row.getCell(8).getStringCellValue();
+            String age = row.getCell(9).getStringCellValue();
+            String birthday = row.getCell(10).getStringCellValue();
+            String newCode=GlobalSetUtils.getGlobalSet().getCodePre()+SysSequenceUtils.nextSequence(ExaminationRecord.class,"code");
+            ExaminationUser examinationUser =new ExaminationUser();
+            ExaminationRecord examinationRecord=new ExaminationRecord();
+            examinationRecord.setName(name);
+            examinationRecord.setSex(sex);
+            examinationRecord.setIdNumber(idNumber);
+            examinationRecord.setOrganId(organId);
+            examinationRecord.setPhoneNumber(phoneNumber);
+            examinationRecord.setIndustryId(industryId);
+            examinationRecord.setPostId(postId);
+            examinationRecord.setPackageId(packageId);
+            examinationRecord.setPackagePrice(packagePrice);
+            examinationRecord.setAge(age);
+            examinationRecord.setBirthday(birthday);
+            examinationRecord.setCode(newCode);
+            examinationRecord.setUser(examinationUser);
+            ajax_save(examinationRecord,model);
+
+        }
 
 
-		return "";
+        return "modules/wshbj/examinationRecordList";
 
-	}
+    }
 
 
 

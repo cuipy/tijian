@@ -49,7 +49,11 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
-	<sys:message content="${message}"/>
+	<form:form action="${ctx}/wshbj/examinationRecord/importFile" method="post" enctype="multipart/form-data">
+		<input type="file" id="file" name="file">
+		<input  class="btn btn-primary" type="submit" value="Excel批量导入"/>
+	</form:form>
+		<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
