@@ -1,5 +1,4 @@
-<%@ taglib prefix="from" uri="http://www.springframework.org/tags/form" %>
-<%@ page contentType="text/html;charset=UTF-8" %>
+ <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
@@ -239,14 +238,17 @@
                 var pid=d1r.defaultPackageId;
                 var pchkbox=$("#packageId_"+pid);
                 if(pchkbox!=null){
-                    pchkbox.trigger('click');
-                }
+                    pchkbox.prop('checked',true);
+                    var money=$("#packageId_"+pid).attr("data-money");
+                    chkPackage(pid,money);
+                 }
             });
         }
 
         // 选中某个体检套餐，更新总费用
         function chkPackage(packageId,money) {
-             var itemIds=$("#packageId_"+packageId).attr("data-itemIds");
+            var itemIds=$("#packageId_"+packageId).attr("data-itemIds");
+
             // 1 显示套餐必选项目
             $("label[id^='lbl_tcri']").each(function(){
                 var lblId=$(this).attr('id');
@@ -281,17 +283,18 @@
             })
 
             // 刷新体检费用
-            refreshItemsPrice();
+            refreshItemsPrice(packageId);
         }
 
         // 当勾选体检项目的时候，刷新体检项目总费用
-        function refreshItemsPrice(){
-            var aprice=0;
-            var itemIds= $("input[type='radio'][id^=packageId_]:checked").attr("data-itemIds");
+        function refreshItemsPrice(packageId){
+             var aprice=0;
+            var itemIds= $("#packageId_"+packageId).attr("data-itemIds");
              var money=0;
-              $("input[type='checkbox'][id^=tcri]:checked,input[type='checkbox'][id^=bcri]:checked").each(function(i){
+
+            $("input[type='checkbox'][id^=tcri]:checked,input[type='checkbox'][id^=bcri]:checked").each(function(i){
                   //情况1：如果选择了套餐
-                  if(itemIds!=null&&itemIds!=''){
+                   if(itemIds!=null&&itemIds!=''){
                       //获得这个套餐的价钱
                       money= $("input[type='radio'][id^=packageId_]:checked").attr("data-money");
                       var examinationItem=$(this).attr("value");
@@ -388,12 +391,16 @@
                 type:'post',
                 success(result){
                     var vendorJson = eval(result);
+                     if(vendorJson==undefined){
+                        alert("未找到符合编号的样本号");
+                        return false;
+                    }
                     for(var i=0; i<vendorJson.length; i++){
                         if(vendorJson[i].sampleCode!=undefined){
-                            alert(vendorJson[i].sampleCode);
                             lodop_printBarcode('样本编号','${ctxhttp}/wshbj/exam_record_print/barcode_html?barcode='+vendorJson[i].sampleCode);
                         }
                     }
+
                 }
             });
         }
@@ -425,19 +432,13 @@
 
 
 	<div  style="max-width:1200px" >
-      <%--  <form action="${ctx}/wshbj/examinationRecord/readXls" method="post"  enctype="multipart/form-data"" >
-            <input type="file" id="is" name="is" >
-            <input type="submit" value="tijiao">
-        </form>
---%>
         <form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
         <form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
-        <input type="hidden" name="defaultHealth" id="defaultHealth">
-    <div>
+     <div>
 
 
 
@@ -454,7 +455,7 @@
         <div class="control-group">
             <label class="control-label" style="font-weight:bold"><font color="red">*</font>  身份证号：</label>
             <div class="controls">
-                <div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-large required"/>
+                <div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-medium required"/>
                 <span id="idNumberInfo" class="help-inline">通过身份证获取用户信息</span>
                 </div>
             </div>
@@ -470,15 +471,15 @@
 			<label class="control-label"><font color="red">*</font> 联系电话：</label>
 			<div class="controls">
 				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium  required"/>
+                <font color="red">*</font> 性别：
+                     <form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			</div>
+
 		</div>
 
 		<div class="control-group">
-			<label class="control-label"><font color="red">*</font> 性别：</label>
-			<div class="controls">
-                <form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 
-			</div>
 		</div>
 
 		<div class="control-group">
@@ -494,50 +495,51 @@
             <div class="controls">
                 <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}"  readonly="true"
                  class="input-medium Wdate required" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
-
-            </div>
+                &nbsp;&nbsp;备注：
+                     <form:input id="remarks" path="remarks" htmlEscape="false" maxlength="255" cssStyle="width:350px"/>
+             </div>
         </div>
         <div class="control-group">
             <label class="control-label">
              <a href="${ctx}/wshbj/organ/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
              体检单位：</label>
             <div class="controls">
-                <div class="autocompleter-box"><input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-                            <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
-                <span class="help-inline"> </span>
+                <div class="autocompleter-box">
+                    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
+                    <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
+                    <span class="help-inline"> </span>
                 </div>
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label">
+            <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
+                岗位：</label>
+            <div class="controls">
+                <div class="autocompleter-box">
+                    <input type="hidden" id="postId" name="postId" value="${examinationRecord.postId}" >
+                    <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
+                    <span class="help-inline"> </span>
+                </div>
+            </div>
+
+        </div>
+
+
+
 	<div class="control-group">
-		<label class="control-label" > <a href="${ctx}/wshbj/industry/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 行业：</label>
-		<div class="controls">
-				<form:select path="industryId"   onchange="getFixExamCode()" class="input-medium">
+		 <a href="${ctx}/wshbj/industry/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a> 行业：
+				<form:select path="industryId"   onchange="chgIndustry()" class="input-medium">
 					<form:option value="">
 						请选择
 					</form:option>
 					<form:options items="${industryList}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 				<span class="help-inline"> </span>
-		</div>
-	</div>
-	<div class="control-group">
-		<label class="control-label">
-            <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
-            岗位：</label>
-		<div class="controls">
-		   <div class="autocompleter-box"><input type="hidden" id="postId" name="postId" value="${examinationRecord.postId}" >
-                       <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
-           <span class="help-inline"> </span>
-           </div>
-		</div>
 	</div>
 
-		<div class="control-group">
-			<label class="control-label">备注：</label>
-			<div class="controls">
-				<form:input id="remarks" path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
-			</div>
-		</div>
+
+
         <div class="control-group">
             <label class="control-label">编号：</label>
             <div class="controls">
@@ -594,7 +596,7 @@
 		<div class="control-group">
             <label class="control-label">合计价：</label>
             <div class="controls">
-                <form:input path="packagePrice" htmlEscape="false" maxlength="64" class="input-medium " readonly="true"/>
+                <form:input path="packagePrice" id="packagePrice"   htmlEscape="false" maxlength="64" class="input-medium " readonly="true"/>
             </div>
 
 

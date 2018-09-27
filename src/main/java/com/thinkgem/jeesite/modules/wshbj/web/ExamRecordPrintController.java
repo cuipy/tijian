@@ -66,7 +66,7 @@ public class ExamRecordPrintController extends BaseController {
 		return "jkz1";
 	}
 
-	@GetMapping(value = "tjb_html")
+	@GetMapping(value = "tjb1_html")
 	public String tjb_html(String id,Model model) {
 		ExaminationRecord er = examinationRecordService.get(id);
 		model.addAttribute("examRecord",er);

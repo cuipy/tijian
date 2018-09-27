@@ -66,8 +66,7 @@ examRecord    当前要采样的 体检记录 对象
 		    </c:if>
 
             <c:if test="${autoPrint}">
-		    setTimeout("do_sample_code_print()",1000);
-            </c:if>
+             </c:if>
         });
 
         function focusExamRecordCode(){
@@ -98,7 +97,7 @@ examRecord    当前要采样的 体检记录 对象
         // 体检记录项目还没有真正采样
         function do_update_grab_sample(){
             var url="${ctx}/wshbj/examinationRecordItem/ajax_update_grab_sample";
-            var d1={"sampleCode":$("#sampleCode").val()};
+            var d1 = {"examRecordId":$("#examRecordId").val(),"specimenId": $("#currSpecimenId").val() };
             $.get(url,d1,function(d1r){
                 $("#btnUpdateGrabSample").hide();
                 $("#msg").show().html("体检记录项目采集成功。");

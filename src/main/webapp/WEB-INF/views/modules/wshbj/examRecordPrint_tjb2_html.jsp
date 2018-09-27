@@ -49,7 +49,7 @@
 </head>
 <body>
 
-	<div class="a4">
+	<div class="a4"  contenteditable="true">
     <div class="content-div">
         <div class="tbl-top">
         <div class="tbl-head">

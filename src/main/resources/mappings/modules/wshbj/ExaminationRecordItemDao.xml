@@ -186,8 +186,7 @@
 	</select>
 
 	<select id="listResulting" resultType="ExaminationRecordItem">
-		SELECT
-		a.record_id AS "recordId"		FROM bj_examination_record_item a
+		SELECT  MIN(a.id) as "id"  , a.record_id AS "recordId"		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL} and last_flag=1 and  (( a.need_samples = 1 and a.sample_code is not null) or ( a.need_samples = 0)) and a.result_flag is null
@@ -215,7 +214,7 @@
 
 	<select id="listResulted" resultType="ExaminationRecordItem">
 		SELECT
-		<include refid="examinationRecordItemColumns"/>
+		MIN(a.id) as "id"  , a.record_id AS "recordId"
 		FROM bj_examination_record_item a
 		<include refid="examinationRecordItemJoins"/>
 		<where>
@@ -238,6 +237,8 @@
 
 			<include refid="whereif2"/>
 		</where>
+		GROUP BY record_id
+
 	</select>
 	
 	<select id="findAllList" resultType="ExaminationRecordItem">
@@ -508,7 +509,8 @@
 	</update>
 
 	<update id="updateGrabSample">
-		UPDATE bj_examination_record_item SET grab_sample = 1,grab_sample_time= #{grabSampleTime} WHERE sample_code = #{sampleCode}
+		UPDATE bj_examination_record_item SET grab_sample = 1,grab_sample_time= #{strtodate}
+				WHERE record_id = #{examRecordId} and specimen_id = #{specimenId}
 	</update>
 
 	<update id="cancelGrabSample">

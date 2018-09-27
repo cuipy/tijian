@@ -65,8 +65,7 @@
 	<ul class="nav nav-tabs">
 		<li ><a href="${ctx}/wshbj/examinationRecord/tongji1">体检单位以及人数统计</a></li>
 		<li class="active"><a href="${ctx}/wshbj/examinationRecord/tongji2">体检人员月综合统计</a></li>
-		<li ><a href="${ctx}/wshbj/examinationRecord/tongji3">健康检查年统计</a></li>
-		<li ><a href="${ctx}/wshbj/examinationRecord/tongji4">不合格人员统计</a></li>
+ 		<li ><a href="${ctx}/wshbj/examinationRecord/tongji4">不合格人员统计</a></li>
 
 	</ul>
 	<div class="box1">

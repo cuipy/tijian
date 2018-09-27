@@ -39,8 +39,7 @@ public class JobPostService extends CrudService<JobPostDao, JobPost> {
 		return super.findList(jobPost);
 	}
 
-	@Cacheable(value = "jobPostCache",key="'jobPost_findPage_'+#page.pageNo+#page.pageSize+#jobPost.code+#jobPost.name+#jobPost.owner")
-	public Page<JobPost> findPage(Page<JobPost> page, JobPost jobPost) {
+ 	public Page<JobPost> findPage(Page<JobPost> page, JobPost jobPost) {
 		return super.findPage(page, jobPost);
 	}
 	

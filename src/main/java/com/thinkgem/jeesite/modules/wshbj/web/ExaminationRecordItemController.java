@@ -222,7 +222,7 @@ public class ExaminationRecordItemController extends BaseController {
 					examinationRecordItem.setResultRemarks(resultRemarks);
 
 
-					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
+					RequestResult rr = examinationRecordItemService.updateResultFlagById(examinationRecordItem);
 					res+=rr.getState()+":"+rr.getMsg()+"<br>";
 					state=rr.getState();
 				}
@@ -250,11 +250,11 @@ public class ExaminationRecordItemController extends BaseController {
 						continue;
 					}
 					//修改检查结果是否合格
-					String itemId=strid;
+					String recordId=strid;
 					String strFlag=resultFlag;
 
 					ExaminationRecordItem examinationRecordItem = new ExaminationRecordItem();
-					examinationRecordItem.setId(itemId);
+					examinationRecordItem.setRecordId(recordId);
 					examinationRecordItem.setResultFlag(strFlag);
 
 					RequestResult rr = examinationRecordItemService.updateResultFlag(examinationRecordItem);
@@ -293,15 +293,15 @@ public class ExaminationRecordItemController extends BaseController {
 	@RequiresPermissions("wshbj:examinationRecordItem:edit")
 	@RequestMapping(value = "ajax_update_grab_sample")
 	@ResponseBody
-	public RequestResult ajax_update_grab_sample(ExaminationRecordItem examinationRecordItem, Model model){
+	public RequestResult ajax_update_grab_sample(String examRecordId, String specimenId , Model model){
 		/* 储存取样本的时间*/
 		Date currentTime = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String dateString = formatter.format(currentTime);
 		ParsePosition pos = new ParsePosition(0);
 		Date strtodate = formatter.parse(dateString, pos);
-		examinationRecordItem.setGrabSampleTime(strtodate);
-		Integer count = examinationRecordItemService.updateGrabSample(examinationRecordItem);
+
+ 		Integer count = examinationRecordItemService.updateGrabSample(examRecordId, specimenId,strtodate);
 		return RequestResult.generate(1,"更新成功");
 	}
 
@@ -460,15 +460,30 @@ public class ExaminationRecordItemController extends BaseController {
  	@RequestMapping(value = "ajax_examinationRecordItem")
 	@ResponseBody
 	public List<ExaminationRecordItem>  ajax_examinationRecordItem(String recordId,String code, Model model){
+		List<ExaminationRecordItem> list =null;
 		if(!StringUtils.isEmpty(code)){
 			ExaminationRecord examinationRecord=new ExaminationRecord();
 			examinationRecord.setCode(code);
 			examinationRecord=examinationRecordService.getByCode(examinationRecord);
-			recordId=examinationRecord.getId();
+			if(examinationRecord!=null) {
+				recordId = examinationRecord.getId();
+				list=examinationRecordItemService.listByRecordId(recordId);
+			}
  		}
- 		List<ExaminationRecordItem> list =null;
-		list=examinationRecordItemService.listByRecordId(recordId);
+
  		return list;
+	}
+	@RequestMapping(value = "ajax_examinationRecordItem2")
+	@ResponseBody
+	public List<ExaminationRecordItem>  ajax_examinationRecordItem2(String recordId, Model model){
+		List<ExaminationRecordItem> list =null;
+		if(!StringUtils.isEmpty(recordId)){
+
+				list=examinationRecordItemService.listByRecordId(recordId);
+
+		}
+
+		return list;
 	}
 
 

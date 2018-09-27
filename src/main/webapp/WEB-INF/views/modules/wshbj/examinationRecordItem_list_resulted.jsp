@@ -58,7 +58,7 @@
 
         function info (recordId){
             $.ajax({
-                url:"${ctx}/wshbj/examinationRecordItem/ajax_examinationRecordItem?recordId="+recordId,
+                url:"${ctx}/wshbj/examinationRecordItem/ajax_examinationRecordItem2?recordId="+recordId,
                 type:"post",
                 success(res){
                     backFunc(res);
@@ -111,7 +111,7 @@
 
 
 			<li><label>体检项目：</label>
-				<form:select path="itemName" class="input-mini">
+				<form:select path="itemName" class="input-mini" cssStyle="width: 163px">
 					<form:option value="">
 						请选择
 					</form:option>

@@ -28,8 +28,8 @@
         }
 
         function info (recordId){
- 			$.ajax({
-				url:"${ctx}/wshbj/examinationRecordItem/ajax_examinationRecordItem?recordId="+recordId,
+  			$.ajax({
+				url:"${ctx}/wshbj/examinationRecordItem/ajax_examinationRecordItem2?recordId="+recordId,
 				type:"post",
 				success(res){
                           backFunc(res);
@@ -45,7 +45,7 @@
                 if(vendorJson[i].sampleCode==undefined){
                      vendorJson[i].sampleCode='不需要采样';
                 }
-                  $("#infomation").append("<tr id='tr_"+vendorJson[i].id+"'>" +
+                  $("#infomation").append("<tr id='tr1_"+vendorJson[i].id+"'>" +
                      "<td>"+vendorJson[i].sampleCode+"</td> " +
                      "<td>"+vendorJson[i].recordOrganName+" </td> " +
                      "<td>"+vendorJson[i].itemName+" </td>"+
@@ -66,7 +66,7 @@
                 success:function(d1r){
                     if(d1r.state== 1){
                         showTip(d1r.msg);
-                         $("#tr_"+itemId).remove();
+                         $("#tr1_"+itemId).remove();
                     }else{
                         showMsgx($("#msg"),d1r);
                     }

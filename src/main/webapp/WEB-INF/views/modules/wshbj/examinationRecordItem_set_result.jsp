@@ -114,7 +114,7 @@ examRecord    当前要采样的 体检记录 对象
             </div>
         </div>
 
-        <div class="control-group span2">
+        <div class="control-group span3">
             <label class="control-label">体检编号：</label>
             <div class="controls">
                 ${examRecord.code}
@@ -126,7 +126,7 @@ examRecord    当前要采样的 体检记录 对象
                 ${examRecord.name}
             </div>
         </div>
-        <div class="control-group span2">
+        <div class="control-group span3">
             <label class="control-label">身份证：</label>
             <div class="controls">
                 ${examRecord.idNumber}
@@ -139,7 +139,7 @@ examRecord    当前要采样的 体检记录 对象
                 ${examRecord.strSex}
             </div>
         </div>
-        <div class="control-group span2">
+        <div class="control-group span3">
             <label class="control-label">年龄：</label>
             <div class="controls">
                 ${examRecord.age}

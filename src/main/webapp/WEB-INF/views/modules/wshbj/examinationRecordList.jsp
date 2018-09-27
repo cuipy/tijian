@@ -152,12 +152,12 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th width="130">编号</th>
+				<th width="200">编号</th>
 				<th width="130">体检单位</th>
                 <th width="80">体检人</th>
                 <th width="170">身份证号</th>
 				<th width="100">联系电话</th>
-				<th width="40">性别</th>
+				<th width="60">性别</th>
 				<th >体检套餐/项目</th>
 				<th width="120">填报时间</th>
 				<th width="100">状态</th>
@@ -202,11 +202,9 @@
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><td>
 					<c:if test="${examinationRecord.status == '0'}"><a class="label label-success" href="${ctx}/wshbj/examinationRecord/form?id=${examinationRecord.id}">修改</a></c:if>
 					<c:if test="${examinationRecord.status <= 10}">
-						<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">打印健康体检表</a>
+		<%--				<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">打印健康体检表</a>
 						<a class="label label-info" href="javascript:void(0)" onclick="lodop_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb2_html?id=${examinationRecord.id}')" target="_blank">打印公共体检表</a>
-<%--
-						<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>
---%>
+						<a class="label label-info" href="javascript:void(0)" onclick="lodop_view_printA4('体检流程表','${ctxhttp}/wshbj/exam_record_print/tjb_html?id=${examinationRecord.id}')" target="_blank">预览打印体检表</a>--%>
                     </c:if>
 					<c:if test="${examinationRecord.status eq '40' or examinationRecord.status eq '45' or examinationRecord.status eq '50' }">
 					<a class="label label-success" href="javascript:void(0)"

@@ -218,65 +218,145 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     @Transactional(readOnly = false)
     //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
     public RequestResult updateResultFlag(ExaminationRecordItem examinationRecordItem) {
+        List<ExaminationRecordItem> list=null;
+        if(examinationRecordItem.getRecordId()!=null) {
+            list =examinationRecordItemDao.listByRecordId(examinationRecordItem.getRecordId());
+        }
 
-        ExaminationRecordItem eri = get(examinationRecordItem.getId());
-        if(!StringUtils.isEmpty(examinationRecordItem.getResultRemarks())) {
-            eri.setResultRemarks(examinationRecordItem.getResultRemarks());
-        }
-        ExaminationRecord record = eri.getRecord();
-        if(eri==null){
-            return RequestResult.generate(5,"由于未知原因，无法获得该体检项目的数据，保存操作失败!");
-        }
+        for(int i=0;i<list.size();i++) {
+            ExaminationRecordItem eri = list.get(i);
+            if (eri == null) {
+                return RequestResult.generate(5, "由于未知原因，无法获得该体检项目的数据，保存操作失败!");
+
+            }
+            if (!StringUtils.isEmpty(examinationRecordItem.getResultRemarks())) {
+                eri.setResultRemarks(examinationRecordItem.getResultRemarks());
+            }
+
+            ExaminationRecord record = eri.getRecord();
+            if (eri == null) {
+                return RequestResult.generate(5, "由于未知原因，无法获得该体检项目的数据，保存操作失败!");
+            }
 
 //        if("1".equals(eri.getResultFlag())){
 //            return RequestResult.generate(8,"该体检项目已经合格，无需再录入项目结果");
 //        }
 
-        // 首先获取当前记录，检查状态是否合法
-        if(record==null){
-            return RequestResult.generate(10,"由于未知原因，根据体检项目获取体检记录信息失败，无法继续操作，保存操作失败");
-        }
+            // 首先获取当前记录，检查状态是否合法
+            if (record == null) {
+                return RequestResult.generate(10, "由于未知原因，根据体检项目获取体检记录信息失败，无法继续操作，保存操作失败");
+            }
 
-        // 检查体检记录状态
+            // 检查体检记录状态
 //        if(ExaminationRecordConstant.STATUS40.equals(record.getStatus())||ExaminationRecordConstant.STATUS45.equals(record.getStatus())
 //                ||ExaminationRecordConstant.STATUS50.equals(record.getStatus())){
 //            return RequestResult.generate(20,"体检记录的状态为"+record.getStrStatus()+"，无法再设置体检项目的检查结果。");
 //        }
 
-        // 检查体检项目的状态
-        if("0".equals(eri.getLastFlag())){
-            return RequestResult.generate(30,"该体检项目属于废弃的记录，无法修改体检记录。");
-        }
+            // 检查体检项目的状态
+            if ("0".equals(eri.getLastFlag())) {
+                return RequestResult.generate(30, "该体检项目属于废弃的记录，无法修改体检记录。");
+            }
 
 //        if(eri.getStatus()==3){
 //            return RequestResult.generate(40,"体检项目已经合格，无需再录入项目结果。");
 //        }
 
-        if(eri.getStatus()==0){
-            return RequestResult.generate(50,"体检项目需要体检样本，但似乎没有进行样本采集，无法进行结果录入。");
-        }
+            if (eri.getStatus() == 0) {
+                return RequestResult.generate(50, "体检项目需要体检样本，但似乎没有进行样本采集，无法进行结果录入。");
+            }
 
-        // 设置项目的状态
-        // 已经有了中奖结果,说明是复检了
-        if(eri.getResultFlag()!=null){
-            examinationRecordItem.setExaminationFlag("2");
-        }
-        eri.setResultFlag(examinationRecordItem.getResultFlag());
-        /* 储存取样本的时间*/
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        ParsePosition pos = new ParsePosition(0);
-        Date strtodate = formatter.parse(dateString, pos);
-        eri.setRecordResultTime(strtodate);
-        super.save(eri);
-        if(record.getStatus().equals("0")) {
-            record.setStatus("10");
-        }
-         // 更新体检记录的状态
-        examinationRecordService.updateStatus(record);
+            // 设置项目的状态
+            // 已经有了中奖结果,说明是复检了
+            if (eri.getResultFlag() != null) {
+                examinationRecordItem.setExaminationFlag("2");
+            }
+            eri.setResultFlag(examinationRecordItem.getResultFlag());
+            /* 储存取样本的时间*/
+            Date currentTime = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateString = formatter.format(currentTime);
+            ParsePosition pos = new ParsePosition(0);
+            Date strtodate = formatter.parse(dateString, pos);
+            eri.setRecordResultTime(strtodate);
+            super.save(eri);
+            if (record.getStatus().equals("0")) {
+                record.setStatus("10");
+            }
+            // 更新体检记录的状态
+            examinationRecordService.updateStatus(record);
 
-        return RequestResult.generate(1,"保存成功。");
+        }
+        return RequestResult.generate(1, "保存成功。");
+    }
+    @Transactional(readOnly = false)
+    //@CacheEvict(value = "examinationRecordItemCache",allEntries = true)
+    public RequestResult updateResultFlagById(ExaminationRecordItem examinationRecordItem) {
+
+            ExaminationRecordItem eri = get(examinationRecordItem.getId());
+            if (eri == null) {
+                return RequestResult.generate(5, "由于未知原因，无法获得该体检项目的数据，保存操作失败!");
+
+            }
+            if (!StringUtils.isEmpty(examinationRecordItem.getResultRemarks())) {
+                eri.setResultRemarks(examinationRecordItem.getResultRemarks());
+            }
+
+            ExaminationRecord record = eri.getRecord();
+            if (eri == null) {
+                return RequestResult.generate(5, "由于未知原因，无法获得该体检项目的数据，保存操作失败!");
+            }
+
+//        if("1".equals(eri.getResultFlag())){
+//            return RequestResult.generate(8,"该体检项目已经合格，无需再录入项目结果");
+//        }
+
+            // 首先获取当前记录，检查状态是否合法
+            if (record == null) {
+                return RequestResult.generate(10, "由于未知原因，根据体检项目获取体检记录信息失败，无法继续操作，保存操作失败");
+            }
+
+            // 检查体检记录状态
+//        if(ExaminationRecordConstant.STATUS40.equals(record.getStatus())||ExaminationRecordConstant.STATUS45.equals(record.getStatus())
+//                ||ExaminationRecordConstant.STATUS50.equals(record.getStatus())){
+//            return RequestResult.generate(20,"体检记录的状态为"+record.getStrStatus()+"，无法再设置体检项目的检查结果。");
+//        }
+
+            // 检查体检项目的状态
+            if ("0".equals(eri.getLastFlag())) {
+                return RequestResult.generate(30, "该体检项目属于废弃的记录，无法修改体检记录。");
+            }
+
+//        if(eri.getStatus()==3){
+//            return RequestResult.generate(40,"体检项目已经合格，无需再录入项目结果。");
+//        }
+
+            if (eri.getStatus() == 0) {
+                return RequestResult.generate(50, "体检项目需要体检样本，但似乎没有进行样本采集，无法进行结果录入。");
+            }
+
+            // 设置项目的状态
+            // 已经有了中奖结果,说明是复检了
+            if (eri.getResultFlag() != null) {
+                examinationRecordItem.setExaminationFlag("2");
+            }
+            eri.setResultFlag(examinationRecordItem.getResultFlag());
+            /* 储存取样本的时间*/
+            Date currentTime = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String dateString = formatter.format(currentTime);
+            ParsePosition pos = new ParsePosition(0);
+            Date strtodate = formatter.parse(dateString, pos);
+            eri.setRecordResultTime(strtodate);
+            super.save(eri);
+            if (record.getStatus().equals("0")) {
+                record.setStatus("10");
+            }
+            // 更新体检记录的状态
+            examinationRecordService.updateStatus(record);
+
+
+        return RequestResult.generate(1, "保存成功。");
     }
 
     @Transactional(readOnly = false)
@@ -382,8 +462,8 @@ public class ExaminationRecordItemService extends CrudService<ExaminationRecordI
     }
 
     @Transactional(readOnly = false)
-    public Integer updateGrabSample(ExaminationRecordItem examinationRecordItem) {
-        return dao.updateGrabSample(examinationRecordItem);
+    public Integer updateGrabSample(String examRecordId,String spencimenId,Date strtodate) {
+        return dao.updateGrabSample(examRecordId,spencimenId,strtodate);
     }
 
     @Transactional(readOnly = false)
