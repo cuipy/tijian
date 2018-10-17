@@ -475,13 +475,74 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
         recordItem.setLastFlag("1");
         recordItem.setResultFlag("0");
         List<ExaminationRecordItem> recordItemList = examinationRecordItemService.findList(recordItem);
-
         // 2 复制每个不合格的体检项目，设置为非last的状态，并保存到 ExaminationRecoredItem中
         for (ExaminationRecordItem item:recordItemList) {
             examinationRecordItemService.updateLastFlag(item.getId(),"0");
         }
+        //从不合格的ExaminationRecordItem里获取不合格的item的id 然后通过item 的id 查询出此项目复检时需要的 体检的项目
+        List<String> fujianItemlist=new  ArrayList<String> ();
+        for(int i=0;i<recordItemList.size();i++ ){
+            ExaminationItem examinationItem=examinationItemService.get(recordItemList.get(i).getItemId());
+            String [] fujianItems=examinationItem.getFlagItemId().split(",");
+            for(int j=0;j<fujianItems.length;j++){
+                if(!fujianItems[j].equals("")) {
+                    if (fujianItemlist.lastIndexOf(fujianItems[j]) == -1) {
+                        fujianItemlist.add(fujianItems[j]);
+                    }
+                }
+            }
+         }
+         //查出需要复检的项目
+        List<ExaminationItem> savingItems = new ArrayList();
+        for(int i=0;i<fujianItemlist.size();i++){
+            savingItems.add(examinationItemService.get(fujianItemlist.get(i)));
+        }
+        // savingItems 中剩下的都是要添加到记录中的
+        for(ExaminationItem savingItem:savingItems){
+            ExaminationRecordItem item=new ExaminationRecordItem();
+            item.setRecordId(examinationRecord.getId());
 
-        // 3 设置每个不合格的项目 sample_code 、result_flag 为 null   examinstaion_flag 为复检 并保存。
+            item.setItemId(savingItem.getId());
+            item.setItemName(savingItem.getName());
+            item.setExaminationFlag("1");//初检
+            item.setNeedSamples(savingItem.getNeedSamples());
+            item.setSpecimenId(savingItem.getSpecimenId());
+            item.setLastFlag("1");
+
+            // 设置采样部门
+            if("1".equals(savingItem.getNeedSamples())){
+                String specimentId=savingItem.getSpecimenId();
+                Specimen specimen=specimenService.get(specimentId);
+                if(specimen!=null){
+                    item.setGrabSampleDeptId(specimen.getGrabDeptId());
+                }
+            }
+
+            // 设置录入结果部门
+            item.setRecordResultDeptId(savingItem.getResultDeptId());
+
+            // 如果在 体检编号 在 创建体检记录的时候 生成
+                 if(savingItem.getCodeType()==0){
+                    String exp = UserUtils.getUser().getCompany().getId()+"{yy}[6]";
+                    String sampleCode = SysSequenceUtils.nextSequence(exp);
+                    item.setSampleCode(sampleCode);
+                }
+                if(savingItem.getCodeType()==1){
+                    String exp = UserUtils.getUser().getCompany().getId()+"{yyMM}[6]";
+                    String sampleCode = SysSequenceUtils.nextSequence(exp);
+                    item.setSampleCode(sampleCode);
+                }
+                if(savingItem.getCodeType()==2){
+                    String exp = UserUtils.getUser().getCompany().getId()+"{yyMMdd}[6]";
+                    String sampleCode = SysSequenceUtils.nextSequence(exp);
+                    item.setSampleCode(sampleCode);
+                }
+
+
+            examinationRecordItemService.save(item);
+        }
+
+      /*  // 3 设置每个不合格的项目 sample_code 、result_flag 为 null   examinstaion_flag 为复检 并保存。
         for (ExaminationRecordItem item:recordItemList) {
             item.setId(null);
             item.setSampleCode(null);
@@ -492,7 +553,7 @@ public class ExaminationRecordService extends CrudService<ExaminationRecordDao, 
             item.setExaminationFlag("2");
             item.setLastFlag("1");
             examinationRecordItemService.save(item);
-        }
+        }*/
 
         // 4 刷新体检记录的状态。
         this.updateStatus(examinationRecord);

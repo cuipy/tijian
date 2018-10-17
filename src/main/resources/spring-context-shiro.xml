@@ -14,6 +14,7 @@
 	<bean name="shiroFilterChainDefinitions" class="java.lang.String">
 		<constructor-arg>
 			<value>
+				${adminPath}/wshbj/userPay/** = anon
 				/static/** = anon
 				/userfiles/** = anon
 				/ueditor/upload = user

@@ -7,6 +7,20 @@
 	<script type="text/javascript">
 
         $(document).ready(function() {
+            var flagItemIds=  $("#flagItemId").val();
+            var  flagItemId  =flagItemIds.split(",");
+			for(i=0;i<flagItemId.length;i++){
+                 var boxes = document.getElementsByName("examinationRecordItemList");
+                var val = []
+                 for(j=0;j<boxes.length;j++){
+                    if(flagItemId[i]==boxes[j].value){
+                         boxes[j].checked=true;
+                    }
+				}
+            }
+
+
+
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -24,6 +38,20 @@
 				}
 			});
 		});
+
+		function inputFromSubmit() {
+            var boxes = document.getElementsByName("examinationRecordItemList");
+            var val = "";
+             for(j=0;j<boxes.length;j++){
+                if(boxes[j].checked==true){
+                    val=val+boxes[j].value+",";
+                }
+            }
+         	 $("#flagItemId").val(val);
+             alert(val);
+            inputForm.submit();
+		}
+
 	</script>
 </head>
 <body>
@@ -130,8 +158,25 @@
 				<form:input path="remarks" htmlEscape="false" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="form-actions span12">
-			<shiro:hasPermission name="wshbj:examinationItem:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+		<div class="cl"></div>
+
+		<div class="control-group" id="itemsDiv" >
+			<label class="control-label">复检项目：</label>
+			<div class="controls radios-box">
+				<c:if test="${not empty examinationItemList  }">
+					<c:forEach items="${examinationItemList}" var="ri" varStatus="s">
+
+						<label id="lbl_bcri${ri.id}" for="bcri${ri.id}">
+							<input id="bcri${ri.id}" name="examinationRecordItemList" value="${ri.id}" type="checkbox" data-price="${ri.price}"
+								   <c:if test="${examinationRecord.itemIds !=null and fn:contains(examinationRecord.itemIds,ri.id)}">checked='checked'</c:if> >
+								${ri.name} </label>
+					</c:forEach>
+				</c:if>
+			</div>
+		</div>
+		<form:hidden path="flagItemId" id="flagItemId"  />
+ 		<div class="form-actions span12">
+			<shiro:hasPermission name="wshbj:examinationItem:edit"><input id="btnSubmit" class="btn btn-primary" type="button" onclick="inputFromSubmit()" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 		<div class="cl"></div>

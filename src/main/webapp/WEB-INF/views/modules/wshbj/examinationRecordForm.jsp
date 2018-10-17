@@ -77,6 +77,7 @@
 
             // 身份证输入文本框失去焦点的时候
              $('#showIdNumber').blur(function(){
+                 ispay();
                  loadUserByIdNumber();
              });
             setTimeout("lodop_check()",300);
@@ -98,7 +99,19 @@
                   }
             });
         }
+        function ispay() {
+            var url="${ctx}/wshbj/userPay/ispay";
+            var d1={idNumber: $("#showIdNumber").val() };
+            $.get(url,d1,function(d1r){
+                if(d1r=="true"){
+                      $("#packagePrice").val("已付款");
+                }else{
+                    $("#packagePrice").val("0");
+                }
+            }).error(function(xhr){
+            });
 
+        }
         function loadUserByIdNumber(idObj){
             $("#msg").hide();
 
@@ -193,6 +206,7 @@
             $("#postName").val(u.postName);
             $("#remarks").val(u.remarks);
             $("#code").val(u.code);
+            $("#packagePrice").val('0');
 
 
 
@@ -318,7 +332,11 @@
             })
 
             aprice+= parseFloat(money);
-            $("#packagePrice").val(aprice);
+            var ispay = $("#packagePrice").val();
+             if(ispay!='已付款'){
+                $("#packagePrice").val(aprice);
+            }
+
 
         }
 

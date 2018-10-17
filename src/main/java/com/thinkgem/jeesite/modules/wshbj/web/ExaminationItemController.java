@@ -99,7 +99,10 @@ public class ExaminationItemController extends BaseController {
 		examinationItemType.setReferenceFlag("0");
 		List<ExaminationItemType> examinationItemTypeList = examinationItemTypeService.findList(examinationItemType);
 		model.addAttribute("examinationItemTypeList", examinationItemTypeList);
-
+		// 获得体检项目类别
+		ExaminationItem examinationItem1 = new ExaminationItem();
+		List<ExaminationItem> examinationItemList = examinationItemService.findList(examinationItem1);
+		model.addAttribute("examinationItemList", examinationItemList);
 		// 加载标本列表
 		Specimen specimen = new Specimen();
 		specimen.setOwner(UserUtils.getUser().getCompany().getId());

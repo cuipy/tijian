@@ -40,6 +40,15 @@ public class ExaminationItem extends DataEntity<ExaminationItem> {
 	private String needSamples;		//是否需要样本：0-否，1-是
 	private Integer codeType;
 	private Integer orderNumb;
+	private String flagItemId;	//复检时需要复检的项目
+
+	public String getFlagItemId() {
+		return flagItemId;
+	}
+
+	public void setFlagItemId(String flagItemId) {
+		this.flagItemId = flagItemId;
+	}
 
 	public Integer getCodeType() {
 		return codeType;

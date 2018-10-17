@@ -40,7 +40,8 @@
                     showTip(result.msg,"error");
 				}else{
                     $('#searchForm').submit();
-				}
+                    lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb3_html?id='+examinationRecordId);
+                }
             }).error(function(xhr,status,info){
                 $('#msg').show().html(xhr.responseText.replace(/\n/g,"<br>"));
              });

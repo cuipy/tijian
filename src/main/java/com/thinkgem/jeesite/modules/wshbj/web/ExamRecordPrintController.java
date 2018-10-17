@@ -25,7 +25,7 @@ public class ExamRecordPrintController extends BaseController {
 
 	@Autowired
 	private ExaminationRecordService examinationRecordService;
-	
+
 
 	/**
 	 * 制作 体检流程表
@@ -77,6 +77,15 @@ public class ExamRecordPrintController extends BaseController {
 		ExaminationRecord er = examinationRecordService.get(id);
 		model.addAttribute("examRecord",er);
 		return "modules/wshbj/examRecordPrint_tjb2_html";
+	}
+	@GetMapping(value = "tjb3_html")
+	public String tjb3_html(String id,Model model) {
+		ExaminationRecord er = examinationRecordService.get(id);
+		model.addAttribute("examRecord",er);
+		model.addAttribute("examinationRecord",er);
+
+
+		return "modules/wshbj/examRecordPrint_tjb3_html";
 	}
 
 	@GetMapping(value = "barcode_html")
