@@ -26,12 +26,14 @@ import java.util.List;
 public class UserPayService extends CrudService<UserPayDao, UserPay>   {
 
 
-     public UserPay findByIdnumber(String idnumber) {
+    public UserPay findByIdnumber(String idnumber) {
         return dao.findByIdnumber(idnumber) ;
     }
     public void add(UserPay userPay) {
           super.save(userPay) ;
     }
-
+    public UserPay deleteByIdnumber(String idnumber) {
+        return dao.findByIdnumber(idnumber) ;
+    }
 
 }

@@ -50,7 +50,7 @@ public class UserPayController extends BaseController {
 		if(StringUtils.isEmpty(idNumber)){
 			return "false";
 		}
-		UserPay userPay=userPayService.findByIdnumber(idNumber);
+		UserPay userPay=userPayDao.findByIdnumber(idNumber);
 		if(userPay!=null){
 			return "true";
 		}else {
@@ -68,7 +68,12 @@ public class UserPayController extends BaseController {
 		UserPay userPay=new UserPay();
 		userPay.setIdnumber(idNumber);
 		userPay.setState(0);
- 		if(userPayDao.insert(userPay)!=0){
+		UserPay isPayserPay=userPayDao.findByIdnumber(idNumber);
+		if(isPayserPay==null){
+			return "false";
+		}
+
+		if(userPayDao.insert(userPay)!=0){
 			return "true";
  		}else {
 			return "false";
@@ -78,5 +83,33 @@ public class UserPayController extends BaseController {
 	}
 
 
+	@ResponseBody
+	@GetMapping(value = "find_user_pay")
+	public UserPay findUserPay(String idNumber) {
+		UserPay userPay= new UserPay();
+		if(StringUtils.isEmpty(idNumber)){
+			return userPay;
+		}
+		userPay=userPayDao.findByIdnumber(idNumber);
+ 		return userPay;
+	}
+
+	@ResponseBody
+	@GetMapping(value = "delete_user_pay")
+	public String deleteUserPay(String idNumber) {
+		if(StringUtils.isEmpty(idNumber)){
+			return "false";
+		}
+		UserPay userPay=new UserPay();
+		userPay.setIdnumber(idNumber);
+		userPay.setState(0);
+		if(userPayDao.delete(userPay)!=0){
+			return "true";
+		}else {
+			return "false";
+		}
+
+
+	}
 
 }

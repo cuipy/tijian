@@ -14,7 +14,7 @@
 		SELECT
 		<include refid="userPayColumns"/>
 		FROM bj_user_pay a
- 		WHERE a.idnumber = #{idnumber}
+ 		WHERE a.idnumber = #{idnumber} and state =0
 	</select>
 
 	<insert id="insert">
@@ -38,4 +38,13 @@
  		</set>
 		WHERE id = #{id}
 	</update>
+
+	<update id="delete">
+		DELETE FROM bj_user_pay
+		WHERE idnumber = #{idnumber} and state=0
+	</update>
+
+
+
+
 </mapper>

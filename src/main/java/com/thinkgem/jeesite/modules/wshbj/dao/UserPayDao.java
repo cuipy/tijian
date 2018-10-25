@@ -11,5 +11,5 @@ public interface UserPayDao  extends CrudDao<UserPay> {
 
     UserPay findByIdnumber(String idnumber);
 
-
+    UserPay deleteByIdnumber(String idnumber);
 }
