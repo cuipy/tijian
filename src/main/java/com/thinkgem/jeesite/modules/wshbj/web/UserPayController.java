@@ -69,7 +69,7 @@ public class UserPayController extends BaseController {
 		userPay.setIdnumber(idNumber);
 		userPay.setState(0);
 		UserPay isPayserPay=userPayDao.findByIdnumber(idNumber);
-		if(isPayserPay==null){
+		if(isPayserPay!=null){
 			return "false";
 		}
 

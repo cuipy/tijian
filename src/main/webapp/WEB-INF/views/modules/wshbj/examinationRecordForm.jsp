@@ -359,6 +359,7 @@
                 $("#msg").html(d1r.msg);
                 if(status.indexOf('print')>=0){
                     var defaultHealth=  $("#defaultHealth").val();
+                    alert('${ctxhttp}/wshbj/exam_record_print/tjb'+defaultHealth+'_html?id='+id);
                      lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb'+defaultHealth+'_html?id='+id);
                      lodop_sampleCode(id)
                 }
@@ -453,6 +454,7 @@
         <form:form id="inputForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/ajax_save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
+            <input type="hidden" id="defaultHealth" name="defaultHealth" >
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
         <form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
@@ -630,12 +632,12 @@
         <div class="control-group">
             <label class="control-label">体检编号：</label>
             <div class="controls">
-                <input type="text" id="recordId" name="recordId"  class="input-medium required">
+                <input type="text" id="recordId" name="recordId"  value="${examinationRecord.code}"  class="input-medium required">
             </div>
 
         </div>
         <p>
-            <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="lodop_sampleCode(1)" />&nbsp;</shiro:hasPermission>
+            <shiro:hasPermission name="wshbj:examinationRecord:edit"><input id="btnSubmit" class="btn btn-primary" type="button" value="打印样本编号" onclick="lodop_sampleCode('')" />&nbsp;</shiro:hasPermission>
         </p>
 
  <div class="cl"></div>

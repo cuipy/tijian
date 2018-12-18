@@ -470,6 +470,11 @@ public class ExaminationRecordItemController extends BaseController {
 				list=examinationRecordItemService.listByRecordId(recordId);
 			}
  		}
+		if(!StringUtils.isEmpty(recordId)){
+
+			list=examinationRecordItemService.listByRecordId(recordId);
+
+		}
 
  		return list;
 	}
