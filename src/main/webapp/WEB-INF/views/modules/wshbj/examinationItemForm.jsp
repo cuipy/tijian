@@ -48,7 +48,6 @@
                 }
             }
          	 $("#flagItemId").val(val);
-             alert(val);
             inputForm.submit();
 		}
 
@@ -143,9 +142,9 @@
 		<div class="control-group span12">
 			<label class="control-label">编号样式：</label>
 			<div class="controls radios-div">
-				<input path="codeType" name="codeType" <c:if test="${examinationItem.codeType=='0'}">checked='checked'</c:if>   type="radio" value="0"/>双位年
-				<input path="codeType" name="codeType"  <c:if test="${examinationItem.codeType=='1'}">checked='checked'</c:if>  type="radio" value="1"/>四位年月
-				<input path="codeType" name="codeType"  <c:if test="${examinationItem.codeType=='2'}">checked='checked'</c:if>  type="radio" value="2"/>六位年月日
+				<label ><input path="codeType" name="codeType" <c:if test="${examinationItem.codeType=='0'}">checked='checked'</c:if>   type="radio" value="0"/>双位年 </label>
+				<label ><input path="codeType" name="codeType"  <c:if test="${examinationItem.codeType=='1'}">checked='checked'</c:if>  type="radio" value="1"/>四位年月 </label>
+				<label ><input path="codeType" name="codeType"  <c:if test="${examinationItem.codeType=='2'}">checked='checked'</c:if>  type="radio" value="2"/>六位年月日 </label>
 
 			</div>
 		</div>
