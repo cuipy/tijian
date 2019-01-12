@@ -9,7 +9,6 @@
 
 	<script type="text/javascript">
 
-
 		$(function() {
 
             initWebsocket();
@@ -342,6 +341,11 @@
 
         // ajax form方式提交保存
         function do_sumbit(status){
+
+               console.log(localStorage.getItem('a4-print-index'));
+                            lodop_printA4('才测试打印','http://zhangzhou.dakanggou.com:8051/tijian/a/wshbj/examinationRecord/form');
+                            return;
+
              $("#msg").hide().html('');
             $("#inputForm").ajaxSubmit(function(d1r){
                 if(d1r == null||d1r.state==null){
@@ -359,7 +363,6 @@
                 $("#msg").html(d1r.msg);
                 if(status.indexOf('print')>=0){
                     var defaultHealth=  $("#defaultHealth").val();
-                    alert('${ctxhttp}/wshbj/exam_record_print/tjb'+defaultHealth+'_html?id='+id);
                      lodop_printA4('流程表','${ctxhttp}/wshbj/exam_record_print/tjb'+defaultHealth+'_html?id='+id);
                      lodop_sampleCode(id)
                 }
@@ -423,6 +426,8 @@
                 }
             });
         }
+
+
 
 	</script>
 </head>
