@@ -262,6 +262,9 @@
         function chkPackage(packageId,money) {
             var itemIds=$("#packageId_"+packageId).attr("data-itemIds");
 
+            if(itemIds == undefined ){
+                return;
+            }
             // 1 显示套餐必选项目
             $("label[id^='lbl_tcri']").each(function(){
                 var lblId=$(this).attr('id');
