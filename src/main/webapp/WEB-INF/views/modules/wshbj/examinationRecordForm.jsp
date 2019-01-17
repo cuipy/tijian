@@ -256,6 +256,8 @@
                     chkPackage(pid,money);
                  }
             });
+
+            getFixExamCode();
         }
 
         // 选中某个体检套餐，更新总费用
