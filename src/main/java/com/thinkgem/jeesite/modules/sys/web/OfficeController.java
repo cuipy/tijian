@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.fastjson.JSON;
 import com.thinkgem.jeesite.modules.sys.utils.SysSequenceUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,11 @@ public class OfficeController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(Office office, Model model) {
 		User user = UserUtils.getUser();
+		if(office==null){
+			model.addAttribute("office", office);
+			return "modules/sys/officeForm";
+		}
+
 		if (office.getParent()==null || office.getParent().getId()==null){
 			office.setParent(user.getOffice());
 		}
@@ -159,10 +165,10 @@ public class OfficeController extends BaseController {
 			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<Office> list = officeService.findList(isAll);
+
 		for (int i=0; i<list.size(); i++){
 			Office e = list.get(i);
-			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))
-					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
+			if ( (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
 					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
 					&& Global.YES.equals(e.getUseable())){
 				Map<String, Object> map = Maps.newHashMap();
