@@ -587,7 +587,7 @@ public class ExaminationRecordController extends BaseController {
 
 		List<ExaminationRecordItem> recordItems = record.getItems();
 		if(recordItems==null){
-			return RequestResult.generate(2,"体检记录下没有体检记录");
+			return RequestResult.generate(2,"体检记录下没有体检项目");
 		}
 
 		return RequestResult.generate(1,"该体检记录可以录入体检结果");
