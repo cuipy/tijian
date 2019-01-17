@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.wshbj.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.Encodes;
@@ -52,8 +53,6 @@ public class GlobalUploadService extends CrudService<ZhizhengAddRecordDao, Zhizh
         params.put("token", token);
 
         // 获取最后一条 制证数的记录
-
-
         List<ZhizhengAddRecord> lst = zhizhengAddRecordDao.getLast2();
         if(lst!=null&&lst.size()>0){
             ZhizhengAddRecord record=lst.get(0);
@@ -61,36 +60,37 @@ public class GlobalUploadService extends CrudService<ZhizhengAddRecordDao, Zhizh
             Integer lastResultCount=record.getResultCount();
 
             params.put("lastAddCode", lastAddCode);
+
         }
 
         String url = Global.getCenterServerUrl() + "/rest/jkz/find";
         try {
             RequestResult rr = HttpRequestUtils.doHttpsPost(url, params);
 
-            logger.debug(JSON.toJSONString(rr));
+            logger.info(JSON.toJSONString(rr));
 
-            if (rr != null && rr.getState().equals("1")) {
+            if ( rr.getState() == 1) {
 
                 if(rr.getData() == null ){
                     logger.warn("在获取新增的制证数编码是，未能获得data参数");
                     return 0;
                 }
 
-                Map<String, String> data = (Map<String, String>) rr.getData();
-                String newAddCode = data.get("addCode");
+                Map<String, Object> data = ((JSONObject) rr.getData()).getInnerMap();
+                Object newAddCode = data.get("addCode");
 
-                if(StringUtils.isEmpty(newAddCode)){
-                    logger.warn("在获取新增的制证数编码是，未能获得addCode参数");
+                if(newAddCode == null){
+                    logger.warn("在获取新增的制证数编码时，未能获得addCode参数");
                     return 0;
                 }
 
-                String addCount = data.get("addCount");
-                if(StringUtils.isEmpty(addCount)){
-                    logger.warn("在获取新增的制证数编码是，未能获得addCount参数");
+                Object addCount = data.get("addCount");
+                if(addCount == null){
+                    logger.warn("在获取新增的制证数编码时，未能获得addCount参数");
                     return 0;
                 }
 
-                Integer newAddCount = Integer.parseInt(data.get("addCount"));
+                Integer newAddCount = Integer.parseInt(data.get("addCount").toString());
 
                 String newAddCode2 = buildNewCode(ownerId, newAddCount);
 
@@ -99,6 +99,8 @@ public class GlobalUploadService extends CrudService<ZhizhengAddRecordDao, Zhizh
                 }else{
                     logger.warn("从服务器端获取的编码是无效的，无法增加制证数量");
                 }
+            }else{
+                logger.warn("state:"+rr.getState()+"  msg:"+rr.getMsg() );
             }
         } catch (Exception e) {
             logger.error("在获取新增的制证数量的时候，出现了错误，可能是无法与运营端链接");

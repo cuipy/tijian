@@ -140,7 +140,7 @@ public class ZhizhengAddRecordController extends BaseController {
 		// 获取最新的记录
 		String newCode = zhizhengAddRecordService.buildNewCode(ownerId,addCount);
 
-		System.out.println(newCode);
+		logger.info(newCode);
 		if(newCode.equals(addCode)){
 			zhizhengAddRecordService.addCode(ownerId,addCode,addCount);
 			return RequestResult.generate(1,"新增制证数量成功");

@@ -89,7 +89,8 @@ public class HttpRequestUtils {
             JSONObject json = JSONObject.parseObject(res);
 
             if(json.get("state")!=null){
-                rr=RequestResult.generate(json.getInteger("state"),json.getString("msg"));
+
+                rr=RequestResult.generate(json.getInteger("state"),json.getString("msg"),json.getJSONObject("data"));
             }
 
         } catch(JSONException e){

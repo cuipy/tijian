@@ -20,7 +20,7 @@ public class JkzQuartz {
     /**
      * 向服务端同步健康证的信息
      */
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 0/15 * * * ? ")
     public void upload(){
         //查询出哪些信息需要同步
         List<ExaminationRecord> lst = jkzUploadService.listJkzNeedUpload(new ExaminationRecord());

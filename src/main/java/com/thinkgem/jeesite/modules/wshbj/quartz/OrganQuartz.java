@@ -18,7 +18,7 @@ public class OrganQuartz {
     @Autowired
     private OrganUploadService organUploadService;
 
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 0/16 * * * ? ")
     public void upload(){
 
         List<Organ> lst = organUploadService.listNeedUpload(new Organ());

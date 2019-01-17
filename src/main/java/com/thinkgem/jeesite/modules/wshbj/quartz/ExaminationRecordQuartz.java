@@ -17,7 +17,7 @@ public class ExaminationRecordQuartz {
     @Autowired
     private ExaminationRecordUploadService examinationRecordUploadService;
 
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 0/13 * * * ? ")
     public void upload(){
 
         List<ExaminationRecord> lst = examinationRecordUploadService.listNeedUpload(new ExaminationRecord());

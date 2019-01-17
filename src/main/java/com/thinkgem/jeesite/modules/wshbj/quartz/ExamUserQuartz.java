@@ -16,7 +16,7 @@ public class ExamUserQuartz {
     @Autowired
     private ExamUserUploadService ExamUserUploadService;
 
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 0/14 * * * ? ")
     public void upload(){
 
         List<ExaminationUser> lst = ExamUserUploadService.listNeedUpload(new ExaminationUser());
