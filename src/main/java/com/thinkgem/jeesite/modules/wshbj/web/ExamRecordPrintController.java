@@ -14,6 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
  * 体检记录Controller
  * @author zhxl
@@ -115,5 +117,44 @@ public class ExamRecordPrintController extends BaseController {
 		return "modules/wshbj/examRecordPrint_zhizheng_html2";
 	}
 
+	@GetMapping(value = "tjb1_html_demo")
+	public String tjb_html_demo(String id,Model model) {
+		ExaminationRecord er = new ExaminationRecord();
+		er.setAge("32");
+		er.setBirthday("1982-11-22");
+		er.setCode("A1B2C3D4E5");
+		er.setExamTime(new Date());
+		er.setIdNumber("132584198211221584");
+		er.setPhoneNumber("13988888888");
+		er.setSex("1");
+		er.setHeadImg("/tijian/static/images/userinfo.jpg");
+		er.setId("A12345678");
+		er.setName("刘某某");
+		er.setNamePinyin("liumoumu");
+
+
+		model.addAttribute("examRecord",er);
+		return "modules/wshbj/examRecordPrint_tjb1_html";
+	}
+
+	@GetMapping(value = "zhizheng_html_demo")
+	public String zhizheng_html_demo(String id,Model model) {
+		ExaminationRecord er = new ExaminationRecord();
+		er.setAge("32");
+		er.setBirthday("1982-11-22");
+		er.setCode("A1B2C3D4E5");
+		er.setExamTime(new Date());
+		er.setIdNumber("132584198211221584");
+		er.setPhoneNumber("13988888888");
+		er.setSex("1");
+		er.setHeadImg("/tijian/static/images/userinfo.jpg");
+		er.setId("A12345678");
+		er.setName("刘某某");
+		er.setNamePinyin("liumoumu");
+
+		model.addAttribute("examRecord",er);
+
+		return "modules/wshbj/examRecordPrint_zhizheng_html";
+	}
 
 }
