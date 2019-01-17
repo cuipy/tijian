@@ -576,7 +576,7 @@ public class ExaminationRecordController extends BaseController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "ajax_check_exam_record_code_can_set_result")
-	public RequestResult ajax_check_exam_record_code_can_set_result(String examRecordCode ,String examItemId) {
+	public RequestResult ajax_check_exam_record_code_can_set_result(String examRecordCode ) {
 		ExaminationRecord er=new ExaminationRecord();
 		er.setCode(examRecordCode);
 		ExaminationRecord record = examinationRecordService.getByCode(er);
@@ -590,23 +590,7 @@ public class ExaminationRecordController extends BaseController {
 			return RequestResult.generate(2,"体检记录下没有体检记录");
 		}
 
-		for(ExaminationRecordItem eri:recordItems){
-			if(eri.getItemId().equals(examItemId) && "1".equals(eri.getLastFlag())){
-				// 该体检记录 对应的体检项目，已经采样
-				if("1".equals(eri.getNeedSamples())&&!eri.getGrabSample()){
-					return RequestResult.generate(4,"该体检记录需要先采样，然后才可以录入体检结果。");
-				}
-
-				// 该体检记录 对应的体检项目，已经采样
-				if(StringUtils.isNotEmpty(eri.getResultFlag())){
-					return RequestResult.generate(3,"该体检记录已经已经录入体检结果："+eri.getResultFlag()+":"+eri.getStrResultFlag());
-				}
-
-				return RequestResult.generate(1,"该体检记录可以录入体检结果");
-			}
-		}
-
-		return RequestResult.generate(8,"该体检人不需要进行该项目的检查");
+		return RequestResult.generate(1,"该体检记录可以录入体检结果");
 	}
 
 	/**

@@ -32,7 +32,7 @@ examRecord    当前要采样的 体检记录 对象
 
 	<script type="text/javascript">
 		$(function() {
-            setInterval(focusExamRecordCode, 2000);
+            setTimeout(focusExamRecordCode, 500);
 		    setTimeout("lodop_check()",300);
 
 		    // 当前要录入体检记录 编号的时候

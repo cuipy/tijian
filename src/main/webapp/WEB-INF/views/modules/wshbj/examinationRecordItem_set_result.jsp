@@ -28,19 +28,30 @@ examRecord    当前要采样的 体检记录 对象
 
 	<script type="text/javascript">
 		$(function() {
-		   // setInterval(focusExamRecordCode, 2000);
+		    // setTimeout(focusExamRecordCode, 500);
 
 		    // 当前要录入体检记录 编号的时候
 		    $("#examRecordCode").focus();
 		    $("#examRecordCode").on("blur keypress",function(){
+		        $("#msg_examRecordCode").html("开始分析体检记录编号");
+
 		        // 输入体检记录编号后，开始检测体检编号，如果编号合法，则可以采集编号
 		        var recordCode =$("#examRecordCode").val();
 
+                var url="${ctx}/wshbj/examinationRecord/ajax_check_exam_record_code_can_set_result";
+                var d1={"examRecordCode":recordCode};
+                $.get(url,d1,function(d1r){
 
-                if($.trim(recordCode)!=''){
-                    var url2="${ctx}/wshbj/examinationRecordItem/set_result?examRecordCode="+recordCode;
-                    location.href=url2;
-                }
+                    if(d1r.state!=1&&d1r.state!=3){
+                        $("#msg_examRecordCode").html(d1r.msg);
+                        return;
+                    }else{
+                        var url2="${ctx}/wshbj/examinationRecordItem/set_result?examRecordCode="+recordCode;
+                        location.href=url2;
+                    }
+
+                });
+
 		    });
 
 		    <c:if test="${ not empty examRecord }">
