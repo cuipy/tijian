@@ -70,13 +70,15 @@ function lodop_setCardPrintIndex(){
 function lodop_printA4(title,url){
     var LODOP = getCLodop();
 
-    LODOP.PRINT_INIT(title);
-    LODOP.SET_PRINT_PAGESIZE(1, 0, 0, "A4");
+    LODOP.PRINT_INITA(10,20,810,610,title);
+    LODOP.SET_PRINT_PAGESIZE(0, 0,0, "A4");
     if(localStorage.getItem('a4-print-index')>=0){
-        LODOP.SET_PRINTER_INDEX(localStorage.getItem('a4-print-index'));
+        LODOP.SET_PRINTER_INDEXA(localStorage.getItem('a4-print-index'));
     }
     LODOP.SET_PRINT_MODE("PRINT_END_PAGE",1);
-    LODOP.ADD_PRINT_HTM(0,0,"210mm","297mm","URL:"+url);
+
+    LODOP.NewPageA();
+    LODOP.ADD_PRINT_HTM(20,10,"90%","95%","URL:"+url);
     LODOP.PRINT();
 }
 

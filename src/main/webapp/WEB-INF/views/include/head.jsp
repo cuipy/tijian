@@ -43,6 +43,6 @@
 <link href="${ctxStatic}/common/jeesite.css?v=49" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
-<script src="${ctxStatic}/lodop/CLodopfuncs.js?v=23" type="text/javascript"></script>
-<script src="${ctxStatic}/lodop/my_lodop.js?v=18" type="text/javascript"></script>
+<script src="https://localhost:8443/CLodopfuncs.js"></script>
+<script src="${ctxStatic}/lodop/my_lodop.js?v=24" type="text/javascript"></script>
 
