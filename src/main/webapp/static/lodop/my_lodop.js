@@ -70,7 +70,7 @@ function lodop_setCardPrintIndex(){
 function lodop_printA4(title,url){
     var LODOP = getCLodop();
 
-    LODOP.PRINT_INITA(10,20,810,610,title);
+    LODOP.PRINT_INIT(title);
     LODOP.SET_PRINT_PAGESIZE(0, 0,0, "A4");
     if(localStorage.getItem('a4-print-index')>=0){
         LODOP.SET_PRINTER_INDEXA(localStorage.getItem('a4-print-index'));

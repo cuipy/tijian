@@ -342,10 +342,6 @@
         // ajax form方式提交保存
         function do_sumbit(status){
 
-               console.log(localStorage.getItem('a4-print-index'));
-                            lodop_printA4('才测试打印','http://zhangzhou.dakanggou.com:8051/tijian/a/wshbj/examinationRecord/form');
-                            return;
-
              $("#msg").hide().html('');
             $("#inputForm").ajaxSubmit(function(d1r){
                 if(d1r == null||d1r.state==null){

@@ -44,5 +44,5 @@
 <script src="${ctxStatic}/common/jeesite.js?v=10" type="text/javascript"></script>
 
 <script src="https://localhost:8443/CLodopfuncs.js"></script>
-<script src="${ctxStatic}/lodop/my_lodop.js?v=24" type="text/javascript"></script>
+<script src="${ctxStatic}/lodop/my_lodop.js?v=25" type="text/javascript"></script>
 
