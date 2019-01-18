@@ -94,6 +94,9 @@
 	</ul>
 
     <div class="box1">
+
+        <%@ include file="/WEB-INF/views/include/check_lodop.jsp"%>
+
     <div id="msg" class="alert alert-danger" >
         <c:if test="${empty examRecord}">
         请录入体检记录编号，或扫描体检人身份证

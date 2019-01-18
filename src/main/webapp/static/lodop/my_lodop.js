@@ -5,7 +5,7 @@
 function lodop_check(){
 
     // 检查LODOP是否安装
-    if(getCLodop()==undefined){
+    if(window.getCLodop == undefined || getCLodop()==undefined){
         $('#lodop_check').show();
         return;
     }

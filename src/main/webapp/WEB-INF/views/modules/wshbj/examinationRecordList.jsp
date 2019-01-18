@@ -93,6 +93,9 @@
 </head>
 
 <body>
+    <div class="box1">
+    <%@ include file="/WEB-INF/views/include/check_lodop.jsp"%>
+    </div>
 
 	<ul class="nav nav-tabs">
 		<shiro:hasPermission name="wshbj:examinationRecord:edit"><li><a href="${ctx}/wshbj/examinationRecord/form">体检记录添加</a></li></shiro:hasPermission>

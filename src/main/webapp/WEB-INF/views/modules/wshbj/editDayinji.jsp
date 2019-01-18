@@ -32,6 +32,9 @@
 
 </head>
 <body>
+    <div class="box1">
+    <%@ include file="/WEB-INF/views/include/check_lodop.jsp"%>
+    </div>
 <div class="breadcrumb form-search">
 	<label>设置打印机</label>
 

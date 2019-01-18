@@ -20,7 +20,7 @@ public class CenterQuartz {
     private GlobalUploadService globalUploadService;
 
     /**
-     * 向服务端同步健康证的信息
+     * 向服务端同步健康证的可制证数量
      */
     @Scheduled(cron = "0 */5 * * * ? ")
     public void upload(){

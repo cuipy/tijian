@@ -442,10 +442,7 @@
 	</ul><br/>
 
     <div class="box1">
-    <div id="lodop_check" class="alert alert-danger" style="display:none" >
-        1 您可能还未安装Lodop打印驱动，请<a href="${ctxStatic}/lodop/CLodop_Setup_for_Win32NT.exe" target="_blank">下载</a>并安装Lodop。<br>
-        2 您如果已经安装Lodop打印驱动，但没有启动服务。请运行 <span style="color:#000;"> 开始 > 所有程序 > C-Lodop(HTM-WEB-PRINT)32bit > C-Lodop Setup</span> ，并启动CLodop服务。
-    </div>
+    <%@ include file="/WEB-INF/views/include/check_lodop.jsp"%>
     <div id="dlalert" class="alert alert-warning">
       <strong>重要提示，身份证读取服务插件安装说明：</strong> <br>
       1. 身份证读取需要安装读取服务。 首先<a href="${ctxStatic}/idr200svr1.zip">下载身份证读取程序zip压缩包</a>，然后解压缩到本地计算机任意位置，然后运行 install.bat 命令完成服务注册。<br>
