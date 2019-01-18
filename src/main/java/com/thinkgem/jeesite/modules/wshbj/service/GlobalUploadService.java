@@ -100,7 +100,7 @@ public class GlobalUploadService extends CrudService<ZhizhengAddRecordDao, Zhizh
                     logger.warn("从服务器端获取的编码是无效的，无法增加制证数量");
                 }
             }else{
-                logger.warn("state:"+rr.getState()+"  msg:"+rr.getMsg() );
+                logger.debug("state:"+rr.getState()+"  msg:"+rr.getMsg() );
             }
         } catch (Exception e) {
             logger.error("在获取新增的制证数量的时候，出现了错误，可能是无法与运营端链接");

@@ -22,11 +22,10 @@ public class CenterQuartz {
     /**
      * 向服务端同步健康证的信息
      */
-    @Scheduled(cron = "0 0/1 * * * ? ")
+    @Scheduled(cron = "0 */5 * * * ? ")
     public void upload(){
 
         globalUploadService.doUpload();
-
 
     }
 
