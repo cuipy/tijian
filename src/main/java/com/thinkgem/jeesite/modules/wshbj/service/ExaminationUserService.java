@@ -50,13 +50,13 @@ public class ExaminationUserService extends CrudService<ExaminationUserDao, Exam
 		return this.dao.getByIdNumberAndOwner(idNumber,owner);
 	}
 
-	@Cacheable(value = "examinationUserCache",key="'examinationUser_findList_'+#examinationUser.likeField+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
+	@Cacheable(value = "examinationUserCache",key="'examinationUser_findList_'+#examinationUser.likeField+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber+#examinationUser.orderField+#examinationUser.orderDirect")
 	public List<ExaminationUser> findList(ExaminationUser examinationUser) {
 		return super.findList(examinationUser);
 	}
 
 	@Cacheable(value = "examinationUserCache",key="'examinationUser_findPage_'+#page.pageNo+#page.pageSize+#examinationUser.likeField" +
-			"+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber")
+			"+#examinationUser.name+#examinationUser.code+#examinationUser.idNumber+#examinationUser.phoneNumber+#examinationUser.orderField+#examinationUser.orderDirect")
 	public Page<ExaminationUser> findPage(Page<ExaminationUser> page, ExaminationUser examinationUser) {
 		return super.findPage(page, examinationUser);
 	}

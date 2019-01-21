@@ -56,6 +56,9 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 	private Date uploadDate;
     private Integer orderNumb;
 
+	private String orderField;
+	private String orderDirect;
+
     public Integer getOrderNumb() {
         return orderNumb;
     }
@@ -350,5 +353,21 @@ public class ExaminationUser extends DataEntity<ExaminationUser> {
 
 	public void setNamePinyin(String namePinyin) {
 		this.namePinyin = namePinyin;
+	}
+
+	public String getOrderField() {
+		return orderField;
+	}
+
+	public void setOrderField(String orderField) {
+		this.orderField = orderField;
+	}
+
+	public String getOrderDirect() {
+		return orderDirect;
+	}
+
+	public void setOrderDirect(String orderDirect) {
+		this.orderDirect = orderDirect;
 	}
 }

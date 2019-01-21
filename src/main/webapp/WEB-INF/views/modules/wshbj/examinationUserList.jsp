@@ -5,6 +5,13 @@
 <head>
 	<title>体检用户管理</title>
 	<meta name="decorator" content="default"/>
+
+	<style type="text/css">
+    .th_order{
+        cursor:pointer;
+    }
+    </style>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
@@ -15,6 +22,20 @@
 			$("#searchForm").submit();
         	return false;
         }
+
+        function clkOrder(_orderField){
+            var currField = '${examinationUser.orderField}';
+            var currDirect = '${examinationUser.orderDirect}';
+
+            $("#orderField").val(_orderField);
+
+            if(_orderField == currField){
+                $("#orderDirect").val(currDirect == 'asc'? 'desc':'asc');
+            }else{
+                $("#orderDirect").val( 'desc' );
+            }
+            $("#searchForm").submit();
+        }
 	</script>
 </head>
 <body>
@@ -24,9 +45,12 @@
 	</ul>
 
 	<div class="box1">
-	<form:form id="searchForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationUser" action="${ctx}/wshbj/examinationUser/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+        <form:hidden path="orderField"/>
+        <form:hidden path="orderDirect"/>
+
 		<ul class="ul-form">
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="50" class="input-medium"/>
@@ -57,9 +81,18 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>姓名</th>
-				<th width="180">身份证号</th>
-				<th>联系电话</th>
+				<th width="120" class="th_order" onclick="clkOrder('a.name')">姓名
+				<c:if test="${examinationUser.orderField == 'a.name' and examinationUser.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationUser.orderField == 'a.name' and examinationUser.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
+				<th width="180" class="th_order" onclick="clkOrder('a.id_number')">身份证号
+				<c:if test="${examinationUser.orderField == 'a.id_number' and examinationUser.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationUser.orderField == 'a.id_number' and examinationUser.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
+				<th  class="th_order" onclick="clkOrder('a.phone_number')">联系电话
+				<c:if test="${examinationUser.orderField == 'a.phone_number' and examinationUser.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationUser.orderField == 'a.phone_number' and examinationUser.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
 				<th>性别</th>
 				<th width="260">单位</th>
 				<th>备注</th>

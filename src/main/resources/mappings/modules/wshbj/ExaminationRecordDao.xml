@@ -189,7 +189,7 @@
 		SELECT 
 			<include refid="examinationRecordColumns"/>
 		FROM bj_examination_record a
-		<include refid="examinationRecordJoins"/>
+		<include refid="examinationRecord4MapJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="user != null and user.id != null and user.id != ''">

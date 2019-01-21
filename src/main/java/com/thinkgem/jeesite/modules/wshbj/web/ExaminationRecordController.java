@@ -90,7 +90,7 @@ public class ExaminationRecordController extends BaseController {
 
 	@Autowired
 	private ZhizhengAddRecordService zhizhengAddRecordService;
-	
+
 	@ModelAttribute
 	public ExaminationRecord get(@RequestParam(required=false) String id) {
 		ExaminationRecord entity = null;
@@ -108,7 +108,16 @@ public class ExaminationRecordController extends BaseController {
 	public String list(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		// 获取分页的体检记录
-		Page<ExaminationRecord> page = examinationRecordService.findPage(new Page<ExaminationRecord>(request, response), examinationRecord); 
+
+		String orderBy = "a.update_date desc";
+
+		if(StringUtils.isNotEmpty(examinationRecord.getOrderField())){
+			orderBy = examinationRecord.getOrderField()+ ("asc".equals(examinationRecord.getOrderDirect())?" asc":" desc");
+		}
+
+		Page<ExaminationRecord> pg = new Page<ExaminationRecord>(request, response);
+		pg.setOrderBy(orderBy );
+		Page<ExaminationRecord> page = examinationRecordService.findPage(pg, examinationRecord);
 		model.addAttribute("page", page);
 
 		// 体检套餐列表

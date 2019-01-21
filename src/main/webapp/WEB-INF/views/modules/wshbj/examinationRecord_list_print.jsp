@@ -5,6 +5,13 @@
 <head>
 	<title>体检记录管理</title>
 	<meta name="decorator" content="default"/>
+
+<style type="text/css">
+.th_order{
+    cursor:pointer;
+}
+</style>
+
 	<script type="text/javascript">
         // 执行打印制卡
 
@@ -107,6 +114,21 @@
             });
         }
 
+        function clkOrder(_orderField){
+            var currField = '${examinationRecord.orderField}';
+            var currDirect = '${examinationRecord.orderDirect}';
+
+            $("#orderField").val(_orderField);
+
+            if(_orderField == currField){
+                $("#orderDirect").val(currDirect == 'asc'? 'desc':'asc');
+            }else{
+                $("#orderDirect").val( 'desc' );
+            }
+            $("#searchForm").submit();
+        }
+
+
 	</script>
 </head>
 <body>
@@ -118,7 +140,7 @@
 	</ul>
 
 	<div class="box1">
-	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="examinationRecord" action="${ctx}/wshbj/examinationRecord/list_print" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -162,6 +184,8 @@
 				</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			                <form:hidden path="orderField"/>
+                            <form:hidden path="orderDirect"/>
 <%--
 			<input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
 --%>
@@ -175,15 +199,35 @@
 		<thead>
 			<tr>
 				<th> <input type="checkbox"  id="all" value=""></th>
-				<th width="130">编号</th>
-				<th width="130">体检单位</th>
-				<th width="80">体检人</th>
-				<th width="170">身份证号</th>
-				<th width="100">联系电话</th>
+				<th width="200" class="th_order" onclick="clkOrder('a.code')">编号
+				<c:if test="${examinationRecord.orderField == 'a.code' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationRecord.orderField == 'a.code' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
+				<th width="130" class="th_order" onclick="clkOrder('o2.name')">体检单位
+				<c:if test="${examinationRecord.orderField == 'o2.name' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+				<c:if test="${examinationRecord.orderField == 'o2.name' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if> </th>
+                <th width="80" class="th_order" onclick="clkOrder('u2.name')">体检人
+                <c:if test="${examinationRecord.orderField == 'u2.name' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationRecord.orderField == 'u2.name' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+                </th>
+                <th width="170" class="th_order" onclick="clkOrder('u2.id_number')">身份证号
+                <c:if test="${examinationRecord.orderField == 'u2.id_number' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationRecord.orderField == 'u2.id_number' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+                </th>
+				<th width="100" class="th_order" onclick="clkOrder('a.phone_number')">联系电话
+                <c:if test="${examinationRecord.orderField == 'a.phone_number' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationRecord.orderField == 'a.phone_number' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
 				<th width="40">性别</th>
 				<th >体检套餐/项目</th>
-				<th width="120">制证日期</th>
-				<th width="100">状态</th>
+				<th width="120" class="th_order" onclick="clkOrder('a.zhizheng_date')">制证时间
+                <c:if test="${examinationRecord.orderField == 'a.zhizheng_date' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationRecord.orderField == 'a.zhizheng_date' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
+				<th width="100" class="th_order" onclick="clkOrder('a.status')">状态
+                <c:if test="${examinationRecord.orderField == 'a.status' and examinationRecord.orderDirect=='asc' }"><i class="icon-circle-arrow-up"></i> </c:if>
+                <c:if test="${examinationRecord.orderField == 'a.status' and examinationRecord.orderDirect=='desc' }"><i class="icon-circle-arrow-down"></i> </c:if>
+				</th>
 				<shiro:hasPermission name="wshbj:examinationRecord:edit"><th width="400">操作</th></shiro:hasPermission>
 			</tr>
 		</thead>

@@ -74,6 +74,9 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 	private Integer orderNumb;	//排序
 	private Integer uploadJkz; 	//是否同步健康证的信息 1：已同步
 
+	private String orderField;
+	private String orderDirect;
+
 
 	public Integer getOrderNumb() {
 		return orderNumb;
@@ -585,5 +588,21 @@ public class ExaminationRecord extends DataEntity<ExaminationRecord> {
 
 	public void setUploadJkz(Integer uploadJkz) {
 		this.uploadJkz = uploadJkz;
+	}
+
+	public String getOrderField() {
+		return orderField;
+	}
+
+	public void setOrderField(String orderField) {
+		this.orderField = orderField;
+	}
+
+	public String getOrderDirect() {
+		return orderDirect;
+	}
+
+	public void setOrderDirect(String orderDirect) {
+		this.orderDirect = orderDirect;
 	}
 }

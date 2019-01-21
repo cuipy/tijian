@@ -74,8 +74,16 @@ public class ExaminationUserController extends BaseController {
     @RequiresPermissions("wshbj:examinationUser:view")
     @RequestMapping(value = {"list", ""})
     public String list(ExaminationUser examinationUser, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+        String orderBy = "a.update_date desc";
+        if(StringUtils.isNotEmpty(examinationUser.getOrderField())){
+            orderBy = examinationUser.getOrderField()+ ("asc".equals(examinationUser.getOrderDirect())?" asc":" desc");
+        }
+
         examinationUser.setOwner(UserUtils.getUser().getCompany().getId());
-        Page<ExaminationUser> page = examinationUserService.findPage(new Page<ExaminationUser>(request, response), examinationUser);
+        Page<ExaminationUser> pg = new Page<ExaminationUser>(request, response);
+        pg.setOrderBy(orderBy);
+        Page<ExaminationUser> page = examinationUserService.findPage(pg, examinationUser);
         model.addAttribute("page", page);
 
         Organ organ = new Organ();
