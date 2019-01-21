@@ -31,8 +31,8 @@
 
   <Service name="Catalina">
 
-    <Connector port="8051" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8443" />
-    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+    <Connector port="8051" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8444" />
+    <Connector port="8009" protocol="AJP/1.3" redirectPort="8444" />
 
     <Connector port="9443" protocol="HTTP/1.1" connectionTimeout="20000" redirectPort="8445"
                SSLEnabled="true" scheme="https" secure="true" clientAuth="false" sslProtocol="TLS"

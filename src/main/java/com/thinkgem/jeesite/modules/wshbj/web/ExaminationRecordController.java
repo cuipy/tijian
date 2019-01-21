@@ -108,9 +108,7 @@ public class ExaminationRecordController extends BaseController {
 	public String list(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		// 获取分页的体检记录
-
 		String orderBy = "a.update_date desc";
-
 		if(StringUtils.isNotEmpty(examinationRecord.getOrderField())){
 			orderBy = examinationRecord.getOrderField()+ ("asc".equals(examinationRecord.getOrderDirect())?" asc":" desc");
 		}
@@ -142,7 +140,14 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = {"list_print"})
 	public String list_print(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 获取分页的体检记录
-		Page<ExaminationRecord> page = examinationRecordService.pageForPrint(new Page<ExaminationRecord>(request, response), examinationRecord);
+		String orderBy = "a.update_date desc";
+		if(StringUtils.isNotEmpty(examinationRecord.getOrderField())){
+			orderBy = examinationRecord.getOrderField()+ ("asc".equals(examinationRecord.getOrderDirect())?" asc":" desc");
+		}
+
+		Page<ExaminationRecord> pg = new Page<ExaminationRecord>(request, response);
+		pg.setOrderBy(orderBy );
+		Page<ExaminationRecord> page = examinationRecordService.pageForPrint(pg, examinationRecord);
 		model.addAttribute("page", page);
 
 		// 体检套餐列表
@@ -168,7 +173,14 @@ public class ExaminationRecordController extends BaseController {
 	@RequestMapping(value = {"list_nopass"})
 	public String list_nopass(ExaminationRecord examinationRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 获取分页的体检记录
-		Page<ExaminationRecord> page = examinationRecordService.pageForNopass(new Page<ExaminationRecord>(request, response), examinationRecord);
+		String orderBy = "a.update_date desc";
+		if(StringUtils.isNotEmpty(examinationRecord.getOrderField())){
+			orderBy = examinationRecord.getOrderField()+ ("asc".equals(examinationRecord.getOrderDirect())?" asc":" desc");
+		}
+
+		Page<ExaminationRecord> pg = new Page<ExaminationRecord>(request, response);
+		pg.setOrderBy(orderBy );
+		Page<ExaminationRecord> page = examinationRecordService.pageForNopass(pg, examinationRecord);
 		model.addAttribute("page", page);
 
 		// 体检套餐列表
