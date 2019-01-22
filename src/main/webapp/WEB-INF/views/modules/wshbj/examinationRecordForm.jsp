@@ -461,92 +461,89 @@
         <input type="hidden" id="userId" name="user.id" value="${examinationRecord.user.id}" >
         <input type="hidden" id="idNumber" name="idNumber" value="${examinationRecord.idNumber}" >
         <form:hidden path="idNumberPicHead"/><form:hidden path="idNumberPicFore"/><form:hidden path="idNumberPicBack"/>
-     <div>
+    <div>
+
+    <div class="control-group">
+        <label class="control-label"><font color="red">*</font>  用户头像：</label>
+        <div class="controls">
+             <sys:cropper mainImgWidth="180"  mainImgHeight="240" imgName="真人照片" path="headImg"
+                          value="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"
+             errImg="${ctxStatic}/images/nopic.jpg"/>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label" style="font-weight:bold"><font color="red">*</font>  身份证号：</label>
+        <div class="controls">
+            <div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-medium required"/>
+            <span id="idNumberInfo" class="help-inline">通过身份证获取用户信息</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><font color="red">*</font> 真实姓名：</label>
+        <div class="controls">
+            <form:input path="name" htmlEscape="false" maxlength="32" class="input-medium  required"/>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label"><font color="red">*</font> 联系电话：</label>
+        <div class="controls">
+            <form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium  required"/>
+            <font color="red">*</font> 性别：
+                 <form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+
+    </div>
+
+    <div class="control-group">
+
+    </div>
+
+    <div class="control-group">
+        <label class="control-label"><font color="red">*</font> 年龄：</label>
+        <div class="controls">
+            <input type="number" id="age" name="age"  value="${examinationRecord.age}" class="input-medium required">
+        </div>
+    </div>
 
 
-
-
-        <div class="control-group">
-            <label class="control-label"><font color="red">*</font>  用户头像：</label>
-            <div class="controls">
-                 <sys:cropper mainImgWidth="180"  mainImgHeight="240" imgName="真人照片" path="headImg"
-                              value="${ctx}/wshbj/examinationRecord/getHeadImg?id=${examinationRecord.id}"
-                 errImg="${ctxStatic}/images/nopic.jpg"/>
+    <div class="control-group">
+        <label class="control-label"><font color="red">*</font> 出生日期：</label>
+        <div class="controls">
+            <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}"  readonly="true"
+             class="input-medium Wdate required" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
+            &nbsp;&nbsp;备注：
+                 <form:input id="remarks" path="remarks" htmlEscape="false" maxlength="255" cssStyle="width:350px"/>
+         </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+         <a href="${ctx}/wshbj/organ/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
+         体检单位：</label>
+        <div class="controls">
+            <div class="autocompleter-box">
+                <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
+                <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
+                <span class="help-inline"> </span>
+            </div>
+        </div>
+    </div>
+    <div class="control-group">
+        <label class="control-label">
+        <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
+            岗位：</label>
+        <div class="controls">
+            <div class="autocompleter-box">
+                <input type="hidden" id="postId" name="postId" value="${examinationRecord.postId}" >
+                <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
+                <span class="help-inline"> </span>
             </div>
         </div>
 
-        <div class="control-group">
-            <label class="control-label" style="font-weight:bold"><font color="red">*</font>  身份证号：</label>
-            <div class="controls">
-                <div class="autocompleter-box"> <input type="text" id="showIdNumber" name="showIdNumber" value="${examinationRecord.idNumber}" maxlength="20" class="input-medium required"/>
-                <span id="idNumberInfo" class="help-inline">通过身份证获取用户信息</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="control-group">
-            <label class="control-label"><font color="red">*</font> 真实姓名：</label>
-            <div class="controls">
-                <form:input path="name" htmlEscape="false" maxlength="32" class="input-medium  required"/>
-            </div>
-        </div>
-		<div class="control-group">
-			<label class="control-label"><font color="red">*</font> 联系电话：</label>
-			<div class="controls">
-				<form:input path="phoneNumber" htmlEscape="false" maxlength="45" class="input-medium  required"/>
-                <font color="red">*</font> 性别：
-                     <form:radiobuttons path="sex" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			</div>
-
-		</div>
-
-		<div class="control-group">
-
-		</div>
-
-		<div class="control-group">
-            <label class="control-label"><font color="red">*</font> 年龄：</label>
-            <div class="controls">
-                <input type="number" id="age" name="age"  value="${examinationRecord.age}" class="input-medium required">
-            </div>
-        </div>
-
-
-		<div class="control-group">
-            <label class="control-label"><font color="red">*</font> 出生日期：</label>
-            <div class="controls">
-                <input type="text" id="birthday" name="birthday"  value="${examinationRecord.birthday}"  readonly="true"
-                 class="input-medium Wdate required" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});">
-                &nbsp;&nbsp;备注：
-                     <form:input id="remarks" path="remarks" htmlEscape="false" maxlength="255" cssStyle="width:350px"/>
-             </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">
-             <a href="${ctx}/wshbj/organ/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
-             体检单位：</label>
-            <div class="controls">
-                <div class="autocompleter-box">
-                    <input type="hidden" id="organId" name="organId" value="${examinationRecord.organId}" >
-                    <input type="text" id="organName" name="organName" value="${examinationRecord.organName}" class="input-medium required">
-                    <span class="help-inline"> </span>
-                </div>
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label">
-            <a href="${ctx}/wshbj/jobPost/form" target="_blank"><img style="width:16px" src="${ctxStatic}/images/icons/plus_alt.png"></a>
-                岗位：</label>
-            <div class="controls">
-                <div class="autocompleter-box">
-                    <input type="hidden" id="postId" name="postId" value="${examinationRecord.postId}" >
-                    <input type="text" id="postName" name="postName" value="${examinationRecord.postName}" class="input-medium required">
-                    <span class="help-inline"> </span>
-                </div>
-            </div>
-
-        </div>
+    </div>
 
 
 
