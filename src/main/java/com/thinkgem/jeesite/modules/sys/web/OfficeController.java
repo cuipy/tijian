@@ -114,6 +114,7 @@ public class OfficeController extends BaseController {
 		if(StringUtils.isEmpty(office.getCode())) {
 			office.setCode(SysSequenceUtils.nextSequence(Office.class, "code"));
 		}
+		office.setUseable(Global.YES);
 		officeService.save(office);
 		
 		if(office.getChildDeptList()!=null){
